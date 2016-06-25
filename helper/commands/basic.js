@@ -3,6 +3,7 @@
  */
 var config = require('../../config/main.json');
 var path = require('path');
+var yt = require('../youtube/youtube');
 var basicCommands = function (bot, message) {
     if (message.channel.isPrivate) {
         console.log('private');
@@ -45,12 +46,12 @@ var basicCommands = function (bot, message) {
             if (message.author.voiceChannel) {
                 bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
                     if (!err) {
-                        connection.playFile('./Allahu.mp3').then(function (intent) {
+                        connection.playFile('./audio/Allahu.mp3').then(function (intent) {
                             var start = Date.now();
                             connection.setSpeaking(true);
                             console.log('test\n\n', intent);
                             intent.on("end", function () {
-                                console.log("Ended!" + (Date.now() - start));
+                                console.log("File ended! " + (Date.now() - start));
                             });
                             intent.on("error", function (err) {
                                 console.log(err);
@@ -62,6 +63,17 @@ var basicCommands = function (bot, message) {
                 });
             } else {
                 bot.reply(message, "You are not in a Voice Channel!");
+            }
+            return;
+        case "!w.yt":
+            if (typeof (messageSplit[1]) !== 'undefined') {
+                bot.reply(message, 'Started Downloading Video');
+                yt(messageSplit[1], function (err, info) {
+                    if (err) return console.log(err);
+                    bot.reply(message, 'Finished Downloading ' + info.title);
+                });
+            } else {
+                bot.reply(message, "No YT Link found!");
             }
             return;
         case "!w.silent":
