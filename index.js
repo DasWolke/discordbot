@@ -5,6 +5,10 @@ var Discord = require("discord.js");
 var bot = new Discord.Client();
 var CMD = require('./helper/cmdman');
 var config = require('./config/main.json');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/discordbot', function (err) {
+    if (err) return console.log("Unable to connect to Mongo Server!");
+});
 bot.loginWithToken(config.token, function (err) {
     if (err) return console.log('Error Logging in!');
 });
@@ -21,6 +25,7 @@ bot.on('ready', function () {
 bot.on("message", function(message) {
     if(message.content.charAt(0) === "!") {
         CMD.basic(bot,message);
+        CMD.music(bot,message);
     }
 });
 bot.on("debug",console.log);

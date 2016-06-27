@@ -3,11 +3,7 @@
  */
 var config = require('../../config/main.json');
 var path = require('path');
-var yt = require('../youtube/youtube');
 var basicCommands = function (bot, message) {
-    if (message.channel.isPrivate) {
-        console.log('private');
-    }
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
         case'!w.help':
@@ -18,13 +14,16 @@ var basicCommands = function (bot, message) {
                 "!w.master --> get the name of my Master \n" +
                 "!w.bug --> report a Bug to my Master \n" +
                 "!w.add --> add me to your server \n" +
+                "!w.voice --> i join the Voice Channel you are currently in \n" +
+                "!w.yt youtubelink --> download a Youtube Video\n" +
+                "!w.play name --> Play a Song/Youtube Video\n" +
                 "!w.version --> My Version```");
             return;
         case "!w.master":
-            bot.reply(message, 'My Master is @Wolke');
+            bot.reply(message, 'My Master is Wolke');
             return;
         case "!w.version":
-            bot.reply(message, 'I am running on Version 2.0');
+            bot.reply(message, 'I am running on Version ' + config.version);
             return;
         case "!w.add":
             bot.reply(message, "Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=181218254365130752&scope=bot&permissions=0\>");
@@ -46,34 +45,23 @@ var basicCommands = function (bot, message) {
             if (message.author.voiceChannel) {
                 bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
                     if (!err) {
-                        connection.playFile('./audio/Allahu.mp3').then(function (intent) {
-                            var start = Date.now();
-                            connection.setSpeaking(true);
-                            console.log('test\n\n', intent);
+                        connection.playFile('./audio/epic.swf_1.mp3').then(function (intent) {
+                            // var start = Date.now();
+                            // connection.setSpeaking(true);
+                            // console.log('test\n\n', intent);
                             intent.on("end", function () {
-                                console.log("File ended! " + (Date.now() - start));
+                                console.log("File ended!");
                             });
                             intent.on("error", function (err) {
                                 console.log(err);
                             });
                         }).catch(function (err) {
-                            console.log(err)
+                            console.log(err);
                         });
                     }
                 });
             } else {
                 bot.reply(message, "You are not in a Voice Channel!");
-            }
-            return;
-        case "!w.yt":
-            if (typeof (messageSplit[1]) !== 'undefined') {
-                bot.reply(message, 'Started Downloading Video');
-                yt(messageSplit[1], function (err, info) {
-                    if (err) return console.log(err);
-                    bot.reply(message, 'Finished Downloading ' + info.title);
-                });
-            } else {
-                bot.reply(message, "No YT Link found!");
             }
             return;
         case "!w.silent":
@@ -89,7 +77,7 @@ var basicCommands = function (bot, message) {
             for (var connection of bot.internal.voiceConnections) {
                 if (connection) {
                     loop = true;
-                    connection.playFile('https://www.myinstants.com/media/sounds/epic.swf_1.mp3').then(function (res) {
+                    connection.playFile('./audio/epic.swf_1.mp3').then(function (res) {
                         console.log(res);
                         res.on("end", function () {
                             console.log("Ended!");
@@ -106,9 +94,6 @@ var basicCommands = function (bot, message) {
             }
             return;
         default:
-            if (message.channel.isPrivate) {
-                bot.reply(message, 'Sorry i did not understand that, please try help for a list of commands.');
-            }
             return;
     }
 };
