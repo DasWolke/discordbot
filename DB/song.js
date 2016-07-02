@@ -10,8 +10,9 @@ var songSchema = mongoose.Schema({
     addedAt:Date,
     id:String,
     type:String,
-    url:String
-
+    url:String,
+    setId:String,
+    dl:String
 });
 var songModel = mongoose.model('Songs', songSchema);
 module.exports = songModel;

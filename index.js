@@ -1,19 +1,25 @@
 /**
  * Created by julian on 15.05.2016.
  */
+console.log('Starting Init!');
 var Discord = require("discord.js");
 var bot = new Discord.Client();
 var CMD = require('./helper/cmdman');
 var config = require('./config/main.json');
 var mongoose = require('mongoose');
+var nowPlaying = 0;
+console.log('Connecting to DB');
 mongoose.connect('mongodb://localhost/discordbot', function (err) {
     if (err) return console.log("Unable to connect to Mongo Server!");
+    console.log('Connected to DB!');
 });
+console.log('Logging in...');
 bot.loginWithToken(config.token, function (err) {
     if (err) return console.log('Error Logging in!');
+    console.log('Connected to Discord!');
 });
 bot.options = {autoReconnect:true};
-console.log('bot started!');
+console.log('Bot finished Init');
 bot.on('ready', function () {
     bot.setStatus('online','!w.help for Commands!', function (err) {
         if (err) return console.log(err);
@@ -25,7 +31,7 @@ bot.on('ready', function () {
 bot.on("message", function(message) {
     if(message.content.charAt(0) === "!") {
         CMD.basic(bot,message);
-        CMD.music(bot,message);
+        CMD.music(bot,message, nowPlaying);
     }
 });
 bot.on("debug",console.log);

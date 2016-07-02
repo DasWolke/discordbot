@@ -30,11 +30,14 @@ var download = function (url, message, cb) {
                         addedBy:message.author.id,
                         addedAt:Date.now(),
                         type:"audio/mp3",
-                        url:info.webpage_url
+                        url:info.webpage_url,
+                        dl:"other"
                     });
-                    song.save();
-                    stream.end();
-                    cb(null, info);
+                    song.save(function (err) {
+                        if (err) return cb(err);
+                        stream.end();
+                        cb(null, info);
+                    });
                 });
             } else {
                 cb(null, info);

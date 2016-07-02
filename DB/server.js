@@ -8,7 +8,6 @@ var songSchema = mongoose.Schema({
     addedBy:String,
     id:String,
     type:String
-
 });
 var songModel = mongoose.model('Settings', songSchema);
 module.exports = songModel;

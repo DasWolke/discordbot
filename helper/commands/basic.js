@@ -8,7 +8,7 @@ var basicCommands = function (bot, message) {
     switch (messageSplit[0]) {
         case'!w.help':
             bot.reply(message, "Hey im Wolke-Chan," +
-                "your Bot for Lewd Pics from Onee.moe ^^ \n" +
+                "your Bot for doing Stuff other bots do bad \n" +
                 "Commands you can write:" +
                 " ```!w.help --> Help \n" +
                 "!w.master --> get the name of my Master \n" +
@@ -16,7 +16,10 @@ var basicCommands = function (bot, message) {
                 "!w.add --> add me to your server \n" +
                 "!w.voice --> i join the Voice Channel you are currently in \n" +
                 "!w.yt youtubelink --> download a Youtube Video\n" +
+                "!w.osu maplink --> download a Osu Map\n" +
                 "!w.play name --> Play a Song/Youtube Video\n" +
+                "!w.pause --> Pause the Current Song\n" +
+                "!w.resume --> Resume the pause Song\n" +
                 "!w.version --> My Version```");
             return;
         case "!w.master":
@@ -31,7 +34,6 @@ var basicCommands = function (bot, message) {
         case "!w.bug":
             if (typeof (messageSplit[1]) !== 'undefined') {
                 bot.reply(message, "Your Request was send to Wolke");
-                console.log(message);
                 var Wolke = bot.users.get("id", config.id);
                 var messageToSend = message.cleanContent.replace("!w.bug ", "You Received a bug Report from " + message.author.username + ": ");
                 bot.sendMessage(Wolke, messageToSend, function (err) {
@@ -71,27 +73,8 @@ var basicCommands = function (bot, message) {
                 });
             }
             return;
-        case "!w.test":
-            console.log('testing!');
-            var loop = false;
-            for (var connection of bot.internal.voiceConnections) {
-                if (connection) {
-                    loop = true;
-                    connection.playFile('./audio/epic.swf_1.mp3').then(function (res) {
-                        console.log(res);
-                        res.on("end", function () {
-                            console.log("Ended!");
-                        });
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
-                }
-            }
-            if (!loop) {
-                bot.reply(message, "I am not in any VoiceChannels atm.");
-            } else {
-                bot.reply(message, 'I work :D');
-            }
+        case "!w.wtf":
+            bot.reply(message, "https://www.facebook.com/100010016491379/videos/487379721605907/");
             return;
         default:
             return;

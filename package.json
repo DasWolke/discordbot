@@ -13,6 +13,9 @@
     "momentjs": "^1.1.6",
     "mongoose": "^4.4.17",
     "osu-api": "0.0.3",
+    "request": "^2.72.0",
+    "shortid": "^2.2.6",
+    "unzip": "^0.1.11",
     "youtube-dl": "^1.11.1"
   }
 }
