@@ -2,12 +2,14 @@
  * Created by julia on 26.06.2016.
  */
 var mongoose = require('mongoose');
-var songSchema = mongoose.Schema({
+var playlistSchema = mongoose.Schema({
     title:String,
-    path:String,
-    addedBy:String,
+    createdBy:String,
+    createdAt:Date,
     id:String,
-    type:String
+    public:Boolean,
+    songs:[]
+
 });
-var songModel = mongoose.model('Settings', songSchema);
-module.exports = songModel;
+var playlistModel = mongoose.model('Playlists', playlistSchema);
+module.exports = playlistModel;

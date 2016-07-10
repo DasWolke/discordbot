@@ -29,7 +29,7 @@ var basicCommands = function (bot, message) {
             bot.reply(message, 'I am running on Version ' + config.version);
             return;
         case "!w.add":
-            bot.reply(message, "Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=181218254365130752&scope=bot&permissions=0\>");
+            bot.reply(message, "Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=" + config.client_id + "&scope=bot&permissions=0\>");
             return;
         case "!w.bug":
             if (typeof (messageSplit[1]) !== 'undefined') {
@@ -47,19 +47,19 @@ var basicCommands = function (bot, message) {
             if (message.author.voiceChannel) {
                 bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
                     if (!err) {
-                        connection.playFile('./audio/epic.swf_1.mp3').then(function (intent) {
+                        // connection.playFile('./audio/epic.swf_1.mp3').then(function (intent) {
                             // var start = Date.now();
                             // connection.setSpeaking(true);
                             // console.log('test\n\n', intent);
-                            intent.on("end", function () {
-                                console.log("File ended!");
-                            });
-                            intent.on("error", function (err) {
-                                console.log(err);
-                            });
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
+                        //     intent.on("end", function () {
+                        //         console.log("File ended!");
+                        //     });
+                        //     intent.on("error", function (err) {
+                        //         console.log(err);
+                        //     });
+                        // }).catch(function (err) {
+                        //     console.log(err);
+                        // });
                     }
                 });
             } else {
@@ -74,7 +74,7 @@ var basicCommands = function (bot, message) {
             }
             return;
         case "!w.wtf":
-            bot.reply(message, "https://www.facebook.com/100010016491379/videos/487379721605907/");
+            bot.reply(message, "http://wtf.watchon.io");
             return;
         default:
             return;

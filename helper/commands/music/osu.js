@@ -21,22 +21,19 @@ var getOsu = function getMap(bot, message, map) {
             songModel.findOne({dl: "osu", setId: info[0].beatmapset_id}, function (err, Song) {
                 if (err) return console.log(err);
                 if (Song) {
-                    return bot.reply(message, "The Song " + Song.title + " is already Downloaded!");
+                    return bot.reply(message, "The Song " + info[0].artist + " " + info[0].title + " is already Downloaded!");
                 } else {
                     var path = config.osu_path;
                     info = info[0];
                     if (info.approved == "3" || info.approved == "2" || info.approved == "1" || info.approved == "0" || info.approved == "-1" || info.approved == "-2") {
-                        // console.log(map.replace(setRegex, '$2'));
-                        // console.log(info.title.replace(/(\\|\/|:|\*|\?|"|<|>|\|)/g, '').toLowerCase());
-                        //var fileRar = fs.createWriteStream("tmp.osz");
                         var songPath = "";
                         var extension = "";
                         fs.stat(path + info.beatmapset_id + ".zip", function (err, stat) {
                             if (err == null) {
-                                bot.reply(message, info.title + " is already being downloaded");
+                                bot.reply(message, info.artist + " " + info.title + " is already being downloaded");
                             } else {
                                 var url = 'http://osu.ppy.sh/d/' + info.beatmapset_id;
-                                bot.reply(message, "map: " + info.title + " is being downloaded");
+                                bot.reply(message, info.artist + " " + info.title + " is being downloaded");
                                 request.post({
                                     url: "https://osu.ppy.sh/forum/ucp.php?mode=login",
                                     formData: {
@@ -57,7 +54,7 @@ var getOsu = function getMap(bot, message, map) {
                                             console.log(err);
                                         }
                                         if (notAvailableRegex.test(body)) {
-                                            bot.reply(message, info.title + " is not available to download");
+                                            bot.reply(message, info.artist + " " + info.title + " is not available to download");
                                             notAvailable = true;
                                             stream.end();
                                             return;
@@ -95,7 +92,7 @@ var getOsu = function getMap(bot, message, map) {
                                                                 });
                                                             });
                                                         } else {
-                                                            bot.reply(message, "Something went wrong while downloading " + info.title);
+                                                            bot.reply(message, "Something went wrong while downloading " + info.artist + " " + info.title);
                                                             FileError = true;
                                                         }
                                                     });
@@ -105,7 +102,7 @@ var getOsu = function getMap(bot, message, map) {
                                                     setTimeout(function () {
                                                         var id = shortid.generate();
                                                         var song = new songModel({
-                                                            title: info.title,
+                                                            title: info.artist + " " + info.title,
                                                             alt_title: info.alt_title,
                                                             path: "audio/osu/" + id + ".mp3",
                                                             id: id,
@@ -125,9 +122,7 @@ var getOsu = function getMap(bot, message, map) {
                                                     setTimeout(function () {
                                                         deleteFolderRecursive(path + info.beatmapset_id + "/");
                                                         fs.unlink(path + info.beatmapset_id + ".zip");
-                                                        // fillArrays();
-                                                        console.log("Getmap is complete now!");
-                                                        bot.reply(message, info.title + " has been downloaded");
+                                                        bot.reply(message, info.artist + " " + info.title + " has been downloaded");
                                                     }, 2000);
                                                 }
                                             }, 3000);
@@ -142,7 +137,7 @@ var getOsu = function getMap(bot, message, map) {
                             }
                         });
                     } else {
-                        bot.reply(message, info.title + " have already been downloaded");
+                        bot.reply(message, info.artist + " " + info.title + " has already been downloaded");
                     }
                 }
             });

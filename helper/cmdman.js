@@ -3,4 +3,5 @@
  */
 var basic = require('./commands/basic');
 var music = require('./commands/music/music');
-module.exports = {basic:basic, music:music};
+var playlist = require('./commands/playlist/playlist');
+module.exports = {basic:basic, music:music, playlist:playlist};
