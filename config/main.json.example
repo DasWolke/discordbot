@@ -1,0 +1,11 @@
+{
+  "owner":"",//The Name of the Owner of the Bot
+  "id":1,//The Client ID of the Owner of the Bot
+  "token":"", //The Discord Bot Token
+  "client_id":"", //The id of the Discord Application
+  "version": "5.0", //Current Version
+  "osu_token":"", //The Osu Api Token
+  "osu_path":"./audio/osu/",
+  "osu_username":"", //Your Osu Username
+  "osu_password":"" //Your Osu Password
+}

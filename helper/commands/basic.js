@@ -20,6 +20,10 @@ var basicCommands = function (bot, message) {
                 "!w.play name --> Play a Song/Youtube Video\n" +
                 "!w.pause --> Pause the Current Song\n" +
                 "!w.resume --> Resume the pause Song\n" +
+                "!w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results\n" +
+                "!w.skip --> Skips the Current Song\n" +
+                "!w.queue name --> Adds a Song to the Queue\n" +
+                "!w.queue --> Shows the current Queue\n" +
                 "!w.version --> My Version```");
             return;
         case "!w.master":
