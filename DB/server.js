@@ -2,12 +2,9 @@
  * Created by julia on 26.06.2016.
  */
 var mongoose = require('mongoose');
-var songSchema = mongoose.Schema({
-    title:String,
-    path:String,
-    addedBy:String,
+var serverSchema = mongoose.Schema({
     id:String,
-    type:String
+    adminRole:String
 });
-var songModel = mongoose.model('Settings', songSchema);
-module.exports = songModel;
+var serverModel = mongoose.model('Settings', serverSchema);
+module.exports = serverModel;

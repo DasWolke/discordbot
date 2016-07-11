@@ -17,6 +17,11 @@ bot.loginWithToken(config.token, function (err) {
     if (err) return console.log('Error Logging in!');
     console.log('Connected to Discord!');
 });
+// console.log('Starting Cleverbot Api...');
+// CMD.cleverbot.init(function (err,session) {
+//     if (err) return console.log('Error with Cleverbot Api!');
+//     console.log('Connected to Cleverbot Api!');
+// });
 bot.options = {autoReconnect: true};
 console.log('Bot finished Init');
 bot.on('ready', function () {
@@ -32,8 +37,12 @@ bot.on("message", function (message) {
         if (message.content.charAt(1) === "w") {
             CMD.basic(bot, message);
             CMD.music(bot, message);
+            // CMD.permission(bot,message);
         }
     }
+    // if (message.isMentioned(bot.user)) {
+    //     CMD.cleverbot.talk(bot,message);
+    // }
 });
 bot.on("debug", console.log);
 bot.on("warn", console.log);

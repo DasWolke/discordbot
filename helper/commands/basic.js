@@ -3,6 +3,7 @@
  */
 var config = require('../../config/main.json');
 var path = require('path');
+var voice = require('../utility/voice');
 var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -49,32 +50,54 @@ var basicCommands = function (bot, message) {
             return;
         case "!w.voice":
             if (message.author.voiceChannel) {
-                bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
-                    if (!err) {
-                        // connection.playFile('./audio/epic.swf_1.mp3').then(function (intent) {
+                var admin = false;
+                for (var role of message.server.rolesOfUser(message.author)) {
+                    if (role.name === 'WolkeBot') {
+                        admin = true;
+                    }
+                }
+                if (message.server.id === '118689714319392769' && admin || message.server.id !== '118689714319392769') {
+                    bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
+                        if (!err) {
+                            // connection.playFile('./audio/epic.swf_1.mp3').then(function (intent) {
                             // var start = Date.now();
                             // connection.setSpeaking(true);
                             // console.log('test\n\n', intent);
-                        //     intent.on("end", function () {
-                        //         console.log("File ended!");
-                        //     });
-                        //     intent.on("error", function (err) {
-                        //         console.log(err);
-                        //     });
-                        // }).catch(function (err) {
-                        //     console.log(err);
-                        // });
-                    }
-                });
+                            //     intent.on("end", function () {
+                            //         console.log("File ended!");
+                            //     });
+                            //     intent.on("error", function (err) {
+                            //         console.log(err);
+                            //     });
+                            // }).catch(function (err) {
+                            //     console.log(err);
+                            // });
+                        } else {
+                            bot.reply(message, 'An Error has occured while trying to join Voice!');
+                        }
+                    });
+                } else {
+                    bot.reply(message, 'No Permission!');
+                }
             } else {
                 bot.reply(message, "You are not in a Voice Channel!");
             }
             return;
         case "!w.silent":
-            if (message.author.voiceChannel) {
-                bot.leaveVoiceChannel(message.author.voiceChannel, function (err, connection) {
-                    if (err) console.log(err);
-                });
+            var admin = false;
+            for (var role of message.server.rolesOfUser(message.author)) {
+                if (role.name === 'WolkeBot') {
+                    admin = true;
+                }
+            }
+            if (voice.inVoice(bot,message)) {
+                if (message.server.id === '118689714319392769' && admin || message.server.id !== '118689714319392769') {
+                    bot.leaveVoiceChannel(message.author.voiceChannel, function (err, connection) {
+                        if (err) console.log(err);
+                    });
+                } else {
+                    bot.reply(message, 'No Permission!');
+                }
             }
             return;
         case "!w.wtf":
