@@ -36,6 +36,7 @@ var musicCommands = function (bot, message) {
                         if (err) return console.log(err);
                         var Song = Songs[0];
                         if (Song) {
+                            console.log(voice.inVoice(bot, message));
                             if (voice.inVoice(bot, message)) {
                                 var connection = voice.getVoiceConnection(bot, message);
                                 if (!connection.playing) {
@@ -125,36 +126,30 @@ var musicCommands = function (bot, message) {
                     }
                 }
                 if (message.server.id === '118689714319392769' && admin || message.server.id !== '118689714319392769') {
-                    var found = false;
-                    for (var channel of message.server.channels) {
-                        if (channel instanceof Discord.VoiceChannel) {
-                            for (var connection of bot.internal.voiceConnections) {
-                                if (connection.voiceChannel.equals(channel)) {
-                                    found = true;
-                                    if (!connection.playing) {
-                                        return bot.reply(message, "No Song is playing at the Moment");
-                                    }
-                                    try {
-                                        connection.pause();
-                                    } catch (e) {
-                                        bot.reply(message, "No Song playing at the Moment!");
-                                    }
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
-                            }
+                    if (voice.inVoice(bot, message)) {
+                        var connection = voice.getVoiceConnection(bot, message);
+                        if (!connection.playing) {
+                            return bot.reply(message, "No Song is playing at the Moment");
+                        }
+                        try {
+                            connection.pause();
+                        } catch (e) {
+                            bot.reply(message, "No Song playing at the Moment!");
                         }
                     }
-                } else {
+                    else {
+                        bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                    }
+                }
+                else {
                     bot.reply(message, 'No Permission!');
                 }
-            } else {
+            }
+            else {
                 bot.reply(message, "This Commands Only Works in Server Channels!");
             }
             return;
-        case"!w.resume":
+        case "!w.resume":
             if (!message.channel.isPrivate) {
                 var admin = false;
                 for (var role of message.server.rolesOfUser(message.author)) {
@@ -163,28 +158,23 @@ var musicCommands = function (bot, message) {
                     }
                 }
                 if (message.server.id === '118689714319392769' && admin || message.server.id !== '118689714319392769') {
-                    var found = false;
-                    for (var channel of message.server.channels) {
-                        if (channel instanceof Discord.VoiceChannel) {
-                            for (var connection of bot.internal.voiceConnections) {
-                                if (connection.voiceChannel.equals(channel)) {
-                                    found = true;
-                                    if (connection.playing) {
-                                        return bot.reply(message, "A Song is playing at the Moment!");
-                                    }
-                                    try {
-                                        connection.resume();
-                                    } catch (e) {
-                                        bot.reply(message, "No Song playing at the Moment!");
-                                    }
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
-                            }
+                    if (voice.inVoice(bot, message)) {
+                        var connection = voice.getVoiceConnection(bot, message);
+                        found = true;
+                        if (connection.playing) {
+                            return bot.reply(message, "A Song is playing at the Moment!");
+                        }
+                        try {
+                            connection.resume();
+                        } catch (e) {
+                            bot.reply(message, "No Song playing at the Moment!");
                         }
                     }
+                    else {
+                        bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                    }
+
+
                 } else {
                     bot.reply(message, 'No Permission!');
                 }
@@ -192,7 +182,7 @@ var musicCommands = function (bot, message) {
                 bot.reply(message, "This Commands Only Works in Server Channels!");
             }
             return;
-        case "!w.search":
+        case"!w.search":
             if (typeof (messageSplit[1]) !== 'undefined') {
                 var messageSearch = "";
                 for (var c = 1; c < messageSplit.length; c++) {

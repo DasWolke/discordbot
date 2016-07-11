@@ -59,6 +59,7 @@ var basicCommands = function (bot, message) {
                 if (message.server.id === '118689714319392769' && admin || message.server.id !== '118689714319392769') {
                     bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
                         if (!err) {
+                            console.log('Success!');
                             // connection.playFile('./audio/epic.swf_1.mp3').then(function (intent) {
                             // var start = Date.now();
                             // connection.setSpeaking(true);
@@ -73,6 +74,7 @@ var basicCommands = function (bot, message) {
                             //     console.log(err);
                             // });
                         } else {
+                            console.log(err);
                             bot.reply(message, 'An Error has occured while trying to join Voice!');
                         }
                     });
@@ -98,6 +100,8 @@ var basicCommands = function (bot, message) {
                 } else {
                     bot.reply(message, 'No Permission!');
                 }
+            } else {
+                console.log('No Voice!');
             }
             return;
         case "!w.wtf":
