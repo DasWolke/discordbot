@@ -5,32 +5,44 @@ var Discord = require('discord.js');
 var queueModel = require('../../DB/queue');
 var path = require('path');
 var inVoiceChannel = function inVoiceChannel(bot, message) {
-    for (var channel of message.server.channels) {
-        if (channel instanceof Discord.VoiceChannel) {
-            for (var connection of bot.internal.voiceConnections) {
-                if (connection.voiceChannel.equals(channel)) {
+    for (var connectionC of bot.internal.voiceConnections) {
+        for (var channel of message.server.channels) {
+            if (channel instanceof Discord.VoiceChannel) {
+                if (connectionC.voiceChannel.equals(channel)) {
                     return true;
                 }
             }
-            return false;
         }
     }
+    return false;
 };
 var getVoiceConnection = function getVoiceConnection(bot, message) {
-    for (var channel of message.server.channels) {
-        if (channel instanceof Discord.VoiceChannel) {
-            for (var connection of bot.internal.voiceConnections) {
-                if (connection.voiceChannel.equals(channel)) {
-                    return connection;
+    for (var connectionA of bot.internal.voiceConnections) {
+        for (var channel of message.server.channels) {
+            if (channel instanceof Discord.VoiceChannel) {
+                if (connectionA.voiceChannel.equals(channel)) {
+                    return connectionA;
                 }
             }
-            return null;
         }
     }
+    return null;
+};
+var getVoiceChannel = function getVoiceChannel(bot, message) {
+    for (var connection of bot.internal.voiceConnections) {
+        for (var channel of message.server.channels) {
+            if (channel instanceof Discord.VoiceChannel) {
+                if (connection.voiceChannel.equals(channel)) {
+                    return channel;
+                }
+            }
+        }
+    }
+    return null;
 };
 var nextSong = function nextSong(bot, message, Song) {
     if (inVoiceChannel(bot, message)) {
-        var connection = getVoiceConnection(bot, message);
+        var connectionE = getVoiceConnection(bot, message);
         queueModel.findOne({server: message.server.id}, function (err, Queue) {
             if (err) return console.log(err);
             if (Queue) {
@@ -41,7 +53,7 @@ var nextSong = function nextSong(bot, message, Song) {
                             queueModel.findOne({_id: Queue._id}, function (err, Queue) {
                                 if (err) return console.log(err);
                                 if (Queue.songs.length > 0) {
-                                    connection.playFile(path.resolve(Queue.songs[0].path)).then(function (intent) {
+                                    connectionE.playFile(path.resolve(Queue.songs[0].path)).then(function (intent) {
                                         bot.sendMessage(message.channel, "Now playing Song: " + Queue.songs[0].title);
                                         intent.on("end", function () {
                                             console.log("File ended!");
@@ -54,13 +66,13 @@ var nextSong = function nextSong(bot, message, Song) {
                                         console.log(err);
                                     });
                                 } else {
-                                    connection.stopPlaying();
+                                    connectionE.stopPlaying();
                                 }
                             });
                         });
                     }
                 } else {
-                    connection.stopPlaying();
+                    connectionE.stopPlaying();
                 }
             } else {
                 return;
@@ -105,5 +117,6 @@ module.exports = {
     inVoice: inVoiceChannel,
     nextSong: nextSong,
     getVoiceConnection: getVoiceConnection,
+    getVoiceChannel: getVoiceChannel,
     addSongFirst: addSongFirst
 };

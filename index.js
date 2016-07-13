@@ -40,9 +40,9 @@ bot.on("message", function (message) {
             // CMD.permission(bot,message);
         }
     }
-    // if (message.isMentioned(bot.user)) {
-    //     CMD.cleverbot.talk(bot,message);
-    // }
+    if (message.isMentioned(bot.user)) {
+        CMD.cleverbot.talk(bot,message);
+    }
 });
 bot.on("debug", console.log);
 bot.on("warn", console.log);

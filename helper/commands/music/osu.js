@@ -143,7 +143,7 @@ var getOsu = function getMap(bot, message, map) {
             });
         });
     } else {
-        bot.reply(message, "This Link is not a Osu Link!");
+        bot.reply(message, "This Link is not a osu! Link!");
     }
 };
 var deleteFolderRecursive = function (path) {

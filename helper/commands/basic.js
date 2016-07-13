@@ -16,6 +16,7 @@ var basicCommands = function (bot, message) {
                 "!w.bug --> report a Bug to my Master \n" +
                 "!w.add --> add me to your server \n" +
                 "!w.voice --> i join the Voice Channel you are currently in \n" +
+                "!w.list --> Lists all Songs that are currently added to the Bot Database\n" +
                 "!w.yt youtubelink --> download a Youtube Video\n" +
                 "!w.osu maplink --> download a Osu Map\n" +
                 "!w.play name --> Play a Song/Youtube Video\n" +
@@ -25,6 +26,7 @@ var basicCommands = function (bot, message) {
                 "!w.skip --> Skips the Current Song\n" +
                 "!w.queue name --> Adds a Song to the Queue\n" +
                 "!w.queue --> Shows the current Queue\n" +
+                "If you want to talk with me @mention me with a message :D \n" +
                 "!w.version --> My Version```");
             return;
         case "!w.master":
@@ -47,6 +49,9 @@ var basicCommands = function (bot, message) {
             } else {
                 bot.reply(message, "You did not add a Message to send.");
             }
+            return;
+        case "!w.list":
+            bot.reply(message, 'The List of Songs can be found at <http://w.onee.moe>');
             return;
         case "!w.voice":
             if (message.author.voiceChannel) {
