@@ -7,5 +7,6 @@
   "osu_token":"", //The Osu Api Token
   "osu_path":"./audio/osu/",
   "osu_username":"", //Your Osu Username
-  "osu_password":"" //Your Osu Password
+  "osu_password":"", //Your Osu Password
+  "youtube_api":"" //Youtube Data Api Key
 }

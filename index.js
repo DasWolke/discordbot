@@ -32,6 +32,7 @@ bot.on("message", function (message) {
         if (message.content.charAt(1) === "w") {
             CMD.basic(bot, message);
             CMD.music(bot, message);
+            CMD.osuNoMusic(bot,message);
             // CMD.permission(bot,message);
             // CMD.playlist(bot,message);
         }
