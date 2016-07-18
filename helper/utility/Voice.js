@@ -4,6 +4,8 @@
 var Discord = require('discord.js');
 var queueModel = require('../../DB/queue');
 var path = require('path');
+var songDuration = 0;
+var general = require('./general');
 var inVoiceChannel = function inVoiceChannel(bot, message) {
     for (var connectionC of bot.internal.voiceConnections) {
         for (var channel of message.server.channels) {
@@ -53,18 +55,7 @@ var nextSong = function nextSong(bot, message, Song) {
                             queueModel.findOne({_id: Queue._id}, function (err, Queue) {
                                 if (err) return console.log(err);
                                 if (Queue.songs.length > 0) {
-                                    connectionE.playFile(path.resolve(Queue.songs[0].path)).then(function (intent) {
-                                        bot.sendMessage(message.channel, "Now playing Song: " + Queue.songs[0].title);
-                                        intent.on("end", function () {
-                                            console.log("File ended!");
-                                            nextSong(bot, message, Queue.songs[0]);
-                                        });
-                                        intent.on("error", function (err) {
-                                            console.log(err);
-                                        });
-                                    }).catch(function (err) {
-                                        console.log(err);
-                                    });
+                                    playSong(bot, message, Queue.songs[0]);
                                 } else {
                                     connectionE.stopPlaying();
                                 }
@@ -113,10 +104,88 @@ var addSongFirst = function addSongFirst(bot, message, Song, cb) {
         }
     });
 };
+var playSong = function (bot, message, Song) {
+    var connection = getVoiceConnection(bot, message);
+    if (!connection.playing) {
+        try {
+            connection.resume();
+        } catch (e) {
+
+        }
+    }
+    connection.playFile(path.resolve(Song.path)).then(function (intent) {
+        bot.sendMessage(message.channel, "Now playing Song: " + Song.title);
+        var timer = setInterval(function () {
+            setDuration(getDuration() + 1);
+        }, 1000);
+        intent.on("end", function () {
+            clearInterval(timer);
+            setDuration(0);
+            console.log("File ended!");
+            nextSong(bot, message, Song);
+        });
+        intent.on("error", function (err) {
+            console.log(err);
+        });
+    }).catch(function (err) {
+        console.log(err);
+    });
+};
+var startQueue = function (bot, message) {
+    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+        if (err) return console.log(err);
+        if (Queue) {
+            if (Queue.songs.length > 0) {
+                playSong(bot, message, Queue.songs[0]);
+            } else {
+
+            }
+        }
+    });
+};
+var addToQueue = function (bot, message, Song) {
+    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+        if (err) return console.log(err);
+        var connection = getVoiceConnection(bot,message);
+        if (Queue) {
+            if (Queue.songs.length === 0) {
+                if (connection) {
+                    playSong(bot, message, Song);
+                }
+            }
+            queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
+                if (err) return console.log(err);
+                bot.reply(message, "Successfully added " + Song.title + " to the Queue!");
+            });
+        } else {
+            var queue = new queueModel({
+                server: message.server.id,
+                songs: [Song]
+            });
+            queue.save(function (err) {
+                if (err) return console.log(err);
+                bot.reply(message, "Successfully added " + Song.title + " to the Queue!");
+                if (connection) {
+                    playSong(bot, message, Song);
+                }
+            });
+        }
+    });
+};
+var setDuration = function (second) {
+  songDuration = second;
+};
+var getDuration = function () {
+    return songDuration;
+};
 module.exports = {
     inVoice: inVoiceChannel,
     nextSong: nextSong,
+    playSong: playSong,
     getVoiceConnection: getVoiceConnection,
     getVoiceChannel: getVoiceChannel,
-    addSongFirst: addSongFirst
+    addSongFirst: addSongFirst,
+    startQueue: startQueue,
+    addToQueue:addToQueue,
+    getSongDuration:getDuration
 };

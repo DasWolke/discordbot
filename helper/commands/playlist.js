@@ -1,7 +1,8 @@
 /**
  * Created by julia on 10.07.2016.
  */
-var createPlaylist = require('./createPlaylist');
+var createPlaylist = require('./playlist/createPlaylist');
+var addPlaylist = require('./playlist/addToPlaylist');
 var playlistCommands = function playlistCommands(bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -10,7 +11,7 @@ var playlistCommands = function playlistCommands(bot, message) {
                 createPlaylist(bot, message);
             }
             if (messageSplit[1] === "add") {
-
+                addPlaylist(bot,message);
             }
             if (messageSplit[1] === "edit") {
 

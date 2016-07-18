@@ -1,6 +1,12 @@
 var youtubedl = require('youtube-dl');
+var youtubesearch = require('youtube-search');
 var songModel = require('../../DB/song');
+var config = require('../../config/main.json');
 var fs = require('fs');
+var opts = {
+    maxResults:5,
+    key:config.youtube_api
+};
 var download = function (url, message, cb) {
     youtubedl.getInfo(url, function (err, info) {
         if (err) return cb(err);
@@ -45,4 +51,26 @@ var download = function (url, message, cb) {
         });
     });
 };
-module.exports = download;
+var search = function (message, cb) {
+    var messageSplit = message.content.split(' ');
+    var messageClean = "";
+    if (typeof(messageSplit[1]) !== 'undefined' && messageSplit[1]) {
+        for (var i = 1; i < messageSplit.length; i++) {
+            messageClean = messageClean + " " + messageSplit[i];
+        }
+        youtubesearch(messageClean, opts, function (err,results) {
+           if (err) {
+               console.log(err);
+               return cb('Error with Youtube Search!');
+           }
+            if (results.length > 0) {
+                cb(null, results[0]);
+            } else {
+                cb('Did not Found a Song');
+            }
+        });
+    } else {
+        cb('No Search Query Provided!');
+    }
+};
+module.exports = {download:download, search:search};

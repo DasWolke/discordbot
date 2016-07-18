@@ -18,14 +18,17 @@ var basicCommands = function (bot, message) {
                 "!w.voice --> i join the Voice Channel you are currently in \n" +
                 "!w.list --> Lists all Songs that are currently added to the Bot Database\n" +
                 "!w.yt youtubelink --> download a Youtube Video\n" +
+                "!w.yts query --> Searches Youtube and gives you the First Result\n" +
                 "!w.osu maplink --> download a Osu Map\n" +
                 "!w.play name --> Play a Song/Youtube Video\n" +
                 "!w.pause --> Pause the Current Song\n" +
                 "!w.resume --> Resume the pause Song\n" +
                 "!w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results\n" +
                 "!w.skip --> Skips the Current Song\n" +
-                "!w.queue name --> Adds a Song to the Queue\n" +
+                "!w.queue name --> Adds a Song/Youtube Video to the Queue\n" +
                 "!w.queue --> Shows the current Queue\n" +
+                "!w.rqueue --> Adds a random Song to the Queue\n" +
+                "!w.random --> Plays a Random Song\n" +
                 "If you want to talk with me @mention me with a message :D \n" +
                 "!w.version --> My Version```");
             return;
@@ -64,20 +67,7 @@ var basicCommands = function (bot, message) {
                 if (message.server.id === '118689714319392769' && admin || message.server.id !== '118689714319392769') {
                     bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
                         if (!err) {
-                            console.log('Success!');
-                            // connection.playFile('./audio/epic.swf_1.mp3').then(function (intent) {
-                            // var start = Date.now();
-                            // connection.setSpeaking(true);
-                            // console.log('test\n\n', intent);
-                            //     intent.on("end", function () {
-                            //         console.log("File ended!");
-                            //     });
-                            //     intent.on("error", function (err) {
-                            //         console.log(err);
-                            //     });
-                            // }).catch(function (err) {
-                            //     console.log(err);
-                            // });
+                            voice.startQueue(bot,message);
                         } else {
                             console.log(err);
                             bot.reply(message, 'An Error has occured while trying to join Voice!');
@@ -111,6 +101,15 @@ var basicCommands = function (bot, message) {
             return;
         case "!w.wtf":
             bot.reply(message, "http://wtf.watchon.io");
+            return;
+        case "!w.stats":
+            var plural;
+            if (bot.servers.length > 1) {
+                plural = 'servers';
+            } else {
+                plural = 'server';
+            }
+            bot.reply(message, "I am currently used on " + bot.servers.length + " " + plural);
             return;
         default:
             return;
