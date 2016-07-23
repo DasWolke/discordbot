@@ -10,45 +10,49 @@ var opts = {
 var download = function (url, message, cb) {
     youtubedl.getInfo(url, function (err, info) {
         if (err) return cb(err);
-        songModel.findOne({id:info.id}, function (err, Song) {
-            if (err) return cb(err);
-            if (!Song) {
-                var video = youtubedl(url, ["--restrict-filenames", "-x", "--audio-format=mp3"], {cwd: __dirname});
-                var filename = info.id + ".mp3";
-                var stream = fs.createWriteStream('audio/' + filename);
-                video.pipe(stream);
-                video.on('info', function (info) {
-                    console.log('Download started');
-                    console.log('filename: ' + info._filename);
-                    console.log('size: ' + info.size);
-                });
-                video.on('complete', function complete(info) {
-                    console.log('filename: ' + info._filename + ' finished');
-                    cb(null, info);
-                });
-                video.on('end', function () {
-                    console.log('finished downloading!');
-                    var song = new songModel({
-                        title: info.title,
-                        alt_title: info.alt_title,
-                        path: "audio/" + info.id + ".mp3",
-                        id:info.id,
-                        addedBy:message.author.id,
-                        addedAt:Date.now(),
-                        type:"audio/mp3",
-                        url:info.webpage_url,
-                        dl:"other"
+        if (checkTime(info.duration)) {
+            songModel.findOne({id: info.id}, function (err, Song) {
+                if (err) return cb(err);
+                if (!Song) {
+                    var video = youtubedl(url, ["--restrict-filenames", "-x", "--audio-format=mp3"], {cwd: __dirname});
+                    var filename = info.id + ".mp3";
+                    var stream = fs.createWriteStream('audio/' + filename);
+                    video.pipe(stream);
+                    video.on('info', function (info) {
+                        console.log('Download started');
+                        console.log('filename: ' + info._filename);
+                        console.log('size: ' + info.size);
                     });
-                    song.save(function (err) {
-                        if (err) return cb(err);
-                        stream.end();
+                    video.on('complete', function complete(info) {
+                        console.log('filename: ' + info._filename + ' finished');
                         cb(null, info);
                     });
-                });
-            } else {
-                cb(null, info);
-            }
-        });
+                    video.on('end', function () {
+                        console.log('finished downloading!');
+                        var song = new songModel({
+                            title: info.title,
+                            alt_title: info.alt_title,
+                            path: "audio/" + info.id + ".mp3",
+                            id: info.id,
+                            addedBy: message.author.id,
+                            addedAt: Date.now(),
+                            type: "audio/mp3",
+                            url: info.webpage_url,
+                            dl: "other"
+                        });
+                        song.save(function (err) {
+                            if (err) return cb(err);
+                            stream.end();
+                            cb(null, info);
+                        });
+                    });
+                } else {
+                    cb(null, info);
+                }
+            });
+        } else {
+            cb('The Song is to long.', info);
+        }
     });
 };
 var search = function (message, cb) {
@@ -71,6 +75,26 @@ var search = function (message, cb) {
         });
     } else {
         cb('No Search Query Provided!');
+    }
+};
+var checkTime = function (duration) {
+  var durationSplit = duration.split(':');
+    if (parseInt(durationSplit.length) > 3) {
+        return false;
+    } else {
+        if (durationSplit.length === 3) {
+            if (parseInt(durationSplit[0] > 1)) {
+                return false;
+            } else {
+                if (parseInt(durationSplit[0]) === 1 && parseInt(durationSplit[1])> 30) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            return true;
+        }
     }
 };
 module.exports = {download:download, search:search};

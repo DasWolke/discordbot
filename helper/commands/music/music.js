@@ -2,6 +2,7 @@
  * Created by julia on 26.06.2016.
  */
 var yt = require('../../youtube/youtube');
+var songHelper = require('../../utility/music/songs');
 var songModel = require('../../../DB/song');
 var queueModel = require('../../../DB/queue');
 var path = require('path');
@@ -20,7 +21,7 @@ var musicCommands = function (bot, message) {
                 yt.download(messageSplit[1], message, function (err, info) {
                     if (err) {
                         console.log(err);
-                        return bot.reply(message, 'This is not a Valid Url!');
+                        return bot.reply(message, 'This is not a Valid Url, maybe the Song is too long or is blocked!');
                     }
                     bot.reply(message, 'Finished Downloading ' + info.title);
                 });
@@ -294,6 +295,14 @@ var musicCommands = function (bot, message) {
                         bot.reply(message, 'A Error occured!');
                     }
                 });
+            });
+            return;
+        case "!w.voteskip":
+            songHelper.voteSkip(bot, message, function (err, response) {
+                if (err) {
+                    return bot.reply(message, err);
+                }
+                bot.reply(message, response);
             });
             return;
         default:

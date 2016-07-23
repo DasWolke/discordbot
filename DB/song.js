@@ -12,7 +12,12 @@ var songSchema = mongoose.Schema({
     type:String,
     url:String,
     setId:String,
-    dl:String
+    dl:String,
+    plays:Number,
+    favorites:Number,
+    votes:Number,
+    votedDownBy:[],
+    votedUpBy:[]
 });
 var songModel = mongoose.model('Songs', songSchema);
 module.exports = songModel;

@@ -17,14 +17,14 @@ bot.loginWithToken(config.token, function (err) {
     if (err) return console.log('Error Logging in!');
     console.log('Connected to Discord!');
 });
-bot.options = {autoReconnect: true};
+bot.options = {autoReconnect: true, guildCreateTimeout:5000};
 console.log('Bot finished Init');
 bot.on('ready', function () {
     bot.setStatus('online', '!w.help for Commands!', function (err) {
         if (err) return console.log(err);
     });
     bot.on('serverCreated', function (server) {
-        console.log('Servers changed!');
+        console.log('Joined Server ' + server.name);
     });
 });
 bot.on("message", function (message) {

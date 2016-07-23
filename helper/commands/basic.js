@@ -17,17 +17,17 @@ var basicCommands = function (bot, message) {
                 "!w.add --> add me to your server \n" +
                 "!w.voice --> i join the Voice Channel you are currently in \n" +
                 "!w.list --> Lists all Songs that are currently added to the Bot Database\n" +
-                "!w.yt youtubelink --> download a Youtube Video\n" +
+                "!w.yt youtubelink --> download a Youtube Video max Length: 1H30M\n" +
                 "!w.yts query --> Searches Youtube and gives you the First Result\n" +
                 "!w.osu maplink --> download a Osu Map\n" +
-                "!w.play name --> Play a Song/Youtube Video\n" +
+                "!w.play name --> Play a Song/Youtube Video max Length: 1H30M\n" +
                 "!w.pause --> Pause the Current Song\n" +
                 "!w.resume --> Resume the pause Song\n" +
                 "!w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results\n" +
                 "!w.skip --> Skips the Current Song\n" +
-                "!w.queue name --> Adds a Song/Youtube Video to the Queue\n" +
+                "!w.queue name --> Adds a Song/Youtube Video to the Queue max Length: 1H30M\n" +
                 "!w.queue --> Shows the current Queue\n" +
-                "!w.rqueue --> Adds a random Song to the Queue\n" +
+                "!w.rqueue --> Adds a random Song to the Queue max Length: 1H30M\n" +
                 "!w.random --> Plays a Random Song\n" +
                 "If you want to talk with me @mention me with a message :D \n" +
                 "!w.version --> My Version```");
@@ -104,12 +104,18 @@ var basicCommands = function (bot, message) {
             return;
         case "!w.stats":
             var plural;
+            var users = 0;
             if (bot.servers.length > 1) {
                 plural = 'servers';
+                for (var i = 0; bot.servers.length > i;i++) {
+                    users = users + bot.servers[i].members.length
+                }
             } else {
                 plural = 'server';
+                users = bot.servers[0].members.length;
             }
-            bot.reply(message, "I am currently used on " + bot.servers.length + " " + plural);
+            users = users - bot.servers.length;
+            bot.reply(message, "I am currently used on " + bot.servers.length + " " + plural + " with " + users + " users.");
             return;
         default:
             return;

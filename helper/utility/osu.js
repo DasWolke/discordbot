@@ -54,7 +54,6 @@ var calcPP = function (bot, message) {
             var mapType = JSON.parse('{"' + map.replace(setRegex, '$2') + '": ' + map.replace(setRegex, '$3') + '}');
             osu.getBeatmapsRaw(mapType, function (err, info) {
                 if (err) console.log(err);
-                console.log(info);
                 mapId = info[0].beatmap_id;
                 var mapInfo = info[0];
                 if (typeof (mapId) !== 'undefined') {

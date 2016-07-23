@@ -4,7 +4,11 @@
 var mongoose = require('mongoose');
 var serverSchema = mongoose.Schema({
     id:String,
-    adminRole:String
+    permissions:[],
+    prefix:String,
+    disabledCmds:[],
+    Groups:[],
+    Blacklist:[]
 });
-var serverModel = mongoose.model('Settings', serverSchema);
+var serverModel = mongoose.model('Servers', serverSchema);
 module.exports = serverModel;
