@@ -17,6 +17,12 @@ queueSchema.methods.resetVotes = function resetVotes(cb) {
 queueSchema.methods.reload = function reload(cb) {
     this.model('Queues').findOne({server:this.server}, cb);
 };
+queueSchema.methods.removeLatest = function reload(cb) {
+    this.model('Queues').update({server:this.server},{$pop: {songs: 1}}, cb);
+};
+queueSchema.methods.removeOldest = function reload(cb) {
+    this.model('Queues').update({server:this.server},{$pop: {songs: 1}}, cb);
+};
 queueSchema.methods.checkVote = function checkVote(Id,cb) {
     this.model('Queues').findOne({voteSkipVotes:Id, server:this.server}, function (err,Queue) {
         if (err) return cb(err);

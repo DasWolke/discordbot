@@ -17,7 +17,8 @@ var songSchema = mongoose.Schema({
     favorites:Number,
     votes:Number,
     votedDownBy:[],
-    votedUpBy:[]
+    votedUpBy:[],
+    duration:Number
 });
 var songModel = mongoose.model('Songs', songSchema);
 module.exports = songModel;

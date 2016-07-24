@@ -62,6 +62,7 @@ var search = function (message, cb) {
         for (var i = 1; i < messageSplit.length; i++) {
             messageClean = messageClean + " " + messageSplit[i];
         }
+        console.log(messageClean);
         youtubesearch(messageClean, opts, function (err,results) {
            if (err) {
                console.log(err);

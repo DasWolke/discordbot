@@ -30,6 +30,7 @@ var voteSkip = function voteSkip(bot, message, cb) {
                                                 if (Queue) {
                                                     var voiceMembers = channel.members.length -1;
                                                     var votePercentage = Queue.voteSkip / voiceMembers;
+                                                    console.log(votePercentage);
                                                     if (votePercentage > 0.51) {
                                                         voice.nextSong(bot,message, Queue.songs[0]);
                                                         cb(null, 'Voteskipped Song: ' + Queue.songs[0].title + '!');

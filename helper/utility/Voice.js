@@ -3,6 +3,7 @@
  */
 var Discord = require('discord.js');
 var queueModel = require('../../DB/queue');
+var songModel = require('../../DB/song');
 var path = require('path');
 var songDuration = 0;
 var general = require('./general');
@@ -55,14 +56,19 @@ var nextSong = function nextSong(bot, message, Song) {
                             queueModel.findOne({_id: Queue._id}, function (err, Queue) {
                                 if (err) return console.log(err);
                                 if (Queue.songs.length > 0) {
-                                    playSong(bot, message, Queue.songs[0]);
+                                    Queue.resetVotes(function (err) {
+                                        if (err) return console.log(err);
+                                        playSong(bot, message, Queue.songs[0]);
+                                    });
                                 } else {
+                                    Queue.resetVotes();
                                     connectionE.stopPlaying();
                                 }
                             });
                         });
                     }
                 } else {
+                    Queue.resetVotes();
                     connectionE.stopPlaying();
                 }
             } else {
@@ -114,6 +120,9 @@ var playSong = function (bot, message, Song) {
         }
     }
     connection.playFile(path.resolve(Song.path)).then(function (intent) {
+        updatePlays(Song.id, function (err) {
+            if (err) return console.log(err);
+        });
         bot.sendMessage(message.channel, "Now playing Song: " + Song.title);
         var timer = setInterval(function () {
             setDuration(getDuration() + 1);
@@ -136,7 +145,10 @@ var startQueue = function (bot, message) {
         if (err) return console.log(err);
         if (Queue) {
             if (Queue.songs.length > 0) {
-                playSong(bot, message, Queue.songs[0]);
+                Queue.resetVotes(function (err) {
+                    if (err) return console.log(err);
+                    playSong(bot, message, Queue.songs[0]);
+                });
             } else {
 
             }
@@ -146,11 +158,17 @@ var startQueue = function (bot, message) {
 var addToQueue = function (bot, message, Song) {
     queueModel.findOne({server: message.server.id}, function (err, Queue) {
         if (err) return console.log(err);
-        var connection = getVoiceConnection(bot,message);
+        var connection = getVoiceConnection(bot, message);
+        var channel = getVoiceChannel(bot,message);
         if (Queue) {
             if (Queue.songs.length === 0) {
                 if (connection) {
                     playSong(bot, message, Song);
+                }
+            }
+            for (var i = 0; i < Queue.songs.length; i++) {
+                if (Queue.songs[i].id === Song.id){
+                    return bot.reply(message, Song.title + "is already in the Queue!");
                 }
             }
             queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
@@ -172,11 +190,37 @@ var addToQueue = function (bot, message, Song) {
         }
     });
 };
+var setVolume = function (bot, message, cb) {
+    var messageSplit = message.content.split(' ');
+    if (inVoiceChannel(bot, message)) {
+        var connection = getVoiceConnection(bot, message);
+        if (typeof (messageSplit[1]) !== 'undefined') {
+            try {
+                var volume = parseInt(messageSplit[1]) / 100;
+            } catch (e) {
+                return cb('Please input a Number!');
+            }
+            try {
+                connection.setVolume(volume);
+            } catch (e) {
+                return cb('Error while setting Volume!');
+            }
+            cb(null, 'Set Volume to ' + volume*100);
+        } else {
+            return cb('No Volume set!');
+        }
+    } else {
+        return cb('No Voice Connection on this Server at the Moment.');
+    }
+};
 var setDuration = function (second) {
-  songDuration = second;
+    songDuration = second;
 };
 var getDuration = function () {
     return songDuration;
+};
+var updatePlays = function updatePlays(id, cb) {
+    songModel.update({id: id}, {$inc: {plays: 1}}, cb);
 };
 module.exports = {
     inVoice: inVoiceChannel,
@@ -186,6 +230,8 @@ module.exports = {
     getVoiceChannel: getVoiceChannel,
     addSongFirst: addSongFirst,
     startQueue: startQueue,
-    addToQueue:addToQueue,
-    getSongDuration:getDuration
+    addToQueue: addToQueue,
+    getSongDuration: getDuration,
+    updatePlays: updatePlays,
+    setVolume:setVolume
 };

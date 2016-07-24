@@ -7,6 +7,8 @@ var bot = new Discord.Client();
 var CMD = require('./helper/cmdman');
 var config = require('./config/main.json');
 var mongoose = require('mongoose');
+var socket = require('socket.io-client')('http://127.0.0.1:7004/bot');
+var socketManager = require('./helper/socket/basic');
 console.log('Connecting to DB');
 mongoose.connect('mongodb://localhost/discordbot', function (err) {
     if (err) return console.log("Unable to connect to Mongo Server!");
@@ -17,7 +19,8 @@ bot.loginWithToken(config.token, function (err) {
     if (err) return console.log('Error Logging in!');
     console.log('Connected to Discord!');
 });
-bot.options = {autoReconnect: true, guildCreateTimeout:5000};
+socketManager.init(socket);
+bot.options = {autoReconnect: true, guildCreateTimeout:5000, disableEveryone:true};
 console.log('Bot finished Init');
 bot.on('ready', function () {
     bot.setStatus('online', '!w.help for Commands!', function (err) {
@@ -33,6 +36,7 @@ bot.on("message", function (message) {
             CMD.basic(bot, message);
             CMD.music(bot, message);
             CMD.osuNoMusic(bot,message);
+            CMD.youtube(bot,message);
             // CMD.permission(bot,message);
             // CMD.playlist(bot,message);
         }
