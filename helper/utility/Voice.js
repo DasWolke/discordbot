@@ -58,7 +58,7 @@ var nextSong = function nextSong(bot, message, Song) {
                                 if (Queue.songs.length > 0) {
                                     Queue.resetVotes(function (err) {
                                         if (err) return console.log(err);
-                                        playSong(bot, message, Queue.songs[0]);
+                                        playSong(bot, message, Queue.songs[0], true);
                                     });
                                 } else {
                                     Queue.resetVotes();
@@ -110,7 +110,7 @@ var addSongFirst = function addSongFirst(bot, message, Song, cb) {
         }
     });
 };
-var playSong = function (bot, message, Song) {
+var playSong = function (bot, message, Song, Queueused) {
     var connection = getVoiceConnection(bot, message);
     if (!connection.playing) {
         try {
@@ -123,7 +123,9 @@ var playSong = function (bot, message, Song) {
         updatePlays(Song.id, function (err) {
             if (err) return console.log(err);
         });
-        bot.sendMessage(message.channel, "Now playing Song: " + Song.title);
+        if (typeof(Queueused) === 'undefined') {
+            bot.sendMessage(message.channel, "Now playing Song: " + Song.title);
+        }
         var timer = setInterval(function () {
             setDuration(getDuration() + 1);
         }, 1000);

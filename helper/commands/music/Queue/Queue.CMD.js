@@ -11,7 +11,20 @@ var QueueCmd = function QueueCmd(bot,message,messageSplit) {
                 add(bot,message,messageSplit);
             }
             if (messageSplit[1] === 'remove') {
-                remove(bot,message,messageSplit);
+                var admin = false;
+                for (var role of message.server.rolesOfUser(message.author)) {
+                    if (role.name === 'WolkeBot') {
+                        admin = true;
+                    }
+                    if (role.name === 'Proxerteam') {
+                        admin = true;
+                    }
+                }
+                if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== "166242205038673920" && message.server.id !== '118689714319392769') {
+                    remove(bot, message, messageSplit);
+                } else {
+                    bot.reply(message, 'No Permission!');
+                }
             }
         } else {
             show(bot,message);

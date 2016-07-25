@@ -26,7 +26,8 @@ var basicCommands = function (bot, message) {
                 "!w.resume --> Resume the pause Song\n" +
                 "!w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results\n" +
                 "!w.skip --> Skips the Current Song\n" +
-                "!w.queue name --> Adds a Song/Youtube Video to the Queue max Length: 1H30M\n" +
+                "!w.queue add name --> Adds a Song/Youtube Video to the Queue max Length: 1H30M\n" +
+                "!w.queue remove latest --> Adds a Song/Youtube Video to the Queue max Length: 1H30M\n" +
                 "!w.queue --> Shows the current Queue\n" +
                 "!w.rqueue --> Adds a random Song to the Queue max Length: 1H30M\n" +
                 "!w.random --> Plays a Random Song\n" +
