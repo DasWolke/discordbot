@@ -4,6 +4,7 @@
 var config = require('../../config/main.json');
 var path = require('path');
 var voice = require('../utility/voice');
+var messageHelper = require('../utility/message');
 var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -48,6 +49,11 @@ var basicCommands = function (bot, message) {
             return;
         case "!w.list":
             bot.reply(message, 'The List of Songs can be found at <http://w.onee.moe>');
+            return;
+        case "!w.level":
+            messageHelper.getLevel(bot,message,function (err) {
+                if (err) return console.log(err);
+            });
             return;
         case "!w.voice":
             if (message.author.voiceChannel) {

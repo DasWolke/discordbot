@@ -4,6 +4,7 @@
 var mongoose = require('mongoose');
 var serverSchema = mongoose.Schema({
     id:String,
+    lastVoiceChannel:String,
     permissions:[],
     prefix:String,
     disabledCmds:[],

@@ -9,6 +9,7 @@ var config = require('./config/main.json');
 var mongoose = require('mongoose');
 var socket = require('socket.io-client')('http://127.0.0.1:7004/bot');
 var socketManager = require('./helper/socket/basic');
+var messageHelper = require('./helper/utility/message');
 console.log('Connecting to DB');
 mongoose.connect('mongodb://localhost/discordbot', function (err) {
     if (err) return console.log("Unable to connect to Mongo Server!");
@@ -30,7 +31,15 @@ bot.on('ready', function () {
         console.log('Joined Server ' + server.name);
     });
 });
+bot.on('disconnected', function () {
+
+});
 bot.on("message", function (message) {
+    if (!message.channel.isPrivate) {
+        messageHelper.updateXP(bot,message, function (err) {
+            if (err) return console.log(err);
+        });
+    }
     if (message.content.charAt(0) === "!") {
         if (message.content.charAt(1) === "w") {
             CMD.basic(bot, message);
