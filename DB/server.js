@@ -12,7 +12,7 @@ var serverSchema = mongoose.Schema({
     Blacklist:[]
 });
 serverSchema.methods.updateVoice = function updateVoice(id,cb) {
-    this.model('Servers').update({id:this.id}, {set:{lastVoiceChannel:id}}, cb);
+    this.model('Servers').update({id:this.id}, {$set:{lastVoiceChannel:id}}, cb);
 };
 var serverModel = mongoose.model('Servers', serverSchema);
 module.exports = serverModel;

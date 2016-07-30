@@ -13,14 +13,15 @@ var basicCommands = function (bot, message) {
                 "your Bot for doing Stuff other bots do bad \n" +
                 "Commands you can write:" +
                 " ```!w.help --> Help \n" +
+                "SUPPORT:\n" +
                 "!w.bug --> get the Link of the Support Discord \n" +
+                "!w.version --> My Version\n" +
                 "!w.add --> add me to your server \n" +
+                "--------------------------------\n" +
+                "Music:\n" +
                 "!w.voice --> i join the Voice Channel you are currently in \n" +
+                "!w.silent --> i leave the Voice Channel i am currently connected to.\n" +
                 "!w.songlist --> Lists all Songs that are currently added to the Bot Database\n" +
-                "!w.yt youtubelink --> download a Youtube Video max Length: 1H30M\n" +
-                "!w.yt.s query --> Searches Youtube and gives you the First Result\n" +
-                "!w.yt.sq query --> Searches Youtube and adds the First Result to the Queue\n" +
-                "!w.osu maplink --> download a Osu Map\n" +
                 "!w.play name --> Play a Song/Youtube Video max Length: 1H30M\n" +
                 "!w.pause --> Pause the Current Song\n" +
                 "!w.resume --> Resume the pause Song\n" +
@@ -31,8 +32,17 @@ var basicCommands = function (bot, message) {
                 "!w.queue --> Shows the current Queue\n" +
                 "!w.rqueue --> Adds a random Song to the Queue max Length: 1H30M\n" +
                 "!w.random --> Plays a Random Song\n" +
-                "If you want to talk with me @mention me with a message :D \n" +
-                "!w.version --> My Version```");
+                "!w.osu maplink --> download a Osu Map\n" +
+                "--------------------------------\n" +
+                "Youtube:\n" +
+                "!w.yt youtubelink --> download a Youtube Video max Length: 1H30M\n" +
+                "!w.yt.s query --> Searches Youtube and gives you the First Result\n" +
+                "!w.yt.sq query --> Searches Youtube and adds the First Result to the Queue\n" +
+                "--------------------------------\n" +
+                "Other Stuff:\n" +
+                "!w.level --> Your Level and XP needed for next Level\n" +
+                "!w.pp beatmaplink acc --> Calculates PP for the Beatmap with acc, Currently nomod only...\n" +
+                "If you want to talk with me @mention me with a message :D```");
             return;
         case "!w.version":
             bot.reply(message, 'I am running on Version ' + config.version);
@@ -97,12 +107,13 @@ var basicCommands = function (bot, message) {
                     }
                 }
                 if (voice.inVoice(bot, message)) {
+                    var channel = voice.getVoiceChannel(bot,message);
                     if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== '118689714319392769' && message.server.id !== "166242205038673920") {
-                        bot.leaveVoiceChannel(message.author.voiceChannel, function (err, connection) {
+                        bot.leaveVoiceChannel(channel, function (err, connection) {
                             if (err) console.log(err);
-                        });
-                        voice.clearVoice(message, function (err) {
-                            if (err) console.log(err);
+                            voice.clearVoice(message, function (err) {
+                                if (err) return console.log(err);
+                            });
                         });
                     } else {
                         bot.reply(message, 'No Permission!');

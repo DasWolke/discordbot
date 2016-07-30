@@ -38,7 +38,7 @@ var getLevel = function getLevel(bot, message, cb) {
     userModel.findOne({id: message.author.id}, function (err, User) {
         if (err) return cb(err);
         if (User) {
-            bot.reply(message, 'You are Level ' + User.level);
+            bot.reply(message, 'You are Level ' + User.level + ' XP: ' + parseInt(User.xp) + 'XP/' + parseInt(User.level * 2 * 10) + 'XP');
         } else {
             var freshUser = new userModel({
                 id: message.author.id,
@@ -52,7 +52,7 @@ var getLevel = function getLevel(bot, message, cb) {
             freshUser.save(function (err) {
                 if (err) return cb(err);
             });
-            bot.reply(message, 'You are Level ' + 1);
+            bot.reply(message, 'You are Level ' + 1 + ' XP: ' + parseInt(2) + 'XP/' + parseInt(2 * 10) + 'XP');
         }
     });
 };

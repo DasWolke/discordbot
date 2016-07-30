@@ -2,7 +2,6 @@
  * Created by julia on 23.07.2016.
  */
 var queueModel = require('../../../DB/queue');
-var songModel = require('../../../DB/song');
 var voice = require('../voice');
 var voteSkip = function voteSkip(bot, message, cb) {
     if (message.author.voiceChannel) {

@@ -11,6 +11,7 @@ var socket = require('socket.io-client')('http://127.0.0.1:7004/bot');
 var socketManager = require('./helper/socket/basic');
 var messageHelper = require('./helper/utility/message');
 var voice = require('./helper/utility/voice');
+var async = require('async');
 console.log('Connecting to DB');
 mongoose.connect('mongodb://localhost/discordbot', function (err) {
     if (err) return console.log("Unable to connect to Mongo Server!");
@@ -26,7 +27,7 @@ bot.options = {
     autoReconnect: true, guildCreateTimeout: 5000, disableEveryone: true, userAgent: {
         url: "https://github.com/DasWolke/discordbot",
         version: config.version
-    }, forceFetchUsers: true
+    }
 };
 console.log('Bot finished Init');
 bot.on('ready', function () {
@@ -38,21 +39,28 @@ bot.on('ready', function () {
     });
     setTimeout(function () {
         console.log('start loading Voice!');
-        for (var server of bot.servers) {
+        async.each(bot.servers, function (server, cb) {
             voice.loadVoice(server, function (err, id) {
-                if (err) console.log(err);
+                if (err) return cb(err);
                 if (typeof (id) !== 'undefined' && id !== '') {
                     var channel = voice.getChannelById(server, id);
-                    bot.joinVoiceChannel(channel, function (err, connection) {
-                        if (err) return console.log(err);
-                        if (channel.members.length > 1) {
-
-                        }
-                    });
+                    if (typeof (channel) !== 'undefined') {
+                        bot.joinVoiceChannel(channel, function (err, connection) {
+                            if (err) return cb(err);
+                            var message = {server:server};
+                            voice.autoStartQueue(bot,message);
+                            cb();
+                        });
+                    }
+                } else {
+                    cb();
                 }
             });
-        }
-    }, 5000)
+        }, function (err) {
+            if (err) return console.log(err);
+            console.log('Finished Loading Voice!')
+        });
+    }, 10000)
 });
 bot.on('disconnected', function () {
 
