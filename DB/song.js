@@ -20,5 +20,8 @@ var songSchema = mongoose.Schema({
     votedUpBy:[],
     duration:Number
 });
+songSchema.methods.updateVotes = function updateVotes(vote,cb) {
+    this.model('Songs').update({id:this.id}, {$inc: {votes:vote}}, cb);
+};
 var songModel = mongoose.model('Songs', songSchema);
 module.exports = songModel;

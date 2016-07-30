@@ -4,9 +4,97 @@
 var Discord = require('discord.js');
 var queueModel = require('../../DB/queue');
 var songModel = require('../../DB/song');
+var serverModel = require('../../DB/server');
 var path = require('path');
 var songDuration = 0;
 var general = require('./general');
+var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
+    serverModel.findOne({id: channel.server.id}, function (err, Server) {
+        if (err) {
+            console.log('error!!!');
+            return cb(err);
+        }
+        if (Server) {
+            Server.updateVoice(channel.id, function (err) {
+                if (err) {
+                    console.log('Error at update Voice!');
+                    return console.log(err);
+                }
+            });
+        } else {
+            var server = new serverModel({
+                id: channel.server.id,
+                lastVoiceChannel: channel.id,
+                permissions: [],
+                disabledCmds: [],
+                Groups: [],
+                Blacklist: [],
+                prefix: "!w"
+            });
+            server.save(cb);
+        }
+    });
+};
+var clearLastVoice = function clearLastVoice(message, cb) {
+    serverModel.findOne({id: message.server.id}, function (err, Server) {
+        if (err) {
+            console.log('error!!!');
+            return cb(err);
+        }
+        if (Server) {
+            Server.updateVoice("", function (err) {
+                if (err) {
+                    console.log('Error at update Voice!');
+                    return console.log(err);
+                }
+            });
+        } else {
+            var server = new serverModel({
+                id: message.server.id,
+                lastVoiceChannel: "",
+                permissions: [],
+                disabledCmds: [],
+                Groups: [],
+                Blacklist: [],
+                prefix: "!w"
+            });
+            server.save(cb);
+        }
+    });
+};
+var loadLastVoice = function loadLastVoice(server, cb) {
+    serverModel.findOne({id: server.id}, function (err, Server) {
+        if (err) return cb(err);
+        if (Server) {
+            if (typeof(Server.lastVoiceChannel) !== 'undefined' && Server.lastVoiceChannel !== '') {
+                cb(null, Server.lastVoiceChannel);
+            } else {
+                cb(null);
+            }
+        } else {
+            var server = new serverModel({
+                id: server.id,
+                lastVoiceChannel: "",
+                permissions: [],
+                disabledCmds: [],
+                Groups: [],
+                Blacklist: [],
+                prefix: "!w"
+            });
+            server.save(cb);
+        }
+    });
+};
+var joinVoiceChannel = function joinVoiceChannel(bot, channel, cb) {
+    bot.joinVoiceChannel(channel, function (err, connection) {
+        if (!err) {
+
+        } else {
+            console.log(err);
+            cb('An Error has occured while trying to join Voice!');
+        }
+    });
+};
 var inVoiceChannel = function inVoiceChannel(bot, message) {
     for (var connectionC of bot.internal.voiceConnections) {
         for (var channel of message.server.channels) {
@@ -31,6 +119,18 @@ var getVoiceConnection = function getVoiceConnection(bot, message) {
     }
     return null;
 };
+var getVoiceConnectionServer = function getVoiceConnectionServer(bot, server) {
+    for (var connectionA of bot.internal.voiceConnections) {
+        for (var channel of server.channels) {
+            if (channel instanceof Discord.VoiceChannel) {
+                if (connectionA.voiceChannel.equals(channel)) {
+                    return connectionA;
+                }
+            }
+        }
+    }
+    return null;
+};
 var getVoiceChannel = function getVoiceChannel(bot, message) {
     for (var connection of bot.internal.voiceConnections) {
         for (var channel of message.server.channels) {
@@ -43,7 +143,15 @@ var getVoiceChannel = function getVoiceChannel(bot, message) {
     }
     return null;
 };
-var nextSong = function nextSong(bot, message, Song) {
+var getChannelFromId = function getChannelFromId(server, id) {
+    for (var channel of server.channels) {
+        if (channel.id === id) {
+            return channel;
+        }
+    }
+    return null;
+};
+var nextSong = function nextSong(bot, message, Song, server) {
     if (inVoiceChannel(bot, message)) {
         var connectionE = getVoiceConnection(bot, message);
         queueModel.findOne({server: message.server.id}, function (err, Queue) {
@@ -85,7 +193,7 @@ var addSongFirst = function addSongFirst(bot, message, Song, cb) {
         if (Queue) {
             if (Queue.songs.length !== 0) {
                 //i hate this stuff
-                queueModel.update({_id: Queue._id}, {$pull: {songs: Song}}, function (err) {
+                queueModel.update({_id: Queue._id}, {$pull: {songs: {id:Song.id}}}, function (err) {
                     if (err) return cb(err);
                     queueModel.update({_id: Queue._id}, {$push: {songs: {$each: Songs, $position: 0}}}, function (err) {
                         if (err) return cb(err);
@@ -161,7 +269,10 @@ var addToQueue = function (bot, message, Song) {
     queueModel.findOne({server: message.server.id}, function (err, Queue) {
         if (err) return console.log(err);
         var connection = getVoiceConnection(bot, message);
-        var channel = getVoiceChannel(bot,message);
+        var channel = getVoiceChannel(bot, message);
+        Song.user = {};
+        Song.user.id = message.author.id;
+        Song.user.name = message.author.username;
         if (Queue) {
             if (Queue.songs.length === 0) {
                 if (connection) {
@@ -169,8 +280,8 @@ var addToQueue = function (bot, message, Song) {
                 }
             }
             for (var i = 0; i < Queue.songs.length; i++) {
-                if (Queue.songs[i].id === Song.id){
-                    return bot.reply(message, Song.title + "is already in the Queue!");
+                if (Queue.songs[i].id === Song.id) {
+                    return bot.reply(message, Song.title + " is already in the Queue!");
                 }
             }
             queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
@@ -192,6 +303,31 @@ var addToQueue = function (bot, message, Song) {
         }
     });
 };
+var nowPlaying = function (bot, message) {
+    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+        if (err) return console.log(err);
+        if (Queue) {
+            if (Queue.songs.length === 0) {
+                bot.reply(message, 'Nothing is playing right now...');
+            } else {
+                if (inVoiceChannel(bot, message)) {
+                    bot.reply(message, 'Currently Playing: `' + Queue.songs[0].title + " " + general.convertSeconds(getDuration()) + "`");
+                } else {
+                    bot.reply(message, 'Nothing is playing right now...');
+                }
+            }
+        } else {
+            var queue = new queueModel({
+                server: message.server.id,
+                songs: []
+            });
+            queue.save(function (err) {
+                if (err) return console.log(err);
+                bot.reply(message, 'Nothing is playing right now...');
+            });
+        }
+    });
+};
 var setVolume = function (bot, message, cb) {
     var messageSplit = message.content.split(' ');
     if (inVoiceChannel(bot, message)) {
@@ -207,7 +343,7 @@ var setVolume = function (bot, message, cb) {
             } catch (e) {
                 return cb('Error while setting Volume!');
             }
-            cb(null, 'Set Volume to ' + volume*100);
+            cb(null, 'Set Volume to ' + volume * 100);
         } else {
             return cb('No Volume set!');
         }
@@ -226,14 +362,20 @@ var updatePlays = function updatePlays(id, cb) {
 };
 module.exports = {
     inVoice: inVoiceChannel,
+    saveVoice: saveVoiceChannel,
+    loadVoice: loadLastVoice,
+    clearVoice:clearLastVoice,
+    joinVoice:joinVoiceChannel,
     nextSong: nextSong,
     playSong: playSong,
+    now: nowPlaying,
     getVoiceConnection: getVoiceConnection,
     getVoiceChannel: getVoiceChannel,
+    getChannelById:getChannelFromId,
     addSongFirst: addSongFirst,
     startQueue: startQueue,
     addToQueue: addToQueue,
     getSongDuration: getDuration,
     updatePlays: updatePlays,
-    setVolume:setVolume
+    setVolume: setVolume
 };

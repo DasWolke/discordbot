@@ -13,11 +13,10 @@ var basicCommands = function (bot, message) {
                 "your Bot for doing Stuff other bots do bad \n" +
                 "Commands you can write:" +
                 " ```!w.help --> Help \n" +
-                "!w.master --> get the name of my Master \n" +
                 "!w.bug --> get the Link of the Support Discord \n" +
                 "!w.add --> add me to your server \n" +
                 "!w.voice --> i join the Voice Channel you are currently in \n" +
-                "!w.list --> Lists all Songs that are currently added to the Bot Database\n" +
+                "!w.songlist --> Lists all Songs that are currently added to the Bot Database\n" +
                 "!w.yt youtubelink --> download a Youtube Video max Length: 1H30M\n" +
                 "!w.yt.s query --> Searches Youtube and gives you the First Result\n" +
                 "!w.yt.sq query --> Searches Youtube and adds the First Result to the Queue\n" +
@@ -35,9 +34,6 @@ var basicCommands = function (bot, message) {
                 "If you want to talk with me @mention me with a message :D \n" +
                 "!w.version --> My Version```");
             return;
-        case "!w.master":
-            bot.reply(message, 'My Master is Wolke');
-            return;
         case "!w.version":
             bot.reply(message, 'I am running on Version ' + config.version);
             return;
@@ -47,7 +43,7 @@ var basicCommands = function (bot, message) {
         case "!w.bug":
             bot.reply(message, 'Please join the support Discord: https://discord.gg/yuTxmYn to report a Bug.');
             return;
-        case "!w.list":
+        case "!w.songlist":
             bot.reply(message, 'The List of Songs can be found at <http://w.onee.moe>');
             return;
         case "!w.level":
@@ -69,6 +65,13 @@ var basicCommands = function (bot, message) {
                 if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== '118689714319392769' && message.server.id !== "166242205038673920") {
                     bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
                         if (!err) {
+                            voice.saveVoice(message.author.voiceChannel, function (err) {
+                                if (err) {
+                                    console.log('errrrr');
+                                    return console.log(err);
+                                }
+                                console.log('Saved Voice!');
+                            });
                             voice.startQueue(bot, message);
                         } else {
                             console.log(err);
@@ -98,6 +101,9 @@ var basicCommands = function (bot, message) {
                         bot.leaveVoiceChannel(message.author.voiceChannel, function (err, connection) {
                             if (err) console.log(err);
                         });
+                        voice.clearVoice(message, function (err) {
+                            if (err) console.log(err);
+                        });
                     } else {
                         bot.reply(message, 'No Permission!');
                     }
@@ -125,6 +131,30 @@ var basicCommands = function (bot, message) {
             }
             users = users - bot.servers.length;
             bot.reply(message, "I am currently used on " + bot.servers.length + " " + plural + " with " + users + " users.");
+            return;
+        case "!w.rm":
+            if (!message.channel.isPrivate && message.author.id === '128392910574977024') {
+                if (typeof (messageSplit[1]) !== 'undefined') {
+                    var number = 0;
+                    try {
+                        number = parseInt(messageSplit[1]);
+                    } catch (e) {
+                        return bot.reply(message, 'Could not parse the Number !');
+                    }
+                    bot.getChannelLogs(message.channel,number, function (err,Messages) {
+                        if (err) return bot.reply(message, 'Error while trying to get Channel Logs!');
+                        if (Messages.length > 0) {
+                            bot.deleteMessages(Messages, function (err) {
+                                if (err) return bot.reply(message, 'Error while trying to delete Messages!');
+                            });
+                        }
+                    });
+                } else {
+                    bot.reply(message, 'No Number of Messages to delete provided!');
+                }
+            } else {
+                bot.reply(message, 'You should not know this...');
+            }
             return;
         default:
             return;

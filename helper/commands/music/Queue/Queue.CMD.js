@@ -4,6 +4,7 @@
 var show = require('./show');
 var add = require('./add');
 var remove = require('./remove');
+var now = require('../Song/now');
 var QueueCmd = function QueueCmd(bot,message,messageSplit) {
     if (!message.channel.isPrivate) {
         if (typeof (messageSplit[1]) !== 'undefined') {
@@ -25,6 +26,9 @@ var QueueCmd = function QueueCmd(bot,message,messageSplit) {
                 } else {
                     bot.reply(message, 'No Permission!');
                 }
+            }
+            if (messageSplit[1] === 'np') {
+                now(bot,message);
             }
         } else {
             show(bot,message);

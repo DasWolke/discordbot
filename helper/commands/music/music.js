@@ -16,6 +16,9 @@ var musicCommands = function (bot, message) {
         case "!w.play":
             song.play(bot, message, messageSplit);
             return;
+        case "!w.np":
+            song.now(bot,message);
+            return;
         case "!w.osu":
             getOsu(bot, message, messageSplit[1]);
             return;
@@ -189,6 +192,12 @@ var musicCommands = function (bot, message) {
             } else {
                 bot.reply(message, 'This Command does not work in private Channels');
             }
+            return;
+        case "!w.down":
+            return;
+        case "!w.up":
+            return;
+        case "!w.fav":
             return;
         default:
             return;

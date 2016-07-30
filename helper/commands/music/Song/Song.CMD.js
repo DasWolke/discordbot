@@ -5,4 +5,5 @@ var play = require('./play');
 var pause = require('./pause');
 var resume = require('./resume');
 var search = require('./search');
-module.exports = {play:play, pause:pause, resume:resume, search:search};
+var now = require('./now');
+module.exports = {play:play, pause:pause, resume:resume, search:search, now:now};
