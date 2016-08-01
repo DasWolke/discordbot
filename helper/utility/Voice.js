@@ -41,12 +41,14 @@ var clearLastVoice = function clearLastVoice(message, cb) {
             console.log('error!!!');
             return cb(err);
         }
+        console.log('Called Clear Voice!');
         if (Server) {
             Server.updateVoice("", function (err) {
                 if (err) {
                     console.log('Error at update Voice!');
-                    return console.log(err);
+                    return cb(err);
                 }
+                cb();
             });
         } else {
             var server = new serverModel({
@@ -63,27 +65,35 @@ var clearLastVoice = function clearLastVoice(message, cb) {
     });
 };
 var loadLastVoice = function loadLastVoice(server, cb) {
-    serverModel.findOne({id: server.id}, function (err, Server) {
-        if (err) return cb(err);
-        if (Server) {
-            if (typeof(Server.lastVoiceChannel) !== 'undefined' && Server.lastVoiceChannel !== '') {
-                cb(null, Server.lastVoiceChannel);
+    if (typeof(server) !== 'undefined' && typeof(server.id) !== 'undefined' && server) {
+        serverModel.findOne({id: server.id}, function (err, Server) {
+            if (err) return cb(err);
+            if (Server) {
+                if (typeof(Server.lastVoiceChannel) !== 'undefined' && Server.lastVoiceChannel !== '') {
+                    cb(null, Server.lastVoiceChannel);
+                } else {
+                    cb(null);
+                }
             } else {
-                cb(null);
+                if (typeof(server) !== 'undefined' && typeof(server.id) !== 'undefined' && server) {
+                    var server = new serverModel({
+                        id: server.id,
+                        lastVoiceChannel: "",
+                        permissions: [],
+                        disabledCmds: [],
+                        Groups: [],
+                        Blacklist: [],
+                        prefix: "!w"
+                    });
+                    server.save(cb);
+                } else {
+                    cb();
+                }
             }
-        } else {
-            var server = new serverModel({
-                id: server.id,
-                lastVoiceChannel: "",
-                permissions: [],
-                disabledCmds: [],
-                Groups: [],
-                Blacklist: [],
-                prefix: "!w"
-            });
-            server.save(cb);
-        }
-    });
+        });
+    } else {
+        cb();
+    }
 };
 var joinVoiceChannel = function joinVoiceChannel(bot, channel, cb) {
     bot.joinVoiceChannel(channel, function (err, connection) {
@@ -151,7 +161,7 @@ var getChannelFromId = function getChannelFromId(server, id) {
     }
     return null;
 };
-var nextSong = function nextSong(bot, message, Song, server) {
+var nextSong = function nextSong(bot, message, Song) {
     if (inVoiceChannel(bot, message)) {
         var connectionE = getVoiceConnection(bot, message);
         queueModel.findOne({server: message.server.id}, function (err, Queue) {
@@ -189,6 +199,9 @@ var addSongFirst = function addSongFirst(bot, message, Song, cb) {
     queueModel.findOne({server: message.server.id}, function (err, Queue) {
         if (err) return cb(err);
         var Songs = [];
+        Song.user = {};
+        Song.user.id =  message.author.id;
+        Song.user.name = message.author.username;
         Songs.push(Song);
         if (Queue) {
             if (Queue.songs.length !== 0) {
@@ -265,13 +278,27 @@ var startQueue = function (bot, message) {
         }
     });
 };
+var autoStartQueue = function (bot, message) {
+    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+        if (err) return console.log(err);
+        if (Queue) {
+            if (Queue.songs.length > 0) {
+                Queue.resetVotes(function (err) {
+                    if (err) return console.log(err);
+                    playSong(bot, message, Queue.songs[0], true);
+                });
+            } else {
+
+            }
+        }
+    });
+};
 var addToQueue = function (bot, message, Song) {
     queueModel.findOne({server: message.server.id}, function (err, Queue) {
         if (err) return console.log(err);
         var connection = getVoiceConnection(bot, message);
-        var channel = getVoiceChannel(bot, message);
         Song.user = {};
-        Song.user.id = message.author.id;
+        Song.user.id =  message.author.id;
         Song.user.name = message.author.username;
         if (Queue) {
             if (Queue.songs.length === 0) {
@@ -311,7 +338,7 @@ var nowPlaying = function (bot, message) {
                 bot.reply(message, 'Nothing is playing right now...');
             } else {
                 if (inVoiceChannel(bot, message)) {
-                    bot.reply(message, 'Currently Playing: `' + Queue.songs[0].title + " " + general.convertSeconds(getDuration()) + "`");
+                    bot.reply(message, 'Currently Playing: ```' + Queue.songs[0].title + " " + general.convertSeconds(getDuration()) + "```");
                 } else {
                     bot.reply(message, 'Nothing is playing right now...');
                 }
@@ -370,10 +397,12 @@ module.exports = {
     playSong: playSong,
     now: nowPlaying,
     getVoiceConnection: getVoiceConnection,
+    getVoiceConnectionByServer:getVoiceConnectionServer,
     getVoiceChannel: getVoiceChannel,
     getChannelById:getChannelFromId,
     addSongFirst: addSongFirst,
     startQueue: startQueue,
+    autoStartQueue:autoStartQueue,
     addToQueue: addToQueue,
     getSongDuration: getDuration,
     updatePlays: updatePlays,

@@ -41,6 +41,7 @@ var basicCommands = function (bot, message) {
                 "--------------------------------\n" +
                 "Other Stuff:\n" +
                 "!w.level --> Your Level and XP needed for next Level\n" +
+                "!w.noLevel --> disables the Level System for you. Use Again to enable it again for you.\n" +
                 "!w.pp beatmaplink acc --> Calculates PP for the Beatmap with acc, Currently nomod only...\n" +
                 "If you want to talk with me @mention me with a message :D```");
             return;
@@ -166,6 +167,9 @@ var basicCommands = function (bot, message) {
             } else {
                 bot.reply(message, 'You should not know this...');
             }
+            return;
+        case "!w.noLevel":
+            messageHelper.disableLevel(bot,message);
             return;
         default:
             return;

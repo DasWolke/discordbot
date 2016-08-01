@@ -6,6 +6,7 @@ var userSchema = mongoose.Schema({
     id: String,
     name: String,
     level: Number,
+    levelEnabled:Boolean,
     xp: Number,
     avatar: String,
     created: Date,
@@ -20,6 +21,12 @@ userSchema.methods.updateLevel = function updateLevel(cb) {
 };
 userSchema.methods.updateFavorites = function updateFavorites(id,cb) {
     this.model('Users').update({id:this.id}, {favorites:{$addToSet:id}}, cb);
+};
+userSchema.methods.disableLevel = function disableLevel(cb) {
+    this.model('Users').update({id:this.id}, {$set:{levelEnabled:false}}, cb);
+};
+userSchema.methods.enableLevel = function enableLevel(cb) {
+    this.model('Users').update({id:this.id}, {$set:{levelEnabled:true}}, cb);
 };
 var userModel = mongoose.model('Users', userSchema);
 module.exports = userModel;
