@@ -58,7 +58,7 @@ var basicCommands = function (bot, message) {
             bot.reply(message, 'The List of Songs can be found at <http://w.onee.moe>');
             return;
         case "!w.level":
-            messageHelper.getLevel(bot,message,function (err) {
+            messageHelper.getLevel(bot, message, function (err) {
                 if (err) return console.log(err);
             });
             return;
@@ -108,7 +108,7 @@ var basicCommands = function (bot, message) {
                     }
                 }
                 if (voice.inVoice(bot, message)) {
-                    var channel = voice.getVoiceChannel(bot,message);
+                    var channel = voice.getVoiceChannel(bot, message);
                     if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== '118689714319392769' && message.server.id !== "166242205038673920") {
                         bot.leaveVoiceChannel(channel, function (err, connection) {
                             if (err) console.log(err);
@@ -153,7 +153,7 @@ var basicCommands = function (bot, message) {
                     } catch (e) {
                         return bot.reply(message, 'Could not parse the Number !');
                     }
-                    bot.getChannelLogs(message.channel,number, function (err,Messages) {
+                    bot.getChannelLogs(message.channel, number, function (err, Messages) {
                         if (err) return bot.reply(message, 'Error while trying to get Channel Logs!');
                         if (Messages.length > 0) {
                             bot.deleteMessages(Messages, function (err) {
@@ -169,7 +169,10 @@ var basicCommands = function (bot, message) {
             }
             return;
         case "!w.noLevel":
-            messageHelper.disableLevel(bot,message);
+            messageHelper.disableLevel(bot, message);
+            return;
+        case "!w.lewd":
+            bot.sendFile(message.channel, 'https://cdn.discordapp.com/attachments/191455136013352960/209718642722603008/412.png');
             return;
         default:
             return;

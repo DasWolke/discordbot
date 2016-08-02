@@ -240,7 +240,7 @@ var playSong = function (bot, message, Song, Queueused) {
 
         }
     }
-    connection.playFile(path.resolve(Song.path)).then(function (intent) {
+    connection.playFile(path.resolve(Song.path), {volume:0.25}).then(function (intent) {
         updatePlays(Song.id, function (err) {
             if (err) return console.log(err);
         });
