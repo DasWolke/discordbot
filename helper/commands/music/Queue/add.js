@@ -7,12 +7,21 @@ var songModel = require('../../../../DB/song');
 var voice = require('../../../utility/voice');
 var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/g;
 var add = function addToQueue(bot,message,messageSplit) {
-    var messageSearch = "";
-    for (var a = 2; a < messageSplit.length; a++) {
-        messageSearch = messageSearch + " " + messageSplit[a]
+    if (typeof(messageSplit[1]) === 'undefined') {
+        return bot.reply(message, 'You did not enter a search Term!');
     }
-    console.log(messageSearch);
-    if (messageSplit[2].match(YoutubeReg)) {
+    var messageSearch = "";
+    var a = 0;
+    if (messageSplit[1] === 'add' && typeof (messageSplit[2]) !== 'undefined') {
+        for (a = 2; a < messageSplit.length; a++) {
+            messageSearch = messageSearch + " " + messageSplit[a]
+        }
+    } else {
+        for (a = 1; a < messageSplit.length; a++) {
+            messageSearch = messageSearch + " " + messageSplit[a]
+        }
+    }
+    if (messageSplit[1].match(YoutubeReg) || messageSplit[2].match(YoutubeReg)) {
         ytHelper.ytDlAndQueue(bot, message, messageSearch, messageSplit);
     } else {
         songModel.find({$text: {$search: messageSearch}},{score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {

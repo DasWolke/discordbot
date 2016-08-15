@@ -20,7 +20,7 @@ var youtube = function (bot, message) {
                 bot.reply(message, "No YT Link found!");
             }
             return;
-        case "!w.yt.s":
+        case "!w.yts":
             yt.search(message, function (err, Result) {
                 if (err) {
                     bot.reply(message, err);
@@ -29,7 +29,7 @@ var youtube = function (bot, message) {
                 }
             });
             return;
-        case "!w.yt.sq":
+        case "!w.ytq":
             yt.search(message, function (err, Result) {
                 if (err) {
                     bot.reply(message, err);

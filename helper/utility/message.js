@@ -5,6 +5,9 @@ var userModel = require('../../DB/user');
 var cleanMessage = function (message) {
     return message.replace("@", "");
 };
+var calcXpNeeded = function (User) {
+
+};
 var updateXp = function (bot, message, cb) {
     userModel.findOne({id: message.author.id}, function (err, User) {
         if (err) return cb(err);
@@ -25,10 +28,13 @@ var updateXp = function (bot, message, cb) {
                 id: message.author.id,
                 name: message.author.username,
                 level: 1,
+                levelEnabled:true,
+                pmNotifications:true,
                 xp: 2,
                 avatar: message.author.avatarURL,
                 created: Date.now(),
-                banned: false
+                banned: false,
+                favorites:[]
             });
             freshUser.save(function (err) {
                 if (err) return cb(err);
@@ -50,11 +56,13 @@ var getLevel = function getLevel(bot, message, cb) {
                 id: message.author.id,
                 name: message.author.username,
                 level: 1,
-                levelEnabled: true,
+                levelEnabled:true,
+                pmNotifications:true,
                 xp: 2,
                 avatar: message.author.avatarURL,
                 created: Date.now(),
-                banned: false
+                banned: false,
+                favorites:[]
             });
             freshUser.save(function (err) {
                 if (err) return cb(err);
@@ -84,6 +92,7 @@ var disableLevel = function disableLevel(bot, message) {
                 name: message.author.username,
                 level: 1,
                 levelEnabled: false,
+                pmNotifications:true,
                 xp: 0,
                 avatar: message.author.avatarURL,
                 created: Date.now(),
@@ -96,4 +105,38 @@ var disableLevel = function disableLevel(bot, message) {
         }
     });
 };
-module.exports = {cleanMessage: cleanMessage, updateXP: updateXp, getLevel: getLevel, disableLevel: disableLevel};
+var disablePm = function disablePm(bot,message) {
+    userModel.findOne({id: message.author.id}, function (err, User) {
+        if (err) return cb(err);
+        if (User) {
+            if (User.pmNotifications) {
+                User.disablePm(function (err) {
+                    if (err) return console.log(err);
+                    bot.reply(message, 'Ok, i disabled the Pm Notifications for you.');
+                });
+            } else {
+                User.enablePm(function (err) {
+                    if (err) return console.log(err);
+                    bot.reply(message, 'Ok, i enabled the Pm Notifications for you.');
+                });
+            }
+        } else {
+            var freshUser = new userModel({
+                id: message.author.id,
+                name: message.author.username,
+                level: 1,
+                levelEnabled: true,
+                pmNotifications:false,
+                xp: 0,
+                avatar: message.author.avatarURL,
+                created: Date.now(),
+                banned: false
+            });
+            freshUser.save(function (err) {
+                if (err) return console.log(err);
+                bot.reply(message, 'Ok, i disabled the Pm Notifications for you.');
+            });
+        }
+    });
+};
+module.exports = {cleanMessage: cleanMessage, updateXP: updateXp, getLevel: getLevel, disableLevel: disableLevel, disablePm:disablePm};

@@ -32,7 +32,13 @@ var musicCommands = function (bot, message) {
             song.search(bot, message, messageSplit);
             return;
         case "!w.queue":
-            queueCmd(bot, message, messageSplit);
+            queueCmd.main(bot, message, messageSplit);
+            return;
+        case "!w.qa":
+            queueCmd.add(bot, message, messageSplit);
+            return;
+        case "!w.qrl":
+            queueCmd.remove(bot,message,messageSplit);
             return;
         case "!w.skip":
             if (!message.channel.isPrivate) {
@@ -134,7 +140,7 @@ var musicCommands = function (bot, message) {
                 bot.reply(message, 'This Command does not work in private Channels');
             }
             return;
-        case "!w.rqueue":
+        case "!w.rq":
             if (!message.channel.isPrivate) {
                 songModel.count({}, function (err, C) {
                     if (err) return bot.reply(message, "A Database Error occured!");

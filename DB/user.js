@@ -7,6 +7,7 @@ var userSchema = mongoose.Schema({
     name: String,
     level: Number,
     levelEnabled:Boolean,
+    pmNotifications:Boolean,
     xp: Number,
     avatar: String,
     created: Date,
@@ -27,6 +28,12 @@ userSchema.methods.disableLevel = function disableLevel(cb) {
 };
 userSchema.methods.enableLevel = function enableLevel(cb) {
     this.model('Users').update({id:this.id}, {$set:{levelEnabled:true}}, cb);
+};
+userSchema.methods.disablePm = function disablePm(cb) {
+    this.model('Users').update({id:this.id}, {$set:{pmNotifications:false}}, cb);
+};
+userSchema.methods.enablePm = function enablePm(cb) {
+    this.model('Users').update({id:this.id}, {$set:{pmNotifications:true}}, cb);
 };
 var userModel = mongoose.model('Users', userSchema);
 module.exports = userModel;

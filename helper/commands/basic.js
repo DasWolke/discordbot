@@ -27,17 +27,17 @@ var basicCommands = function (bot, message) {
                 "!w.resume --> Resume the pause Song\n" +
                 "!w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results\n" +
                 "!w.skip --> Skips the Current Song\n" +
-                "!w.queue add name --> Adds a Song/Youtube Video to the Queue max Length: 1H30M\n" +
-                "!w.queue remove latest --> Adds a Song/Youtube Video to the Queue max Length: 1H30M\n" +
+                "!w.qa name --> Adds a Song/Youtube Video to the Queue max Length: 1H30M\n" +
+                "!w.qrl --> removes the latest added song out of the queue n" +
                 "!w.queue --> Shows the current Queue\n" +
-                "!w.rqueue --> Adds a random Song to the Queue max Length: 1H30M\n" +
+                "!w.rq --> Adds a random Song to the Queue max Length: 1H30M\n" +
                 "!w.random --> Plays a Random Song\n" +
                 "!w.osu maplink --> download a Osu Map\n" +
                 "--------------------------------\n" +
                 "Youtube:\n" +
                 "!w.yt youtubelink --> download a Youtube Video max Length: 1H30M\n" +
-                "!w.yt.s query --> Searches Youtube and gives you the First Result\n" +
-                "!w.yt.sq query --> Searches Youtube and adds the First Result to the Queue\n" +
+                "!w.yts query --> Searches Youtube and gives you the First Result\n" +
+                "!w.ytq query --> Searches Youtube and adds the First Result to the Queue\n" +
                 "--------------------------------\n" +
                 "Other Stuff:\n" +
                 "!w.level --> Your Level and XP needed for next Level\n" +
@@ -170,6 +170,9 @@ var basicCommands = function (bot, message) {
             return;
         case "!w.noLevel":
             messageHelper.disableLevel(bot, message);
+            return;
+        case "!w.noPm":
+            messageHelper.disablePm(bot,message);
             return;
         case "!w.lewd":
             bot.sendFile(message.channel, 'https://cdn.discordapp.com/attachments/191455136013352960/209718642722603008/412.png');
