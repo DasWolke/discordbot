@@ -40,6 +40,9 @@ var musicCommands = function (bot, message) {
         case "!w.qrl":
             queueCmd.remove(bot,message,messageSplit);
             return;
+        case "!w.forever":
+            song.forever(bot,message,messageSplit);
+            return;
         case "!w.skip":
             if (!message.channel.isPrivate) {
                 if (voice.inVoice(bot, message)) {
@@ -58,8 +61,11 @@ var musicCommands = function (bot, message) {
                             var connection = voice.getVoiceConnection(bot, message);
                             if (Queue) {
                                 if (Queue.songs.length > 0) {
-                                    voice.nextSong(bot, message, Queue.songs[0]);
-                                    bot.reply(message, "Skipped Song " + Queue.songs[0].title);
+                                    Queue.stopRepeat(function (err) {
+                                        if (err) return console.log(err);
+                                        voice.nextSong(bot, message, Queue.songs[0], false);
+                                        bot.reply(message, "Skipped Song " + Queue.songs[0].title);
+                                    });
                                 } else {
                                     if (connection && connection.playing) {
                                         connection.stopPlaying();
@@ -121,7 +127,7 @@ var musicCommands = function (bot, message) {
                             if (typeof(Songs[random]) !== 'undefined') {
                                 var Song = Songs[random];
                                 if (voice.inVoice(bot, message)) {
-                                    voice.addSongFirst(bot, message, Song, function (err) {
+                                    voice.addSongFirst(bot, message, Song, false,function (err) {
                                         if (err) return console.log(err);
                                         voice.playSong(bot, message, Song);
                                     });

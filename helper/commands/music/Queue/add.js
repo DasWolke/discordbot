@@ -21,7 +21,7 @@ var add = function addToQueue(bot,message,messageSplit) {
             messageSearch = messageSearch + " " + messageSplit[a]
         }
     }
-    if (messageSplit[1].match(YoutubeReg) || messageSplit[2].match(YoutubeReg)) {
+    if (messageSplit[1].match(YoutubeReg) || typeof (messageSplit[2]) !== 'undefined' && messageSplit[2].match(YoutubeReg)) {
         ytHelper.ytDlAndQueue(bot, message, messageSearch, messageSplit);
     } else {
         songModel.find({$text: {$search: messageSearch}},{score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {

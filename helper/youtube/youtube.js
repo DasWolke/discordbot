@@ -5,7 +5,8 @@ var config = require('../../config/main.json');
 var fs = require('fs');
 var opts = {
     maxResults:5,
-    key:config.youtube_api
+    key:config.youtube_api,
+    type:"video"
 };
 var download = function (url, message, cb) {
     youtubedl.getInfo(url, function (err, info) {

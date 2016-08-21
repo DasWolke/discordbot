@@ -1,11 +1,14 @@
 /**
+ * Created by julia on 16.08.2016.
+ */
+/**
  * Created by julia on 24.07.2016.
  */
 var songModel = require('../../../../DB/song');
 var voice = require('../../../utility/voice');
 var ytHelper = require('../../../youtube/helper');
 var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/g;
-var playCMD = function playCmd(bot,message, messageSplit) {
+var foreverCMD = function foreverCmd(bot,message, messageSplit) {
     if (!message.channel.isPrivate) {
         var admin = false;
         for (var role of message.server.rolesOfUser(message.author)) {
@@ -23,14 +26,14 @@ var playCMD = function playCmd(bot,message, messageSplit) {
                     messageSearch = messageSearch + " " + messageSplit[i]
                 }
                 if (YoutubeReg.test(messageSearch)) {
-                    ytHelper.ytDlAndPlayFirst(bot, message, messageSearch, messageSplit);
+                    ytHelper.ytDlAndPlayForever(bot, message, messageSearch, messageSplit);
                 } else {
                     songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
                         if (err) return console.log(err);
                         var Song = Songs[0];
                         if (Song) {
                             if (voice.inVoice(bot, message)) {
-                                voice.addSongFirst(bot, message, Song, false, function (err) {
+                                voice.addSongFirst(bot, message, Song, true, function (err) {
                                     if (err) return console.log(err);
                                     voice.playSong(bot, message, Song);
                                 });
@@ -52,4 +55,4 @@ var playCMD = function playCmd(bot,message, messageSplit) {
         bot.reply(message, "This Commands Only Works in Server Channels!");
     }
 };
-module.exports = playCMD;
+module.exports = foreverCMD;

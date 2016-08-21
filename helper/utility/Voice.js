@@ -168,22 +168,47 @@ var nextSong = function nextSong(bot, message, Song) {
             if (err) return console.log(err);
             if (Queue) {
                 if (Queue.songs.length > 0) {
-                    if (Queue.songs[0].id === Song.id) {
-                        queueModel.update({_id: Queue._id}, {$pop: {songs: -1}}, function (err) {
-                            if (err) return console.log(err);
-                            queueModel.findOne({_id: Queue._id}, function (err, Queue) {
-                                if (err) return console.log(err);
-                                if (Queue.songs.length > 0) {
-                                    Queue.resetVotes(function (err) {
+                    if (typeof (Queue.repeat) !== 'undefined' && typeof (Queue.repeatId) !== 'undefined' && Queue.repeat && Song.id === Queue.repeatId) {
+                        playSong(bot, message, Song, true);
+                    } else if (typeof (Queue.repeat) !== 'undefined' && typeof (Queue.repeatId) !== 'undefined' && Queue.repeat === false) {
+                        {
+                            Queue.stopRepeat(function (err) {
+                               if (err) return console.log(err);
+                                queueModel.update({_id: Queue._id}, {$pop: {songs: -1}}, function (err) {
+                                    if (err) return console.log(err);
+                                    queueModel.findOne({_id: Queue._id}, function (err, Queue) {
                                         if (err) return console.log(err);
-                                        playSong(bot, message, Queue.songs[0], true);
+                                        if (Queue.songs.length > 0) {
+                                            Queue.resetVotes(function (err) {
+                                                if (err) return console.log(err);
+                                                playSong(bot, message, Queue.songs[0], true);
+                                            });
+                                        } else {
+                                            Queue.resetVotes();
+                                            connectionE.stopPlaying();
+                                        }
                                     });
-                                } else {
-                                    Queue.resetVotes();
-                                    connectionE.stopPlaying();
-                                }
+                                });
                             });
-                        });
+                        }
+                    } else {
+                        if (Queue.songs[0].id === Song.id) {
+                            queueModel.update({_id: Queue._id}, {$pop: {songs: -1}}, function (err) {
+                                if (err) return console.log(err);
+                                queueModel.findOne({_id: Queue._id}, function (err, Queue) {
+                                    if (err) return console.log(err);
+                                    if (Queue.songs.length > 0) {
+                                        Queue.resetVotes(function (err) {
+                                            if (err) return console.log(err);
+                                            playSong(bot, message, Queue.songs[0], true);
+                                        });
+                                    } else {
+                                        Queue.resetVotes();
+                                        connectionE.stopPlaying();
+                                    }
+                                });
+                            });
+                        }
                     }
                 } else {
                     Queue.resetVotes();
@@ -195,39 +220,63 @@ var nextSong = function nextSong(bot, message, Song) {
         });
     }
 };
-var addSongFirst = function addSongFirst(bot, message, Song, cb) {
+var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
     queueModel.findOne({server: message.server.id}, function (err, Queue) {
         if (err) return cb(err);
         var Songs = [];
         Song.user = {};
-        Song.user.id =  message.author.id;
+        Song.user.id = message.author.id;
         Song.user.name = message.author.username;
         Songs.push(Song);
         if (Queue) {
+            if (repeat) {
+                Queue.startRepeat(function (err) {
+                    if (err) return console.log(err);
+                });
+                Queue.updateRepeatId(Song.id, function (err) {
+                    if (err) return console.log(err);
+                });
+            } else {
+                Queue.stopRepeat(function (err) {
+                    if (err) return console.log(err);
+                });
+                Queue.updateRepeatId("", function (err) {
+                    if (err) return console.log(err);
+                });
+            }
             if (Queue.songs.length !== 0) {
                 //i hate this stuff
-                queueModel.update({_id: Queue._id}, {$pull: {songs: {id:Song.id}}}, function (err) {
+                queueModel.update({_id: Queue._id}, {$pull: {songs: {id: Song.id}}}, function (err) {
                     if (err) return cb(err);
                     queueModel.update({_id: Queue._id}, {$push: {songs: {$each: Songs, $position: 0}}}, function (err) {
                         if (err) return cb(err);
-                        cb();
+                        cb(null);
                     });
                 });
             } else {
                 queueModel.update({_id: Queue._id}, {$push: {songs: {$each: Songs, $position: 0}}}, function (err) {
                     if (err) return cb(err);
-                    cb();
+                    cb(null);
                 });
             }
         } else {
-            var queue = new queueModel({
-                server: message.server.id,
-                songs: Songs
-            });
-            queue.save(function (err) {
-                if (err) return cb(err);
-                cb();
-            });
+            if (typeof(repeat) !== 'undefined') {
+                var queue = new queueModel({
+                    server: message.server.id,
+                    voteSkip: 0,
+                    repeat: true,
+                    repeatId: Song.id,
+                    songs: Songs
+                });
+            } else {
+                var queue = new queueModel({
+                    server: message.server.id,
+                    voteSkip: 0,
+                    repeat: false,
+                    songs: Songs
+                });
+            }
+            queue.save(cb);
         }
     });
 };
@@ -240,7 +289,8 @@ var playSong = function (bot, message, Song, Queueused) {
 
         }
     }
-    connection.playFile(path.resolve(Song.path), {volume:0.25}).then(function (intent) {
+    connection.stopPlaying();
+    connection.playFile(path.resolve(Song.path), {volume: 0.25}).then(function (intent) {
         updatePlays(Song.id, function (err) {
             if (err) return console.log(err);
         });
@@ -267,14 +317,17 @@ var startQueue = function (bot, message) {
     queueModel.findOne({server: message.server.id}, function (err, Queue) {
         if (err) return console.log(err);
         if (Queue) {
-            if (Queue.songs.length > 0) {
-                Queue.resetVotes(function (err) {
-                    if (err) return console.log(err);
-                    playSong(bot, message, Queue.songs[0]);
-                });
-            } else {
+            Queue.stopRepeat(function (err) {
+                if (err) return console.log(err);
+                if (Queue.songs.length > 0) {
+                    Queue.resetVotes(function (err) {
+                        if (err) return console.log(err);
+                        playSong(bot, message, Queue.songs[0], true);
+                    });
+                } else {
 
-            }
+                }
+            });
         }
     });
 };
@@ -282,14 +335,17 @@ var autoStartQueue = function (bot, message) {
     queueModel.findOne({server: message.server.id}, function (err, Queue) {
         if (err) return console.log(err);
         if (Queue) {
-            if (Queue.songs.length > 0) {
-                Queue.resetVotes(function (err) {
-                    if (err) return console.log(err);
-                    playSong(bot, message, Queue.songs[0], true);
-                });
-            } else {
+            Queue.stopRepeat(function (err) {
+                if (err) return console.log(err);
+                if (Queue.songs.length > 0) {
+                    Queue.resetVotes(function (err) {
+                        if (err) return console.log(err);
+                        playSong(bot, message, Queue.songs[0], true);
+                    });
+                } else {
 
-            }
+                }
+            });
         }
     });
 };
@@ -298,27 +354,32 @@ var addToQueue = function (bot, message, Song) {
         if (err) return console.log(err);
         var connection = getVoiceConnection(bot, message);
         Song.user = {};
-        Song.user.id =  message.author.id;
+        Song.user.id = message.author.id;
         Song.user.name = message.author.username;
         if (Queue) {
-            if (Queue.songs.length === 0) {
-                if (connection) {
-                    playSong(bot, message, Song);
-                }
-            }
-            for (var i = 0; i < Queue.songs.length; i++) {
-                if (Queue.songs[i].id === Song.id) {
-                    return bot.reply(message, Song.title + " is already in the Queue!");
-                }
-            }
-            queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
+            Queue.stopRepeat(function (err) {
                 if (err) return console.log(err);
-                bot.reply(message, "Successfully added " + Song.title + " to the Queue!");
+                if (Queue.songs.length === 0) {
+                    if (connection) {
+                        playSong(bot, message, Song);
+                    }
+                }
+                for (var i = 0; i < Queue.songs.length; i++) {
+                    if (Queue.songs[i].id === Song.id) {
+                        return bot.reply(message, Song.title + " is already in the Queue!");
+                    }
+                }
+                queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
+                    if (err) return console.log(err);
+                    bot.reply(message, "Successfully added " + Song.title + " to the Queue!");
+                });
             });
         } else {
             var queue = new queueModel({
                 server: message.server.id,
-                songs: [Song]
+                songs: [Song],
+                repeat: false,
+                repeatId:""
             });
             queue.save(function (err) {
                 if (err) return console.log(err);
@@ -391,18 +452,18 @@ module.exports = {
     inVoice: inVoiceChannel,
     saveVoice: saveVoiceChannel,
     loadVoice: loadLastVoice,
-    clearVoice:clearLastVoice,
-    joinVoice:joinVoiceChannel,
+    clearVoice: clearLastVoice,
+    joinVoice: joinVoiceChannel,
     nextSong: nextSong,
     playSong: playSong,
     now: nowPlaying,
     getVoiceConnection: getVoiceConnection,
-    getVoiceConnectionByServer:getVoiceConnectionServer,
+    getVoiceConnectionByServer: getVoiceConnectionServer,
     getVoiceChannel: getVoiceChannel,
-    getChannelById:getChannelFromId,
+    getChannelById: getChannelFromId,
     addSongFirst: addSongFirst,
     startQueue: startQueue,
-    autoStartQueue:autoStartQueue,
+    autoStartQueue: autoStartQueue,
     addToQueue: addToQueue,
     getSongDuration: getDuration,
     updatePlays: updatePlays,

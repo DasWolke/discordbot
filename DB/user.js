@@ -6,13 +6,15 @@ var userSchema = mongoose.Schema({
     id: String,
     name: String,
     level: Number,
+    levels:[],
     levelEnabled:Boolean,
     pmNotifications:Boolean,
     xp: Number,
     avatar: String,
     created: Date,
     banned: Boolean,
-    favorites:[]
+    favorites:[],
+    cookies:Number
 });
 userSchema.methods.updateXP = function updateXP(cb) {
     this.model('Users').update({id:this.id}, {$inc: {xp: 2}}, cb);
