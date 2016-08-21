@@ -27,29 +27,33 @@ var calcXpNeeded = function (User) {
 
 };
 var updateXp = function (bot, message, cb) {
-    if (message.author.equals(bot))
-    userModel.findOne({id: message.author.id}, function (err, User) {
-        if (err) return cb(err);
-        if (User) {
-            if (User.levelEnabled) {
-                User.updateXP(function (err) {
+    if (message.author.equals(bot)) {
+
+    } else {
+        userModel.findOne({id: message.author.id}, function (err, User) {
+            if (err) return cb(err);
+            if (User) {
+                if (User.levelEnabled) {
+                    User.updateXP(function (err) {
+                        if (err) return cb(err);
+                        if (User.xp + 2 > User.level * 20) {
+                            User.updateLevel(function (err) {
+                                if (err) return cb(err);
+                                if (typeof (User.pmNotifications) === 'undefined' || User.pmNotifications) {
+                                    bot.sendMessage(User.id, 'You just reached Level ' + parseInt(User.level + 1));
+                                }
+                            });
+                        }
+                    });
+                }
+            } else {
+                createUser(message, true, true, function (err) {
                     if (err) return cb(err);
-                    if (User.xp + 2 > User.level * 2 * 10) {
-                        User.updateLevel(function (err) {
-                            if (err) return cb(err);
-                            if (typeof (User.pmNotifications) === 'undefined' || User.pmNotifications)
-                            bot.sendMessage(User.id, 'You just reached Level ' + parseInt(User.level + 1));
-                        });
-                    }
+                    cb()
                 });
             }
-        } else {
-            createUser(message,true, true,function (err) {
-                if (err) return cb(err);
-                cb()
-            });
-        }
-    });
+        });
+    }
 };
 var getLevel = function getLevel(bot, message, cb) {
     userModel.findOne({id: message.author.id}, function (err, User) {
