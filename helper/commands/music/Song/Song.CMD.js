@@ -6,4 +6,5 @@ var pause = require('./pause');
 var resume = require('./resume');
 var search = require('./search');
 var now = require('./now');
-module.exports = {play:play, pause:pause, resume:resume, search:search, now:now};
+var forever = require('./forever');
+module.exports = {play:play, pause:pause, resume:resume, search:search, now:now, forever:forever};

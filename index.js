@@ -43,6 +43,7 @@ bot.on('ready', function () {
             voice.loadVoice(server, function (err, id) {
                 if (err) return cb(err);
                 if (typeof (id) !== 'undefined' && id !== '') {
+                    console.log('started joining server:' + server.name);
                     var channel = voice.getChannelById(server, id);
                     if (typeof (channel) !== 'undefined') {
                         bot.joinVoiceChannel(channel, function (err, connection) {

@@ -5,59 +5,69 @@ var userModel = require('../../DB/user');
 var cleanMessage = function (message) {
     return message.replace("@", "");
 };
-var updateXp = function (bot, message, cb) {
-    userModel.findOne({id: message.author.id}, function (err, User) {
+var createUser = function (message,level,pms,cb) {
+    var freshUser = new userModel({
+        id: message.author.id,
+        name: message.author.username,
+        level: 1,
+        levelEnabled:level,
+        pmNotifications:pms,
+        xp: 2,
+        avatar: message.author.avatarURL,
+        created: Date.now(),
+        banned: false,
+        favorites:[],
+        cookies:0
+    });
+    freshUser.save(function (err) {
         if (err) return cb(err);
-        if (User) {
-            if (User.levelEnabled) {
-                User.updateXP(function (err) {
+    });
+};
+var calcXpNeeded = function (User) {
+
+};
+var updateXp = function (bot, message, cb) {
+    if (message.author.equals(bot)) {
+
+    } else {
+        userModel.findOne({id: message.author.id}, function (err, User) {
+            if (err) return cb(err);
+            if (User) {
+                if (User.levelEnabled) {
+                    User.updateXP(function (err) {
+                        if (err) return cb(err);
+                        if (User.xp + 2 > User.level * 20) {
+                            User.updateLevel(function (err) {
+                                if (err) return cb(err);
+                                if (typeof (User.pmNotifications) === 'undefined' || User.pmNotifications) {
+                                    bot.sendMessage(User.id, 'You just reached Level ' + parseInt(User.level + 1));
+                                }
+                            });
+                        }
+                    });
+                }
+            } else {
+                createUser(message, true, true, function (err) {
                     if (err) return cb(err);
-                    if (User.xp + 2 > User.level * 2 * 10) {
-                        User.updateLevel(function (err) {
-                            if (err) return cb(err);
-                            bot.sendMessage(User.id, 'You just reached Level ' + parseInt(User.level + 1));
-                        });
-                    }
+                    cb()
                 });
             }
-        } else {
-            var freshUser = new userModel({
-                id: message.author.id,
-                name: message.author.username,
-                level: 1,
-                xp: 2,
-                avatar: message.author.avatarURL,
-                created: Date.now(),
-                banned: false
-            });
-            freshUser.save(function (err) {
-                if (err) return cb(err);
-            });
-        }
-    });
+        });
+    }
 };
 var getLevel = function getLevel(bot, message, cb) {
     userModel.findOne({id: message.author.id}, function (err, User) {
         if (err) return cb(err);
         if (User) {
             if (User.levelEnabled) {
-                bot.reply(message, 'You are Level ' + User.level + ' XP: ' + parseInt(User.xp) + 'XP/' + parseInt(User.level * 2 * 10) + 'XP');
+                bot.reply(message, 'You are **Level ' + User.level + '** XP: ' + parseInt(User.xp) + 'XP/' + parseInt(User.level * 2 * 10) + 'XP');
             } else {
                 bot.reply(message, 'You disabled Xp for yourself.');
             }
         } else {
-            var freshUser = new userModel({
-                id: message.author.id,
-                name: message.author.username,
-                level: 1,
-                levelEnabled: true,
-                xp: 2,
-                avatar: message.author.avatarURL,
-                created: Date.now(),
-                banned: false
-            });
-            freshUser.save(function (err) {
+            createUser(message,true, true,function (err) {
                 if (err) return cb(err);
+                cb()
             });
             bot.reply(message, 'You are Level ' + 1 + ' XP: ' + parseInt(2) + 'XP/' + parseInt(2 * 10) + 'XP');
         }
@@ -79,21 +89,34 @@ var disableLevel = function disableLevel(bot, message) {
                 });
             }
         } else {
-            var freshUser = new userModel({
-                id: message.author.id,
-                name: message.author.username,
-                level: 1,
-                levelEnabled: false,
-                xp: 0,
-                avatar: message.author.avatarURL,
-                created: Date.now(),
-                banned: false
-            });
-            freshUser.save(function (err) {
+            createUser(message,false, false,function (err) {
                 if (err) return console.log(err);
                 bot.reply(message, 'Ok, i disabled the XP System for you.');
             });
         }
     });
 };
-module.exports = {cleanMessage: cleanMessage, updateXP: updateXp, getLevel: getLevel, disableLevel: disableLevel};
+var disablePm = function disablePm(bot,message) {
+    userModel.findOne({id: message.author.id}, function (err, User) {
+        if (err) return cb(err);
+        if (User) {
+            if (typeof(User.pmNotifications) === 'undefined' || User.pmNotifications) {
+                User.disablePm(function (err) {
+                    if (err) return console.log(err);
+                    bot.reply(message, 'Ok, i disabled the Pm Notifications for you.');
+                });
+            } else {
+                User.enablePm(function (err) {
+                    if (err) return console.log(err);
+                    bot.reply(message, 'Ok, i enabled the Pm Notifications for you.');
+                });
+            }
+        } else {
+            createUser(message,true, false,function (err) {
+                if (err) return console.log(err);
+                bot.reply(message, 'Ok, i disabled the Pm Notifications for you.');
+            });
+        }
+    });
+};
+module.exports = {cleanMessage: cleanMessage, createUser:createUser,updateXP: updateXp, getLevel: getLevel, disableLevel: disableLevel, disablePm:disablePm};

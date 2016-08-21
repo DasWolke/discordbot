@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var queueSchema = mongoose.Schema({
     server:String,
     voteSkip:Number,
+    repeat:Boolean,
+    repeatId:String,
     voteSkipVotes:[],
     songs:[]
 });
@@ -17,11 +19,20 @@ queueSchema.methods.resetVotes = function resetVotes(cb) {
 queueSchema.methods.reload = function reload(cb) {
     this.model('Queues').findOne({server:this.server}, cb);
 };
-queueSchema.methods.removeLatest = function reload(cb) {
+queueSchema.methods.removeLatest = function (cb) {
     this.model('Queues').update({server:this.server},{$pop: {songs: 1}}, cb);
 };
-queueSchema.methods.removeOldest = function reload(cb) {
+queueSchema.methods.removeOldest = function (cb) {
     this.model('Queues').update({server:this.server},{$pop: {songs: 1}}, cb);
+};
+queueSchema.methods.startRepeat = function (cb) {
+    this.model('Queues').update({server:this.server},{$set:{repeat:true}}, cb);
+};
+queueSchema.methods.stopRepeat = function (cb) {
+    this.model('Queues').update({server:this.server},{$set: {repeat:false, repeatId:""}}, cb);
+};
+queueSchema.methods.updateRepeatId = function (id,cb) {
+    this.model('Queues').update({server:this.server},{$set: {repeatId:id}}, cb);
 };
 queueSchema.methods.checkVote = function checkVote(Id,cb) {
     this.model('Queues').findOne({voteSkipVotes:Id, server:this.server}, function (err,Queue) {
