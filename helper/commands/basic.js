@@ -8,6 +8,7 @@ var messageHelper = require('../utility/message');
 var inventory = require('./misc/inventory');
 var r34 = require('./misc/rule34');
 var serverModel = require('../../DB/server');
+var humanize = require('humanize');
 var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -56,7 +57,7 @@ var basicCommands = function (bot, message) {
             bot.reply(message, 'I am running on Version ' + config.version);
             return;
         case "!w.add":
-            bot.reply(message, "Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=" + config.client_id + "&scope=bot&permissions=0\>");
+            bot.reply(message, "Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=" + config.client_id + "&scope=bot&permissions=8\>");
             return;
         case "!w.bug":
             bot.reply(message, 'Please join the support Discord: https://discord.gg/yuTxmYn to report a Bug.');
@@ -151,30 +152,6 @@ var basicCommands = function (bot, message) {
             users = users - bot.servers.length;
             bot.reply(message, "I am currently used on " + bot.servers.length + " " + plural + " with " + users + " users.");
             return;
-        case "!w.rm":
-            if (!message.channel.isPrivate && message.author.id === '128392910574977024') {
-                if (typeof (messageSplit[1]) !== 'undefined') {
-                    var number = 0;
-                    try {
-                        number = parseInt(messageSplit[1]);
-                    } catch (e) {
-                        return bot.reply(message, 'Could not parse the Number !');
-                    }
-                    bot.getChannelLogs(message.channel, number, function (err, Messages) {
-                        if (err) return bot.reply(message, 'Error while trying to get Channel Logs!');
-                        if (Messages.length > 0) {
-                            bot.deleteMessages(Messages, function (err) {
-                                if (err) return bot.reply(message, 'Error while trying to delete Messages!');
-                            });
-                        }
-                    });
-                } else {
-                    bot.reply(message, 'No Number of Messages to delete provided!');
-                }
-            } else {
-                bot.reply(message, 'You should not know this...');
-            }
-            return;
         case "!w.noLevel":
             messageHelper.disableLevel(bot, message);
             return;
@@ -206,13 +183,7 @@ var basicCommands = function (bot, message) {
             });
             return;
         case "!w.setLewd":
-            admin = false;
-            for (role of message.server.rolesOfUser(message.author)) {
-                if (role.hasPermission('administrator')) {
-                    admin = true
-                }
-            }
-            if (admin) {
+            if (messageHelper.hasWolkeBot(bot,message)) {
                 serverModel.findOne({id:message.server.id}, function (err,Server) {
                     if (err) return console.log(err);
                     if (Server) {
@@ -237,8 +208,12 @@ var basicCommands = function (bot, message) {
                     }
                 });
             } else {
-                bot.reply(message, "No Permission!");
+                bot.reply(message, "You need the WolkeBot Discord Group for this Command!");
             }
+            return;
+        case "!w.uptime":
+            console.log(bot.uptime);
+            bot.reply(message, `Uptime:${humanize.date('i-s', bot.uptime/1000)}`);
             return;
         default:
             return;

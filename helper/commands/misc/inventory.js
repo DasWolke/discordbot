@@ -20,12 +20,12 @@ var inventoryCmd = function (bot, message, messageSplit) {
                         if (typeof (User.cookies) !== 'undefined') {
                             userModel.update({id: User.id}, {$set: {cookies: User.cookies + 1}}, function (err) {
                                 if (err) return console.log(err);
-                                bot.reply(message, `Gave User ${User.name} 1 Cookie!`);
+                                bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
                             });
                         } else {
                             userModel.update({id: User.id}, {$set: {cookies: 1}}, function (err) {
                                 if (err) return console.log(err);
-                                bot.reply(message, `Gave User ${User.name} 1 Cookie!`);
+                                bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
                             });
                         }
                     } else {
@@ -37,12 +37,12 @@ var inventoryCmd = function (bot, message, messageSplit) {
                                     if (typeof (User.cookies) !== 'undefined') {
                                         userModel.update({id: User.id}, {$set: {cookies: User.cookies + 1}}, function (err) {
                                             if (err) return console.log(err);
-                                            bot.reply(message, `Gave User ${User.name} 1 Cookie!`);
+                                            bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
                                         });
                                     } else {
                                         userModel.update({id: User.id}, {$set: {cookies: 1}}, function (err) {
                                             if (err) return console.log(err);
-                                            bot.reply(message, `Gave User ${User.name} 1 Cookie!`);
+                                            bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
                                         });
                                     }
                                 } else {

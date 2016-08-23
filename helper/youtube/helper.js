@@ -32,7 +32,7 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch, messageSplit) {
                     if (err) return console.log(err);
                     if (Song) {
                         if (voice.inVoice(bot, message)) {
-                            voice.addSongFirst(bot, message, Song, function (err) {
+                            voice.addSongFirst(bot, message, Song, true,function (err) {
                                 if (err) return console.log(err);
                                 voice.playSong(bot, message, Song);
                             });

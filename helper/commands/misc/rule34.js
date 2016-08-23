@@ -23,9 +23,12 @@ var rule34 = function (bot,message,messageSplit) {
                 var jsonObj = x2js.xml2js(body);
                 if (typeof (jsonObj.posts.post) !== 'undefined') {
                     var random = general.random(0, jsonObj.posts.post.length);
-                    bot.sendMessage(message.channel, 'http:' + jsonObj.posts.post[random]._file_url, function (err,message) {
-                        if (err) return console.log(err);
-                    });
+                    random = Math.floor(random);
+                    if (typeof (jsonObj.posts.post[random]._file_url) !== 'undefined') {
+                        bot.sendMessage(message.channel, 'http:' + jsonObj.posts.post[random]._file_url, function (err, message) {
+                            if (err) return console.log(err);
+                        });
+                    }
             } else {
                     bot.reply(message, 'No images found with Tags: ' + messageSearch.replace(/%20/g, " "));
                 }

@@ -24,7 +24,7 @@ var createUser = function (message,level,pms,cb) {
     });
 };
 var calcXpNeeded = function (User) {
-
+    return Math.floor(User.level * 2  * 3.14 * 15);
 };
 var updateXp = function (bot, message, cb) {
     if (message.author.equals(bot)) {
@@ -119,4 +119,15 @@ var disablePm = function disablePm(bot,message) {
         }
     });
 };
-module.exports = {cleanMessage: cleanMessage, createUser:createUser,updateXP: updateXp, getLevel: getLevel, disableLevel: disableLevel, disablePm:disablePm};
+var hasWolkeBot = function (bot,message) {
+    for (var role of message.server.rolesOfUser(message.author)) {
+        if (role.name === 'WolkeBot') {
+            return true;
+        }
+    }
+    return false;
+};
+var isOwner = function (bot,message) {
+    return message.author.equals(message.server.owner);
+};
+module.exports = {cleanMessage: cleanMessage, createUser:createUser,updateXP: updateXp, getLevel: getLevel, disableLevel: disableLevel, disablePm:disablePm, hasWolkeBot:hasWolkeBot, isOwner:isOwner};

@@ -12,6 +12,8 @@ var socketManager = require('./helper/socket/basic');
 var messageHelper = require('./helper/utility/message');
 var voice = require('./helper/utility/voice');
 var async = require('async');
+var process = require('process');
+process.setMaxListeners(0);
 console.log('Connecting to DB');
 mongoose.connect('mongodb://localhost/discordbot', function (err) {
     if (err) return console.log("Unable to connect to Mongo Server!");
@@ -73,6 +75,7 @@ bot.on("message", function (message) {
             CMD.music(bot, message);
             CMD.osuNoMusic(bot, message);
             CMD.youtube(bot, message);
+            CMD.moderation(bot,message);
             // CMD.permission(bot,message);
             // CMD.playlist(bot,message);
         }

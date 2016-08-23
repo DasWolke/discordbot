@@ -7,7 +7,6 @@
 var songModel = require('../../../../DB/song');
 var voice = require('../../../utility/voice');
 var ytHelper = require('../../../youtube/helper');
-var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/g;
 var foreverCMD = function foreverCmd(bot,message, messageSplit) {
     if (!message.channel.isPrivate) {
         var admin = false;
@@ -25,7 +24,7 @@ var foreverCMD = function foreverCmd(bot,message, messageSplit) {
                 for (var i = 1; i < messageSplit.length; i++) {
                     messageSearch = messageSearch + " " + messageSplit[i]
                 }
-                if (YoutubeReg.test(messageSearch)) {
+                if (voice.checkMedia(messageSearch)) {
                     ytHelper.ytDlAndPlayForever(bot, message, messageSearch, messageSplit);
                 } else {
                     songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {

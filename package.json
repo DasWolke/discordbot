@@ -11,6 +11,7 @@
   "dependencies": {
     "async": "^2.0.1",
     "discord.js": "^8.1.0",
+    "humanize": "0.0.9",
     "momentjs": "^1.1.6",
     "mongoose": "^4.4.17",
     "osu-api": "0.0.3",
