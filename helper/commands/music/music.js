@@ -93,19 +93,6 @@ var musicCommands = function (bot, message) {
                 bot.reply(message, 'This Command does not work in private Channels');
             }
             return;
-        // case "!w.clearqueue":
-        //     var admin = false;
-        //     for (var role of message.server.rolesOfUser(message.author)) {
-        //         if (role.name === 'WolkeBot') {
-        //             admin = true;
-        //         }
-        //     }
-        //     if (message.server.id === '118689714319392769' && admin || message.server.id !== '118689714319392769') {
-        //
-        //     }
-        //     return;
-        // case "!w.shuffle":
-        //     return;
         case "!w.random":
             var admin = false;
             for (var role of message.server.rolesOfUser(message.author)) {

@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.1",
+    "cleverbot-node": "^0.2.2",
     "discord.js": "^8.1.0",
     "humanize": "0.0.9",
     "momentjs": "^1.1.6",
