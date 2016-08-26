@@ -5,7 +5,6 @@ var messageHelper = require('../../../utility/message');
 var ytHelper = require('../../../youtube/helper');
 var songModel = require('../../../../DB/song');
 var voice = require('../../../utility/voice');
-var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/g;
 var add = function addToQueue(bot,message,messageSplit) {
     if (typeof(messageSplit[1]) === 'undefined') {
         return bot.reply(message, 'You did not enter a search Term!');
@@ -21,7 +20,7 @@ var add = function addToQueue(bot,message,messageSplit) {
             messageSearch = messageSearch + " " + messageSplit[a]
         }
     }
-    if (messageSplit[1].match(YoutubeReg) || typeof (messageSplit[2]) !== 'undefined' && messageSplit[2].match(YoutubeReg)) {
+    if (voice.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && voice.checkMedia(messageSplit[2])) {
         ytHelper.ytDlAndQueue(bot, message, messageSearch, messageSplit);
     } else {
         songModel.find({$text: {$search: messageSearch}},{score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {

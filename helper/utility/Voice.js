@@ -173,22 +173,24 @@ var nextSong = function nextSong(bot, message, Song) {
                     } else if (typeof (Queue.repeat) !== 'undefined' && typeof (Queue.repeatId) !== 'undefined' && Queue.repeat === false) {
                         {
                             Queue.stopRepeat(function (err) {
-                               if (err) return console.log(err);
-                                queueModel.update({_id: Queue._id}, {$pop: {songs: -1}}, function (err) {
-                                    if (err) return console.log(err);
-                                    queueModel.findOne({_id: Queue._id}, function (err, Queue) {
+                                if (err) return console.log(err);
+                                if (Queue.songs[0].id === Song.id) {
+                                    queueModel.update({_id: Queue._id}, {$pop: {songs: -1}}, function (err) {
                                         if (err) return console.log(err);
-                                        if (Queue.songs.length > 0) {
-                                            Queue.resetVotes(function (err) {
-                                                if (err) return console.log(err);
-                                                playSong(bot, message, Queue.songs[0], true);
-                                            });
-                                        } else {
-                                            Queue.resetVotes();
-                                            connectionE.stopPlaying();
-                                        }
+                                        queueModel.findOne({_id: Queue._id}, function (err, Queue) {
+                                            if (err) return console.log(err);
+                                            if (Queue.songs.length > 0) {
+                                                Queue.resetVotes(function (err) {
+                                                    if (err) return console.log(err);
+                                                    playSong(bot, message, Queue.songs[0], true);
+                                                });
+                                            } else {
+                                                Queue.resetVotes();
+                                                connectionE.stopPlaying();
+                                            }
+                                        });
                                     });
-                                });
+                                }
                             });
                         }
                     } else {
@@ -379,7 +381,7 @@ var addToQueue = function (bot, message, Song) {
                 server: message.server.id,
                 songs: [Song],
                 repeat: false,
-                repeatId:""
+                repeatId: ""
             });
             queue.save(function (err) {
                 if (err) return console.log(err);
@@ -448,6 +450,17 @@ var getDuration = function () {
 var updatePlays = function updatePlays(id, cb) {
     songModel.update({id: id}, {$inc: {plays: 1}}, cb);
 };
+var checkMedia = function checkMedia(link) {
+    var SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/g;
+    var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/g;
+    if (YoutubeReg.test(link)) {
+        return true;
+    } else if (SoundcloudReg.test(link)) {
+        return true;
+    } else {
+        return false;
+    }
+};
 module.exports = {
     inVoice: inVoiceChannel,
     saveVoice: saveVoiceChannel,
@@ -467,5 +480,6 @@ module.exports = {
     addToQueue: addToQueue,
     getSongDuration: getDuration,
     updatePlays: updatePlays,
-    setVolume: setVolume
+    setVolume: setVolume,
+    checkMedia: checkMedia
 };

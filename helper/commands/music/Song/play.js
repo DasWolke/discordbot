@@ -4,27 +4,18 @@
 var songModel = require('../../../../DB/song');
 var voice = require('../../../utility/voice');
 var ytHelper = require('../../../youtube/helper');
-var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/g;
-var playCMD = function playCmd(bot,message, messageSplit) {
+var messageHelper = require('../../../utility/message');
+var playCMD = function playCmd(bot, message, messageSplit) {
     if (!message.channel.isPrivate) {
-        var admin = false;
-        for (var role of message.server.rolesOfUser(message.author)) {
-            if (role.name === 'WolkeBot') {
-                admin = true;
-            }
-            if (role.name === 'Proxerteam') {
-                admin = true;
-            }
-        }
-        if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== "166242205038673920" && message.server.id !== '118689714319392769') {
+        if (messageHelper.hasWolkeBot(bot,message)) {
             if (typeof (messageSplit[1]) !== 'undefined') {
                 var messageSearch = "";
                 for (var i = 1; i < messageSplit.length; i++) {
                     messageSearch = messageSearch + " " + messageSplit[i]
                 }
-                if (YoutubeReg.test(messageSearch)) {
+                if (voice.checkMedia(messageSearch)) {
                     ytHelper.ytDlAndPlayFirst(bot, message, messageSearch, messageSplit);
-                } else {
+                }  else {
                     songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
                         if (err) return console.log(err);
                         var Song = Songs[0];

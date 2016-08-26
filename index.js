@@ -12,6 +12,8 @@ var socketManager = require('./helper/socket/basic');
 var messageHelper = require('./helper/utility/message');
 var voice = require('./helper/utility/voice');
 var async = require('async');
+var process = require('process');
+process.setMaxListeners(0);
 console.log('Connecting to DB');
 mongoose.connect('mongodb://localhost/discordbot', function (err) {
     if (err) return console.log("Unable to connect to Mongo Server!");
@@ -67,16 +69,19 @@ bot.on('disconnected', function () {
 
 });
 bot.on("message", function (message) {
+    // console.log('message!');
     if (message.content.charAt(0) === "!") {
         if (message.content.charAt(1) === "w") {
             CMD.basic(bot, message);
             CMD.music(bot, message);
             CMD.osuNoMusic(bot, message);
             CMD.youtube(bot, message);
+            CMD.moderation(bot,message);
             // CMD.permission(bot,message);
             // CMD.playlist(bot,message);
         }
     } else if (!message.channel.isPrivate && !message.isMentioned(bot.user)) {
+        // console.log('received message!');
         messageHelper.updateXP(bot, message, function (err) {
             if (err) return console.log(err);
         });
@@ -84,6 +89,12 @@ bot.on("message", function (message) {
     if (message.isMentioned(bot.user)) {
         CMD.cleverbot.talk(bot, message);
     }
+});
+bot.on('serverNewMember', function (Server, User) {
+
+});
+bot.on('serverMemberRemoved', function (Server,User) {
+
 });
 bot.on("debug", console.log);
 bot.on("warn", console.log);

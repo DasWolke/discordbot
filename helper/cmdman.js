@@ -8,4 +8,5 @@ var cleverbot = require('./commands/cleverbot');
 var permissions = require('./commands/permissions');
 var osu = require('./commands/osuNoMusic');
 var youtube = require('./commands/music/youtube');
-module.exports = {basic:basic, music:music,youtube:youtube, playlist:playlist, cleverbot:cleverbot, permission:permissions, osuNoMusic:osu};
+var moderation = require('./commands/moderation');
+module.exports = {basic:basic, music:music,youtube:youtube, playlist:playlist, cleverbot:cleverbot, permission:permissions, osuNoMusic:osu, moderation:moderation};
