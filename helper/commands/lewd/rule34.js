@@ -12,10 +12,10 @@ var rule34 = function (bot,message,messageSplit) {
             if (i === 1) {
                 messageSearch = messageSplit[i];
             } else {
-                messageSearch = messageSearch + "%20" + messageSplit[i];
+                messageSearch = messageSearch + "+" + messageSplit[i];
             }
         }
-        request.get('http://rule34.xxx/index.php?page=dapi&s=post&q=index&tags=' + messageSearch,function (error, response, body) {
+        request.get('http://rule34.xxx/index.php?page=dapi&s=post&q=index&limit=100&tags=' + messageSearch,function (error, response, body) {
             if (error) {
                 bot.reply(message, 'a error occured!');
             }
@@ -24,10 +24,12 @@ var rule34 = function (bot,message,messageSplit) {
                 if (typeof (jsonObj.posts.post) !== 'undefined') {
                     var random = general.random(0, jsonObj.posts.post.length);
                     random = Math.floor(random);
-                    if (typeof (jsonObj.posts.post[random]._file_url) !== 'undefined') {
+                    if (typeof(jsonObj.posts.post[random]) !== 'undefined' && typeof (jsonObj.posts.post[random]._file_url) !== 'undefined') {
                         bot.sendMessage(message.channel, 'http:' + jsonObj.posts.post[random]._file_url, function (err, message) {
                             if (err) return console.log(err);
                         });
+                    } else {
+
                     }
             } else {
                     bot.reply(message, 'No images found with Tags: ' + messageSearch.replace(/%20/g, " "));
