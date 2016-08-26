@@ -80,7 +80,7 @@ bot.on("message", function (message) {
             // CMD.permission(bot,message);
             // CMD.playlist(bot,message);
         }
-    } else if (!message.channel.isPrivate && !message.isMentioned(bot.user)) {
+    } else if (!message.channel.isPrivate && !message.isMentioned(bot.user) && !message.author.equals(bot.user)) {
         // console.log('received message!');
         messageHelper.updateXP(bot, message, function (err) {
             if (err) return console.log(err);

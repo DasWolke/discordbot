@@ -37,7 +37,7 @@ var playCMD = function playCmd(bot, message, messageSplit) {
                 bot.reply(message, 'No Search term entered!');
             }
         } else {
-            bot.reply(message, 'No Permission to use this Command!');
+            bot.reply(message, 'No Permission to use this Command! Use !w.qa instead!');
         }
     } else {
         bot.reply(message, "This Commands Only Works in Server Channels!");

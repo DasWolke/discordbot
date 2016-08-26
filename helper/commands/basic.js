@@ -207,7 +207,7 @@ var basicCommands = function (bot, message) {
                     }
                 });
             } else {
-                bot.reply(message, "You need the WolkeBot Discord Group for this Command!");
+                bot.reply(message, "You need the WolkeBot Discord Role for this Command!");
             }
             return;
         case "!w.uptime":

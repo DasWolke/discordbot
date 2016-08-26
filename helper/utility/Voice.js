@@ -8,6 +8,7 @@ var serverModel = require('../../DB/server');
 var path = require('path');
 var songDuration = 0;
 var general = require('./general');
+var request = require('request');
 var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
     serverModel.findOne({id: channel.server.id}, function (err, Server) {
         if (err) {
@@ -315,6 +316,41 @@ var playSong = function (bot, message, Song, Queueused) {
         console.log(err);
     });
 };
+// var streamSong = function (bot, message, messageSplit) {
+//     var connection = getVoiceConnection(bot, message);
+//     if (!connection.playing) {
+//         try {
+//             connection.resume();
+//         } catch (e) {
+//
+//         }
+//     }
+//     var stream;
+//     request('http://listen.technobase.fm/tunein-mp3-pls').pipe(stream);
+    // connection.stopPlaying();
+    // connection.playRawStream(stream, {volume: 0.25}).then(function (intent) {
+        // updatePlays(Song.id, function (err) {
+        //     if (err) return console.log(err);
+        // });
+        // if (typeof(Queueused) === 'undefined') {
+            // bot.sendMessage(message.channel, "Now playing Song: " + Song.title);
+        // }
+        // var timer = setInterval(function () {
+        //     setDuration(getDuration() + 1);
+        // }, 1000);
+        // intent.on("end", function () {
+        //     clearInterval(timer);
+        //     setDuration(0);
+        //     console.log("File ended!");
+            // nextSong(bot, message, Song);
+//         });
+//         intent.on("error", function (err) {
+//             console.log(err);
+//         });
+//     }).catch(function (err) {
+//         console.log(err);
+//     });
+// };
 var startQueue = function (bot, message) {
     queueModel.findOne({server: message.server.id}, function (err, Queue) {
         if (err) return console.log(err);

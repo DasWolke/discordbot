@@ -31,7 +31,7 @@ var inventoryCmd = function (bot, message, messageSplit) {
                                 userModel.update({
                                     id: User.id,
                                     'servers.serverId': message.server.id
-                                }, {$inc: {'servers.cookies': 1}}, function (err) {
+                                }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                     if (err) return console.log(err);
                                     bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
                                 });
@@ -42,7 +42,7 @@ var inventoryCmd = function (bot, message, messageSplit) {
                             });
                         }
                     } else {
-                        messageHelper.createUser(message, true, true, function (err) {
+                        messageHelper.createUser({author:user, server:message.server}, true, true, function (err) {
                             if (err) return console.log(err);
                             userModel.findOne({id: user.id}, function (err, User) {
                                 if (err) return console.log(err);
@@ -52,7 +52,7 @@ var inventoryCmd = function (bot, message, messageSplit) {
                                         userModel.update({
                                             id: User.id,
                                             'servers.serverId': message.server.id
-                                        }, {$inc: {'servers.cookies': 1}}, function (err) {
+                                        }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                             if (err) return console.log(err);
                                             bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
                                         });

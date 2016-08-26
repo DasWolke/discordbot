@@ -10,11 +10,7 @@ var createUser = function (message, level, pms, cb) {
     var freshUser = new userModel({
         id: message.author.id,
         name: message.author.username,
-        level: 1,
-        levelEnabled: level,
         servers: [server],
-        pmNotifications: pms,
-        xp: 2,
         avatar: message.author.avatarURL,
         created: Date.now(),
         banned: false,
@@ -44,10 +40,10 @@ var updateXp = function (bot, message, cb) {
                 // console.log('User has Server');
                 if (levelEnabled(message, User) && !cooldown(clientServer)) {
                     // console.log('User has Level enabled and has no Cooldown!');
-                    User.updateXP(serverId, function (err) {
+                    User.updateXP(serverId,calcXpMessage(message.cleanContent), function (err) {
                         if (err) return cb(err);
                         // console.log('Updated Xp');
-                        if (typeof (clientServer) !== 'undefined' && clientServer.xp >= calcXpNeeded(User)) {
+                        if (typeof (clientServer) !== 'undefined' && clientServer.xp+calcXpMessage(message.cleanContent) > calcXpNeeded(clientServer)) {
                             User.updateLevel(serverId, function (err) {
                                 if (err) return cb(err);
                                 if (pmNotifications(message, User)) {
@@ -73,6 +69,16 @@ var updateXp = function (bot, message, cb) {
         }
     });
 
+};
+var calcXpMessage = function (content) {
+    return 5 + calcBonus(content);
+};
+var calcBonus = function (content) {
+    var bonus = Math.floor(content.length / 50);
+  if (bonus> 10) {
+      return 10;
+  }
+  return bonus;
 };
 var getLevel = function getLevel(bot, message, cb) {
     if (!message.channel.isPrivate) {
@@ -193,7 +199,7 @@ var pmNotifications = function (message, User) {
     }
 };
 var cooldown = function (User) {
-    if (User.cooldown > Date.now() - 15000) {
+    if (User.cooldown > Date.now() - 5000) {
         // console.log('cooldown.');
         return true;
     } else {
@@ -223,8 +229,8 @@ var getServerObj = function (message, level, pms) {
     return {
         serverId: message.server.id,
         level: 1,
-        xp: 2,
-        totalXp: 2,
+        xp: 5,
+        totalXp: 5,
         cookies: 0,
         levelEnabled: level,
         pmNotifications: pms,
