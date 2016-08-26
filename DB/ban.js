@@ -8,7 +8,8 @@ var banSchema = mongoose.Schema({
     name: String,
     bannedBy:String,
     bannedByName:String,
-    reason:String
+    reason:String,
+    time: {type:Date, default:Date.now}
 });
 var banModel = mongoose.model('Bans', banSchema);
 module.exports = banModel;

@@ -34,7 +34,7 @@ var moderationCMD = function moderationCMD(bot, message) {
         case "!w.kick":
             if (!message.channel.isPrivate && messageHelper.hasWolkeBot(bot, message)) {
                 if (message.mentions.length === 1) {
-                    if (message.mentions[0].id !== message.server.owner && !messageHelper.hasWolkeBot(bot, message, message.mentions[0])) {
+                    if (message.mentions[0].id !== message.server.owner.id && !messageHelper.hasWolkeBot(bot, message, message.mentions[0])) {
                         bot.kickMember(message.mentions[0], message.server, function (err) {
                             if (err) return bot.reply(message, "An Error occurred while trying to kick the User!");
                             bot.reply(message, `Kicked User ${message.mentions[0].name}`);
@@ -52,7 +52,7 @@ var moderationCMD = function moderationCMD(bot, message) {
         case "!w.ban":
             if (!message.channel.isPrivate && messageHelper.hasWolkeBot(bot, message)) {
                 if (message.mentions.length === 1) {
-                    if (message.mentions[0].id !== message.server.owner && !messageHelper.hasWolkeBot(bot, message, message.mentions[0])) {
+                    if (message.mentions[0].id !== message.server.owner.id && !messageHelper.hasWolkeBot(bot, message, message.mentions[0])) {
                         bot.banMember(message.mentions[0], message.server, 7, function (err) {
                             if (err) {
                                 console.log(err);
@@ -135,9 +135,9 @@ var moderationCMD = function moderationCMD(bot, message) {
                         var reply = "";
                         for (var y = 0; y < Bans.length; y++) {
                             if (y === 0) {
-                                reply = `${y+1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName} **Reason:** ${Bans[y].reason}`;
+                                reply = `${y+1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
                             } else {
-                                reply = reply + `${y+1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName} **Reason:** ${Bans[y].reason}`;
+                                reply = reply + `${y+1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
                             }
                         }
                         bot.reply(message, reply);

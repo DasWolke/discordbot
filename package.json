@@ -15,6 +15,7 @@
     "humanize": "0.0.9",
     "momentjs": "^1.1.6",
     "mongoose": "^4.4.17",
+    "node-internet-radio": "^0.1.4",
     "osu-api": "0.0.3",
     "request": "^2.74.0",
     "shortid": "^2.2.6",

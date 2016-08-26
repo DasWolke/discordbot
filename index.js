@@ -69,6 +69,7 @@ bot.on('disconnected', function () {
 
 });
 bot.on("message", function (message) {
+    // console.log('message!');
     if (message.content.charAt(0) === "!") {
         if (message.content.charAt(1) === "w") {
             CMD.basic(bot, message);
@@ -79,7 +80,8 @@ bot.on("message", function (message) {
             // CMD.permission(bot,message);
             // CMD.playlist(bot,message);
         }
-    } else if (!message.channel.isPrivate && !message.isMentioned(bot.user) && !message.author.id === bot.user.id) {
+    } else if (!message.channel.isPrivate && !message.isMentioned(bot.user)) {
+        // console.log('received message!');
         messageHelper.updateXP(bot, message, function (err) {
             if (err) return console.log(err);
         });
@@ -87,6 +89,12 @@ bot.on("message", function (message) {
     if (message.isMentioned(bot.user)) {
         CMD.cleverbot.talk(bot, message);
     }
+});
+bot.on('serverNewMember', function (Server, User) {
+
+});
+bot.on('serverMemberRemoved', function (Server,User) {
+
 });
 bot.on("debug", console.log);
 bot.on("warn", console.log);

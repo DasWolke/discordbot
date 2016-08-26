@@ -2,6 +2,7 @@
  * Created by julia on 24.07.2016.
  */
 var voice = require('../../../utility/voice');
+var messageHelper = require('../../../utility/message');
 var pauseCmd = function pauseCmd(bot,message) {
     if (!message.channel.isPrivate) {
         var admin = false;
@@ -13,7 +14,7 @@ var pauseCmd = function pauseCmd(bot,message) {
                 admin = true;
             }
         }
-        if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== "166242205038673920" && message.server.id !== '118689714319392769') {
+        if (messageHelper.hasWolkeBot(bot,message)) {
             if (voice.inVoice(bot, message)) {
                 var connection = voice.getVoiceConnection(bot, message);
                 if (!connection.playing) {
@@ -30,7 +31,7 @@ var pauseCmd = function pauseCmd(bot,message) {
             }
         }
         else {
-            bot.reply(message, 'No Permission!');
+            bot.reply(message, 'No Permission! You need to give yourself the WolkeBot Role to use this.');
         }
     }
     else {

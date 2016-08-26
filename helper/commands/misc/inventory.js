@@ -11,21 +11,34 @@ var inventoryCmd = function (bot, message, messageSplit) {
                 admin = true
             }
         }
-        if (admin) {
+        if (admin || messageHelper.hasWolkeBot(bot,message)) {
             if (message.mentions.length === 1) {
                 var user = message.mentions[0];
                 userModel.findOne({id: user.id}, function (err, User) {
                     if (err) return console.log(err);
                     if (User) {
-                        if (typeof (User.cookies) !== 'undefined') {
-                            userModel.update({id: User.id}, {$set: {cookies: User.cookies + 1}}, function (err) {
-                                if (err) return console.log(err);
-                                bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
-                            });
+                        if (messageHelper.hasServer(message, User)) {
+                            var clientServer = messageHelper.loadServerFromUser(message, User);
+                            if (typeof (clientServer.cookies) !== 'undefined') {
+                                userModel.update({
+                                    id: User.id,
+                                    'servers.serverId': message.server.id
+                                }, {$inc: {'servers.$.cookies': 1}}, function (err) {
+                                    if (err) return console.log(err);
+                                    bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
+                                });
+                            } else {
+                                userModel.update({
+                                    id: User.id,
+                                    'servers.serverId': message.server.id
+                                }, {$inc: {'servers.cookies': 1}}, function (err) {
+                                    if (err) return console.log(err);
+                                    bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
+                                });
+                            }
                         } else {
-                            userModel.update({id: User.id}, {$set: {cookies: 1}}, function (err) {
+                            User.addServer(message.getServerObj(message, true, true), function (err) {
                                 if (err) return console.log(err);
-                                bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
                             });
                         }
                     } else {
@@ -34,15 +47,20 @@ var inventoryCmd = function (bot, message, messageSplit) {
                             userModel.findOne({id: user.id}, function (err, User) {
                                 if (err) return console.log(err);
                                 if (User) {
-                                    if (typeof (User.cookies) !== 'undefined') {
-                                        userModel.update({id: User.id}, {$set: {cookies: User.cookies + 1}}, function (err) {
+                                    var clientServer = messageHelper.loadServerFromUser(message, User);
+                                    if (typeof (clientServer.cookies) !== 'undefined') {
+                                        userModel.update({
+                                            id: User.id,
+                                            'servers.serverId': message.server.id
+                                        }, {$inc: {'servers.cookies': 1}}, function (err) {
                                             if (err) return console.log(err);
                                             bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
                                         });
                                     } else {
-                                        userModel.update({id: User.id}, {$set: {cookies: 1}}, function (err) {
+                                        var server = messageHelper.getServerObj(message,true,true);
+                                        User.addServer(server, function (err) {
                                             if (err) return console.log(err);
-                                            bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
+                                            bot.reply(message, 'Try again please.');
                                         });
                                     }
                                 } else {
@@ -53,25 +71,26 @@ var inventoryCmd = function (bot, message, messageSplit) {
                     }
                 });
             } else {
-                bot.reply(message,'Please mention **1 User**, not more, not less!');
+                bot.reply(message, 'Please mention **1 User**, not more, not less!');
             }
         } else {
-            bot.reply(message, 'You need the Administrator Permission to give cookies!');
+            bot.reply(message, 'You need the Administrator Permission or the WolkeBot role to give cookies!');
         }
     } else {
-        userModel.findOne({id:message.author.id}, function (err,User) {
+        userModel.findOne({id: message.author.id, 'servers.serverId': message.server.id}, function (err, User) {
             if (err) return console.log(err);
             if (User) {
-                if (typeof (User.cookies) !== 'undefined') {
-                    bot.reply(message,`You have **${User.cookies} Cookie(s)** right now.`);
+                var clientServer = messageHelper.loadServerFromUser(message, User);
+                if (typeof (clientServer.cookies) !== 'undefined') {
+                    bot.reply(message, `You have **${clientServer.cookies} Cookie(s)** right now.`);
                 } else {
                     bot.reply(message, "You have **0 Cookies** right now.")
                 }
             } else {
-                messageHelper.createUser(message,true,true, function (err) {
-                   if (err) return console.log(err);
+                messageHelper.createUser(message, true, true, function (err) {
+                    if (err) return console.log(err);
                 });
-                bot.reply(message,"You have **0 Cookies** right now.");
+                bot.reply(message, "You have **0 Cookies** right now.");
             }
         });
     }

@@ -10,6 +10,7 @@ var voice = require('../../utility/voice');
 var general = require('../../utility/general');
 var song = require('./Song/Song.CMD');
 var queueCmd = require('./Queue/Queue.CMD');
+var messageHelper = require('../../utility/message');
 var musicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -46,17 +47,8 @@ var musicCommands = function (bot, message) {
         case "!w.skip":
             if (!message.channel.isPrivate) {
                 if (voice.inVoice(bot, message)) {
-                    var admin = false;
-                    for (var role of message.server.rolesOfUser(message.author)) {
-                        if (role.name === 'WolkeBot') {
-                            admin = true;
-                        }
-                        if (role.name === 'Proxerteam') {
-                            admin = true;
-                        }
-                    }
-                    if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== "166242205038673920" && message.server.id !== '118689714319392769') {
-                        queueModel.findOne({server: message.server.id}, function (err, Queue) {
+                    if(messageHelper.hasWolkeBot(bot,message)) {
+                    queueModel.findOne({server: message.server.id}, function (err, Queue) {
                             if (err) return console.log(err);
                             var connection = voice.getVoiceConnection(bot, message);
                             if (Queue) {
@@ -84,7 +76,7 @@ var musicCommands = function (bot, message) {
                             }
                         });
                     } else {
-                        bot.reply(message, 'No Permission!');
+                        bot.reply(message, 'No Permission! Use !w.voteskip or give yourself the WolkeBot Role.');
                     }
                 } else {
                     bot.reply(message, "I am not connected to any Voice Channel on this Server!");
@@ -94,17 +86,8 @@ var musicCommands = function (bot, message) {
             }
             return;
         case "!w.random":
-            var admin = false;
-            for (var role of message.server.rolesOfUser(message.author)) {
-                if (role.name === 'WolkeBot') {
-                    admin = true;
-                }
-                if (role.name === 'Proxerteam') {
-                    admin = true;
-                }
-            }
             if (!message.channel.isPrivate) {
-                if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== "166242205038673920" && message.server.id !== '118689714319392769') {
+                if (message.hasWolkeBot(bot,message)) {
 
                     songModel.count({}, function (err, C) {
                         if (err) return bot.reply(message, "A Database Error occured!");
@@ -127,7 +110,7 @@ var musicCommands = function (bot, message) {
                         });
                     });
                 } else {
-                    bot.reply(message, 'No Permission!');
+                    bot.reply(message, 'No Permission! You need to use !w.rq or give yourself the WolkeBot Role to use this.');
                 }
             } else {
                 bot.reply(message, 'This Command does not work in private Channels');
@@ -169,24 +152,15 @@ var musicCommands = function (bot, message) {
             }
             return;
         case "!w.volume":
-            var admin = false;
-            for (var role of message.server.rolesOfUser(message.author)) {
-                if (role.name === 'WolkeBot') {
-                    admin = true;
-                }
-                if (role.name === 'Proxerteam') {
-                    admin = true;
-                }
-            }
             if (!message.channel.isPrivate) {
-                if (message.server.id === '118689714319392769' && admin || message.server.id === "166242205038673920" && admin || message.server.id !== "166242205038673920" && message.server.id !== '118689714319392769') {
+                if (messageHelper.hasWolkeBot(bot,message)) {
 
                     voice.setVolume(bot, message, function (err, response) {
                         if (err) return bot.reply(message, err);
                         bot.reply(message, response);
                     });
                 } else {
-                    bot.reply(message, 'No Permission');
+                    bot.reply(message, 'No Permission! You need to give yourself the WolkeBot Role to use this.');
                 }
             } else {
                 bot.reply(message, 'This Command does not work in private Channels');
@@ -198,6 +172,17 @@ var musicCommands = function (bot, message) {
             return;
         case "!w.fav":
             return;
+        // case "!w.stream":
+        //     if (!message.channel.isPrivate) {
+        //         if (voice.inVoice(bot, message)) {
+        //             voice.stream(bot, message, messageSplit[1]);
+        //         } else {
+        //             bot.reply(message, 'Connect me to Voice.');
+        //         }
+        //     } else {
+        //         bot.reply(message, 'This Command only works in Servers');
+        //     }
+        //     return;
         default:
             return;
     }
