@@ -77,14 +77,18 @@ bot.on("message", function (message) {
             CMD.osuNoMusic(bot, message);
             CMD.youtube(bot, message);
             CMD.moderation(bot,message);
+            CMD.hentai(bot,message);
             // CMD.permission(bot,message);
             // CMD.playlist(bot,message);
         }
     } else if (!message.channel.isPrivate && !message.isMentioned(bot.user) && !message.author.equals(bot.user)) {
         // console.log('received message!');
+        // messageHelper.noSpam(bot,message);
         messageHelper.updateXP(bot, message, function (err) {
             if (err) return console.log(err);
         });
+    } else if (!message.channel.isPrivate && !message.author.equals(bot.user)) {
+        // messageHelper.noSpam(bot,message);
     }
     if (message.isMentioned(bot.user)) {
         CMD.cleverbot.talk(bot, message);

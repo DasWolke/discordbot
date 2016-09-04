@@ -2,6 +2,7 @@
  * Created by julia on 18.07.2016.
  */
 var userModel = require('../../DB/user');
+var serverModel = require('../../DB/server');
 var cleanMessage = function (message) {
     return message.replace("@", "");
 };
@@ -199,7 +200,7 @@ var pmNotifications = function (message, User) {
     }
 };
 var cooldown = function (User) {
-    if (User.cooldown > Date.now() - 5000) {
+    if (User.cooldown > Date.now() - 7500) {
         // console.log('cooldown.');
         return true;
     } else {
@@ -240,6 +241,42 @@ var getServerObj = function (message, level, pms) {
         banned: []
     };
 };
+var noSpam = function (bot,message) {
+    // if(message.mentions.users.length > 25) {
+    //     console.log('good.');
+    // }
+    console.log(message.mentions.length);
+};
+var checkNsfwChannel = function (bot,message,cb) {
+    serverModel.findOne({id:message.server.id}, function (err,Server) {
+        if (err) return console.log(err);
+        if (Server) {
+           if (typeof (Server.nsfwChannels) !== 'undefined' && Server.nsfwChannels.length > 0) {
+                for (var i = 0; i < Server.nsfwChannels.length; i++) {
+                    if (Server.nsfwChannels[i] === message.channel.id) {
+                        return cb();
+                    }
+                }
+                return cb('This Channel is not a NSFW Channel.');
+           } else {
+               if (typeof (Server.nsfwChannel) !== 'undefined' && Server.nsfwChannel === message.channel.id) {
+                   serverModel.update({id:message.server.id}, {$addToSet:{nsfwChannels:Server.nsfwChannel}, $set:{nsfwChannel:""}}, function (err) {
+                     if (err) return console.log(err);
+                   });
+                   return cb();
+               } else {
+                   return cb('Please set/add a NSFW Channel with !w.setLewd (in one of the NSFW Channels) so that normal Users can use this Command too or get the WolkeBot Role.');
+               }
+           }
+        } else {
+            if (hasWolkeBot(bot,message)) {
+                cb();
+            } else {
+                cb('Please set/add a NSFW Channel with !w.setLewd (in one of the NSFW Channels) so that normal Users can use this Command too or get the WolkeBot Role.');
+            }
+        }
+    });
+};
 module.exports = {
     cleanMessage: cleanMessage,
     createUser: createUser,
@@ -251,5 +288,7 @@ module.exports = {
     isOwner: isOwner,
     loadServerFromUser:loadServerFromUser,
     hasServer:hasServer,
-    getServerObj:getServerObj
+    getServerObj:getServerObj,
+    noSpam:noSpam,
+    checkNsfw:checkNsfwChannel
 };

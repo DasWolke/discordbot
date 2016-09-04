@@ -24,13 +24,15 @@ var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
             });
         } else {
             var server = new serverModel({
-                id: channel.server.id,
-                lastVoiceChannel: channel.id,
-                permissions: [],
-                disabledCmds: [],
-                Groups: [],
-                Blacklist: [],
-                prefix: "!w"
+                id:channel.server.id,
+                lastVoiceChannel:channel.id,
+                nsfwChannels:[],
+                cmdChannels:[],
+                permissions:[],
+                prefix:"!w",
+                disabledCmds:[],
+                Groups:[],
+                Blacklist:[]
             });
             server.save(cb);
         }
@@ -54,12 +56,14 @@ var clearLastVoice = function clearLastVoice(message, cb) {
         } else {
             var server = new serverModel({
                 id: message.server.id,
-                lastVoiceChannel: "",
-                permissions: [],
-                disabledCmds: [],
-                Groups: [],
-                Blacklist: [],
-                prefix: "!w"
+                lastVoiceChannel:"",
+                nsfwChannels:[],
+                cmdChannels:[],
+                permissions:[],
+                prefix:"!w",
+                disabledCmds:[],
+                Groups:[],
+                Blacklist:[]
             });
             server.save(cb);
         }
@@ -79,12 +83,14 @@ var loadLastVoice = function loadLastVoice(server, cb) {
                 if (typeof(server) !== 'undefined' && typeof(server.id) !== 'undefined' && server) {
                     var server = new serverModel({
                         id: server.id,
-                        lastVoiceChannel: "",
-                        permissions: [],
-                        disabledCmds: [],
-                        Groups: [],
-                        Blacklist: [],
-                        prefix: "!w"
+                        lastVoiceChannel:"",
+                        nsfwChannels:[],
+                        cmdChannels:[],
+                        permissions:[],
+                        prefix:"!w",
+                        disabledCmds:[],
+                        Groups:[],
+                        Blacklist:[]
                     });
                     server.save(cb);
                 } else {

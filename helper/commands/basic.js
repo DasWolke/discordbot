@@ -5,9 +5,8 @@ var config = require('../../config/main.json');
 var path = require('path');
 var voice = require('../utility/voice');
 var messageHelper = require('../utility/message');
-var inventory = require('./misc/inventory');
-var r34 = require('./lewd/rule34');
-var serverModel = require('../../DB/server');
+var cookie = require('./misc/cookie');
+var eatCookie = require('./misc/eatCookie');
 var humanize = require('humanize');
 var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
@@ -129,17 +128,14 @@ var basicCommands = function (bot, message) {
         case "!w.stats":
             var plural;
             var users = 0;
-            if (bot.servers.length > 1) {
+            if (bot.servers.length > 0) {
                 plural = 'servers';
                 for (var i = 0; bot.servers.length > i; i++) {
                     users = users + bot.servers[i].memberCount;
                 }
-            } else {
-                plural = 'server';
-                users = bot.servers[0].members.memberCount;
             }
-            users = users - bot.servers.length;
-            bot.reply(message, "I am currently used on " + bot.servers.length + " " + plural + " with " + users + " users.");
+            console.log(users);
+            bot.reply(message, "I am currently used on " + bot.servers.length + " servers with " + users + " users.");
             return;
         case "!w.noLevel":
             messageHelper.disableLevel(bot, message);
@@ -147,67 +143,14 @@ var basicCommands = function (bot, message) {
         case "!w.noPm":
             messageHelper.disablePm(bot,message);
             return;
-        case "!w.lewd":
-            bot.sendFile(message.channel, 'https://cdn.discordapp.com/attachments/191455136013352960/209718642722603008/412.png');
-            return;
         case "!w.cookie":
             if (!message.channel.isPrivate) {
-                inventory(bot, message, messageSplit);
+                cookie(bot, message, messageSplit);
             }
             return;
-        case "!w.r34":
-            serverModel.findOne({id:message.server.id}, function (err,Server) {
-                if (err) return console.log(err);
-                if (Server) {
-                    if (typeof(Server.nsfwChannel) !== 'undefined') {
-                        if (Server.nsfwChannel === message.channel.id) {
-                            r34(bot, message, messageSplit);
-                        } else {
-                            bot.reply(message, 'This Command is only allowed in the NSFW Channel');
-                        }
-                    } else {
-                        if (messageHelper.hasWolkeBot(bot,message)) {
-                            r34(bot, message, messageSplit);
-                        } else {
-                            bot.reply(message, 'Please set a NSFW Channel with !w.setLewd (in the NSFW Channel) so that normal Users can use this Command too or get the WolkeBot Role.');
-                        }
-                    }
-                } else {
-                    if (messageHelper.hasWolkeBot(bot,message)) {
-                        r34(bot, message, messageSplit);
-                    } else {
-                        bot.reply(message, 'Please set a NSFW Channel with !w.setLewd (in the NSFW Channel) so that normal Users can use this Command too or get the WolkeBot Role.');
-                    }
-                }
-            });
-            return;
-        case "!w.setLewd":
-            if (!message.channel.isPrivate &&messageHelper.hasWolkeBot(bot,message)) {
-                serverModel.findOne({id:message.server.id}, function (err,Server) {
-                    if (err) return console.log(err);
-                    if (Server) {
-                        Server.updateNsfw(message.channel.id, function (err) {
-                            if (err) return console.log(err);
-                            bot.reply(message, `Set NSFW Channel to ${message.channel.name}`);
-                        });
-                   } else {
-                       var server = new serverModel({
-                           id:message.server.id,
-                           lastVoiceChannel:"",
-                           nsfwChannel:message.channel.id,
-                           cmdChannel:"",
-                           permissions:[],
-                           prefix:"!w",
-                           disabledCmds:[],
-                           Groups:[],
-                           Blacklist:[]
-                       });
-                        server.save();
-                        bot.reply(message, `Set NSFW Channel to ${message.channel.name}`);
-                    }
-                });
-            } else {
-                bot.reply(message, "You need the WolkeBot Discord Role for this Command!");
+        case "!w.eatCookie":
+            if (!message.channel.isPrivate) {
+                eatCookie(bot,message);
             }
             return;
         case "!w.uptime":
