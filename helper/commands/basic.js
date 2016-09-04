@@ -53,7 +53,8 @@ var basicCommands = function (bot, message) {
                 "!w.noLevel --> disables the level system for you. Use again to enable it again for you.\n" +
                 "!w.noPm --> disables the PM notifications for you. Use again to enable it again for you.\n" +
                 "!w.pp beatmaplink acc --> Calculates PP for the beatmap with acc, currently nomod only...\n" +
-                "!w.setLewd--> Sets the current Channel as the NSFW Channel\n" +
+                "!w.setLewd--> Adds the current Channel as a NSFW Channel\n" +
+                "!w.remLewd--> Removes the current Channel from the list of NSFW Channels\n" +
                 "!w.cookie @user --> Gives a Cookie to the mentioned User or shows your Cookies if no one is mentioned. (Giving Cookies is only usable with WolkeBot Role)\n" +
                 "!w.eatCookie --> Eats a Cookie.\n" +
                 "For Any Feedback use the Support Discord Please ^^\n" +
