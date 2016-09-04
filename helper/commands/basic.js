@@ -45,6 +45,9 @@ var basicCommands = function (bot, message) {
             var reply2 =
                 "```Other Stuff:\n" +
                 "!w.r34 tags --> Searches Rule34 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
+                "!w.kona tags --> Searches Konachan for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
+                "!w.e621 tags --> Searches E621 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
+                "!w.yandere tags --> Searches Yande.re for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
                 "!w.level --> Your Level and XP needed for next Level\n" +
                 "!w.rank --> Leaderboard for this Server\n" +
                 "!w.noLevel --> disables the level system for you. Use again to enable it again for you.\n" +
@@ -52,6 +55,8 @@ var basicCommands = function (bot, message) {
                 "!w.pp beatmaplink acc --> Calculates PP for the beatmap with acc, currently nomod only...\n" +
                 "!w.setLewd--> Sets the current Channel as the NSFW Channel\n" +
                 "!w.cookie @user --> Gives a Cookie to the mentioned User or shows your Cookies if no one is mentioned. (Giving Cookies is only usable with WolkeBot Role)\n" +
+                "!w.eatCookie --> Eats a Cookie.\n" +
+                "For Any Feedback use the Support Discord Please ^^\n" +
                 "If you want to talk with me @mention me with a message :D```";
             bot.sendMessage(message.author, reply, function (err) {
                 if (err) return console.log(err);
