@@ -10,6 +10,7 @@ var osu = require('./commands/osuNoMusic');
 var youtube = require('./commands/music/youtube');
 var moderation = require('./commands/moderation');
 var hentai = require('./commands/lewd');
+var proxer = require('./commands/proxer');
 module.exports = {
     basic: basic,
     music: music, youtube: youtube,
@@ -18,5 +19,6 @@ module.exports = {
     permission: permissions,
     osuNoMusic: osu,
     moderation: moderation,
-    hentai:hentai
+    hentai:hentai,
+    proxer:proxer
 };

@@ -3,7 +3,7 @@
  */
 var voice = require('../../../utility/voice');
 var nowPlaying = function nowPlaying(bot,message) {
-    if (!message.channel.isPrivate) {
+    if (message.guild) {
         voice.now(bot,message);
     }
 };

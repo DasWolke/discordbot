@@ -18,7 +18,7 @@ var createPlaylist = function createPlaylist(bot, message) {
         playlistModel.findOne({createdBy:message.author.id, title:playlistName}, function (err, Playlist) {
             if (err) return console.log(err);
             if (Playlist) {
-                return bot.reply(message, 'You already have a playlist with the name ' + playlistName);
+                return message.reply('You already have a playlist with the name ' + playlistName);
             } else {
                 var playlist = new playlistModel({
                     title: playlistName,
@@ -34,12 +34,12 @@ var createPlaylist = function createPlaylist(bot, message) {
                     if (open) {
                         reply = "Created public Playlist " + playlistName;
                     }
-                    return bot.reply(message, reply);
+                    return message.reply(reply);
                 });
             }
         });
     } else {
-        return bot.reply(message, 'You did not enter a Name for the Playlist!');
+        return message.reply('You did not enter a Name for the Playlist!');
     }
 };
 module.exports = createPlaylist;

@@ -6,7 +6,7 @@ var voice = require('../../../utility/voice');
 var ytHelper = require('../../../youtube/helper');
 var messageHelper = require('../../../utility/message');
 var playCMD = function playCmd(bot, message, messageSplit) {
-    if (!message.channel.isPrivate) {
+    if (message.guild) {
         if (messageHelper.hasWolkeBot(bot,message)) {
             if (typeof (messageSplit[1]) !== 'undefined') {
                 var messageSearch = "";
@@ -26,21 +26,21 @@ var playCMD = function playCmd(bot, message, messageSplit) {
                                     voice.playSong(bot, message, Song);
                                 });
                             } else {
-                                bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                                message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                             }
                         } else {
-                            bot.reply(message, 'No Song Found!');
+                            message.reply('No Song Found!');
                         }
                     });
                 }
             } else {
-                bot.reply(message, 'No Search term entered!');
+                message.reply('No Search term entered!');
             }
         } else {
-            bot.reply(message, 'No Permission to use this Command! Use !w.qa instead!');
+            message.reply('No Permission to use this Command! Use !w.qa instead!');
         }
     } else {
-        bot.reply(message, "This Commands Only Works in Server Channels!");
+        message.reply("This Commands Only Works in Server Channels!");
     }
 };
 module.exports = playCMD;

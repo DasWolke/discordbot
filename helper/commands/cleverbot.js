@@ -9,8 +9,8 @@ var talkCleverBot = function talkCleverBot(bot,message) {
     var messageClean = message.content.replace(re, "");
     Cleverbot.prepare(function(){
         clever.write(messageClean, function (response) {
-            console.log(response);
-            bot.reply(message, response.message);
+            // console.log(response);
+            message.reply(response.message);
         });
     });
 };

@@ -16,13 +16,13 @@ var searchCmd = function searchCmd(bot,message,messageSplit) {
                 for (var x = 0; x < Songs.length; x++) {
                     reply = reply + parseInt(x + 1) + ": ```" + Songs[x].title + "```\n\n";
                 }
-                bot.reply(message, reply);
+                message.reply(reply);
             } else {
-                bot.reply(message, "No Songs found with Search Term " + messageHelper.cleanMessage(messageSearch));
+                message.reply("No Songs found with Search Term " + messageHelper.cleanMessage(messageSearch));
             }
         });
     } else {
-        bot.reply(message, "No Search Term entered!");
+        message.reply("No Search Term entered!");
     }
 };
 module.exports = searchCmd;

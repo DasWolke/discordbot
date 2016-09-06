@@ -22,18 +22,18 @@ var inventoryCmd = function (bot, message, messageSplit) {
                             if (typeof (clientServer.cookies) !== 'undefined') {
                                 userModel.update({
                                     id: User.id,
-                                    'servers.serverId': message.server.id
+                                    'servers.serverId': message.guild.id
                                 }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                     if (err) return console.log(err);
-                                    bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
+                                    message.reply(`Gave user ${User.name} 1 Cookie!`);
                                 });
                             } else {
                                 userModel.update({
                                     id: User.id,
-                                    'servers.serverId': message.server.id
+                                    'servers.serverId': message.guild.id
                                 }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                     if (err) return console.log(err);
-                                    bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
+                                    message.reply(`Gave user ${User.name} 1 Cookie!`);
                                 });
                             }
                         } else {
@@ -51,46 +51,46 @@ var inventoryCmd = function (bot, message, messageSplit) {
                                     if (typeof (clientServer.cookies) !== 'undefined') {
                                         userModel.update({
                                             id: User.id,
-                                            'servers.serverId': message.server.id
+                                            'servers.serverId': message.guild.id
                                         }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                             if (err) return console.log(err);
-                                            bot.reply(message, `Gave user ${User.name} 1 Cookie!`);
+                                            message.reply(`Gave user ${User.name} 1 Cookie!`);
                                         });
                                     } else {
                                         var server = messageHelper.getServerObj(message,true,true);
                                         User.addServer(server, function (err) {
                                             if (err) return console.log(err);
-                                            bot.reply(message, 'Try again please.');
+                                            message.reply('Try again please.');
                                         });
                                     }
                                 } else {
-                                    bot.reply(message, "Arere... something went wrong...");
+                                    message.reply("Arere... something went wrong...");
                                 }
                             });
                         });
                     }
                 });
             } else {
-                bot.reply(message, 'Please mention **1 User**, not more, not less!');
+                message.reply('Please mention **1 User**, not more, not less!');
             }
         } else {
-            bot.reply(message, 'You need the Administrator Permission or the WolkeBot role to give cookies!');
+            message.reply('You need the Administrator Permission or the WolkeBot role to give cookies!');
         }
     } else {
-        userModel.findOne({id: message.author.id, 'servers.serverId': message.server.id}, function (err, User) {
+        userModel.findOne({id: message.author.id, 'servers.serverId': message.guild.id}, function (err, User) {
             if (err) return console.log(err);
             if (User) {
                 var clientServer = messageHelper.loadServerFromUser(message, User);
                 if (typeof (clientServer.cookies) !== 'undefined') {
-                    bot.reply(message, `You have **${clientServer.cookies} Cookie(s)** right now.`);
+                    message.reply(`You have **${clientServer.cookies} Cookie(s)** right now.`);
                 } else {
-                    bot.reply(message, "You have **0 Cookies** right now.")
+                    message.reply("You have **0 Cookies** right now.")
                 }
             } else {
                 messageHelper.createUser(message, true, true, function (err) {
                     if (err) return console.log(err);
                 });
-                bot.reply(message, "You have **0 Cookies** right now.");
+                message.reply("You have **0 Cookies** right now.");
             }
         });
     }

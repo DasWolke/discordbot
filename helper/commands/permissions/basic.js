@@ -21,7 +21,7 @@ var permissionCommands = function permissionCommands(bot, message) {
             if (!messageSplit[1]) {
                 var reply = 'What do you want to do ?\n\n' +
                     '- `!w.perm create name` creates a Playlist with the given Name\n\n';
-                bot.reply(message, reply);
+                message.reply(reply);
             }
 
 };

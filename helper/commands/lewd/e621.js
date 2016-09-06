@@ -15,7 +15,7 @@ var e621 = function (bot,message,messageSplit) {
         }
         request.get('https://e621.net/post/index.json?limit=200&tags=' + messageSearch,function (error, response, body) {
             if (error) {
-                bot.reply(message, 'a error occured!');
+                message.reply('a error occured!');
             }
             if (!error && response.statusCode == 200) {
                 try {
@@ -27,19 +27,19 @@ var e621 = function (bot,message,messageSplit) {
                     var random = general.random(0, body.length);
                     random = Math.floor(random);
                     if (typeof(body[random]) !== 'undefined' && typeof (body[random].file_url) !== 'undefined') {
-                        bot.sendMessage(message.channel, body[random].file_url, function (err, message) {
+                        message.channel.sendMessage(body[random].file_url, function (err, message) {
                             if (err) return console.log(err);
                         });
                     } else {
 
                     }
                 } else {
-                    bot.reply(message, 'No images found with Tags: ' + messageSearch.replace(/\+/g, " "));
+                    message.reply('No images found with Tags: ' + messageSearch.replace(/\+/g, " "));
                 }
             }
         });
     } else {
-        bot.reply(message, 'No Search Term entered!');
+        message.reply('No Search Term entered!');
     }
 };
 module.exports = e621;

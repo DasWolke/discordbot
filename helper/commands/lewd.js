@@ -35,17 +35,17 @@ var lewdCmds = function (bot,message) {
             });
             return;
         case "!w.setLewd":
-            if (!message.channel.isPrivate && messageHelper.hasWolkeBot(bot, message)) {
-                serverModel.findOne({id: message.server.id}, function (err, Server) {
+            if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
+                serverModel.findOne({id: message.guild.id}, function (err, Server) {
                     if (err) return console.log(err);
                     if (Server) {
-                        serverModel.update({id: message.server.id}, {$addToSet: {nsfwChannels: message.channel.id}}, function (err) {
+                        serverModel.update({id: message.guild.id}, {$addToSet: {nsfwChannels: message.channel.id}}, function (err) {
                             if (err) return console.log(err);
-                            bot.reply(message, `Successfully added ${message.channel.name} to the NSFW Channels!`);
+                            message.reply(`Successfully added ${message.channel.name} to the NSFW Channels!`);
                         });
                     } else {
                         var server = new serverModel({
-                            id: message.server.id,
+                            id: message.guild.id,
                             lastVoiceChannel: "",
                             nsfwChannels: [message.channel.id],
                             cmdChannel: "",
@@ -56,25 +56,25 @@ var lewdCmds = function (bot,message) {
                             Blacklist: []
                         });
                         server.save();
-                        bot.reply(message, `Successfully added ${message.channel.name} to the NSFW Channels!`);
+                        message.reply(`Successfully added ${message.channel.name} to the NSFW Channels!`);
                     }
                 });
             } else {
-                bot.reply(message, "You need the WolkeBot Discord Role for this Command!");
+                message.reply("You need the WolkeBot Discord Role for this Command!");
             }
             return;
         case "!w.remLewd":
-            if (!message.channel.isPrivate && messageHelper.hasWolkeBot(bot, message)) {
-                serverModel.findOne({id: message.server.id}, function (err, Server) {
+            if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
+                serverModel.findOne({id: message.guild.id}, function (err, Server) {
                     if (err) return console.log(err);
                     if (Server) {
-                        serverModel.update({id: message.server.id}, {$pull: {nsfwChannels: message.channel.id}}, function (err) {
+                        serverModel.update({id: message.guild.id}, {$pull: {nsfwChannels: message.channel.id}}, function (err) {
                             if (err) return console.log(err);
-                            bot.reply(message, `Successfully removed ${message.channel.name} from the NSFW Channels!`)
+                            message.reply(`Successfully removed ${message.channel.name} from the NSFW Channels!`)
                         });
                     } else {
                         var server = new serverModel({
-                            id: message.server.id,
+                            id: message.guild.id,
                             lastVoiceChannel: "",
                             nsfwChannels: [],
                             cmdChannels: [],
@@ -85,11 +85,11 @@ var lewdCmds = function (bot,message) {
                             Blacklist: []
                         });
                         server.save();
-                        bot.reply(message, `There are no NSFW Channels yet.`);
+                        message.reply(`There are no NSFW Channels yet.`);
                     }
                 });
             } else {
-                bot.reply(message, "You need the WolkeBot Discord Role for this Command!");
+                message.reply("You need the WolkeBot Discord Role for this Command!");
             }
             return;
         case "!w.lewd":

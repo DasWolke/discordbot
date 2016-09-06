@@ -12,7 +12,7 @@ var addToPlaylist = function addToPlaylist(bot,message) {
         var messageCommaSep = messageCleaned.split(',');
         console.log(messageCommaSep);
     } else {
-        bot.reply(message, 'You have to add at least one Song!');
+        message.reply('You have to add at least one Song!');
     }
 };
 module.exports = addToPlaylist;

@@ -13,6 +13,8 @@ var userSchema = mongoose.Schema({
     avatar: String,
     created: Date,
     banned: Boolean,
+    verified:Boolean,
+    proxerId:String,
     favorites:[]
 });
 userSchema.methods.updateXP = function updateXP(id,xp,cb) {

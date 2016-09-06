@@ -45,10 +45,10 @@ var musicCommands = function (bot, message) {
             song.forever(bot,message,messageSplit);
             return;
         case "!w.skip":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 if (voice.inVoice(bot, message)) {
                     if(messageHelper.hasWolkeBot(bot,message)) {
-                    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+                    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
                             if (err) return console.log(err);
                             var connection = voice.getVoiceConnection(bot, message);
                             if (Queue) {
@@ -56,41 +56,41 @@ var musicCommands = function (bot, message) {
                                     Queue.stopRepeat(function (err) {
                                         if (err) return console.log(err);
                                         voice.nextSong(bot, message, Queue.songs[0], false);
-                                        bot.reply(message, "Skipped Song " + Queue.songs[0].title);
+                                        message.reply("Skipped Song " + Queue.songs[0].title);
                                     });
                                 } else {
                                     if (connection && connection.playing) {
                                         connection.stopPlaying();
-                                        bot.reply(message, "Stopped current Song!");
+                                        message.reply("Stopped current Song!");
                                     } else {
-                                        bot.reply(message, 'There is no Song playing right now!');
+                                        message.reply('There is no Song playing right now!');
                                     }
                                 }
                             } else {
                                 if (connection && connection.playing) {
                                     connection.stopPlaying();
-                                    bot.reply(message, "Stopped current Song!");
+                                    message.reply("Stopped current Song!");
                                 } else {
-                                    bot.reply(message, 'There is no Song in the Queue right now!');
+                                    message.reply('There is no Song in the Queue right now!');
                                 }
                             }
                         });
                     } else {
-                        bot.reply(message, 'No Permission! Use !w.voteskip or give yourself the WolkeBot Role.');
+                        message.reply('No Permission! Use !w.voteskip or give yourself the WolkeBot Role.');
                     }
                 } else {
-                    bot.reply(message, "I am not connected to any Voice Channel on this Server!");
+                    message.reply("I am not connected to any Voice Channel on this Server!");
                 }
             } else {
-                bot.reply(message, 'This Command does not work in private Channels');
+                message.reply('This Command does not work in private Channels');
             }
             return;
         case "!w.random":
-            if (!message.channel.isPrivate) {
-                if (message.hasWolkeBot(bot,message)) {
+            if (message.guild) {
+                if (messageHelper.hasWolkeBot(bot,message)) {
 
                     songModel.count({}, function (err, C) {
-                        if (err) return bot.reply(message, "A Database Error occured!");
+                        if (err) return message.reply("A Database Error occured!");
                         var random = general.random(0, C);
                         songModel.find({}, function (err, Songs) {
                             if (err) return console.log(err);
@@ -102,24 +102,24 @@ var musicCommands = function (bot, message) {
                                         voice.playSong(bot, message, Song);
                                     });
                                 } else {
-                                    bot.reply(message, "I am not connected to any Voice Channel on this Server!");
+                                    message.reply("I am not connected to any Voice Channel on this Server!");
                                 }
                             } else {
-                                bot.reply(message, 'A Error occured!');
+                                message.reply('A Error occured!');
                             }
                         });
                     });
                 } else {
-                    bot.reply(message, 'No Permission! You need to use !w.rq or give yourself the WolkeBot Role to use this.');
+                    message.reply('No Permission! You need to use !w.rq or give yourself the WolkeBot Role to use this.');
                 }
             } else {
-                bot.reply(message, 'This Command does not work in private Channels');
+                message.reply('This Command does not work in private Channels');
             }
             return;
         case "!w.rq":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 songModel.count({}, function (err, C) {
-                    if (err) return bot.reply(message, "A Database Error occured!");
+                    if (err) return message.reply("A Database Error occured!");
                     var random = general.random(0, C);
                     songModel.find({}, function (err, Songs) {
                         if (err) return console.log(err);
@@ -128,42 +128,42 @@ var musicCommands = function (bot, message) {
                             if (voice.inVoice(bot, message)) {
                                 voice.addToQueue(bot, message, Song);
                             } else {
-                                bot.reply(message, "I am not connected to any Voice Channel on this Server!");
+                                message.reply("I am not connected to any Voice Channel on this Server!");
                             }
                         } else {
-                            bot.reply(message, 'A Error occured!');
+                            message.reply('A Error occured!');
                         }
                     });
                 });
             } else {
-                bot.reply(message, 'This Command does not work in private Channels');
+                message.reply('This Command does not work in private Channels');
             }
             return;
         case "!w.voteskip":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 songHelper.voteSkip(bot, message, function (err, response) {
                     if (err) {
-                        return bot.reply(message, err);
+                        return message.reply(err);
                     }
-                    bot.reply(message, response);
+                    message.reply(response);
                 });
             } else {
-                bot.reply(message, 'This Command does not work in private Channels');
+                message.reply('This Command does not work in private Channels');
             }
             return;
         case "!w.volume":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 if (messageHelper.hasWolkeBot(bot,message)) {
 
                     voice.setVolume(bot, message, function (err, response) {
-                        if (err) return bot.reply(message, err);
-                        bot.reply(message, response);
+                        if (err) return message.reply(err);
+                        message.reply(response);
                     });
                 } else {
-                    bot.reply(message, 'No Permission! You need to give yourself the WolkeBot Role to use this.');
+                    message.reply('No Permission! You need to give yourself the WolkeBot Role to use this.');
                 }
             } else {
-                bot.reply(message, 'This Command does not work in private Channels');
+                message.reply('This Command does not work in private Channels');
             }
             return;
         case "!w.down":
@@ -173,14 +173,14 @@ var musicCommands = function (bot, message) {
         case "!w.fav":
             return;
         // case "!w.stream":
-        //     if (!message.channel.isPrivate) {
+        //     if (message.guild) {
         //         if (voice.inVoice(bot, message)) {
         //             voice.stream(bot, message, messageSplit[1]);
         //         } else {
-        //             bot.reply(message, 'Connect me to Voice.');
+        //             message.reply('Connect me to Voice.');
         //         }
         //     } else {
-        //         bot.reply(message, 'This Command only works in Servers');
+        //         message.reply('This Command only works in Servers');
         //     }
         //     return;
         default:

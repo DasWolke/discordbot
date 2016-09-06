@@ -12,7 +12,7 @@ var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
         case "!w.help":
-            var reply =  "Hey im Wolke-chan," +
+            var reply =  "Hey im " + bot.client.username +
                 "Lets have fun together here on Discord (/^▽^)/\n" +
                 "Commands you can write:" +
                 " ```!w.help --> Help \n" +
@@ -66,16 +66,16 @@ var basicCommands = function (bot, message) {
             bot.reply(message,'OK, i send you a list of commands over PM.');
             return;
         case "!w.version":
-            bot.reply(message, 'I am running on Version ' + config.version);
+            message.reply('I am running on Version ' + config.version);
             return;
         case "!w.add":
-            bot.reply(message, "Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=" + config.client_id + "&scope=bot&permissions=66321471\>");
+            message.reply("Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=" + config.client_id + "&scope=bot&permissions=66321471\>");
             return;
         case "!w.bug":
-            bot.reply(message, 'Please join the support Discord: https://discord.gg/yuTxmYn to report a Bug.');
+            message.reply('Please join the support Discord: https://discord.gg/yuTxmYn to report a Bug.');
             return;
         case "!w.songlist":
-            bot.reply(message, 'The List of Songs can be found at <http://w.onee.moe/songlist>');
+            message.reply('The List of Songs can be found at <http://w.onee.moe/songlist>');
             return;
         case "!w.level":
             messageHelper.getLevel(bot, message, function (err) {
@@ -83,32 +83,27 @@ var basicCommands = function (bot, message) {
             });
             return;
         case "!w.voice":
-            if (message.author.voiceChannel && !message.channel.isPrivate) {
+            if (message.guild && message.member.voiceChannel) {
                 if (messageHelper.hasWolkeBot(bot,message)) {
-                    bot.joinVoiceChannel(message.author.voiceChannel, function (err, connection) {
-                        if (!err) {
-                            voice.saveVoice(message.author.voiceChannel, function (err) {
-                                if (err) {
-                                    console.log('errrrr');
-                                    return console.log(err);
-                                }
+                    message.member.voiceChannel.join().then(connection => {
+                            voice.saveVoice(message.member.voiceChannel, function (err) {
+                                if (err) return console.log(err);
                                 console.log('Saved Voice!');
                             });
                             voice.startQueue(bot, message);
-                        } else {
-                            console.log(err);
-                            bot.reply(message, 'An Error has occured while trying to join Voice!');
-                        }
+                    }).catch(err => {
+                        console.log(err);
+                        message.reply('An Error has occured while trying to join Voice!')
                     });
                 } else {
-                    bot.reply(message, 'No Permission! You need to give yourself the WolkeBot Role to use this.');
+                    message.reply('No Permission! You need to give yourself the WolkeBot Role to use this.');
                 }
             } else {
-                bot.reply(message, "You are not in a Voice Channel!");
+                message.reply("You are not in a Voice Channel!");
             }
             return;
         case "!w.silent":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 if (voice.inVoice(bot, message)) {
                     var channel = voice.getVoiceChannel(bot, message);
                     if (messageHelper.hasWolkeBot(bot,message)) {
@@ -119,17 +114,17 @@ var basicCommands = function (bot, message) {
                             });
                         });
                     } else {
-                        bot.reply(message, 'No Permission! You need to give yourself the WolkeBot Role to use this.');
+                        message.reply('No Permission! You need to give yourself the WolkeBot Role to use this.');
                     }
                 } else {
-                    bot.reply(message, 'I am not connected to any Voice Channels on this Server!');
+                    message.reply('I am not connected to any Voice Channels on this Server!');
                 }
             } else {
-                bot.reply(message, 'This Command does not work in private Channels');
+                message.reply('This Command does not work in private Channels');
             }
             return;
         case "!w.wtf":
-            bot.reply(message, "http://wtf.watchon.io");
+            message.reply("http://wtf.watchon.io");
             return;
         case "!w.stats":
             var plural;
@@ -141,7 +136,7 @@ var basicCommands = function (bot, message) {
                 }
             }
             console.log(users);
-            bot.reply(message, "I am currently used on " + bot.servers.length + " servers with " + users + " users.");
+            message.reply("I am currently used on " + bot.servers.length + " servers with " + users + " users.");
             return;
         case "!w.noLevel":
             messageHelper.disableLevel(bot, message);
@@ -150,22 +145,22 @@ var basicCommands = function (bot, message) {
             messageHelper.disablePm(bot,message);
             return;
         case "!w.cookie":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 cookie(bot, message, messageSplit);
             }
             return;
         case "!w.eatCookie":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 eatCookie(bot,message);
             }
             return;
         case "!w.uptime":
             // console.log(bot.uptime);
-            bot.reply(message, `Uptime:${humanize.date('i-s', bot.uptime/1000)}`);
+            message.reply(`Uptime:${humanize.date('i-s', bot.uptime/1000)}`);
             return;
         case "!w.rank":
-            if (!message.channel.isPrivate) {
-                bot.reply(message, `You can find the Leaderboard for this Server here: http://w.onee.moe/l/${message.server.id}`);
+            if (message.guild) {
+                message.reply(`You can find the Leaderboard for this Server here: http://w.onee.moe/l/${message.guild.id}`);
             }
             return;
         default:

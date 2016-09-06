@@ -15,6 +15,7 @@ var createUser = function (message, level, pms, cb) {
         avatar: message.author.avatarURL,
         created: Date.now(),
         banned: false,
+        verified:false,
         favorites: [],
         cookies: []
     });
@@ -31,7 +32,7 @@ var calcXpNeededNumber = function (level) {
     return Math.floor(level * 2 * 3.14 * 15);
 };
 var updateXp = function (bot, message, cb) {
-    var serverId = message.server.id;
+    var serverId = message.guild.id;
     // console.log('Started update XP!');
     userModel.findOne({id: message.author.id}, function (err, User) {
         if (err) return cb(err);
@@ -41,14 +42,14 @@ var updateXp = function (bot, message, cb) {
                 // console.log('User has Server');
                 if (levelEnabled(message, User) && !cooldown(clientServer)) {
                     // console.log('User has Level enabled and has no Cooldown!');
-                    User.updateXP(serverId,calcXpMessage(message.cleanContent), function (err) {
+                    User.updateXP(serverId,calcXpMessage(message.content), function (err) {
                         if (err) return cb(err);
                         // console.log('Updated Xp');
-                        if (typeof (clientServer) !== 'undefined' && clientServer.xp+calcXpMessage(message.cleanContent) > calcXpNeeded(clientServer)) {
+                        if (typeof (clientServer) !== 'undefined' && clientServer.xp+calcXpMessage(message.content) > calcXpNeeded(clientServer)) {
                             User.updateLevel(serverId, function (err) {
                                 if (err) return cb(err);
                                 if (pmNotifications(message, User)) {
-                                    bot.sendMessage(User.id, 'You just reached **Level ' + parseInt(clientServer.level + 1) + '** on Server: **' + message.server.name + '**');
+                                    bot.sendMessage(User.id, 'You just reached **Level ' + parseInt(clientServer.level + 1) + '** on Server: **' + message.guild.name + '**');
                                 }
                             });
                         }
@@ -82,119 +83,111 @@ var calcBonus = function (content) {
   return bonus;
 };
 var getLevel = function getLevel(bot, message, cb) {
-    if (!message.channel.isPrivate) {
+    if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
             if (err) return cb(err);
             if (User) {
                 if (hasServer(message, User) && levelEnabled(message, User)) {
                     var clientServer = loadServerFromUser(message, User);
-                    bot.reply(message, 'You are **Level ' + clientServer.level + '** XP: ' + parseInt(clientServer.xp) + 'XP/' + parseInt(calcXpNeeded(clientServer)) + 'XP Total XP:**' + clientServer.totalXp + '**');
+                    message.reply('You are **Level ' + clientServer.level + '** XP: ' + parseInt(clientServer.xp) + 'XP/' + parseInt(calcXpNeeded(clientServer)) + 'XP Total XP:**' + clientServer.totalXp + '**');
                 } else {
-                    bot.reply(message, 'You disabled Xp for yourself on this Server.');
+                    message.reply('You disabled Xp for yourself on this Server.');
                 }
             } else {
                 createUser(message, true, true, function (err) {
                     if (err) return cb(err);
                     cb()
                 });
-                bot.reply(message, 'You are **Level ' + 1 + '** XP: ' + parseInt(2) + 'XP/' + parseInt(calcXpNeededNumber(1)) + 'XP');
+                message.reply('You are **Level ' + 1 + '** XP: ' + parseInt(2) + 'XP/' + parseInt(calcXpNeededNumber(1)) + 'XP');
             }
         });
     }
 };
 var disableLevel = function disableLevel(bot, message) {
-    if (!message.channel.isPrivate) {
+    if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
             if (err) return cb(err);
             if (User) {
                 if (hasServer(message, User)) {
                     if (levelEnabled(message, User)) {
-                        User.disableLevel(message.server.id,function (err) {
+                        User.disableLevel(message.guild.id,function (err) {
                             if (err) return console.log(err);
-                            bot.reply(message, 'Ok, i disabled the XP System for you.');
+                            message.reply('Ok, i disabled the XP System for you.');
                         });
                     } else {
-                        User.enableLevel(message.server.id,function (err) {
+                        User.enableLevel(message.guild.id,function (err) {
                             if (err) return console.log(err);
-                            bot.reply(message, 'Ok, i enabled the XP System for you.');
+                            message.reply('Ok, i enabled the XP System for you.');
                         });
                     }
                 } else {
                     User.addServer(getServerObj(message, false, false), function (err) {
                         if (err) return console.log(err);
-                        bot.reply(message, 'Ok, i disabled the XP System for you.');
+                        message.reply('Ok, i disabled the XP System for you.');
                     });
                 }
             } else {
                 createUser(message, false, false, function (err) {
                     if (err) return console.log(err);
-                    bot.reply(message, 'Ok, i disabled the XP System for you.');
+                    message.reply('Ok, i disabled the XP System for you.');
                 });
             }
         });
     }
 };
 var disablePm = function disablePm(bot, message) {
-    if (!message.channel.isPrivate) {
+    if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
             if (err) return cb(err);
             if (User) {
                 if (pmNotifications(message, User)) {
-                    User.disablePm(message.server.id,function (err) {
+                    User.disablePm(message.guild.id,function (err) {
                         if (err) return console.log(err);
-                        bot.reply(message, 'Ok, i disabled the Pm Notifications on this Server for you.');
+                        message.reply('Ok, i disabled the Pm Notifications on this Server for you.');
                     });
                 } else {
-                    User.enablePm(message.server.id,function (err) {
+                    User.enablePm(message.guild.id,function (err) {
                         if (err) return console.log(err);
-                        bot.reply(message, 'Ok, i enabled the Pm Notifications on this Server for you.');
+                        message.reply('Ok, i enabled the Pm Notifications on this Server for you.');
                     });
                 }
             } else {
                 createUser(message, true, false, function (err) {
                     if (err) return console.log(err);
-                    bot.reply(message, 'Ok, i disabled the Pm Notifications on this Server for you.');
+                    message.reply('Ok, i disabled the Pm Notifications on this Server for you.');
                 });
             }
         });
     }
 };
-var hasWolkeBot = function (bot, message, User) {
+var hasWolkeBot = function (bot, message, Member) {
     var role = {};
-    if (typeof (User) === 'undefined') {
-        for (role of message.server.rolesOfUser(message.author)) {
-            if (role.name === 'WolkeBot') {
-                return true;
-            }
-        }
+    if (typeof (Member) === 'undefined') {
+        return message.member.roles.exists('name', 'WolkeBot');
     } else {
-        for (role of message.server.rolesOfUser(User)) {
-            if (role.name === 'WolkeBot') {
-                return true;
-            }
-        }
+        return member.roles.exists('name', 'WolkeBot');
     }
-    return false;
+
 };
 var isOwner = function (bot, message) {
     return message.author.equals(message.server.owner);
 };
 var levelEnabled = function (message, User) {
     for (var i = 0; i < User.servers.length; i++) {
-        if (User.servers[i].serverId === message.server.id && User.servers[i].levelEnabled === true) {
+        if (User.servers[i].serverId === message.guild.id && User.servers[i].levelEnabled === true) {
             return true;
         }
-        if (User.servers[i].serverId === message.server.id && User.servers[i].levelEnabled === false) {
+        if (User.servers[i].serverId === message.guild.id && User.servers[i].levelEnabled === false) {
             return false;
         }
     }
 };
 var pmNotifications = function (message, User) {
     for (var i = 0; i < User.servers.length; i++) {
-        if (User.servers[i].serverId === message.server.id && User.servers[i].pmNotifications === true) {
+        if (User.servers[i].serverId === message.guild.id && User.servers[i].pmNotifications === true) {
             return true;
         }
-        if (User.servers[i].serverId === message.server.id && User.servers[i].pmNotifications === false) {
+        if (User.servers[i].serverId === message.guild.id && User.servers[i].pmNotifications === false) {
             return false;
         }
     }
@@ -212,7 +205,7 @@ var cooldown = function (User) {
 };
 var hasServer = function (message, User) {
     for (var i = 0; i < User.servers.length; i++) {
-        if (User.servers[i].serverId === message.server.id) {
+        if (User.servers[i].serverId === message.guild.id) {
             return true;
         }
     }
@@ -220,7 +213,7 @@ var hasServer = function (message, User) {
 };
 var loadServerFromUser = function (message, User) {
     for (var i = 0; i < User.servers.length; i++) {
-        if (User.servers[i].serverId === message.server.id) {
+        if (User.servers[i].serverId === message.guild.id) {
             return User.servers[i];
         }
     }
@@ -228,7 +221,7 @@ var loadServerFromUser = function (message, User) {
 };
 var getServerObj = function (message, level, pms) {
     return {
-        serverId: message.server.id,
+        serverId: message.guild.id,
         level: 1,
         xp: 5,
         totalXp: 5,
@@ -248,7 +241,7 @@ var noSpam = function (bot,message) {
     console.log(message.mentions.length);
 };
 var checkNsfwChannel = function (bot,message,cb) {
-    serverModel.findOne({id:message.server.id}, function (err,Server) {
+    serverModel.findOne({id:message.guild.id}, function (err,Server) {
         if (err) return console.log(err);
         if (Server) {
            if (typeof (Server.nsfwChannels) !== 'undefined' && Server.nsfwChannels.length > 0) {
@@ -260,7 +253,7 @@ var checkNsfwChannel = function (bot,message,cb) {
                 return cb('This Channel is not a NSFW Channel.');
            } else {
                if (typeof (Server.nsfwChannel) !== 'undefined' && Server.nsfwChannel === message.channel.id) {
-                   serverModel.update({id:message.server.id}, {$addToSet:{nsfwChannels:Server.nsfwChannel}, $set:{nsfwChannel:""}}, function (err) {
+                   serverModel.update({id:message.guild.id}, {$addToSet:{nsfwChannels:Server.nsfwChannel}, $set:{nsfwChannel:""}}, function (err) {
                      if (err) return console.log(err);
                    });
                    return cb();

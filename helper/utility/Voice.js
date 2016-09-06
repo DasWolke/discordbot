@@ -2,6 +2,7 @@
  * Created by julia on 10.07.2016.
  */
 var Discord = require('discord.js');
+var ytdl = require('ytdl-core');
 var queueModel = require('../../DB/queue');
 var songModel = require('../../DB/song');
 var serverModel = require('../../DB/server');
@@ -10,7 +11,7 @@ var songDuration = 0;
 var general = require('./general');
 var request = require('request');
 var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
-    serverModel.findOne({id: channel.server.id}, function (err, Server) {
+    serverModel.findOne({id: channel.guild.id}, function (err, Server) {
         if (err) {
             console.log('error!!!');
             return cb(err);
@@ -24,22 +25,22 @@ var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
             });
         } else {
             var server = new serverModel({
-                id:channel.server.id,
-                lastVoiceChannel:channel.id,
-                nsfwChannels:[],
-                cmdChannels:[],
-                permissions:[],
-                prefix:"!w",
-                disabledCmds:[],
-                Groups:[],
-                Blacklist:[]
+                id: channel.server.id,
+                lastVoiceChannel: channel.id,
+                nsfwChannels: [],
+                cmdChannels: [],
+                permissions: [],
+                prefix: "!w",
+                disabledCmds: [],
+                Groups: [],
+                Blacklist: []
             });
             server.save(cb);
         }
     });
 };
 var clearLastVoice = function clearLastVoice(message, cb) {
-    serverModel.findOne({id: message.server.id}, function (err, Server) {
+    serverModel.findOne({id: message.guild.id}, function (err, Server) {
         if (err) {
             console.log('error!!!');
             return cb(err);
@@ -55,15 +56,15 @@ var clearLastVoice = function clearLastVoice(message, cb) {
             });
         } else {
             var server = new serverModel({
-                id: message.server.id,
-                lastVoiceChannel:"",
-                nsfwChannels:[],
-                cmdChannels:[],
-                permissions:[],
-                prefix:"!w",
-                disabledCmds:[],
-                Groups:[],
-                Blacklist:[]
+                id: message.guild.id,
+                lastVoiceChannel: "",
+                nsfwChannels: [],
+                cmdChannels: [],
+                permissions: [],
+                prefix: "!w",
+                disabledCmds: [],
+                Groups: [],
+                Blacklist: []
             });
             server.save(cb);
         }
@@ -83,14 +84,14 @@ var loadLastVoice = function loadLastVoice(server, cb) {
                 if (typeof(server) !== 'undefined' && typeof(server.id) !== 'undefined' && server) {
                     var server = new serverModel({
                         id: server.id,
-                        lastVoiceChannel:"",
-                        nsfwChannels:[],
-                        cmdChannels:[],
-                        permissions:[],
-                        prefix:"!w",
-                        disabledCmds:[],
-                        Groups:[],
-                        Blacklist:[]
+                        lastVoiceChannel: "",
+                        nsfwChannels: [],
+                        cmdChannels: [],
+                        permissions: [],
+                        prefix: "!w",
+                        disabledCmds: [],
+                        Groups: [],
+                        Blacklist: []
                     });
                     server.save(cb);
                 } else {
@@ -103,75 +104,43 @@ var loadLastVoice = function loadLastVoice(server, cb) {
     }
 };
 var joinVoiceChannel = function joinVoiceChannel(bot, channel, cb) {
-    bot.joinVoiceChannel(channel, function (err, connection) {
-        if (!err) {
+    channel.join().then(connection => {
 
-        } else {
-            console.log(err);
-            cb('An Error has occured while trying to join Voice!');
-        }
-    });
+    }).catch(cb);
 };
 var inVoiceChannel = function inVoiceChannel(bot, message) {
-    for (var connectionC of bot.internal.voiceConnections) {
-        for (var channel of message.server.channels) {
-            if (channel instanceof Discord.VoiceChannel) {
-                if (connectionC.voiceChannel.equals(channel)) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
+    console.log(!!bot.voiceConnections.get(message.guild.id));
+    return (!!bot.voiceConnections.get(message.guild.id));
 };
 var getVoiceConnection = function getVoiceConnection(bot, message) {
-    for (var connectionA of bot.internal.voiceConnections) {
-        for (var channel of message.server.channels) {
-            if (channel instanceof Discord.VoiceChannel) {
-                if (connectionA.voiceChannel.equals(channel)) {
-                    return connectionA;
-                }
-            }
-        }
+    if (!!bot.voiceConnections.get(message.guild.id)) {
+        return bot.voiceConnections.get(message.guild.id);
     }
     return null;
 };
-var getVoiceConnectionServer = function getVoiceConnectionServer(bot, server) {
-    for (var connectionA of bot.internal.voiceConnections) {
-        for (var channel of server.channels) {
-            if (channel instanceof Discord.VoiceChannel) {
-                if (connectionA.voiceChannel.equals(channel)) {
-                    return connectionA;
-                }
-            }
-        }
+var getVoiceConnectionServer = function getVoiceConnectionServer(bot, guild) {
+    if (!!bot.voiceConnections.get(guild.id)) {
+        return bot.voiceConnections.get(guild.id);
     }
     return null;
 };
 var getVoiceChannel = function getVoiceChannel(bot, message) {
-    for (var connection of bot.internal.voiceConnections) {
-        for (var channel of message.server.channels) {
-            if (channel instanceof Discord.VoiceChannel) {
-                if (connection.voiceChannel.equals(channel)) {
-                    return channel;
-                }
-            }
-        }
+    if (!!bot.voiceConnections.get(message.guild.id)) {
+        var conn = bot.voiceConnections.get(message.guild.id);
+        return conn.channel;
     }
     return null;
 };
-var getChannelFromId = function getChannelFromId(server, id) {
-    for (var channel of server.channels) {
-        if (channel.id === id) {
-            return channel;
-        }
+var getChannelFromId = function getChannelFromId(guild, id) {
+    if (!!guild.channels.get(id)) {
+        return guild.channels.get(id);
     }
     return null;
 };
 var nextSong = function nextSong(bot, message, Song) {
     if (inVoiceChannel(bot, message)) {
-        var connectionE = getVoiceConnection(bot, message);
-        queueModel.findOne({server: message.server.id}, function (err, Queue) {
+        // var connectionE = getVoiceConnection(bot, message);
+        queueModel.findOne({server: message.guild.id}, function (err, Queue) {
             if (err) return console.log(err);
             if (Queue) {
                 if (Queue.songs.length > 0) {
@@ -193,7 +162,6 @@ var nextSong = function nextSong(bot, message, Song) {
                                                 });
                                             } else {
                                                 Queue.resetVotes();
-                                                connectionE.stopPlaying();
                                             }
                                         });
                                     });
@@ -213,7 +181,6 @@ var nextSong = function nextSong(bot, message, Song) {
                                         });
                                     } else {
                                         Queue.resetVotes();
-                                        connectionE.stopPlaying();
                                     }
                                 });
                             });
@@ -221,7 +188,6 @@ var nextSong = function nextSong(bot, message, Song) {
                     }
                 } else {
                     Queue.resetVotes();
-                    connectionE.stopPlaying();
                 }
             } else {
                 return;
@@ -230,7 +196,7 @@ var nextSong = function nextSong(bot, message, Song) {
     }
 };
 var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
-    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
         if (err) return cb(err);
         var Songs = [];
         Song.user = {};
@@ -271,7 +237,7 @@ var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
         } else {
             if (typeof(repeat) !== 'undefined') {
                 var queue = new queueModel({
-                    server: message.server.id,
+                    server: message.guild.id,
                     voteSkip: 0,
                     repeat: true,
                     repeatId: Song.id,
@@ -279,7 +245,7 @@ var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
                 });
             } else {
                 var queue = new queueModel({
-                    server: message.server.id,
+                    server: message.guild.id,
                     voteSkip: 0,
                     repeat: false,
                     songs: Songs
@@ -291,36 +257,31 @@ var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
 };
 var playSong = function (bot, message, Song, Queueused) {
     var connection = getVoiceConnection(bot, message);
-    if (!connection.playing) {
-        try {
-            connection.resume();
-        } catch (e) {
-
-        }
+    var dispatcher;
+    if (Song.dl === "stream") {
+        dispatcher = connection.playStream(ytdl(Song.url, {audioonly:true}));
+    } else {
+        dispatcher = connection.playFile(path.resolve(Song.path));
+        console.log(path.resolve(Song.path));
     }
-    connection.stopPlaying();
-    connection.playFile(path.resolve(Song.path), {volume: 0.25}).then(function (intent) {
         updatePlays(Song.id, function (err) {
             if (err) return console.log(err);
         });
         if (typeof(Queueused) === 'undefined') {
-            bot.sendMessage(message.channel, "Now playing Song: " + Song.title);
+            message.channel.sendMessage("Now playing Song: " + Song.title);
         }
         var timer = setInterval(function () {
             setDuration(getDuration() + 1);
         }, 1000);
-        intent.on("end", function () {
+        dispatcher.on("end", function () {
             clearInterval(timer);
             setDuration(0);
             console.log("File ended!");
             nextSong(bot, message, Song);
         });
-        intent.on("error", function (err) {
+        dispatcher.on("error", function (err) {
             console.log(err);
         });
-    }).catch(function (err) {
-        console.log(err);
-    });
 };
 // var streamSong = function (bot, message, messageSplit) {
 //     var connection = getVoiceConnection(bot, message);
@@ -333,22 +294,22 @@ var playSong = function (bot, message, Song, Queueused) {
 //     }
 //     var stream;
 //     request('http://listen.technobase.fm/tunein-mp3-pls').pipe(stream);
-    // connection.stopPlaying();
-    // connection.playRawStream(stream, {volume: 0.25}).then(function (intent) {
-        // updatePlays(Song.id, function (err) {
-        //     if (err) return console.log(err);
-        // });
-        // if (typeof(Queueused) === 'undefined') {
-            // bot.sendMessage(message.channel, "Now playing Song: " + Song.title);
-        // }
-        // var timer = setInterval(function () {
-        //     setDuration(getDuration() + 1);
-        // }, 1000);
-        // intent.on("end", function () {
-        //     clearInterval(timer);
-        //     setDuration(0);
-        //     console.log("File ended!");
-            // nextSong(bot, message, Song);
+// connection.stopPlaying();
+// connection.playRawStream(stream, {volume: 0.25}).then(function (intent) {
+// updatePlays(Song.id, function (err) {
+//     if (err) return console.log(err);
+// });
+// if (typeof(Queueused) === 'undefined') {
+// message.channel.sendMessage("Now playing Song: " + Song.title);
+// }
+// var timer = setInterval(function () {
+//     setDuration(getDuration() + 1);
+// }, 1000);
+// intent.on("end", function () {
+//     clearInterval(timer);
+//     setDuration(0);
+//     console.log("File ended!");
+// nextSong(bot, message, Song);
 //         });
 //         intent.on("error", function (err) {
 //             console.log(err);
@@ -358,7 +319,7 @@ var playSong = function (bot, message, Song, Queueused) {
 //     });
 // };
 var startQueue = function (bot, message) {
-    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
         if (err) return console.log(err);
         if (Queue) {
             Queue.stopRepeat(function (err) {
@@ -376,7 +337,7 @@ var startQueue = function (bot, message) {
     });
 };
 var autoStartQueue = function (bot, message) {
-    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
         if (err) return console.log(err);
         if (Queue) {
             Queue.stopRepeat(function (err) {
@@ -394,7 +355,7 @@ var autoStartQueue = function (bot, message) {
     });
 };
 var addToQueue = function (bot, message, Song) {
-    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
         if (err) return console.log(err);
         var connection = getVoiceConnection(bot, message);
         Song.user = {};
@@ -410,24 +371,24 @@ var addToQueue = function (bot, message, Song) {
                 }
                 for (var i = 0; i < Queue.songs.length; i++) {
                     if (Queue.songs[i].id === Song.id) {
-                        return bot.reply(message, Song.title + " is already in the Queue!");
+                        return message.reply(Song.title + " is already in the Queue!");
                     }
                 }
                 queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
                     if (err) return console.log(err);
-                    bot.reply(message, "Successfully added " + Song.title + " to the Queue!");
+                    message.reply("Successfully added " + Song.title + " to the Queue!");
                 });
             });
         } else {
             var queue = new queueModel({
-                server: message.server.id,
+                server: message.guild.id,
                 songs: [Song],
                 repeat: false,
                 repeatId: ""
             });
             queue.save(function (err) {
                 if (err) return console.log(err);
-                bot.reply(message, "Successfully added " + Song.title + " to the Queue!");
+                message.reply("Successfully added " + Song.title + " to the Queue!");
                 if (connection) {
                     playSong(bot, message, Song);
                 }
@@ -436,26 +397,26 @@ var addToQueue = function (bot, message, Song) {
     });
 };
 var nowPlaying = function (bot, message) {
-    queueModel.findOne({server: message.server.id}, function (err, Queue) {
+    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
         if (err) return console.log(err);
         if (Queue) {
             if (Queue.songs.length === 0) {
-                bot.reply(message, 'Nothing is playing right now...');
+                message.reply('Nothing is playing right now...');
             } else {
                 if (inVoiceChannel(bot, message)) {
-                    bot.reply(message, 'Currently Playing: ```' + Queue.songs[0].title + " " + general.convertSeconds(getDuration()) + "```");
+                    message.reply('Currently Playing: ```' + Queue.songs[0].title + " " + general.convertSeconds(getDuration()) + "```");
                 } else {
-                    bot.reply(message, 'Nothing is playing right now...');
+                    message.reply('Nothing is playing right now...');
                 }
             }
         } else {
             var queue = new queueModel({
-                server: message.server.id,
+                server: message.guild.id,
                 songs: []
             });
             queue.save(function (err) {
                 if (err) return console.log(err);
-                bot.reply(message, 'Nothing is playing right now...');
+                message.reply('Nothing is playing right now...');
             });
         }
     });

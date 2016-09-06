@@ -17,7 +17,7 @@ var rule34 = function (bot,message,messageSplit) {
         }
         request.get('http://rule34.xxx/index.php?page=dapi&s=post&q=index&limit=100&tags=' + messageSearch,function (error, response, body) {
             if (error) {
-                bot.reply(message, 'a error occured!');
+                message.reply('a error occured!');
             }
             if (!error && response.statusCode == 200) {
                 var jsonObj = x2js.xml2js(body);
@@ -25,19 +25,19 @@ var rule34 = function (bot,message,messageSplit) {
                     var random = general.random(0, jsonObj.posts.post.length);
                     random = Math.floor(random);
                     if (typeof(jsonObj.posts.post[random]) !== 'undefined' && typeof (jsonObj.posts.post[random]._file_url) !== 'undefined') {
-                        bot.sendMessage(message.channel, 'http:' + jsonObj.posts.post[random]._file_url, function (err, message) {
+                        message.channel.sendMessage('http:' + jsonObj.posts.post[random]._file_url, function (err, message) {
                             if (err) return console.log(err);
                         });
                     } else {
 
                     }
             } else {
-                    bot.reply(message, 'No images found with Tags: ' + messageSearch.replace(/%20/g, " "));
+                    message.reply('No images found with Tags: ' + messageSearch.replace(/%20/g, " "));
                 }
             }
         });
     } else {
-        bot.reply(message, 'No Search Term entered!');
+        message.reply('No Search Term entered!');
     }
 };
 module.exports = rule34;
