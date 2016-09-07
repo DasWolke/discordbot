@@ -1,4 +1,5 @@
 var youtubedl = require('youtube-dl');
+var ffmpeg = require('fluent-ffmpeg');
 var ytdl_core = require('ytdl-core');
 var youtubesearch = require('youtube-search');
 var songModel = require('../../DB/song');
@@ -16,40 +17,56 @@ var download = function (url, message, cb) {
             songModel.findOne({id: info.id}, function (err, Song) {
                 if (err) return cb(err);
                 if (!Song) {
+                    console.log('test');
                     // youtubedl.exec(url, ['-x', '--audio-format', 'mp3', '-j', '-o', '\"%(id)s.%(ext)s\"'], {}, function(err, output) {
                     //     if (err) console.log(err);
                     //     console.log(output);
                     // });
-                //     var video = youtubedl(url, ["--restrict-filenames", "-x", "--audio-format", "mp3"], {cwd: __dirname});
-                //     var filename = info.id + ".mp3";
-                //     var stream = fs.createWriteStream('audio/' + filename);
-                //     video.pipe(stream);
-                //     video.on('info', function (info) {
-                //         console.log('Download started');
-                //         console.log('filename: ' + info._filename);
-                //         console.log('size: ' + info.size);
-                //     });
-                //     video.on('complete', function complete(info) {
-                //         console.log('filename: ' + info._filename + ' finished');
-                //         cb(null, info);
-                //     });
-                //     video.on('end', function () {
-                //         console.log('finished downloading!');
-                        var song = new songModel({
-                            title: info.title,
-                            alt_title: info.alt_title,
-                            id: info.id,
-                            addedBy: message.author.id,
-                            addedAt: Date.now(),
-                            type: "audio/mp3",
-                            url: url,
-                            dl: "stream"
-                        });
-                        song.save(function (err) {
-                            if (err) return cb(err);
-                            cb(null, info);
-                        });
-                //     });
+                    var video = youtubedl(url, ["--restrict-filenames"], {cwd: __dirname});
+                    var filename = info.id + ".temp";
+                    var stream = video.pipe(fs.createWriteStream('temp/' + filename));
+                    video.on('info', function (info) {
+                        console.log('Download started');
+                        console.log('filename: ' + info._filename);
+                        console.log('size: ' + info.size);
+                        console.log(`Duration ${info.duration}`);
+                    });
+                    video.on('complete', function complete(info) {
+                        console.log('filename: ' + info._filename + ' finished');
+                        cb(null, info);
+                    });
+                    video.on('end', function () {
+                        console.log('finished downloading!');
+                        ffmpeg(fs.createReadStream('temp/' + filename)).output('./audio/' + info.id + '.mp3')
+                            .on('stderr', err => {
+                                console.log('Stderr output: ' + err);
+                            }).on('error', err => {
+                                cb(err);
+                            }).on('end', (stdout, stderr) => {
+                                console.log('Finished Converting');
+                                fs.unlink('temp/' + filename, function (err) {
+                                    if (err) return cb(err);
+                                    var song = new songModel({
+                                        title: info.title,
+                                        alt_title: info.alt_title,
+                                        id: info.id,
+                                        addedBy: message.author.id,
+                                        addedAt: Date.now(),
+                                        duration:info.duration,
+                                        type: "audio/mp3",
+                                        url: url,
+                                        dl: "stream",
+                                        cached:true,
+                                        cachedAt:new Date(),
+                                        path:`audio/${info.id}.mp3`
+                                    });
+                                    song.save(function (err) {
+                                        if (err) return cb(err);
+                                        cb(null, info);
+                                    });
+                                });
+                            }).run();
+                    });
                 } else {
                     cb(null, info);
                 }
@@ -84,11 +101,15 @@ var search = function (message, cb) {
 };
 var checkTime = function (duration) {
   var durationSplit = duration.split(':');
+    console.log(durationSplit);
+    console.log(parseInt(durationSplit[0]));
+    var number = parseInt(durationSplit[0]);
+    console.log(parseInt(durationSplit[0]) > 1);
     if (parseInt(durationSplit.length) > 3) {
         return false;
     } else {
         if (durationSplit.length === 3) {
-            if (parseInt(durationSplit[0] > 1)) {
+            if (parseInt(durationSplit[0]) > 1) {
                 return false;
             } else {
                 if (parseInt(durationSplit[0]) === 1 && parseInt(durationSplit[1])> 30) {

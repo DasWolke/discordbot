@@ -18,8 +18,10 @@ var songSchema = mongoose.Schema({
     votes:Number,
     votedDownBy:[],
     votedUpBy:[],
-    duration:Number,
-    user:Object
+    duration:String,
+    user:Object,
+    cached:Boolean,
+    cachedAt:Date
 });
 songSchema.methods.updateVotes = function updateVotes(vote,cb) {
     this.model('Songs').update({id:this.id}, {$inc: {votes:vote}}, cb);

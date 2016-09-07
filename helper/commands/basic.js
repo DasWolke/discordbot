@@ -127,16 +127,14 @@ var basicCommands = function (bot, message) {
             message.reply("http://wtf.watchon.io");
             return;
         case "!w.stats":
-            var plural;
             var users = 0;
-            if (bot.servers.length > 0) {
-                plural = 'servers';
-                for (var i = 0; bot.servers.length > i; i++) {
-                    users = users + bot.servers[i].memberCount;
+            var guildArray = bot.guilds.array();
+            if (guildArray.length > 0) {
+                for (var i = 0; guildArray.length > i; i++) {
+                    users = users + guildArray[i].memberCount -1;
                 }
             }
-            console.log(users);
-            message.reply("I am currently used on " + bot.servers.length + " servers with " + users + " users.");
+            message.reply(`I am currently used on ${guildArray.length} guilds with ${users} users.`);
             return;
         case "!w.noLevel":
             messageHelper.disableLevel(bot, message);

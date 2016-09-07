@@ -2,6 +2,7 @@
  * Created by julia on 10.07.2016.
  */
 var Discord = require('discord.js');
+var fs = require('fs');
 var ytdl = require('ytdl-core');
 var queueModel = require('../../DB/queue');
 var songModel = require('../../DB/song');
@@ -109,7 +110,7 @@ var joinVoiceChannel = function joinVoiceChannel(bot, channel, cb) {
     }).catch(cb);
 };
 var inVoiceChannel = function inVoiceChannel(bot, message) {
-    console.log(!!bot.voiceConnections.get(message.guild.id));
+    // console.log(!!bot.voiceConnections.get(message.guild.id));
     return (!!bot.voiceConnections.get(message.guild.id));
 };
 var getVoiceConnection = function getVoiceConnection(bot, message) {
@@ -257,31 +258,29 @@ var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
 };
 var playSong = function (bot, message, Song, Queueused) {
     var connection = getVoiceConnection(bot, message);
-    var dispatcher;
-    if (Song.dl === "stream") {
-        dispatcher = connection.playStream(ytdl(Song.url, {audioonly:true}));
-    } else {
-        dispatcher = connection.playFile(path.resolve(Song.path));
-        console.log(path.resolve(Song.path));
+    var dispatcher = connection.playFile(path.resolve(Song.path));
+    console.log(path.resolve(Song.path));
+    updatePlays(Song.id, function (err) {
+        if (err) return console.log(err);
+    });
+    if (typeof(Queueused) === 'undefined') {
+        message.channel.sendMessage("Now playing Song: " + Song.title);
     }
-        updatePlays(Song.id, function (err) {
-            if (err) return console.log(err);
-        });
-        if (typeof(Queueused) === 'undefined') {
-            message.channel.sendMessage("Now playing Song: " + Song.title);
-        }
-        var timer = setInterval(function () {
-            setDuration(getDuration() + 1);
-        }, 1000);
-        dispatcher.on("end", function () {
-            clearInterval(timer);
-            setDuration(0);
-            console.log("File ended!");
-            nextSong(bot, message, Song);
-        });
-        dispatcher.on("error", function (err) {
-            console.log(err);
-        });
+    var timer = setInterval(function () {
+        setDuration(getDuration() + 1);
+    }, 1000);
+    dispatcher.on("end", function () {
+        clearInterval(timer);
+        setDuration(0);
+        console.log("File ended!");
+        nextSong(bot, message, Song);
+    });
+    dispatcher.on("debug", information => {
+        console.log(`Debug: ${information}`);
+    });
+    dispatcher.on("error", function (err) {
+        console.log(`Error: ${err}`);
+    });
 };
 // var streamSong = function (bot, message, messageSplit) {
 //     var connection = getVoiceConnection(bot, message);

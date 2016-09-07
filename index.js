@@ -48,7 +48,7 @@ bot.on('ready', function () {
     });
     setTimeout(function () {
         console.log('start loading Voice!');
-        async.each(bot.guilds, function (guild, cb) {
+        async.each(bot.guilds.array(), function (guild, cb) {
             voice.loadVoice(guild, function (err, id) {
                 if (err) return cb(err);
                 if (typeof (id) !== 'undefined' && id !== '') {
