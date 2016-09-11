@@ -165,7 +165,7 @@ var hasWolkeBot = function (bot, message, Member) {
     if (typeof (Member) === 'undefined') {
         return message.member.roles.exists('name', 'WolkeBot');
     } else {
-        return member.roles.exists('name', 'WolkeBot');
+        return Member.roles.exists('name', 'WolkeBot');
     }
 
 };

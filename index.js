@@ -89,13 +89,9 @@ bot.on("message", function (message) {
             // CMD.playlist(bot,message);
         }
     } else if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user)) {
-        // console.log('received message!');
-        // messageHelper.noSpam(bot,message);
         messageHelper.updateXP(bot, message, function (err) {
             if (err) return console.log(err);
         });
-    } else if (message.guild && !message.mentions.users.exists('id', bot.user.id)) {
-        // messageHelper.noSpam(bot,message);
     }
     if (!!message.mentions.users.get(bot.user.id) && message.mentions.users.size === 1) {
         CMD.cleverbot.talk(bot, message);

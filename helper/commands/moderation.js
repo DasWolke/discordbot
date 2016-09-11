@@ -15,15 +15,18 @@ var moderationCMD = function moderationCMD(bot, message) {
                     } catch (e) {
                         return message.reply('Could not parse the Number !');
                     }
-                    bot.getChannelLogs(message.channel, number, {before: message}, function (err, Messages) {
-                        if (err) return message.reply('Error while trying to get Channel Logs!');
-                        if (Messages.length > 0) {
-                            bot.deleteMessages(Messages, function (err) {
-                                if (err) return message.reply('Error while trying to delete Messages!');
+                    if (number > 100) {
+                        message.reply('You can not delete more than 100 Messages at once!');
+                    } else {
+                        message.channel.fetchMessages({before: message.id, limit: number}).then(messages => {
+                            message.channel.bulkDelete(messages).then(messages => {
                                 message.reply(`Successfully deleted ${number} messages`);
+                            }).catch(err => {
+                                message.reply('Error while trying to delete Messages!');
+                                console.log(err);
                             });
-                        }
-                    });
+                        }).catch(console.log);
+                    }
                 } else {
                     message.reply('No Number of Messages to delete provided!');
                 }
@@ -33,15 +36,20 @@ var moderationCMD = function moderationCMD(bot, message) {
             return;
         case "!w.kick":
             if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
-                if (message.mentions.length === 1) {
-                    if (message.mentions[0].id !== message.server.owner.id && !messageHelper.hasWolkeBot(bot, message, message.mentions[0])) {
-                        bot.kickMember(message.mentions[0], message.server, function (err) {
-                            if (err) return message.reply("An Error occurred while trying to kick the User!");
-                            message.reply(`Kicked User ${message.mentions[0].name}`);
-                        });
-                    } else {
-                        message.reply('You can not kick the Owner or anyone with the WolkeBot Role.');
-                    }
+                let user = message.mentions.users.first();
+                if (user) {
+                    message.guild.fetchMember(user).then(member => {
+                        if (member.id !== message.guild.owner.id && !messageHelper.hasWolkeBot(bot, message, member)) {
+                            member.kick().then(member => {
+                                message.reply(`Kicked User ${member.user.username}`);
+                            }).catch(err => {
+                                console.log(err);
+                                message.reply(`An Error occurred while trying to kick ${member.user.name} !`);
+                            });
+                        } else {
+                            message.reply('You can not kick the Owner or anyone with the WolkeBot Role.');
+                        }
+                    }).catch(console.log);
                 } else {
                     message.reply('Please kick only 1 Person at a time.');
                 }
@@ -52,18 +60,18 @@ var moderationCMD = function moderationCMD(bot, message) {
         case "!w.ban":
             if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
                 if (message.mentions.length === 1) {
-                    if (message.mentions[0].id !== message.server.owner.id && !messageHelper.hasWolkeBot(bot, message, message.mentions[0])) {
-                        bot.banMember(message.mentions[0], message.server, 7, function (err) {
+                    if (message.mentions[0].id !== message.guild.owner.id && !messageHelper.hasWolkeBot(bot, message, message.mentions[0])) {
+                        bot.banMember(message.mentions[0], message.guild, 7, function (err) {
                             if (err) {
                                 console.log(err);
                                 return message.reply("An Error occurred while trying to ban the User!");
                             }
                             var ban = new banModel({
                                 id: message.mentions[0].id,
-                                serverId: message.guild.id,
+                                guildId: message.guild.id,
                                 name: message.mentions[0].name,
-                                bannedBy:message.author.id,
-                                bannedByName:message.author.name
+                                bannedBy: message.author.id,
+                                bannedByName: message.author.name
                             });
                             ban.save(function (err) {
                                 if (err) return console.log(err);
@@ -83,20 +91,20 @@ var moderationCMD = function moderationCMD(bot, message) {
         case "!w.unban":
             if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
                 var messageSearch;
-                for (var i = 1; i<messageSplit.length;i++) {
+                for (var i = 1; i < messageSplit.length; i++) {
                     if (i === 1) {
                         messageSearch = messageSplit[i];
                     } else {
                         messageSearch = messageSearch + " " + messageSplit[i];
-                   }
+                    }
                 }
-                banModel.findOne({name:messageSearch}, function (err,Ban) {
-                   if (err) {
-                       message.reply('Could not load Bans..');
-                       return console.log(err);
-                   }
+                banModel.findOne({name: messageSearch}, function (err, Ban) {
+                    if (err) {
+                        message.reply('Could not load Bans..');
+                        return console.log(err);
+                    }
                     if (Ban) {
-                        bot.getBans(message.server, function (err, Users) {
+                        bot.getBans(message.guild, function (err, Users) {
                             if (err) {
                                 message.reply('Could not load Bans..');
                                 return console.log(err);
@@ -105,7 +113,7 @@ var moderationCMD = function moderationCMD(bot, message) {
                                 for (var y = 0; y < Users.length; y++) {
                                     if (Users[y].id === Ban.id) {
                                         var User = Users[y];
-                                        bot.unbanMember(User,message.server, function (err) {
+                                        bot.unbanMember(User, message.guild, function (err) {
                                             if (err) return message.reply('Error unbanning ' + Ban.name);
                                             message.reply('Successfully unbanned ' + Ban.name);
                                         });
@@ -126,7 +134,7 @@ var moderationCMD = function moderationCMD(bot, message) {
             return;
         case "!w.listban":
             if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
-                banModel.find({serverId:message.guild.id}, function (err, Bans) {
+                banModel.find({guildId: message.guild.id}, function (err, Bans) {
                     if (err) {
                         message.reply('Could not load Bans..');
                         return console.log(err);
@@ -135,9 +143,9 @@ var moderationCMD = function moderationCMD(bot, message) {
                         var reply = "";
                         for (var y = 0; y < Bans.length; y++) {
                             if (y === 0) {
-                                reply = `${y+1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
+                                reply = `${y + 1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
                             } else {
-                                reply = reply + `${y+1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
+                                reply = reply + `${y + 1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
                             }
                         }
                         message.reply(reply);

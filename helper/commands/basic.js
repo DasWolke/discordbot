@@ -12,38 +12,37 @@ var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
         case "!w.help":
-            var reply =  "Hey im " + bot.client.username +
-                "Lets have fun together here on Discord (/^▽^)/\n" +
-                "Commands you can write:" +
-                " ```!w.help --> Help \n" +
-                "SUPPORT:\n" +
-                "!w.bug --> get the Link of the Support Discord \n" +
-                "!w.add --> Get a link to add me to your server \n" +
-                "--------------------------------\n" +
-                "Music:\n" +
-                "!w.voice --> i join the Voice Channel you are currently in (only usable with WolkeBot Role)\n" +
-                "!w.silent --> i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role)\n" +
-                "!w.songlist --> Lists all Songs that are currently added to the Bot Database\n" +
-                "!w.play name --> Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)\n" +
-                "!w.forever name --> Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role)\n" +
-                "!w.pause --> Pause the Current Song (only usable with WolkeBot Role)\n" +
-                "!w.resume --> Resume the pause Song (only usable with WolkeBot Role)\n" +
-                "!w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results\n" +
-                "!w.skip --> Skips the Current Song (only usable with WolkeBot Role)\n" +
-                "!w.voteskip --> Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped.\n" +
-                "!w.qa name --> Adds a Song/Youtube Video to the Queue max Length: 1H30M\n" +
-                "!w.qrl --> removes the latest added song out of the queue \n" +
-                "!w.queue --> Shows the current Queue\n" +
-                "!w.rq --> Adds a random Song to the Queue max Length: 1H30M\n" +
-                "!w.random --> Plays a Random Song (only usable with WolkeBot Role)\n" +
-                "!w.osu maplink --> download a Osu Map\n" +
-                "--------------------------------\n" +
+            var reply = `Hey im ${bot.user.username}, lets have fun together here on Discord (/^▽^)/ Commands you can write: 
+                 \`\`\`!w.help --> Help  
+SUPPORT: 
+!w.bug --> get the Link of the Support Discord  
+!w.add --> Get a link to add me to your server  
+-------------------------------- 
+Music: 
+!w.voice --> i join the Voice Channel you are currently in (only usable with WolkeBot Role) 
+!w.silent --> i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role) 
+!w.songlist --> Lists all Songs that are currently added to the Bot Database 
+!w.play name --> Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role) 
+!w.forever name --> Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role) 
+!w.pause --> Pause the Current Song (only usable with WolkeBot Role) 
+!w.resume --> Resume the pause Song (only usable with WolkeBot Role) 
+!w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results 
+!w.skip --> Skips the Current Song (only usable with WolkeBot Role) 
+!w.voteskip --> Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped. 
+!w.qa name --> Adds a Song/Youtube Video to the Queue max Length: 1H30M 
+!w.qrl --> removes the latest added song out of the queue  
+!w.queue --> Shows the current Queue 
+!w.rq --> Adds a random Song to the Queue max Length: 1H30M 
+!w.random --> Plays a Random Song (only usable with WolkeBot Role) 
+!w.osu maplink --> download a Osu Map 
+--------------------------------\`\`\``;
+            var reply2 =
+                "```" +
                 "Youtube:\n" +
                 "!w.yts query --> Searches Youtube and gives you the First Result\n" +
-                "!w.ytq query --> Searches Youtube and adds the First Result to the Queue"
-                + "--------------------------------```";
-            var reply2 =
-                "```Other Stuff:\n" +
+                "!w.ytq query --> Searches Youtube and adds the First Result to the Queue\n" +
+                "--------------------------------\n" +
+                "Other Stuff:\n" +
                 "!w.r34 tags --> Searches Rule34 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
                 "!w.kona tags --> Searches Konachan for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
                 "!w.e621 tags --> Searches E621 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
@@ -59,17 +58,18 @@ var basicCommands = function (bot, message) {
                 "!w.eatCookie --> Eats a Cookie.\n" +
                 "For Any Feedback use the Support Discord Please ^^\n" +
                 "If you want to talk with me @mention me with a message :D```";
-            bot.sendMessage(message.author, reply, function (err) {
-                if (err) return console.log(err);
-                bot.sendMessage(message.author, reply2);
-            });
-            bot.reply(message,'OK, i send you a list of commands over PM.');
+            message.author.sendMessage(reply).then(replyMessage => {
+                message.author.sendMessage(reply2);
+            }).catch(console.log);
+            if (message.guild) {
+                message.reply('OK, i send you a list of commands over PM.');
+            }
             return;
         case "!w.version":
             message.reply('I am running on Version ' + config.version);
             return;
         case "!w.add":
-            message.reply("Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=" + config.client_id + "&scope=bot&permissions=66321471\>");
+            message.reply(`Use this Link to add me to your Server: \<https://discordapp.com/oauth2/authorize?client_id=${config.client_id}&scope=bot&permissions=66321471\>`);
             return;
         case "!w.bug":
             message.reply('Please join the support Discord: https://discord.gg/yuTxmYn to report a Bug.');
@@ -84,13 +84,13 @@ var basicCommands = function (bot, message) {
             return;
         case "!w.voice":
             if (message.guild && message.member.voiceChannel) {
-                if (messageHelper.hasWolkeBot(bot,message)) {
+                if (messageHelper.hasWolkeBot(bot, message)) {
                     message.member.voiceChannel.join().then(connection => {
-                            voice.saveVoice(message.member.voiceChannel, function (err) {
-                                if (err) return console.log(err);
-                                console.log('Saved Voice!');
-                            });
-                            voice.startQueue(bot, message);
+                        voice.saveVoice(message.member.voiceChannel, function (err) {
+                            if (err) return console.log(err);
+                            console.log('Saved Voice!');
+                        });
+                        voice.startQueue(bot, message);
                     }).catch(err => {
                         console.log(err);
                         message.reply('An Error has occured while trying to join Voice!')
@@ -106,12 +106,10 @@ var basicCommands = function (bot, message) {
             if (message.guild) {
                 if (voice.inVoice(bot, message)) {
                     var channel = voice.getVoiceChannel(bot, message);
-                    if (messageHelper.hasWolkeBot(bot,message)) {
-                        bot.leaveVoiceChannel(channel, function (err, connection) {
-                            if (err) console.log(err);
-                            voice.clearVoice(message, function (err) {
-                                if (err) return console.log(err);
-                            });
+                    if (messageHelper.hasWolkeBot(bot, message)) {
+                        channel.leave();
+                        voice.clearVoice(message, function (err) {
+                            if (err) return console.log(err);
                         });
                     } else {
                         message.reply('No Permission! You need to give yourself the WolkeBot Role to use this.');
@@ -131,7 +129,7 @@ var basicCommands = function (bot, message) {
             var guildArray = bot.guilds.array();
             if (guildArray.length > 0) {
                 for (var i = 0; guildArray.length > i; i++) {
-                    users = users + guildArray[i].memberCount -1;
+                    users = users + guildArray[i].memberCount - 1;
                 }
             }
             message.reply(`I am currently used on ${guildArray.length} guilds with ${users} users.`);
@@ -140,7 +138,7 @@ var basicCommands = function (bot, message) {
             messageHelper.disableLevel(bot, message);
             return;
         case "!w.noPm":
-            messageHelper.disablePm(bot,message);
+            messageHelper.disablePm(bot, message);
             return;
         case "!w.cookie":
             if (message.guild) {
@@ -149,12 +147,12 @@ var basicCommands = function (bot, message) {
             return;
         case "!w.eatCookie":
             if (message.guild) {
-                eatCookie(bot,message);
+                eatCookie(bot, message);
             }
             return;
         case "!w.uptime":
             // console.log(bot.uptime);
-            message.reply(`Uptime:${humanize.date('i-s', bot.uptime/1000)}`);
+            message.reply(`Uptime:${humanize.date('i-s', bot.uptime / 1000)}`);
             return;
         case "!w.rank":
             if (message.guild) {
