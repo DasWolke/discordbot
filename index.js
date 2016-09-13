@@ -84,7 +84,7 @@ bot.on("message", (message) => {
             CMD.youtube(bot, message);
             CMD.moderation(bot,message);
             CMD.hentai(bot,message);
-            CMD.proxer(bot,message);
+            // CMD.proxer(bot,message);
             // CMD.permission(bot,message);
             // CMD.playlist(bot,message);
         }
@@ -97,11 +97,11 @@ bot.on("message", (message) => {
         CMD.cleverbot.talk(bot, message);
     }
 });
-bot.on('guildMemberAdd', (Guild, member) => {
-    Guild.defaultChannel.sendMessage(`Welcome ${member.user} on **${Guild.name}**`);
-});
-bot.on('guildMemberRemove', (Guild, member) => {
-    Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
-});
+// bot.on('guildMemberAdd', (Guild, member) => {
+//     Guild.defaultChannel.sendMessage(`Welcome ${member.user} on **${Guild.name}**`);
+// });
+// bot.on('guildMemberRemove', (Guild, member) => {
+//     Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
+// });
 bot.on("debug", console.log);
 bot.on("warn", console.log);

@@ -12,25 +12,25 @@ var lewdCmds = function (bot,message) {
     switch (messageSplit[0]) {
         case "!w.r34":
             messageHelper.checkNsfw(bot,message, function (err) {
-                if (err) return bot.reply(err);
+                if (err) return message.reply(err);
                 r34(bot,message,messageSplit)
             });
             return;
         case "!w.kona":
             messageHelper.checkNsfw(bot,message, function (err) {
-                if (err) return bot.reply(err);
+                if (err) return message.reply(err);
                 konachan(bot,message,messageSplit)
             });
             return;
         case "!w.e621":
             messageHelper.checkNsfw(bot,message, function (err) {
-                if (err) return bot.reply(err);
+                if (err) return message.reply(err);
                 e621(bot,message,messageSplit)
             });
             return;
         case "!w.yandere":
             messageHelper.checkNsfw(bot,message, function (err) {
-                if (err) return bot.reply(err);
+                if (err) return message.reply(err);
                 yandere(bot,message,messageSplit)
             });
             return;

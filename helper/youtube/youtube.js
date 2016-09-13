@@ -162,7 +162,7 @@ var downloadProxy = function (message,url, cb) {
                 });
                 song.save((err) => {
                     if (err) return cb(err);
-                    cb(null, info);
+                    cb(null, parsedBody.info);
                 });
             });
         } else {

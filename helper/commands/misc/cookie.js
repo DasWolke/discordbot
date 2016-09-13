@@ -5,15 +5,9 @@ var userModel = require('../../../DB/user');
 var messageHelper = require('../../utility/message');
 var inventoryCmd = function (bot, message, messageSplit) {
     if (typeof (messageSplit[1]) !== 'undefined') {
-        var admin = false;
-        for (var role of message.server.rolesOfUser(message.author)) {
-            if (role.hasPermission('administrator')) {
-                admin = true
-            }
-        }
-        if (admin || messageHelper.hasWolkeBot(bot,message)) {
-            if (message.mentions.length === 1) {
-                var user = message.mentions[0];
+        if (messageHelper.hasWolkeBot(bot,message)) {
+            let user = message.mentions.users.first();
+            if (user) {
                 userModel.findOne({id: user.id}, function (err, User) {
                     if (err) return console.log(err);
                     if (User) {
