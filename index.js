@@ -33,7 +33,7 @@ var messageHelper = require('./helper/utility/message');
 var voice = require('./helper/utility/voice');
 var async = require('async');
 console.log('Connecting to DB');
-mongoose.connect('mongodb://localhost/discordbot', function (err) {
+mongoose.connect('mongodb://localhost/discordbot', (err) => {
     if (err) return console.log("Unable to connect to Mongo Server!");
     console.log('Connected to DB!');
 });
@@ -41,15 +41,15 @@ console.log('Logging in...');
 bot.login(config.token).then(console.log('Logged in successfully'));
 socketManager.init(socket);
 console.log('Bot finished Init');
-bot.on('ready', function () {
+bot.on('ready',() => {
     bot.user.setStatus('online', '!w.help for Commands!').then(user => console.log('Changed Status Successfully!')).catch(console.log);
-    bot.on('serverCreated', function (server) {
+    bot.on('serverCreated', (server) => {
         console.log('Joined Server ' + server.name);
     });
-    setTimeout(function () {
+    setTimeout(() => {
         console.log('start loading Voice!');
-        async.each(bot.guilds.array(), function (guild, cb) {
-            voice.loadVoice(guild, function (err, id) {
+        async.each(bot.guilds.array(),(guild, cb) => {
+            voice.loadVoice(guild, (err, id) => {
                 if (err) return cb(err);
                 if (typeof (id) !== 'undefined' && id !== '') {
                     console.log('started joining guild:' + guild.name);
@@ -65,16 +65,16 @@ bot.on('ready', function () {
                     cb();
                 }
             });
-        }, function (err) {
+        }, (err) => {
             if (err) return console.log(err);
             console.log('Finished Loading Voice!');
         });
     }, 10000)
 });
-bot.on('disconnected', function () {
+bot.on('disconnected',() => {
 
 });
-bot.on("message", function (message) {
+bot.on("message", (message) => {
     // console.log(message.mentions.users);
     if (message.content.charAt(0) === "!") {
         if (message.content.charAt(1) === "w") {
@@ -89,7 +89,7 @@ bot.on("message", function (message) {
             // CMD.playlist(bot,message);
         }
     } else if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user)) {
-        messageHelper.updateXP(bot, message, function (err) {
+        messageHelper.updateXP(bot, message,(err) => {
             if (err) return console.log(err);
         });
     }
@@ -97,11 +97,11 @@ bot.on("message", function (message) {
         CMD.cleverbot.talk(bot, message);
     }
 });
-bot.on('serverNewMember', function (Server, User) {
-
+bot.on('guildMemberAdd', (Guild, member) => {
+    Guild.defaultChannel.sendMessage(`Welcome ${member.user} on **${Guild.name}**`);
 });
-bot.on('serverMemberRemoved', function (Server,User) {
-
+bot.on('guildMemberRemove', (Guild, member) => {
+    Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
 });
 bot.on("debug", console.log);
 bot.on("warn", console.log);

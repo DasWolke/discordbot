@@ -59,104 +59,100 @@ var moderationCMD = function moderationCMD(bot, message) {
             return;
         case "!w.ban":
             if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
-                if (message.mentions.length === 1) {
-                    if (message.mentions[0].id !== message.guild.owner.id && !messageHelper.hasWolkeBot(bot, message, message.mentions[0])) {
-                        bot.banMember(message.mentions[0], message.guild, 7, function (err) {
-                            if (err) {
-                                console.log(err);
-                                return message.reply("An Error occurred while trying to ban the User!");
-                            }
-                            var ban = new banModel({
-                                id: message.mentions[0].id,
-                                guildId: message.guild.id,
-                                name: message.mentions[0].name,
-                                bannedBy: message.author.id,
-                                bannedByName: message.author.name
-                            });
-                            ban.save(function (err) {
-                                if (err) return console.log(err);
-                            });
-                            message.reply(`Banned User ${message.mentions[0].name}`);
-                        });
-                    } else {
-                        message.reply('You can not ban the Owner or anyone with the WolkeBot Role.');
-                    }
-                } else {
-                    message.reply('Please ban only 1 Person at a time.');
-                }
-            } else {
-                message.reply('No Permission!');
-            }
-            return;
-        case "!w.unban":
-            if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
-                var messageSearch;
-                for (var i = 1; i < messageSplit.length; i++) {
-                    if (i === 1) {
-                        messageSearch = messageSplit[i];
-                    } else {
-                        messageSearch = messageSearch + " " + messageSplit[i];
-                    }
-                }
-                banModel.findOne({name: messageSearch}, function (err, Ban) {
-                    if (err) {
-                        message.reply('Could not load Bans..');
-                        return console.log(err);
-                    }
-                    if (Ban) {
-                        bot.getBans(message.guild, function (err, Users) {
-                            if (err) {
-                                message.reply('Could not load Bans..');
-                                return console.log(err);
-                            }
-                            if (typeof (Users) !== 'undefined' && Users.length > 0) {
-                                for (var y = 0; y < Users.length; y++) {
-                                    if (Users[y].id === Ban.id) {
-                                        var User = Users[y];
-                                        bot.unbanMember(User, message.guild, function (err) {
-                                            if (err) return message.reply('Error unbanning ' + Ban.name);
-                                            message.reply('Successfully unbanned ' + Ban.name);
-                                        });
-                                    }
+                let user = message.mentions.users.first();
+                if (user) {
+                    message.guild.fetchMember(user).then(member => {
+                        if (member.id !== message.guild.owner.id && !messageHelper.hasWolkeBot(bot, message, member)) {
+                            member.ban(7).then(member => {
+                                message.reply(`Banned User ${member.user.username}`);
+                            }).catch(err => {
+                                console.log(err.response);
+                                if (err.response.statusCode === 403) {
+                                    message.reply(`My Role does not have the Privilege to ban ${member.user.username} !`);
+                                } else {
+                                    message.reply(`An Error occurred while trying to ban ${member.user.username} !`);
                                 }
-                            } else {
-                                message.reply('No Bans Found!');
-                            }
-                        })
-                    } else {
-                        message.reply('No Ban Found for that Username!');
-                    }
-
-                });
-            } else {
-                message.reply('No Permission!');
-            }
-            return;
-        case "!w.listban":
-            if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
-                banModel.find({guildId: message.guild.id}, function (err, Bans) {
-                    if (err) {
-                        message.reply('Could not load Bans..');
-                        return console.log(err);
-                    }
-                    if (typeof (Bans) !== 'undefined' && Bans.length > 0) {
-                        var reply = "";
-                        for (var y = 0; y < Bans.length; y++) {
-                            if (y === 0) {
-                                reply = `${y + 1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
-                            } else {
-                                reply = reply + `${y + 1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
-                            }
+                            });
+                        } else {
+                            message.reply('You can not ban the Owner or anyone with the WolkeBot Role.');
                         }
-                        message.reply(reply);
-                    } else {
-                        message.reply('No Bans Found!');
-                    }
-                });
+                    }).catch(console.log);
+                } else {
+                    message.reply('Please mention a User you want to ban.');
+                }
             } else {
                 message.reply('No Permission!');
             }
             return;
+        // case "!w.unban":
+        //     if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
+        //         var messageSearch;
+        //         for (var i = 1; i < messageSplit.length; i++) {
+        //             if (i === 1) {
+        //                 messageSearch = messageSplit[i];
+        //             } else {
+        //                 messageSearch = messageSearch + " " + messageSplit[i];
+        //             }
+        //         }
+        //         banModel.findOne({name: messageSearch}, function (err, Ban) {
+        //             if (err) {
+        //                 message.reply('Could not load Bans..');
+        //                 return console.log(err);
+        //             }
+        //             if (Ban) {
+        //                 bot.getBans(message.guild, function (err, Users) {
+        //                     if (err) {
+        //                         message.reply('Could not load Bans..');
+        //                         return console.log(err);
+        //                     }
+        //                     if (typeof (Users) !== 'undefined' && Users.length > 0) {
+        //                         for (var y = 0; y < Users.length; y++) {
+        //                             if (Users[y].id === Ban.id) {
+        //                                 var User = Users[y];
+        //                                 bot.unbanMember(User, message.guild, function (err) {
+        //                                     if (err) return message.reply('Error unbanning ' + Ban.name);
+        //                                     message.reply('Successfully unbanned ' + Ban.name);
+        //                                 });
+        //                             }
+        //                         }
+        //                     } else {
+        //                         message.reply('No Bans Found!');
+        //                     }
+        //                 })
+        //             } else {
+        //                 message.reply('No Ban Found for that Username!');
+        //             }
+        //
+        //         });
+        //     } else {
+        //         message.reply('No Permission!');
+        //     }
+        //     return;
+        // case "!w.listban":
+        //     if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
+        //         banModel.find({guildId: message.guild.id}, function (err, Bans) {
+        //             if (err) {
+        //                 message.reply('Could not load Bans..');
+        //                 return console.log(err);
+        //             }
+        //             if (typeof (Bans) !== 'undefined' && Bans.length > 0) {
+        //                 var reply = "";
+        //                 for (var y = 0; y < Bans.length; y++) {
+        //                     if (y === 0) {
+        //                         reply = `${y + 1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
+        //                     } else {
+        //                         reply = reply + `${y + 1}. **Name:** ${Bans[y].name} **Banned By:** ${Bans[y].bannedByName}\n`;
+        //                     }
+        //                 }
+        //                 message.reply(reply);
+        //             } else {
+        //                 message.reply('No Bans Found!');
+        //             }
+        //         });
+        //     } else {
+        //         message.reply('No Permission!');
+        //     }
+        //     return;
         default:
             return;
     }

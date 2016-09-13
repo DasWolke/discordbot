@@ -24,7 +24,6 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch, messageSplit) {
             message.reply('Started Download!');
             yt.download(messageSearch.trim(), message, function (err, info) {
                 if (err) {
-                    console.log(err);
                     return message.reply("This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
                 }
                 message.reply('Found Song and Downloaded it! ' + info.title);
@@ -63,7 +62,6 @@ var ytDlAndQueue = function (bot, message, messageSearch, messageSplit) {
             message.reply('Started Download!');
             yt.download(messageSearch.trim(), message, function (err, info) {
                 if (err) {
-                    console.log(err);
                     return message.reply("This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
                 }
                 songModel.findOne({id: info.id}, function (err, Song) {
@@ -101,7 +99,6 @@ var ytDlAndPlayForever = function (bot, message, messageSearch) {
             message.reply('Started Download!');
             yt.download(messageSearch.trim(), message, function (err, info) {
                 if (err) {
-                    console.log(err);
                     return message.reply("This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
                 }
                 message.reply('Found Song and Downloaded it! ' + info.title);

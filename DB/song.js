@@ -13,6 +13,7 @@ var songSchema = mongoose.Schema({
     url:String,
     setId:String,
     dl:String,
+    dlBy:String,
     plays:Number,
     favorites:Number,
     votes:Number,
