@@ -12,17 +12,16 @@ var options = {
     method: 'POST',
     url: 'http://proxer.me/api/v1/user/login',
     headers: {
-        'cache-control': 'no-cache',
-        'content-type': 'multipart/form-data; boundary=---011000010111000001101001'
+        'cache-control': 'no-cache'
     },
     formData: data
 };
-var login = function () {
+var login = function (cb) {
     request.post(options, function (err, res, body) {
-        if (err) return console.log(err);
+        if (err) return cb(err);
         var parsedBody = JSON.parse(body);
         if (parsedBody.error === 0) {
-
+            return cb(null, parsedBody);
         }
     });
 };

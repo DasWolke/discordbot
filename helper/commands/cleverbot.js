@@ -2,7 +2,6 @@
  * Created by julia on 10.07.2016.
  */
 var Cleverbot = require("cleverbot-node");
-var config = require('../../config/main.json');
 var talkCleverBot = function talkCleverBot(bot,message) {
     var clever = new Cleverbot;
     var re = /<@[0-9].*>/g;

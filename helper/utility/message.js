@@ -49,7 +49,7 @@ var updateXp = function (bot, message, cb) {
                             User.updateLevel(serverId, function (err) {
                                 if (err) return cb(err);
                                 if (pmNotifications(message, User)) {
-                                    bot.sendMessage(User.id, 'You just reached **Level ' + parseInt(clientServer.level + 1) + '** on Server: **' + message.guild.name + '**');
+                                    message.author.sendMessage('You just reached **Level ' + parseInt(clientServer.level + 1) + '** on Server: **' + message.guild.name + '**');
                                 }
                             });
                         }

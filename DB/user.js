@@ -15,6 +15,7 @@ var userSchema = mongoose.Schema({
     banned: Boolean,
     verified:Boolean,
     proxerId:String,
+    verificationToken:String,
     favorites:[]
 });
 userSchema.methods.updateXP = function updateXP(id,xp,cb) {
