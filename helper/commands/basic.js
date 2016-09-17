@@ -24,6 +24,7 @@ Music:
 !w.play name --> Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)
 !w.pause --> Pause the Current Song (only usable with WolkeBot Role)
 !w.resume --> Resume the pause Song (only usable with WolkeBot Role)
+!w.volume 40 --> Sets the Volume of the Bot, Values between 1-200 (only usable with WolkeBot Role)
 !w.forever name --> Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role) 
 !w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results 
 !w.skip --> Skips the Current Song (only usable with WolkeBot Role) 
