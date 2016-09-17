@@ -128,14 +128,11 @@ Music:
             message.reply("http://wtf.watchon.io");
             return;
         case "!w.stats":
-            var users = 0;
-            var guildArray = bot.guilds.array();
-            if (guildArray.length > 0) {
-                for (var i = 0; guildArray.length > i; i++) {
-                    users = users + guildArray[i].memberCount - 1;
-                }
-            }
-            message.reply(`I am currently used on ${guildArray.length} guilds with ${users} users.`);
+            let users = 0;
+            bot.guilds.map((guild => {
+                users = users + guild.members.size;
+            }));
+            message.reply(`I am currently used on ${bot.guilds.size} guilds with ${users} users.`);
             return;
         case "!w.noLevel":
             messageHelper.disableLevel(bot, message);

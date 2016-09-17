@@ -273,6 +273,7 @@ var updateDispatcherArray = function (guild_id, dispatcher) {
 };
 var playSong = function (bot, message, Song, Queueused) {
     var connection = getVoiceConnection(bot, message);
+    // if (connection) {}
     var dispatcher = connection.playFile(path.resolve(Song.path), {volume:0.25});
     updateDispatcherArray(message.guild.id, dispatcher);
     console.log(path.resolve(Song.path));

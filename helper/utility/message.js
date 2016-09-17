@@ -8,11 +8,11 @@ var cleanMessage = function (message) {
     return message.replace("@", "");
 };
 var createUser = function (message, level, pms, cb) {
-    var server = getServerObj(message, level, pms);
+    var guild = getServerObj(message, level, pms);
     var freshUser = new userModel({
         id: message.author.id,
         name: message.author.username,
-        servers: [server],
+        servers: [guild],
         avatar: message.author.avatarURL,
         created: Date.now(),
         banned: false,
@@ -162,7 +162,6 @@ var disablePm = function disablePm(bot, message) {
     }
 };
 var hasWolkeBot = function (bot, message, Member) {
-    var role = {};
     if (message.author.id === config.owner_id) {
         return true;
     }
@@ -221,7 +220,7 @@ var loadServerFromUser = function (message, User) {
             return User.servers[i];
         }
     }
-    return;
+    return null;
 };
 var getServerObj = function (message, level, pms) {
     return {

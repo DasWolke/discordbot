@@ -1,7 +1,7 @@
 var youtubedl = require('youtube-dl');
 var ffmpeg = require('fluent-ffmpeg');
-var ytdl_core = require('ytdl-core');
 var request = require('request');
+var cloudscraper = require('cloudscraper');
 var youtubesearch = require('youtube-search');
 var songModel = require('../../DB/song');
 var config = require('../../config/main.json');
@@ -136,7 +136,8 @@ var downloadProxy = function (message, url, proxy, cb) {
         form: {
             url: url
         },
-        method: 'POST'
+        method: 'POST',
+        timeout:240000
     };
     request(options, (error, response, body) => {
         if (error) {

@@ -31,7 +31,7 @@ var inventoryCmd = function (bot, message, messageSplit) {
                                 });
                             }
                         } else {
-                            User.addServer(message.getServerObj(message, true, true), function (err) {
+                            User.addServer(messageHelper.getServerObj(message, true, true), function (err) {
                                 if (err) return console.log(err);
                             });
                         }
