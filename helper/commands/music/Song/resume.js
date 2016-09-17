@@ -8,11 +8,9 @@ var resumeCmd = function resumeCmd(bot,message) {
         if (messageHelper.hasWolkeBot(bot,message)) {
             if (voice.inVoice(bot, message)) {
                 var connection = voice.getVoiceConnection(bot, message);
-                if (connection.playing) {
-                    return message.reply("A Song is playing at the Moment!");
-                }
+                var dispatcher = voice.getDispatcher(connection);
                 try {
-                    connection.resume();
+                    dispatcher.resume();
                 } catch (e) {
                     message.reply("No Song playing at the Moment!");
                 }

@@ -5,24 +5,14 @@ var voice = require('../../../utility/voice');
 var messageHelper = require('../../../utility/message');
 var pauseCmd = function pauseCmd(bot,message) {
     if (message.guild) {
-        var admin = false;
-        for (var role of message.server.rolesOfUser(message.author)) {
-            if (role.name === 'WolkeBot') {
-                admin = true;
-            }
-            if (role.name === 'Proxerteam') {
-                admin = true;
-            }
-        }
         if (messageHelper.hasWolkeBot(bot,message)) {
             if (voice.inVoice(bot, message)) {
                 var connection = voice.getVoiceConnection(bot, message);
-                if (!connection.playing) {
-                    return message.reply("No Song is playing at the Moment");
-                }
+                var dispatcher = voice.getDispatcher(connection);
                 try {
-                    connection.pause();
+                    dispatcher.pause();
                 } catch (e) {
+                    console.log(e);
                     message.reply("No Song playing at the Moment!");
                 }
             }

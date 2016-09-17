@@ -21,11 +21,10 @@ SUPPORT:
 Music: 
 !w.voice --> i join the Voice Channel you are currently in (only usable with WolkeBot Role) 
 !w.silent --> i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role) 
-!w.songlist --> Lists all Songs that are currently added to the Bot Database 
-!w.play name --> Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role) 
+!w.play name --> Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)
+!w.pause --> Pause the Current Song (only usable with WolkeBot Role)
+!w.resume --> Resume the pause Song (only usable with WolkeBot Role)
 !w.forever name --> Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role) 
-!w.pause --> Pause the Current Song (only usable with WolkeBot Role) 
-!w.resume --> Resume the pause Song (only usable with WolkeBot Role) 
 !w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results 
 !w.skip --> Skips the Current Song (only usable with WolkeBot Role) 
 !w.voteskip --> Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped. 
@@ -41,6 +40,12 @@ Music:
                 "Youtube:\n" +
                 "!w.yts query --> Searches Youtube and gives you the First Result\n" +
                 "!w.ytq query --> Searches Youtube and adds the First Result to the Queue\n" +
+                "--------------------------------\n" +
+                "Moderation\n" +
+                "These Commands all require that the user has a Discord Role named WolkeBot" +
+                "!w.ban @user --> Bans a User and deletes 7 Days of his/her messages\n" +
+                "!w.kick @user --> Kicks a User\n" +
+                "!w.rm 10 --> removes the last 10 Messages, you can change 10 to a value between 1-100" +
                 "--------------------------------\n" +
                 "Other Stuff:\n" +
                 "!w.r34 tags --> Searches Rule34 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
@@ -73,9 +78,6 @@ Music:
             return;
         case "!w.bug":
             message.reply('Please join the support Discord: https://discord.gg/yuTxmYn to report a Bug.');
-            return;
-        case "!w.songlist":
-            message.reply('The List of Songs can be found at <http://w.onee.moe/songlist>');
             return;
         case "!w.level":
             messageHelper.getLevel(bot, message, function (err) {
@@ -156,7 +158,7 @@ Music:
             return;
         case "!w.rank":
             if (message.guild) {
-                message.reply(`You can find the Leaderboard for this Server here: http://w.onee.moe/l/${message.guild.id}`);
+                message.reply(`You can find the Leaderboard for this Server here: http://bot.ram.moe/l/${message.guild.id}`);
             }
             return;
         default:

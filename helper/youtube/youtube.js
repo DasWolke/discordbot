@@ -15,7 +15,7 @@ var download = function (url, message, cb) {
     youtubedl.getInfo(url, function (err, info) {
         if (err) {
             message.reply('Trying to download over the proxy, this could take a bit.');
-            downloadProxy(message, url,function (err,info) {
+            downloadProxy(message, url, config.default_proxy, function (err, info) {
                 if (err) return cb(err);
                 cb(err, info);
             });
@@ -41,32 +41,32 @@ var download = function (url, message, cb) {
                             .on('stderr', err => {
                                 //console.log('Stderr output: ' + err);
                             }).on('error', err => {
-                                console.log(err);
-                                cb(err);
-                            }).on('end', (stdout, stderr) => {
-                                console.log('Finished Converting');
-                                fs.unlink('temp/' + filename, function (err) {
-                                    if (err) return cb(err);
-                                    var song = new songModel({
-                                        title: info.title,
-                                        alt_title: info.alt_title,
-                                        id: info.id,
-                                        addedBy: message.author.id,
-                                        addedAt: Date.now(),
-                                        duration:info.duration,
-                                        type: "audio/mp3",
-                                        url: url,
-                                        dl: "stream",
-                                        cached:true,
-                                        cachedAt:new Date(),
-                                        path:`audio/${info.id}.mp3`
-                                    });
-                                    song.save(function (err) {
-                                        if (err) return cb(err);
-                                        cb(null, info);
-                                    });
+                            console.log(err);
+                            cb(err);
+                        }).on('end', (stdout, stderr) => {
+                            console.log('Finished Converting');
+                            fs.unlink('temp/' + filename, function (err) {
+                                if (err) return cb(err);
+                                var song = new songModel({
+                                    title: info.title,
+                                    alt_title: info.alt_title,
+                                    id: info.id,
+                                    addedBy: message.author.id,
+                                    addedAt: Date.now(),
+                                    duration: convertDuration(info.duration),
+                                    type: "audio/mp3",
+                                    url: url,
+                                    dl: "stream",
+                                    cached: true,
+                                    cachedAt: new Date(),
+                                    path: `audio/${info.id}.mp3`
                                 });
-                            }).run();
+                                song.save(function (err) {
+                                    if (err) return cb(err);
+                                    cb(null, info);
+                                });
+                            });
+                        }).run();
                     });
                 } else {
                     cb(null, info);
@@ -94,7 +94,7 @@ var search = function (message, cb) {
             if (results.length > 0) {
                 cb(null, results[0]);
             } else {
-                cb('Did not Found a Song');
+                cb('No song found');
             }
         });
     } else {
@@ -121,9 +121,15 @@ var checkTime = function (duration) {
         }
     }
 };
-var downloadProxy = function (message,url, cb) {
+var downloadProxy = function (message, url, proxy, cb) {
+    let proxy_url;
+    if (proxy === 1) {
+        proxy_url = config.dl_url_1;
+    } else {
+        proxy_url = config.dl_url_2;
+    }
     let options = {
-        url: `${config.dl_url}/api/dl`,
+        url: `${proxy_url}/api/dl`,
         headers: {
             auth: config.dl_token
         },
@@ -140,8 +146,8 @@ var downloadProxy = function (message,url, cb) {
         let parsedBody = JSON.parse(body);
         if (parsedBody.error === 0) {
             console.log(parsedBody.path);
-            console.log(`${config.dl_url}${parsedBody.path}`);
-            var stream = request(`${config.dl_url}${parsedBody.path}`).on('error', (err) => {
+            console.log(`${proxy_url}${parsedBody.path}`);
+            var stream = request(`${proxy_url}${parsedBody.path}`).on('error', (err) => {
                 return cb(err);
             }).pipe(fs.createWriteStream(`audio/${parsedBody.info.id}.mp3`));
             stream.on('finish', () => {
@@ -151,11 +157,11 @@ var downloadProxy = function (message,url, cb) {
                     id: parsedBody.info.id,
                     addedBy: message.author.id,
                     addedAt: Date.now(),
-                    duration: parsedBody.info.duration,
+                    duration: convertDuration(duration),
                     type: "audio/mp3",
                     url: url,
                     dl: "stream",
-                    dlBy:"proxy",
+                    dlBy: `proxy_${proxy}`,
                     cached: true,
                     cachedAt: new Date(),
                     path: `audio/${parsedBody.info.id}.mp3`
@@ -167,8 +173,33 @@ var downloadProxy = function (message,url, cb) {
             });
         } else {
             console.log(parsedBody);
-            return cb('The Proxy did not work.');
+            if (proxy === 2) {
+                return cb('The Proxy did not work.');
+            } else {
+                downloadProxy(message, url, 2, cb)
+            }
         }
     });
+};
+var convertDuration = function (duration) {
+    let durationConv = "";
+    var durationSplit = duration.split(':');
+    for (var i = 0; i < durationSplit.length; i++) {
+        if (i !== durationSplit.length -1) {
+            if (durationSplit[i].length === 1) {
+                durationConv = durationConv + '0' + durationSplit[i] + ':';
+            } else {
+                durationConv = durationConv + durationSplit[i] + ':';
+            }
+        } else {
+            if (durationSplit[i].length === 1) {
+                durationConv = durationConv + '0' + durationSplit[i];
+            } else {
+                durationConv = durationConv + durationSplit[i];
+            }
+        }
+    }
+    console.log(durationConv);
+    return durationConv;
 };
 module.exports = {download: download, search: search};

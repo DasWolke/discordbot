@@ -2,7 +2,7 @@
  * Created by julia on 14.09.2016.
  */
 var request = require('request');
-var config = require('../../../config/main.json');
+var config = require('../../../../config/main.json');
 var getUserInfo = function (id,token,cb) {
     var data = {
         user_id:id,

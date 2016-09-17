@@ -11,6 +11,7 @@ var path = require('path');
 var songDuration = 0;
 var general = require('./general');
 var request = require('request');
+var dispatcherArray = [];
 var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
     serverModel.findOne({id: channel.guild.id}, function (err, Server) {
         if (err) {
@@ -26,7 +27,7 @@ var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
             });
         } else {
             var server = new serverModel({
-                id: channel.server.id,
+                id: channel.guild.id,
                 lastVoiceChannel: channel.id,
                 nsfwChannels: [],
                 cmdChannels: [],
@@ -140,7 +141,8 @@ var getChannelFromId = function getChannelFromId(guild, id) {
 };
 var nextSong = function nextSong(bot, message, Song) {
     if (inVoiceChannel(bot, message)) {
-        // var connectionE = getVoiceConnection(bot, message);
+        let connectionVoice = getVoiceConnection(bot, message);
+        let dispatcher = getDispatcherFromConnection(connectionVoice);
         queueModel.findOne({server: message.guild.id}, function (err, Queue) {
             if (err) return console.log(err);
             if (Queue) {
@@ -163,6 +165,7 @@ var nextSong = function nextSong(bot, message, Song) {
                                                 });
                                             } else {
                                                 Queue.resetVotes();
+                                                dispatcher.end();
                                             }
                                         });
                                     });
@@ -182,6 +185,7 @@ var nextSong = function nextSong(bot, message, Song) {
                                         });
                                     } else {
                                         Queue.resetVotes();
+                                        dispatcher.end();
                                     }
                                 });
                             });
@@ -189,6 +193,7 @@ var nextSong = function nextSong(bot, message, Song) {
                     }
                 } else {
                     Queue.resetVotes();
+                    dispatcher.end();
                 }
             } else {
                 return;
@@ -236,8 +241,9 @@ var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
                 });
             }
         } else {
+            var queue;
             if (typeof(repeat) !== 'undefined') {
-                var queue = new queueModel({
+                queue = new queueModel({
                     server: message.guild.id,
                     voteSkip: 0,
                     repeat: true,
@@ -245,7 +251,7 @@ var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
                     songs: Songs
                 });
             } else {
-                var queue = new queueModel({
+                queue = new queueModel({
                     server: message.guild.id,
                     voteSkip: 0,
                     repeat: false,
@@ -256,9 +262,19 @@ var addSongFirst = function addSongFirst(bot, message, Song, repeat, cb) {
         }
     });
 };
+var updateDispatcherArray = function (guild_id, dispatcher) {
+    for (var i = 0; i < dispatcherArray.length; i++) {
+        if(dispatcherArray[i].guild_id === guild_id) {
+            dispatcherArray[i].dispatcher = dispatcher;
+            return;
+        }
+    }
+    dispatcherArray.push({guild_id:guild_id, dispatcher:dispatcher})
+};
 var playSong = function (bot, message, Song, Queueused) {
     var connection = getVoiceConnection(bot, message);
-    var dispatcher = connection.playFile(path.resolve(Song.path));
+    var dispatcher = connection.playFile(path.resolve(Song.path), {volume:0.25});
+    updateDispatcherArray(message.guild.id, dispatcher);
     console.log(path.resolve(Song.path));
     updatePlays(Song.id, function (err) {
         if (err) return console.log(err);
@@ -403,7 +419,11 @@ var nowPlaying = function (bot, message) {
                 message.reply('Nothing is playing right now...');
             } else {
                 if (inVoiceChannel(bot, message)) {
-                    message.reply('Currently Playing: ```' + Queue.songs[0].title + " " + general.convertSeconds(getDuration()) + "```");
+                    if (typeof (Queue.songs[0].duration) !== 'undefined') {
+                        message.reply(`Currently Playing: \`\`\` ${Queue.songs[0].title} ${general.convertSeconds(getDuration())}/${Queue.songs[0].duration} \`\`\``);
+                    } else {
+                        message.reply(`Currently Playing: \`\`\` ${Queue.songs[0].title} ${general.convertSeconds(getDuration())} \`\`\``);
+                    }
                 } else {
                     message.reply('Nothing is playing right now...');
                 }
@@ -424,6 +444,7 @@ var setVolume = function (bot, message, cb) {
     var messageSplit = message.content.split(' ');
     if (inVoiceChannel(bot, message)) {
         var connection = getVoiceConnection(bot, message);
+        var dispatcher = getDispatcherFromConnection(connection);
         if (typeof (messageSplit[1]) !== 'undefined') {
             try {
                 var volume = parseInt(messageSplit[1]) / 100;
@@ -431,8 +452,9 @@ var setVolume = function (bot, message, cb) {
                 return cb('Please input a Number!');
             }
             try {
-                connection.setVolume(volume);
+                dispatcher.setVolume(volume);
             } catch (e) {
+                console.log(e);
                 return cb('Error while setting Volume!');
             }
             cb(null, 'Set Volume to ' + volume * 100);
@@ -463,6 +485,14 @@ var checkMedia = function checkMedia(link) {
         return false;
     }
 };
+var getDispatcherFromConnection = function (connection) {
+    for (var i = 0; i < dispatcherArray.length; i++) {
+        if(dispatcherArray[i].dispatcher.player.connection.channel.id === connection.channel.id) {
+            return dispatcherArray[i].dispatcher;
+        }
+    }
+    return false;
+};
 module.exports = {
     inVoice: inVoiceChannel,
     saveVoice: saveVoiceChannel,
@@ -483,5 +513,6 @@ module.exports = {
     getSongDuration: getDuration,
     updatePlays: updatePlays,
     setVolume: setVolume,
-    checkMedia: checkMedia
+    checkMedia: checkMedia,
+    getDispatcher:getDispatcherFromConnection
 };

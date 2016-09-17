@@ -3,6 +3,7 @@
  */
 var userModel = require('../../DB/user');
 var serverModel = require('../../DB/server');
+var config = require('../../config/main.json');
 var cleanMessage = function (message) {
     return message.replace("@", "");
 };
@@ -162,6 +163,9 @@ var disablePm = function disablePm(bot, message) {
 };
 var hasWolkeBot = function (bot, message, Member) {
     var role = {};
+    if (message.author.id === config.owner_id) {
+        return true;
+    }
     if (typeof (Member) === 'undefined') {
         return message.member.roles.exists('name', 'WolkeBot');
     } else {
@@ -170,7 +174,7 @@ var hasWolkeBot = function (bot, message, Member) {
 
 };
 var isOwner = function (bot, message) {
-    return message.author.equals(message.server.owner);
+    return message.author.equals(message.guild.owner);
 };
 var levelEnabled = function (message, User) {
     for (var i = 0; i < User.servers.length; i++) {

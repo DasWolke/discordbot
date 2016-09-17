@@ -36,7 +36,7 @@ var inventoryCmd = function (bot, message, messageSplit) {
                             });
                         }
                     } else {
-                        messageHelper.createUser({author:user, server:message.server}, true, true, function (err) {
+                        messageHelper.createUser({author:user, server:message.guild}, true, true, function (err) {
                             if (err) return console.log(err);
                             userModel.findOne({id: user.id}, function (err, User) {
                                 if (err) return console.log(err);
@@ -68,7 +68,7 @@ var inventoryCmd = function (bot, message, messageSplit) {
                 message.reply('Please mention **1 User**, not more, not less!');
             }
         } else {
-            message.reply('You need the Administrator Permission or the WolkeBot role to give cookies!');
+            message.reply('You need the WolkeBot role to give cookies!');
         }
     } else {
         userModel.findOne({id: message.author.id, 'servers.serverId': message.guild.id}, function (err, User) {

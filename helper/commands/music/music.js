@@ -18,7 +18,7 @@ var musicCommands = function (bot, message) {
             song.play(bot, message, messageSplit);
             return;
         case "!w.np":
-            song.now(bot,message);
+            song.now(bot, message);
             return;
         case "!w.osu":
             getOsu(bot, message, messageSplit[1]);
@@ -39,16 +39,16 @@ var musicCommands = function (bot, message) {
             queueCmd.add(bot, message, messageSplit);
             return;
         case "!w.qrl":
-            queueCmd.remove(bot,message,messageSplit);
+            queueCmd.remove(bot, message, messageSplit);
             return;
         case "!w.forever":
-            song.forever(bot,message,messageSplit);
+            song.forever(bot, message, messageSplit);
             return;
         case "!w.skip":
             if (message.guild) {
                 if (voice.inVoice(bot, message)) {
-                    if(messageHelper.hasWolkeBot(bot,message)) {
-                    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
+                    if (messageHelper.hasWolkeBot(bot, message)) {
+                        queueModel.findOne({server: message.guild.id}, function (err, Queue) {
                             if (err) return console.log(err);
                             var connection = voice.getVoiceConnection(bot, message);
                             if (Queue) {
@@ -87,8 +87,7 @@ var musicCommands = function (bot, message) {
             return;
         case "!w.random":
             if (message.guild) {
-                if (messageHelper.hasWolkeBot(bot,message)) {
-
+                if (messageHelper.hasWolkeBot(bot, message)) {
                     songModel.count({}, function (err, C) {
                         if (err) return message.reply("A Database Error occured!");
                         var random = general.random(0, C);
@@ -97,7 +96,7 @@ var musicCommands = function (bot, message) {
                             if (typeof(Songs[random]) !== 'undefined') {
                                 var Song = Songs[random];
                                 if (voice.inVoice(bot, message)) {
-                                    voice.addSongFirst(bot, message, Song, false,function (err) {
+                                    voice.addSongFirst(bot, message, Song, false, function (err) {
                                         if (err) return console.log(err);
                                         voice.playSong(bot, message, Song);
                                     });
@@ -153,8 +152,7 @@ var musicCommands = function (bot, message) {
             return;
         case "!w.volume":
             if (message.guild) {
-                if (messageHelper.hasWolkeBot(bot,message)) {
-
+                if (messageHelper.hasWolkeBot(bot, message)) {
                     voice.setVolume(bot, message, function (err, response) {
                         if (err) return message.reply(err);
                         message.reply(response);

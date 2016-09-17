@@ -30,7 +30,7 @@ var eatCookie = function (bot,message) {
                 message.channel.sendMessage('You dont have any Cookies to eat. \n http://i.giphy.com/Kf2ndcv58AepW.gif');
             }
         } else {
-            messageHelper.createUser({author: user, server: message.server}, true, true, function (err) {
+            messageHelper.createUser({author: user, server: message.guild}, true, true, function (err) {
                 if (err) return console.log(err);
                 message.channel.sendMessage('You dont have any Cookies to eat. \n http://i.giphy.com/Kf2ndcv58AepW.gif');
             });
