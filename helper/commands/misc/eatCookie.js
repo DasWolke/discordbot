@@ -1,7 +1,6 @@
 /**
  * Created by julia on 04.09.2016.
  */
-//bot.sendFile(message.channel,'http://i.giphy.com/L0nV2FkR5RpkY.gif');
 var userModel = require('../../../DB/user');
 var messageHelper = require('../../utility/message');
 var eatCookie = function (bot,message) {

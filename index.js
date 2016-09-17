@@ -8,6 +8,8 @@ if (!config.beta) {
     var client = new raven.Client('https://b272f049322d4bf68877d3e37e47c1eb:f63281d350b74592aa66b921294e6db4@sentry.io/99563');
     console.log('Starting Errorhandling!');
     client.patchGlobal();
+    var StatsD = require('node-dogstatsd').StatsD;
+    var dogstatsd = new StatsD();
 }
 var Discord = require("discord.js");
 var options = {
@@ -81,6 +83,14 @@ bot.on('ready', () => {
     }, 10000);
     if (!config.beta) {
         updateStats();
+        dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
+        dogstatsd.gauge('musicbot.users', users());
+    }
+    if (!config.beta) {
+        setInterval(() => {
+            dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
+            dogstatsd.gauge('musicbot.users', users());
+        }, 1000 * 30);
     }
     setInterval(() => {
         updateStats();
@@ -95,6 +105,9 @@ bot.on("message", (message) => {
     if (!message.guild || config.beta && message.guild.id !== '110373943822540800' || !config.beta) {
         if (message.content.charAt(0) === "!") {
             if (message.content.charAt(1) === "w") {
+                if (!config.beta) {
+                    dogstatsd.increment('musicbot.commands');
+                }
                 CMD.basic(bot, message);
                 CMD.music(bot, message);
                 CMD.osuNoMusic(bot, message);
@@ -113,6 +126,9 @@ bot.on("message", (message) => {
             });
         }
         if (!!message.mentions.users.get(bot.user.id) && message.mentions.users.size === 1 && message.guild.id !== '110373943822540800') {
+            if (!config.beta) {
+                dogstatsd.increment('musicbot.cleverbot');
+            }
             CMD.cleverbot.talk(bot, message);
         }
     }
@@ -139,7 +155,7 @@ var updateStats = function () {
         url: `https://bots.discord.pw/api/bots/${id}/stats`,
         method: 'POST',
         json: {
-            "server_count": bot.guilds.array().length
+            "server_count": bot.guilds.size
         }
     };
     request(requestOptions, function (err, response, body) {
@@ -147,4 +163,13 @@ var updateStats = function () {
         console.log('Stats Updated!');
         console.log(body);
     });
+};
+var users = function () {
+    let users = 0;
+    bot.guilds.map((guild => {
+        if (guild.id !== '110373943822540800') {
+            users = users + guild.members.size;
+        }
+    }));
+    return users;
 };

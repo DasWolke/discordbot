@@ -93,7 +93,7 @@ var lewdCmds = function (bot,message) {
             }
             return;
         case "!w.lewd":
-            bot.sendFile(message.channel, 'https://cdn.discordapp.com/attachments/191455136013352960/209718642722603008/412.png');
+            message.channel.sendFile('https://cdn.discordapp.com/attachments/191455136013352960/209718642722603008/412.png');
             return;
         default:
             return;

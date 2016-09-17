@@ -18,6 +18,7 @@
     "lodash": "^4.15.0",
     "momentjs": "^1.1.6",
     "mongoose": "^4.4.17",
+    "node-dogstatsd": "0.0.6",
     "node-opus": "^0.2.1",
     "osu-api": "0.0.3",
     "raven": "^0.12.1",

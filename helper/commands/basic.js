@@ -43,7 +43,7 @@ Music:
                 "!w.ytq query --> Searches Youtube and adds the First Result to the Queue\n" +
                 "--------------------------------\n" +
                 "Moderation\n" +
-                "These Commands all require that the user has a Discord Role named WolkeBot" +
+                "These Commands all require that the user has a Discord Role named WolkeBot\n" +
                 "!w.ban @user --> Bans a User and deletes 7 Days of his/her messages\n" +
                 "!w.kick @user --> Kicks a User\n" +
                 "!w.rm 10 --> removes the last 10 Messages, you can change 10 to a value between 1-100" +
@@ -130,7 +130,9 @@ Music:
         case "!w.stats":
             let users = 0;
             bot.guilds.map((guild => {
-                users = users + guild.members.size;
+                if (guild.id !== '110373943822540800') {
+                    users = users + guild.members.size;
+                }
             }));
             message.reply(`I am currently used on ${bot.guilds.size} guilds with ${users} users.`);
             return;
