@@ -157,7 +157,7 @@ var downloadProxy = function (message, url, proxy, cb) {
                     id: parsedBody.info.id,
                     addedBy: message.author.id,
                     addedAt: Date.now(),
-                    duration: convertDuration(duration),
+                    duration: convertDuration(parsedBody.info.duration),
                     type: "audio/mp3",
                     url: url,
                     dl: "stream",
