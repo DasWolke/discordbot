@@ -21,7 +21,7 @@ var getOsu = function getMap(bot, message, map) {
             songModel.findOne({dl: "osu", setId: info[0].beatmapset_id}, function (err, Song) {
                 if (err) return console.log(err);
                 if (Song) {
-                    return bot.reply(message, "The Song " + info[0].artist + " " + info[0].title + " is already Downloaded!");
+                    return message.reply("The Song " + info[0].artist + " " + info[0].title + " is already Downloaded!");
                 } else {
                     var path = config.osu_path;
                     info = info[0];
@@ -30,10 +30,10 @@ var getOsu = function getMap(bot, message, map) {
                         var extension = "";
                         fs.stat(path + info.beatmapset_id + ".zip", function (err, stat) {
                             if (err == null) {
-                                bot.reply(message, info.artist + " " + info.title + " is already being downloaded");
+                                message.reply(info.artist + " " + info.title + " is already being downloaded");
                             } else {
                                 var url = 'http://osu.ppy.sh/d/' + info.beatmapset_id;
-                                bot.reply(message, info.artist + " " + info.title + " is being downloaded");
+                                message.reply(info.artist + " " + info.title + " is being downloaded");
                                 request.post({
                                     url: "https://osu.ppy.sh/forum/ucp.php?mode=login",
                                     formData: {
@@ -54,7 +54,7 @@ var getOsu = function getMap(bot, message, map) {
                                             console.log(err);
                                         }
                                         if (notAvailableRegex.test(body)) {
-                                            bot.reply(message, info.artist + " " + info.title + " is not available to download");
+                                            message.reply(info.artist + " " + info.title + " is not available to download");
                                             notAvailable = true;
                                             stream.end();
                                             return;
@@ -92,7 +92,7 @@ var getOsu = function getMap(bot, message, map) {
                                                                 });
                                                             });
                                                         } else {
-                                                            bot.reply(message, "Something went wrong while downloading " + info.artist + " " + info.title);
+                                                            message.reply("Something went wrong while downloading " + info.artist + " " + info.title);
                                                             FileError = true;
                                                         }
                                                     });
@@ -122,7 +122,7 @@ var getOsu = function getMap(bot, message, map) {
                                                     setTimeout(function () {
                                                         deleteFolderRecursive(path + info.beatmapset_id + "/");
                                                         fs.unlink(path + info.beatmapset_id + ".zip");
-                                                        bot.reply(message, info.artist + " " + info.title + " has been downloaded");
+                                                        message.reply(info.artist + " " + info.title + " has been downloaded");
                                                     }, 2000);
                                                 }
                                             }, 3000);
@@ -137,13 +137,13 @@ var getOsu = function getMap(bot, message, map) {
                             }
                         });
                     } else {
-                        bot.reply(message, info.artist + " " + info.title + " has already been downloaded");
+                        message.reply(info.artist + " " + info.title + " has already been downloaded");
                     }
                 }
             });
         });
     } else {
-        bot.reply(message, "This Link is not an osu! Link!");
+        message.reply("This Link is not an osu! Link!");
     }
 };
 var deleteFolderRecursive = function (path) {

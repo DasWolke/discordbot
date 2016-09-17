@@ -32,7 +32,7 @@ var playlistCommands = function playlistCommands(bot, message) {
                     '- `!w.playlist remove name` deletes a Playlist \n\n' +
                     '- `!w.playlist search searchterm` searches a Playlist by Name\n\n' +
                     '- `!w.playlist top` lists the top 5 most played Playlists';
-                bot.reply(message, reply);
+                message.reply(reply);
             }
             return;
         default:

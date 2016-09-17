@@ -61,17 +61,17 @@ var calcPP = function (bot, message) {
                         if (err) return console.log(err);
                         console.log(body);
                         var parsedBody = JSON.parse(body);
-                        bot.reply(message, 'PP for Map ' + mapInfo.artist + ' - ' + mapInfo.title + ' [' + parsedBody.version + '] with Acc ' + parsedBody.acc + '% `' + parsedBody.pp + '`');
+                        message.reply('PP for Map ' + mapInfo.artist + ' - ' + mapInfo.title + ' [' + parsedBody.version + '] with Acc ' + parsedBody.acc + '% `' + parsedBody.pp + '`');
                     });
                 } else {
                     console.log('well...');
                 }
             });
         } else {
-            bot.reply(message, 'This is not a valid osu link!');
+            message.reply('This is not a valid osu link!');
         }
     } else {
-        bot.reply(message, 'No Map Link Supplied!');
+        message.reply('No Map Link Supplied!');
     }
 };
 var calcMods = function (message) {

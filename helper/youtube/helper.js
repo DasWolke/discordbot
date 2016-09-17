@@ -9,7 +9,7 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch, messageSplit) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
         if (err) {
             console.log(err);
-            return bot.reply(message, 'Internal Error');
+            return message.reply('Internal Error');
         }
         if (Song) {
             if (voice.inVoice(bot, message)) {
@@ -18,16 +18,15 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch, messageSplit) {
                     voice.playSong(bot, message, Song);
                 });
             } else {
-                bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
             }
         } else {
-            bot.reply(message, 'Started Download!');
+            message.reply('Started Download!');
             yt.download(messageSearch.trim(), message, function (err, info) {
                 if (err) {
-                    console.log(err);
-                    return bot.reply(message, "This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
+                    return message.reply("This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
                 }
-                bot.reply(message, 'Found Song and Downloaded it! ' + info.title);
+                message.reply('Found Song and Downloaded it! ' + info.title);
                 songModel.findOne({id: info.id}, function (err, Song) {
                     if (err) return console.log(err);
                     if (Song) {
@@ -37,10 +36,10 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch, messageSplit) {
                                 voice.playSong(bot, message, Song);
                             });
                         } else {
-                            bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                            message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
                     } else {
-                        bot.reply(message, 'Seems like a Error happened...');
+                        message.reply('Seems like a Error happened...');
                     }
                 });
             });
@@ -51,20 +50,19 @@ var ytDlAndQueue = function (bot, message, messageSearch, messageSplit) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
         if (err) {
             console.log(err);
-            return bot.reply(message, 'Internal Error');
+            return message.reply('Internal Error');
         }
         if (Song) {
             if (voice.inVoice(bot, message)) {
                 voice.addToQueue(bot,message,Song);
             } else {
-                bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
             }
         } else {
-            bot.reply(message, 'Started Download!');
+            message.reply('Started Download!');
             yt.download(messageSearch.trim(), message, function (err, info) {
                 if (err) {
-                    console.log(err);
-                    return bot.reply(message, "This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
+                    return message.reply("This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
                 }
                 songModel.findOne({id: info.id}, function (err, Song) {
                     if (err) return console.log(err);
@@ -72,10 +70,10 @@ var ytDlAndQueue = function (bot, message, messageSearch, messageSplit) {
                         if (voice.inVoice(bot, message)) {
                             voice.addToQueue(bot,message,Song);
                         } else {
-                            bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                            message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
                     } else {
-                        bot.reply(message, 'Seems like a Error happened...');
+                        message.reply('Seems like a Error happened...');
                     }
                 });
             });
@@ -86,7 +84,7 @@ var ytDlAndPlayForever = function (bot, message, messageSearch) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
         if (err) {
             console.log(err);
-            return bot.reply(message, 'Internal Error');
+            return message.reply('Internal Error');
         }
         if (Song) {
             if (voice.inVoice(bot, message)) {
@@ -95,16 +93,15 @@ var ytDlAndPlayForever = function (bot, message, messageSearch) {
                     voice.playSong(bot, message, Song);
                 });
             } else {
-                bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
             }
         } else {
-            bot.reply(message, 'Started Download!');
+            message.reply('Started Download!');
             yt.download(messageSearch.trim(), message, function (err, info) {
                 if (err) {
-                    console.log(err);
-                    return bot.reply(message, "This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
+                    return message.reply("This Video seems to be blocked or Removed or is to long <" + messageSearch.trim() + ">");
                 }
-                bot.reply(message, 'Found Song and Downloaded it! ' + info.title);
+                message.reply('Found Song and Downloaded it! ' + info.title);
                 songModel.findOne({id: info.id}, function (err, Song) {
                     if (err) return console.log(err);
                     if (Song) {
@@ -114,10 +111,10 @@ var ytDlAndPlayForever = function (bot, message, messageSearch) {
                                 voice.playSong(bot, message, Song);
                             });
                         } else {
-                            bot.reply(message, 'It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                            message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
                     } else {
-                        bot.reply(message, 'Seems like a Error happened...');
+                        message.reply('Seems like a Error happened...');
                     }
                 });
             });

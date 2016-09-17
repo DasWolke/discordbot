@@ -7,35 +7,35 @@ var youtube = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
         case "!w.yt":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 if (typeof (messageSplit[1]) !== 'undefined') {
-                    bot.reply(message, 'Started Downloading Video');
+                    message.reply('Started Downloading Video');
                     yt.download(messageSplit[1], message, function (err, info) {
                         if (err) {
                             console.log(err);
-                            return bot.reply(message, 'This is not a Valid Url, maybe the Song is too long or is blocked!');
+                            return message.reply('This is not a Valid Url, maybe the Song is too long or is blocked!');
                         }
-                        bot.reply(message, 'Finished Downloading ' + info.title);
+                        message.reply('Finished Downloading ' + info.title);
                     });
                 } else {
-                    bot.reply(message, "No YT Link found!");
+                    message.reply("No YT Link found!");
                 }
             }
             return;
         case "!w.yts":
                 yt.search(message, function (err, Result) {
                     if (err) {
-                        bot.reply(message, err);
+                        message.reply(err);
                     } else {
-                        bot.reply(message, 'Found the Following Song ' + Result.link);
+                        message.reply('Found the Following Song ' + Result.link);
                     }
                 });
             return;
         case "!w.ytq":
-            if (!message.channel.isPrivate) {
+            if (message.guild) {
                 yt.search(message, function (err, Result) {
                     if (err) {
-                        bot.reply(message, err);
+                        message.reply(err);
                     } else {
                         ytHelper.ytDlAndQueue(bot, message, Result.link, ['lel', Result.link]);
                     }

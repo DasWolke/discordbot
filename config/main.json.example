@@ -8,5 +8,8 @@
   "osu_path":"./audio/osu/",
   "osu_username":"", //Your Osu Username
   "osu_password":"", //Your Osu Password
-  "youtube_api":"" //Youtube Data Api Key
+  "youtube_api":"", //Youtube Data Api Key
+  "proxer_api":"", //Api Key for the Proxer.me Api
+  "proxer_user":"", //Username on proxer.me
+  "proxer_pass":""  //password on  proxer.me
 }

@@ -1,6 +1,6 @@
 {
   "name": "discord-bot-wolke-chan",
-  "version": "0.0.1",
+  "version": "9.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,19 +11,23 @@
   "dependencies": {
     "async": "^2.0.1",
     "cleverbot-node": "^0.2.2",
-    "discord.js": "^8.1.0",
+    "cloudscraper": "^1.4.0",
+    "discord.js": "github:hydrabolt/discord.js",
+    "fluent-ffmpeg": "^2.1.0",
     "humanize": "0.0.9",
+    "lodash": "^4.15.0",
     "momentjs": "^1.1.6",
     "mongoose": "^4.4.17",
-    "node-internet-radio": "^0.1.4",
+    "node-opus": "^0.2.1",
     "osu-api": "0.0.3",
+    "raven": "^0.12.1",
     "request": "^2.74.0",
     "shortid": "^2.2.6",
-    "socket.io": "^1.4.8",
     "socket.io-client": "^1.4.8",
     "unzip": "^0.1.11",
     "x2js": "^2.0.1",
     "youtube-dl": "^1.11.1",
-    "youtube-search": "^1.0.6"
+    "youtube-search": "^1.0.6",
+    "ytdl-core": "^0.7.17"
   }
 }

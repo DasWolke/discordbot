@@ -6,7 +6,8 @@ var serverSchema = mongoose.Schema({
     id:String,
     lastVoiceChannel:String,
     nsfwChannel:String,
-    cmdChannel:String,
+    nsfwChannels:[],
+    cmdChannels:[],
     permissions:[],
     prefix:String,
     disabledCmds:[],
@@ -18,9 +19,6 @@ serverSchema.methods.updateVoice = function updateVoice(id,cb) {
 };
 serverSchema.methods.updateNsfw = function updateNsfw(id,cb) {
     this.model('Servers').update({id:this.id}, {$set:{nsfwChannel:id}}, cb);
-};
-serverSchema.methods.updateCmd = function updateCmd(id,cb) {
-    this.model('Servers').update({id:this.id}, {$set:{cmdChannel:id}}, cb);
 };
 var serverModel = mongoose.model('Servers', serverSchema);
 module.exports = serverModel;

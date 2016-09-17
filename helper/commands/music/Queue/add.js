@@ -7,7 +7,7 @@ var songModel = require('../../../../DB/song');
 var voice = require('../../../utility/voice');
 var add = function addToQueue(bot,message,messageSplit) {
     if (typeof(messageSplit[1]) === 'undefined') {
-        return bot.reply(message, 'You did not enter a search Term!');
+        return message.reply('You did not enter a search Term!');
     }
     var messageSearch = "";
     var a = 0;
@@ -28,7 +28,7 @@ var add = function addToQueue(bot,message,messageSplit) {
             if (Songs !== null && Songs.length > 0) {
                 voice.addToQueue(bot, message, Songs[0]);
             } else {
-                bot.reply(message, 'No Song found with Search Term `' + messageHelper.cleanMessage(messageSearch) + '`');
+                message.reply('No Song found with Search Term `' + messageHelper.cleanMessage(messageSearch) + '`');
             }
         });
     }

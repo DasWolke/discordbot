@@ -5,7 +5,7 @@ var queueModel = require('../../../DB/queue');
 var voice = require('../voice');
 var voteSkip = function voteSkip(bot, message, cb) {
     if (message.author.voiceChannel) {
-        queueModel.findOne({server: message.server.id}, function (err, Queue) {
+        queueModel.findOne({server: message.guild.id}, function (err, Queue) {
             if (err) return cb(err);
             if (Queue) {
                 if (Queue.songs.length > 0) {
