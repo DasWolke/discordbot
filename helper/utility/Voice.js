@@ -1,7 +1,6 @@
 /**
  * Created by julia on 10.07.2016.
  */
-var Discord = require('discord.js');
 var fs = require('fs');
 var ytdl = require('ytdl-core');
 var queueModel = require('../../DB/queue');

@@ -8,15 +8,17 @@ var messageHelper = require('../utility/message');
 var cookie = require('./misc/cookie');
 var eatCookie = require('./misc/eatCookie');
 var humanize = require('humanize');
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
         case "!w.help":
-            var reply = `Hey im ${bot.user.username}, lets have fun together here on Discord (/^▽^)/ Commands you can write: 
-                 \`\`\`!w.help --> Help  
+            var reply = `${t('basic.help.intro_2')} ${bot.user.username}, ${t('basic.help.intro')} 
+                 \`\`\`!w.help --> ${t('basic.help.help')} 
 SUPPORT: 
-!w.bug --> get the Link of the Support Discord  
-!w.add --> Get a link to add me to your server  
+!w.bug --> ${t('basic.help.bug')}
+!w.add --> ${t('basic.help.add')}  
 -------------------------------- 
 Music: 
 !w.voice --> i join the Voice Channel you are currently in (only usable with WolkeBot Role) 
