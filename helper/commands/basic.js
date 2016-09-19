@@ -10,6 +10,8 @@ var eatCookie = require('./misc/eatCookie');
 var humanize = require('humanize');
 var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -64,11 +66,12 @@ Music:
                 "!w.remLewd--> Removes the current Channel from the list of NSFW Channels\n" +
                 "!w.cookie @user --> Gives a Cookie to the mentioned User or shows your Cookies if no one is mentioned. (Giving Cookies is only usable with WolkeBot Role)\n" +
                 "!w.eatCookie --> Eats a Cookie.\n" +
+                "!w.git --> gives you the github link of the bot\n" +
                 "For Any Feedback use the Support Discord Please ^^\n" +
                 "If you want to talk with me @mention me with a message :D```";
             message.author.sendMessage(reply).then(replyMessage => {
                 message.author.sendMessage(reply2);
-            }).catch(console.log);
+            }).catch(winston.warn);
             if (message.guild) {
                 message.reply('OK, i send you a list of commands over PM.');
             }
@@ -84,7 +87,7 @@ Music:
             return;
         case "!w.level":
             messageHelper.getLevel(bot, message, function (err) {
-                if (err) return console.log(err);
+                if (err) return winston.warn(err);
             });
             return;
         case "!w.voice":
@@ -92,12 +95,12 @@ Music:
                 if (messageHelper.hasWolkeBot(bot, message)) {
                     message.member.voiceChannel.join().then(connection => {
                         voice.saveVoice(message.member.voiceChannel, function (err) {
-                            if (err) return console.log(err);
-                            console.log('Saved Voice!');
+                            if (err) return winston.warn(err);
+                            winston.info(`Saved Voice of Guild ${message.guild.name}`);
                         });
                         voice.startQueue(bot, message);
                     }).catch(err => {
-                        console.log(err);
+                        winston.warn(err);
                         message.reply('An Error has occured while trying to join Voice!')
                     });
                 } else {
@@ -114,7 +117,7 @@ Music:
                     if (messageHelper.hasWolkeBot(bot, message)) {
                         channel.leave();
                         voice.clearVoice(message, function (err) {
-                            if (err) return console.log(err);
+                            if (err) return winston.warn(err);
                         });
                     } else {
                         message.reply('No Permission! You need to give yourself the WolkeBot Role to use this.');
@@ -155,13 +158,16 @@ Music:
             }
             return;
         case "!w.uptime":
-            // console.log(bot.uptime);
+            // winston.info(bot.uptime);
             message.reply(`Uptime:${humanize.date('i-s', bot.uptime / 1000)}`);
             return;
         case "!w.rank":
             if (message.guild) {
                 message.reply(`You can find the Leaderboard for this Server here: http://bot.ram.moe/l/${message.guild.id}`);
             }
+            return;
+        case "!w.git":
+            message.reply('https://github.com/DasWolke/discordbot');
             return;
         default:
             return;

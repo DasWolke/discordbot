@@ -11,6 +11,8 @@ var songDuration = 0;
 var general = require('./general');
 var request = require('request');
 var dispatcherArray = [];
+var errorReporter = require('./errorReporter');
+var client = errorReporter.getT();
 var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
     serverModel.findOne({id: channel.guild.id}, function (err, Server) {
         if (err) {
@@ -110,7 +112,6 @@ var joinVoiceChannel = function joinVoiceChannel(bot, channel, cb) {
     }).catch(cb);
 };
 var inVoiceChannel = function inVoiceChannel(bot, message) {
-    // console.log(!!bot.voiceConnections.get(message.guild.id));
     return (!!bot.voiceConnections.get(message.guild.id));
 };
 var getVoiceConnection = function getVoiceConnection(bot, message) {
@@ -272,31 +273,35 @@ var updateDispatcherArray = function (guild_id, dispatcher) {
 };
 var playSong = function (bot, message, Song, Queueused) {
     var connection = getVoiceConnection(bot, message);
-    // if (connection) {}
-    var dispatcher = connection.playFile(path.resolve(Song.path), {volume:0.25});
-    updateDispatcherArray(message.guild.id, dispatcher);
-    console.log(path.resolve(Song.path));
-    updatePlays(Song.id, function (err) {
-        if (err) return console.log(err);
-    });
-    if (typeof(Queueused) === 'undefined') {
-        message.channel.sendMessage("Now playing Song: " + Song.title);
+    if (connection) {
+        var dispatcher = connection.playFile(path.resolve(Song.path), {volume: 0.25});
+        updateDispatcherArray(message.guild.id, dispatcher);
+        console.log(path.resolve(Song.path));
+        updatePlays(Song.id, function (err) {
+            if (err) return client.captureMessage(`Error at Update Plays in Play Song: ${err}`);
+        });
+        if (typeof(Queueused) === 'undefined') {
+            message.channel.sendMessage("Now playing Song: " + Song.title);
+        }
+        var timer = setInterval(function () {
+            setDuration(getDuration() + 1);
+        }, 1000);
+        dispatcher.on("end", function () {
+            clearInterval(timer);
+            setDuration(0);
+            console.log("File ended!");
+            nextSong(bot, message, Song);
+        });
+        dispatcher.on("debug", information => {
+            console.log(`Debug: ${information}`);
+        });
+        dispatcher.on("error", function (err) {
+            console.log(`Error: ${err}`);
+            client.captureMessage(`Error at Dispatcher in Play Song: ${err}`);
+        });
+    } else {
+        client.captureMessage(`No connection found for Guild ${message.guild.name}`, {extra:{'Guild':message.guild.id}, 'voiceConnections':bot.voiceConnections.array()});
     }
-    var timer = setInterval(function () {
-        setDuration(getDuration() + 1);
-    }, 1000);
-    dispatcher.on("end", function () {
-        clearInterval(timer);
-        setDuration(0);
-        console.log("File ended!");
-        nextSong(bot, message, Song);
-    });
-    dispatcher.on("debug", information => {
-        console.log(`Debug: ${information}`);
-    });
-    dispatcher.on("error", function (err) {
-        console.log(`Error: ${err}`);
-    });
 };
 // var streamSong = function (bot, message, messageSplit) {
 //     var connection = getVoiceConnection(bot, message);
@@ -338,10 +343,10 @@ var startQueue = function (bot, message) {
         if (err) return console.log(err);
         if (Queue) {
             Queue.stopRepeat(function (err) {
-                if (err) return console.log(err);
+                if (err) return client.captureMessage(`Error at stop Repeat in start Queue: ${err}`, {extra:{'Guild':message.guild.id}});
                 if (Queue.songs.length > 0) {
                     Queue.resetVotes(function (err) {
-                        if (err) return console.log(err);
+                        if (err) return client.captureMessage(`Error at reset Votes in start Queue: ${err}`, {extra:{'Guild':message.guild.id}});
                         playSong(bot, message, Queue.songs[0], true);
                     });
                 } else {
@@ -356,10 +361,10 @@ var autoStartQueue = function (bot, message) {
         if (err) return console.log(err);
         if (Queue) {
             Queue.stopRepeat(function (err) {
-                if (err) return console.log(err);
+                if (err) return client.captureMessage(`Error at stopRepeat in autoStartQueue: ${err}`, {extra:{'Guild':message.guild.id}});
                 if (Queue.songs.length > 0) {
                     Queue.resetVotes(function (err) {
-                        if (err) return console.log(err);
+                        if (err) return client.captureMessage(`Error at resetVotes in autoStartQueue: ${err}`, {extra:{'Guild':message.guild.id}});
                         playSong(bot, message, Queue.songs[0], true);
                     });
                 } else {

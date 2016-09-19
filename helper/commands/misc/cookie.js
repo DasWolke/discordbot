@@ -36,7 +36,7 @@ var inventoryCmd = function (bot, message, messageSplit) {
                             });
                         }
                     } else {
-                        messageHelper.createUser({author:user, server:message.guild}, true, true, function (err) {
+                        messageHelper.createUser({author:user, guild:message.guild}, true, true, function (err) {
                             if (err) return console.log(err);
                             userModel.findOne({id: user.id}, function (err, User) {
                                 if (err) return console.log(err);

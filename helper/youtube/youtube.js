@@ -6,6 +6,8 @@ var youtubesearch = require('youtube-search');
 var songModel = require('../../DB/song');
 var config = require('../../config/main.json');
 var fs = require('fs');
+var errorReporter = require('../utility/errorReporter');
+var client = errorReporter.getT();
 var opts = {
     maxResults: 5,
     key: config.youtube_api,
@@ -57,6 +59,7 @@ var download = function (url, message, cb) {
                                     type: "audio/mp3",
                                     url: url,
                                     dl: "stream",
+                                    dlBy:"main",
                                     cached: true,
                                     cachedAt: new Date(),
                                     path: `audio/${info.id}.mp3`
@@ -144,7 +147,12 @@ var downloadProxy = function (message, url, proxy, cb) {
             console.log(error);
             return cb('Small Problem.');
         }
-        let parsedBody = JSON.parse(body);
+        try {
+            let parsedBody = JSON.parse(body);
+        } catch (e) {
+            client.captureException(e, {extra:{'body':body}});
+            return cb('Uwa Rip!');
+        }
         if (parsedBody.error === 0) {
             console.log(parsedBody.path);
             console.log(`${proxy_url}${parsedBody.path}`);
