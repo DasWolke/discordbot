@@ -38,6 +38,11 @@ var updateXp = function (bot, message, cb) {
     userModel.findOne({id: message.author.id}, function (err, User) {
         if (err) return cb(err);
         if (User) {
+            if (User.name !== message.author.username) {
+                User.updateName(message.author.username, function (err) {
+                   if (err) return console.log(err);
+                });
+            }
             if (hasServer(message, User)) {
                 var clientServer = loadServerFromUser(message, User);
                 // console.log('User has Server');

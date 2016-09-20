@@ -6,6 +6,9 @@
       "bug":"get the Link of the support discord",
       "help":"the help command",
       "add":"Get a link to add me to your server"
-    }
+    },
+    "version":"Currently i am running on version {{version}}",
+    "add":"Use this Link to add me to your Server: {{link}}",
+    "bug":"Please join the support Discord: {{link}} to report a Bug."
   }
 }

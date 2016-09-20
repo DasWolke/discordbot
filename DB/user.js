@@ -27,6 +27,9 @@ userSchema.methods.updateLevel = function updateLevel(id,cb) {
 userSchema.methods.updateFavorites = function updateFavorites(id,cb) {
     this.model('Users').update({id:this.id}, {favorites:{$addToSet:id}}, cb);
 };
+userSchema.methods.updateName = function updateName(name,cb) {
+    this.model('Users').update({id:this.id}, {$set:{name:name}}, cb);
+};
 userSchema.methods.disableLevel = function disableLevel(id,cb) {
     this.model('Users').update({id:this.id, 'servers.serverId':id}, {$set: {'servers.$.levelEnabled':false}}, cb);
 };

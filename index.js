@@ -5,21 +5,15 @@ var config = require('./config/main.json');
 var winston = require('winston');
 winston.info(`Starting Init of Bot!`);
 winston.add(winston.transports.File, { filename: `logs/rem-main.log` });
-winston.remove(winston.transports.Console);
 var logger = require('./helper/utility/logger');
 logger.setT(winston);
 var raven = require('raven');
 var errorReporter = require('./helper/utility/errorReporter');
-var client;
-if (!config.beta) {
-    client = new raven.Client('https://b272f049322d4bf68877d3e37e47c1eb:f63281d350b74592aa66b921294e6db4@sentry.io/99563');
-} else {
-    client = new raven.Client('https://5d41f8506cda401ca235b2a0fabaeca3:bcb70207bb5d461bbcb116b71c8f3716@sentry.io/100036');
-}
+var client = new raven.Client(config.sentry_token);
 errorReporter.setT(client);
 winston.info('Starting Errorhandling!');
 client.patchGlobal(() => {
-    winston.info('Oh no i died!');
+    winston.error('Oh no i died!');
     process.exit(1);
 });
 if (!config.beta) {
@@ -41,26 +35,15 @@ i18next.use(Backend).init({
     fallbackLng: false,
     preload: ['de', 'en']
 }, (err, t) => {
-    if (err) return winston.info(err);
+    if (err) {
+        client.captureMessage(err);
+        return winston.error(err);
+    }
     i18nBean.setT(t);
     var Discord = require("discord.js");
     var options = {
-        ws: {
-            large_threshold: 250,
-            compress: true,
-            properties: {
-                $os: process ? process.platform : 'discord.js',
-                $browser: 'discord.js',
-                $device: 'discord.js',
-                $referrer: 'https://github.com/DasWolke/discordbot',
-                $referring_domain: ''
-            }
-        },
         protocol_version: 6,
-        max_message_cache: 1500,
-        rest_ws_bridge_timeout: 5000,
-        api_request_method: 'sequential',
-        fetch_all_members: true
+        max_message_cache: 1500
     };
     var bot = new Discord.Client(options);
     var request = require('request');
@@ -75,7 +58,7 @@ i18next.use(Backend).init({
     mongoose.connect('mongodb://localhost/discordbot', (err) => {
         if (err) {
             client.captureMessage(err);
-            return winston.info("Unable to connect to Mongo Server!");
+            return winston.error("Unable to connect to Mongo Server!");
         }
     });
     winston.info('Logging in...');
@@ -107,7 +90,10 @@ i18next.use(Backend).init({
                     }
                 });
             }, (err) => {
-                if (err) return winston.info(err);
+                if (err) {
+                    client.captureMessage(err);
+                    return winston.error(err);
+                }
                 winston.info('Finished Loading Voice!');
             });
         }, 10000);
@@ -131,7 +117,6 @@ i18next.use(Backend).init({
 
     });
     bot.on("message", (message) => {
-        // winston.info(message.mentions.users);
         if (!message.guild || config.beta && message.guild.id !== '110373943822540800' || !config.beta) {
             if (!config.beta) {
                 dogstatsd.increment('musicbot.messages');
@@ -155,7 +140,7 @@ i18next.use(Backend).init({
                 }
             } else if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && message.guild.id !== '110373943822540800' && !message.author.bot) {
                 messageHelper.updateXP(bot, message, (err) => {
-                    if (err) return winston.info(err);
+                    if (err) return winston.error(err);
                 });
             }
             if (message.guild && !!message.mentions.users.get(bot.user.id) && message.mentions.users.size === 1 && message.guild.id !== '110373943822540800') {
@@ -192,7 +177,10 @@ i18next.use(Backend).init({
             }
         };
         request(requestOptions, function (err, response, body) {
-            if (err) return winston.info(err);
+            if (err) {
+                client.captureMessage(err);
+                return winston.error(err);
+            }
             winston.info('Stats Updated!');
             winston.info(body);
         });
