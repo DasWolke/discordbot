@@ -43,7 +43,8 @@ i18next.use(Backend).init({
     var Discord = require("discord.js");
     var options = {
         protocol_version: 6,
-        max_message_cache: 1500
+        max_message_cache: 1500,
+        fetch_all_members:true
     };
     var bot = new Discord.Client(options);
     var request = require('request');
