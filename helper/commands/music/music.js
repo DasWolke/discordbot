@@ -11,6 +11,7 @@ var general = require('../../utility/general');
 var song = require('./Song/Song.CMD');
 var queueCmd = require('./Queue/Queue.CMD');
 var messageHelper = require('../../utility/message');
+var config = require('../../../config/main.json');
 var musicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -42,7 +43,9 @@ var musicCommands = function (bot, message) {
             queueCmd.remove(bot, message, messageSplit);
             return;
         case "!w.forever":
-            song.forever(bot, message, messageSplit);
+            if (config.beta) {
+                song.forever(bot, message, messageSplit)
+            }
             return;
         case "!w.skip":
             if (message.guild) {

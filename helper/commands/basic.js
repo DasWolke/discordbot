@@ -1,6 +1,7 @@
 /**
  * Created by julian on 16.05.2016.
  */
+//Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role)
 var config = require('../../config/main.json');
 var path = require('path');
 var voice = require('../utility/voice');
@@ -29,7 +30,7 @@ Music:
 !w.pause --> Pause the Current Song (only usable with WolkeBot Role)
 !w.resume --> Resume the pause Song (only usable with WolkeBot Role)
 !w.volume 40 --> Sets the Volume of the Bot, Values between 1-200 (only usable with WolkeBot Role)
-!w.forever name --> Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role) 
+!w.forever name --> Temporarely disabled until i fixed it
 !w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results 
 !w.skip --> Skips the Current Song (only usable with WolkeBot Role) 
 !w.voteskip --> Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped. 

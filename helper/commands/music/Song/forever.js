@@ -14,7 +14,7 @@ var foreverCMD = function foreverCmd(bot,message, messageSplit) {
             if (typeof (messageSplit[1]) !== 'undefined') {
                 var messageSearch = "";
                 for (var i = 1; i < messageSplit.length; i++) {
-                    messageSearch = messageSearch + " " + messageSplit[i]
+                    messageSearch = messageSearch + " " + messageSplit[i];
                 }
                 if (voice.checkMedia(messageSearch)) {
                     ytHelper.ytDlAndPlayForever(bot, message, messageSearch, messageSplit);

@@ -4,7 +4,7 @@
 var config = require('./config/main.json');
 var winston = require('winston');
 winston.info(`Starting Init of Bot!`);
-winston.add(winston.transports.File, { filename: `logs/rem-main.log` });
+winston.add(winston.transports.File, { filename: `logs/rem-${process.argv[2]}.log` });
 var logger = require('./helper/utility/logger');
 logger.setT(winston);
 var raven = require('raven');
@@ -44,8 +44,10 @@ i18next.use(Backend).init({
     var options = {
         protocol_version: 6,
         max_message_cache: 1500,
-        fetch_all_members:true
+        "shard_id": process.argv[2],
+        "shard_count": config.shards
     };
+    winston.info(options);
     var bot = new Discord.Client(options);
     var request = require('request');
     var CMD = require('./helper/cmdman');
@@ -67,13 +69,13 @@ i18next.use(Backend).init({
     socketManager.init(socket);
     winston.info('Bot finished Init');
     bot.on('ready', () => {
-        bot.user.setStatus('online', '!w.help for Commands!').then(user => winston.info('Changed Status Successfully!')).catch(winston.info);
+        bot.user.setStatus('online', '!w.help | bot.ram.moe').then(user => winston.info('Changed Status Successfully!')).catch(winston.info);
         bot.on('serverCreated', (server) => {
             winston.info('Joined Server ' + server.name);
         });
         setTimeout(() => {
             winston.info('start loading Voice!');
-            async.each(bot.guilds.array(), (guild, cb) => {
+            async.eachLimit(bot.guilds.array(),4, (guild, cb) => {
                 voice.loadVoice(guild, (err, id) => {
                     if (err) return cb(err);
                     if (typeof (id) !== 'undefined' && id !== '') {
@@ -97,7 +99,7 @@ i18next.use(Backend).init({
                 }
                 winston.info('Finished Loading Voice!');
             });
-        }, 10000);
+        }, 5000);
         if (!config.beta) {
             updateStats();
             dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
@@ -174,7 +176,9 @@ i18next.use(Backend).init({
             url: `https://bots.discord.pw/api/bots/${id}/stats`,
             method: 'POST',
             json: {
-                "server_count": bot.guilds.size
+                "server_count": bot.guilds.size,
+                "shard_id":process.argv[2],
+                "shard_count":config.shards
             }
         };
         request(requestOptions, function (err, response, body) {

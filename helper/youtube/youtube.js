@@ -147,12 +147,7 @@ var downloadProxy = function (message, url, proxy, cb) {
             console.log(error);
             return cb('Small Problem.');
         }
-        try {
-            let parsedBody = JSON.parse(body);
-        } catch (e) {
-            client.captureException(e, {extra:{'body':body}});
-            return cb('Uwa Rip!');
-        }
+        let parsedBody = JSON.parse(body);
         if (parsedBody.error === 0) {
             console.log(parsedBody.path);
             console.log(`${proxy_url}${parsedBody.path}`);
