@@ -37,7 +37,7 @@ i18next.use(Backend).init({
 }, (err, t) => {
     if (err) {
         client.captureMessage(err);
-        return winston.error(err);
+        return winston.error('Error at i18n' + err);
     }
     i18nBean.setT(t);
     var Discord = require("discord.js");
