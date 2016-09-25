@@ -20,10 +20,12 @@ var add = function addToQueue(bot,message,messageSplit) {
             messageSearch = messageSearch + " " + messageSplit[a]
         }
     }
+    console.log(messageSearch);
     if (voice.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && voice.checkMedia(messageSplit[2])) {
         ytHelper.ytDlAndQueue(bot, message, messageSearch, messageSplit);
     } else {
-        songModel.find({$text: {$search: messageSearch}},{score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
+        messageSearch = messageSearch.replace('-', '');
+        songModel.find({$text: {$search: `${messageSearch}`}},{score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
             if (err) return console.log(err);
             if (Songs !== null && Songs.length > 0) {
                 voice.addToQueue(bot, message, Songs[0]);

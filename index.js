@@ -4,7 +4,7 @@
 var config = require('./config/main.json');
 var winston = require('winston');
 winston.info(`Starting Init of Bot!`);
-winston.add(winston.transports.File, { filename: `logs/rem-${process.argv[2]}.log` });
+winston.add(winston.transports.File, { filename: `logs/rem-main.log` });
 var logger = require('./helper/utility/logger');
 logger.setT(winston);
 var raven = require('raven');
@@ -43,9 +43,7 @@ i18next.use(Backend).init({
     var Discord = require("discord.js");
     var options = {
         protocol_version: 6,
-        max_message_cache: 1500,
-        "shard_id": process.argv[2],
-        "shard_count": config.shards
+        max_message_cache: 1500
     };
     winston.info(options);
     var bot = new Discord.Client(options);
@@ -69,13 +67,14 @@ i18next.use(Backend).init({
     socketManager.init(socket);
     winston.info('Bot finished Init');
     bot.on('ready', () => {
-        bot.user.setStatus('online', '!w.help | bot.ram.moe').then(user => winston.info('Changed Status Successfully!')).catch(winston.info);
+        // bot.user.setStatus('online', `!w.help | Shard ${parseInt(process.argv[2])+1}/${config.shards}`).then(user => winston.info('Changed Status Successfully!')).catch(winston.info);
+        bot.user.setStatus('online', `!w.help | bot.ram.moe`).then(user => winston.info('Changed Status Successfully!')).catch(winston.info);
         bot.on('serverCreated', (server) => {
             winston.info('Joined Server ' + server.name);
         });
         setTimeout(() => {
             winston.info('start loading Voice!');
-            async.eachLimit(bot.guilds.array(),4, (guild, cb) => {
+            async.each(bot.guilds.array(),(guild, cb) => {
                 voice.loadVoice(guild, (err, id) => {
                     if (err) return cb(err);
                     if (typeof (id) !== 'undefined' && id !== '') {
@@ -99,7 +98,7 @@ i18next.use(Backend).init({
                 }
                 winston.info('Finished Loading Voice!');
             });
-        }, 5000);
+        }, 10000);
         if (!config.beta) {
             updateStats();
             dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
@@ -176,9 +175,7 @@ i18next.use(Backend).init({
             url: `https://bots.discord.pw/api/bots/${id}/stats`,
             method: 'POST',
             json: {
-                "server_count": bot.guilds.size,
-                "shard_id":process.argv[2],
-                "shard_count":config.shards
+                "server_count": bot.guilds.size
             }
         };
         request(requestOptions, function (err, response, body) {
@@ -200,3 +197,6 @@ i18next.use(Backend).init({
         return users;
     };
 });
+
+// "shard_id":process.argv[2],
+// "shard_count":config.shards

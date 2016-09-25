@@ -12,6 +12,8 @@ var song = require('./Song/Song.CMD');
 var queueCmd = require('./Queue/Queue.CMD');
 var messageHelper = require('../../utility/message');
 var config = require('../../../config/main.json');
+var logger = require('../../utility/logger');
+var winston = logger.getT();
 var musicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -43,27 +45,25 @@ var musicCommands = function (bot, message) {
             queueCmd.remove(bot, message, messageSplit);
             return;
         case "!w.forever":
-            if (config.beta) {
-                song.forever(bot, message, messageSplit)
-            }
+                song.forever(bot, message, messageSplit);
             return;
         case "!w.skip":
             if (message.guild) {
                 if (voice.inVoice(bot, message)) {
                     if (messageHelper.hasWolkeBot(bot, message)) {
                         queueModel.findOne({server: message.guild.id}, function (err, Queue) {
-                            if (err) return console.log(err);
-                            var connection = voice.getVoiceConnection(bot, message);
+                            if (err) return winston.error(err);
+                            let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
                             if (Queue) {
                                 if (Queue.songs.length > 0) {
                                     Queue.stopRepeat(function (err) {
-                                        if (err) return console.log(err);
+                                        if (err) return winston.error(err);
                                         voice.nextSong(bot, message, Queue.songs[0], false);
                                         message.reply("Skipped Song " + Queue.songs[0].title);
                                     });
                                 } else {
-                                    if (connection && connection.playing) {
-                                        connection.stopPlaying();
+                                    if (dispatcher) {
+                                        dispatcher.end();
                                         message.reply("Stopped current Song!");
                                     } else {
                                         message.reply('There is no Song playing right now!');
@@ -95,12 +95,12 @@ var musicCommands = function (bot, message) {
                         if (err) return message.reply("A Database Error occured!");
                         var random = general.random(0, C);
                         songModel.find({}, function (err, Songs) {
-                            if (err) return console.log(err);
+                            if (err) return winston.error(err);
                             if (typeof(Songs[random]) !== 'undefined') {
                                 var Song = Songs[random];
                                 if (voice.inVoice(bot, message)) {
                                     voice.addSongFirst(bot, message, Song, false, function (err) {
-                                        if (err) return console.log(err);
+                                        if (err) return winston.error(err);
                                         voice.playSong(bot, message, Song);
                                     });
                                 } else {
@@ -124,7 +124,7 @@ var musicCommands = function (bot, message) {
                     if (err) return message.reply("A Database Error occured!");
                     var random = general.random(0, C);
                     songModel.find({}, function (err, Songs) {
-                        if (err) return console.log(err);
+                        if (err) return winston.error(err);
                         if (typeof(Songs[random]) !== 'undefined') {
                             var Song = Songs[random];
                             if (voice.inVoice(bot, message)) {

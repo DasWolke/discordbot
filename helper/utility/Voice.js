@@ -473,9 +473,11 @@ var checkMedia = function checkMedia(link) {
     }
 };
 var getDispatcherFromConnection = function (connection) {
-    for (var i = 0; i < dispatcherArray.length; i++) {
-        if (dispatcherArray[i].dispatcher.player.connection.channel.id === connection.channel.id) {
-            return dispatcherArray[i].dispatcher;
+    if (connection) {
+        for (var i = 0; i < dispatcherArray.length; i++) {
+            if (dispatcherArray[i].dispatcher.player.connection.channel.id === connection.channel.id) {
+                return dispatcherArray[i].dispatcher;
+            }
         }
     }
     return false;

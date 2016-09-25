@@ -11,7 +11,6 @@
   "dependencies": {
     "async": "^2.0.1",
     "cleverbot-node": "^0.2.2",
-    "cloudscraper": "^1.4.0",
     "discord.js": "github:hydrabolt/discord.js#indev",
     "fluent-ffmpeg": "^2.1.0",
     "i18next": "^3.4.2",

@@ -13,8 +13,8 @@ var show = function showQueueCmd(bot, message) {
                 for (var q = 0; q < Queue.songs.length; q++) {
                     if (q === 0) {
                         let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
-                        let time = Math.floor(dispatcher.time / 1000);
-                        if (typeof (Queue.songs[0].duration) !== 'undefined') {
+                        if (typeof (Queue.songs[0].duration) !== 'undefined' && dispatcher) {
+                            let time = Math.floor(dispatcher.time / 1000);
                             reply = reply + `Currently Playing:\` ${Queue.songs[0].title} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \`\n`;
                         } else {
                             reply = reply + `Currently Playing:\`${Queue.songs[0].title}\`\n`;
@@ -23,15 +23,17 @@ var show = function showQueueCmd(bot, message) {
                             reply = `${reply}Queued:\n\`\`\``;
                         }
                     } else {
-                        if (typeof (Queue.songs[q].duration) !== 'undefined') {
-                            reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title} ${Queue.songs[q].duration}\n`;
-                        } else {
-                            reply = reply + `\`\`\`${parseInt(q + 1)}. ${Queue.songs[q].title}n`;
+                        let end = '\n';
+                        if (q === Queue.songs.length - 1) {
+                            end = `\`\`\``;
                         }
-                        if (q === Queue.songs.length-1) {
-                            reply = `${reply}\`\`\``;
+                        if (typeof (Queue.songs[q].duration) !== 'undefined') {
+                            reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title} ${Queue.songs[q].duration}${end}`;
+                        } else {
+                            reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title}${end}`;
                         }
                     }
+
                 }
                 message.channel.sendMessage(reply).then(msg => {
                     msg.delete(60 * 1000);
