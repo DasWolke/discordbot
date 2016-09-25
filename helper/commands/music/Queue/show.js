@@ -4,21 +4,39 @@
 var general = require('../../../utility/general');
 var voice = require('../../../utility/voice');
 var queueModel = require('../../../../DB/queue');
-var show = function showQueueCmd(bot,message) {
+var show = function showQueueCmd(bot, message) {
     queueModel.findOne({server: message.guild.id}, function (err, Queue) {
         if (err) return console.log(err);
         if (Queue) {
             if (Queue.songs.length > 0) {
-                var reply = "The Following Songs are in the Queue right now:\n\n";
+                var reply = "";
                 for (var q = 0; q < Queue.songs.length; q++) {
                     if (q === 0) {
-                        reply = reply + "Now Playing: ```" + Queue.songs[q].title + " Time:" + general.convertSeconds(voice.getSongDuration()) + "```";
+                        let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
+                        if (typeof (Queue.songs[0].duration) !== 'undefined' && dispatcher) {
+                            let time = Math.floor(dispatcher.time / 1000);
+                            reply = reply + `Currently Playing:\` ${Queue.songs[0].title} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \`\n`;
+                        } else {
+                            reply = reply + `Currently Playing:\`${Queue.songs[0].title}\`\n`;
+                        }
+                        if (Queue.songs.length > 1) {
+                            reply = `${reply}Queued:\n\`\`\``;
+                        }
                     } else {
-                        reply = reply + parseInt(q + 1) + ": ```" + Queue.songs[q].title + "```";
+                        let end = '\n';
+                        if (q === Queue.songs.length - 1) {
+                            end = `\`\`\``;
+                        }
+                        if (typeof (Queue.songs[q].duration) !== 'undefined') {
+                            reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title} ${Queue.songs[q].duration}${end}`;
+                        } else {
+                            reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title}${end}`;
+                        }
                     }
+
                 }
-                message.reply(reply).then(msg => {
-                    msg.delete(60*1000);
+                message.channel.sendMessage(reply).then(msg => {
+                    msg.delete(60 * 1000);
                 }).catch(console.log);
             } else {
                 message.reply('There is no Song in the Queue right now!');

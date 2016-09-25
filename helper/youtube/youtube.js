@@ -1,11 +1,12 @@
 var youtubedl = require('youtube-dl');
 var ffmpeg = require('fluent-ffmpeg');
-var ytdl_core = require('ytdl-core');
 var request = require('request');
 var youtubesearch = require('youtube-search');
 var songModel = require('../../DB/song');
 var config = require('../../config/main.json');
 var fs = require('fs');
+var errorReporter = require('../utility/errorReporter');
+var client = errorReporter.getT();
 var opts = {
     maxResults: 5,
     key: config.youtube_api,
@@ -16,10 +17,13 @@ var download = function (url, message, cb) {
         if (err) {
             message.reply('Trying to download over the proxy, this could take a bit.');
             downloadProxy(message, url, config.default_proxy, function (err, info) {
-                if (err) return cb(err);
+                if (err) {
+                    client.captureMessage(err, {extra:{'url':url, 'guild':message.guild.name}});
+                    return cb(err);
+                }
                 cb(err, info);
             });
-        } else if (checkTime(info.duration)) {
+        } else if (checkTime(info)) {
             songModel.findOne({id: info.id}, function (err, Song) {
                 if (err) return cb(err);
                 if (!Song) {
@@ -57,6 +61,7 @@ var download = function (url, message, cb) {
                                     type: "audio/mp3",
                                     url: url,
                                     dl: "stream",
+                                    dlBy:"main",
                                     cached: true,
                                     cachedAt: new Date(),
                                     path: `audio/${info.id}.mp3`
@@ -136,11 +141,12 @@ var downloadProxy = function (message, url, proxy, cb) {
         form: {
             url: url
         },
-        method: 'POST'
+        method: 'POST',
+        timeout:240000
     };
     request(options, (error, response, body) => {
         if (error) {
-            console.log(error);
+            client.captureMessage(error, {extra:{'url':url, 'proxy':proxy}});
             return cb('Small Problem.');
         }
         let parsedBody = JSON.parse(body);
@@ -157,7 +163,7 @@ var downloadProxy = function (message, url, proxy, cb) {
                     id: parsedBody.info.id,
                     addedBy: message.author.id,
                     addedAt: Date.now(),
-                    duration: convertDuration(duration),
+                    duration: convertDuration(parsedBody.info.duration),
                     type: "audio/mp3",
                     url: url,
                     dl: "stream",
@@ -181,9 +187,12 @@ var downloadProxy = function (message, url, proxy, cb) {
         }
     });
 };
-var convertDuration = function (duration) {
+var convertDuration = function (info) {
     let durationConv = "";
-    var durationSplit = duration.split(':');
+    if (typeof (duration) === 'undefined') {
+        client.captureMessage('Duration undefined!', {extra:{'info':info}});
+    }
+    var durationSplit = info.duration.split(':');
     for (var i = 0; i < durationSplit.length; i++) {
         if (i !== durationSplit.length -1) {
             if (durationSplit[i].length === 1) {

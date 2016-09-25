@@ -1,7 +1,6 @@
 /**
  * Created by julia on 04.09.2016.
  */
-//bot.sendFile(message.channel,'http://i.giphy.com/L0nV2FkR5RpkY.gif');
 var userModel = require('../../../DB/user');
 var messageHelper = require('../../utility/message');
 var eatCookie = function (bot,message) {
@@ -30,7 +29,7 @@ var eatCookie = function (bot,message) {
                 message.channel.sendMessage('You dont have any Cookies to eat. \n http://i.giphy.com/Kf2ndcv58AepW.gif');
             }
         } else {
-            messageHelper.createUser({author: user, server: message.guild}, true, true, function (err) {
+            messageHelper.createUser(message, true, true, function (err) {
                 if (err) return console.log(err);
                 message.channel.sendMessage('You dont have any Cookies to eat. \n http://i.giphy.com/Kf2ndcv58AepW.gif');
             });

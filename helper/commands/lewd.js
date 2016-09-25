@@ -11,28 +11,44 @@ var lewdCmds = function (bot,message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
         case "!w.r34":
-            messageHelper.checkNsfw(bot,message, function (err) {
-                if (err) return message.reply(err);
-                r34(bot,message,messageSplit)
-            });
+            if (message.guild) {
+                messageHelper.checkNsfw(bot, message, function (err) {
+                    if (err) return message.reply(err);
+                    r34(bot, message, messageSplit);
+                });
+            } else {
+                r34(bot, message, messageSplit);
+            }
             return;
         case "!w.kona":
-            messageHelper.checkNsfw(bot,message, function (err) {
-                if (err) return message.reply(err);
-                konachan(bot,message,messageSplit)
-            });
+            if (message.guild) {
+                messageHelper.checkNsfw(bot, message, function (err) {
+                    if (err) return message.reply(err);
+                    konachan(bot, message, messageSplit);
+                });
+            } else {
+                konachan(bot, message, messageSplit);
+            }
             return;
         case "!w.e621":
-            messageHelper.checkNsfw(bot,message, function (err) {
-                if (err) return message.reply(err);
-                e621(bot,message,messageSplit)
-            });
+            if (message.guild) {
+                messageHelper.checkNsfw(bot, message, function (err) {
+                    if (err) return message.reply(err);
+                    e621(bot, message, messageSplit);
+                });
+            } else {
+                e621(bot, message, messageSplit);
+            }
             return;
         case "!w.yandere":
-            messageHelper.checkNsfw(bot,message, function (err) {
-                if (err) return message.reply(err);
-                yandere(bot,message,messageSplit)
-            });
+            if (message.guild) {
+                messageHelper.checkNsfw(bot, message, function (err) {
+                    if (err) return message.reply(err);
+                    yandere(bot, message, messageSplit);
+                });
+            } else {
+                yandere(bot, message, messageSplit);
+            }
             return;
         case "!w.setLewd":
             if (message.guild && messageHelper.hasWolkeBot(bot, message)) {
@@ -93,7 +109,7 @@ var lewdCmds = function (bot,message) {
             }
             return;
         case "!w.lewd":
-            bot.sendFile(message.channel, 'https://cdn.discordapp.com/attachments/191455136013352960/209718642722603008/412.png');
+            message.channel.sendFile('https://cdn.discordapp.com/attachments/191455136013352960/209718642722603008/412.png');
             return;
         default:
             return;

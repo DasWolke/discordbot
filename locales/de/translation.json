@@ -1,0 +1,14 @@
+{
+  "basic": {
+    "help": {
+      "intro":"lass uns viel Spaß hier auf Discord haben (/^▽^)/ Hier sind die Befehle die ich beherrsche:",
+      "intro_2":"Hey ich bin",
+      "bug":"sendet dir den Link des Support Discords",
+      "help":"der Hilfe Befehl",
+      "add":"sendet dir einen Link mit dem du den Bot zu deinem Server hinzufügen kannst"
+    },
+    "version":"Aktuell benutze ich die Version {{version}}",
+    "add":"Bitte benutze diesen Link {{link}} um mich zu deinem Server hinzuzufügen.",
+    "bug":"Bitte komm auf den Support-Discord ({{link}})um einen Fehler zu melden"
+  }
+}

@@ -13,30 +13,40 @@ var registerUser = function (message, messageSplit) {
             proxerId = match[1];
         }
         if (proxerId) {
-            userModel.findOne({id: message.author.id}, function (err, User) {
+            userModel.findOne({proxerId: proxerId}, function (err, User) {
                 if (err) return console.log(err);
                 if (User) {
-                    if (typeof (User.verified) !== 'undefined' && User.verified) {
-                        message.reply(`You are already verified with the Account: https://proxer.me/user/${User.proxerId}`);
-                    } else {
-                        verifyUser(message.author.id, proxerId, function (err, result, name) {
-                            if (err) return console.log(err);
-                            message.reply(`Ok i send your Proxer Account ${name} a PM with a verification Code`);
-                        });
-                    }
+                    return message.reply('The ID is already Used!');
                 } else {
-                    messageHelper.createUser(message, true, true, function (err) {
-                        userModel.findOne({id: message.author.id}, function (err, User) {
-                            if (err) return console.log(err);
-                            if (User) {
+                    userModel.findOne({id: message.author.id}, function (err, User) {
+                        if (err) return console.log(err);
+                        if (User) {
+                            if (typeof (User.proxerId) !== 'undefined') {
+                                return message.reply('You should already have a Verification Code.');
+                            }
+                            if (typeof (User.verified) !== 'undefined' && User.verified) {
+                                message.reply(`You are already verified with the Account: https://proxer.me/user/${User.proxerId}`);
+                            } else {
                                 verifyUser(message.author.id, proxerId, function (err, result, name) {
                                     if (err) return console.log(err);
                                     message.reply(`Ok i send your Proxer Account ${name} a PM with a verification Code`);
                                 });
-                            } else {
-                                message.reply('Arere Something went wrong...');
                             }
-                        });
+                        } else {
+                            messageHelper.createUser(message, true, true, function (err) {
+                                userModel.findOne({id: message.author.id}, function (err, User) {
+                                    if (err) return console.log(err);
+                                    if (User) {
+                                        verifyUser(message.author.id, proxerId, function (err, result, name) {
+                                            if (err) return console.log(err);
+                                            message.reply(`Ok i send your Proxer Account ${name} a PM with a verification Code`);
+                                        });
+                                    } else {
+                                        message.reply('Arere Something went wrong...');
+                                    }
+                                });
+                            });
+                        }
                     });
                 }
             });

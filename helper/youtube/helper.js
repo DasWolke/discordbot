@@ -5,7 +5,7 @@ var yt = require('./youtube');
 var voice = require('../utility/voice');
 var songModel = require('../../DB/song');
 var path = require('path');
-var ytDlAndPlayFirst = function (bot, message, messageSearch, messageSplit) {
+var ytDlAndPlayFirst = function (bot, message, messageSearch) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
         if (err) {
             console.log(err);

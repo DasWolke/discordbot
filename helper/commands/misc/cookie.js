@@ -31,12 +31,12 @@ var inventoryCmd = function (bot, message, messageSplit) {
                                 });
                             }
                         } else {
-                            User.addServer(message.getServerObj(message, true, true), function (err) {
+                            User.addServer(messageHelper.getServerObj(message, true, true), function (err) {
                                 if (err) return console.log(err);
                             });
                         }
                     } else {
-                        messageHelper.createUser({author:user, server:message.guild}, true, true, function (err) {
+                        messageHelper.createUser({author:user, guild:message.guild}, true, true, function (err) {
                             if (err) return console.log(err);
                             userModel.findOne({id: user.id}, function (err, User) {
                                 if (err) return console.log(err);
