@@ -106,8 +106,11 @@ var search = function (message, cb) {
         cb('No Search Query Provided!');
     }
 };
-var checkTime = function (duration) {
-    var durationSplit = duration.split(':');
+var checkTime = function (info) {
+    if (typeof (info.duration) === 'undefined') {
+        client.captureMessage('Duration undefined!', {extra:{'info':info}});
+    }
+    var durationSplit = info.duration.split(':');
     if (parseInt(durationSplit.length) > 3) {
         return false;
     } else {
@@ -187,7 +190,7 @@ var downloadProxy = function (message, url, proxy, cb) {
         }
     });
 };
-var convertDuration = function (info) {
+var convertDuration = function (duration) {
     let durationConv = "";
     if (typeof (duration) === 'undefined') {
         client.captureMessage('Duration undefined!', {extra:{'info':info}});
