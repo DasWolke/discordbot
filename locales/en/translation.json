@@ -58,8 +58,7 @@
     "voice":{
       "error":"An Error has occured while trying to join Voice!",
       "permission":"No Permission! You need to give yourself the WolkeBot Role to use this.",
-      "no-voice":"You are not in a Voice Channel!",
-
+      "no-voice":"You are not in a Voice Channel!"
     }
   }
 }

@@ -30,7 +30,7 @@ Music:
 !w.pause --> Pause the Current Song (only usable with WolkeBot Role)
 !w.resume --> Resume the pause Song (only usable with WolkeBot Role)
 !w.volume 40 --> Sets the Volume of the Bot, Values between 1-200 (only usable with WolkeBot Role)
-!w.forever name --> Temporarely disabled until i fixed it
+!w.forever name --> Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role)
 !w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results 
 !w.skip --> Skips the Current Song (only usable with WolkeBot Role) 
 !w.voteskip --> Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped. 
@@ -53,8 +53,11 @@ Music:
                 "!w.ban @user --> Bans a User and deletes 7 Days of his/her messages\n" +
                 "!w.kick @user --> Kicks a User\n" +
                 "!w.rm 10 --> removes the last 10 Messages, you can change 10 to a value between 1-100\n" +
-                "--------------------------------\n" +
-                "Other Stuff:\n" +
+                "!w.noLevelServer --> disables the level system for the whole server, already gained levels are preserved. Use again to enable it again for the server.\n" +
+                "!w.noPmServer --> disables the PM notifications for the whole server. Use again to enable it again for the server.\n" +
+                "--------------------------------```";
+            var reply3 =
+                "```Other Stuff:\n" +
                 "!w.r34 tags --> Searches Rule34 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
                 "!w.kona tags --> Searches Konachan for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
                 "!w.e621 tags --> Searches E621 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
@@ -72,7 +75,9 @@ Music:
                 "For feedback use the support discord please ^^\n" +
                 "If you want to talk with me @mention me with a message :D```";
             message.author.sendMessage(reply).then(replyMessage => {
-                message.author.sendMessage(reply2);
+                message.author.sendMessage(reply2).then(message2 => {
+                    message.author.sendMessage(reply3);
+                });
             }).catch(winston.warn);
             if (message.guild) {
                 message.reply('OK, i send you a list of commands over PM.');
@@ -148,6 +153,12 @@ Music:
             return;
         case "!w.noPm":
             messageHelper.disablePm(bot, message);
+            return;
+        case "!w.noLevelServer":
+            messageHelper.disableLevelServer(bot,message);
+            return;
+        case "!w.noPmServer":
+            messageHelper.disablePmServer(bot,message);
             return;
         case "!w.cookie":
             if (message.guild) {

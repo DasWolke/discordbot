@@ -38,6 +38,9 @@ var musicCommands = function (bot, message) {
         case "!w.queue":
             queueCmd.main(bot, message, messageSplit);
             return;
+        case "!w.q":
+            queueCmd.show(bot,message);
+            return;
         case "!w.qa":
             queueCmd.add(bot, message, messageSplit);
             return;
@@ -167,12 +170,12 @@ var musicCommands = function (bot, message) {
                 message.reply('This Command does not work in private Channels');
             }
             return;
-        case "!w.down":
-            return;
-        case "!w.up":
-            return;
-        case "!w.fav":
-            return;
+        // case "!w.down":
+        //     return;
+        // case "!w.up":
+        //     return;
+        // case "!w.fav":
+        //     return;
         // case "!w.stream":
         //     if (message.guild) {
         //         if (voice.inVoice(bot, message)) {

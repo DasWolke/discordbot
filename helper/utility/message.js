@@ -16,7 +16,7 @@ var createUser = function (message, level, pms, cb) {
         avatar: message.author.avatarURL,
         created: Date.now(),
         banned: false,
-        verified:false,
+        verified: false,
         favorites: [],
         cookies: []
     });
@@ -33,14 +33,44 @@ var calcXpNeededNumber = function (level) {
     return Math.floor(level * 2 * 3.14 * 15);
 };
 var updateXp = function (bot, message, cb) {
-    var serverId = message.guild.id;
+    serverModel.findOne({id: message.guild.id}, function (err, Server) {
+        if (err) return cb(err);
+        if (Server) {
+            if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
+                updateUserLevel(bot, message, Server, err => {
+                    if (err) return cb(err);
+                    cb();
+                })
+            } else {
+                cb();
+            }
+        } else {
+            let server = new serverModel({
+                id: message.guild.id,
+                nsfwChannels: [],
+                lastVoiceChannel: "",
+                levelEnabled: true,
+                pmNotifications: true
+            });
+            server.save(err => {
+                updateUserLevel(bot, message, server, err => {
+                    if (err) return cb(err);
+                    cb();
+                });
+            });
+        }
+    });
     // console.log('Started update XP!');
+
+};
+var updateUserLevel = function (bot, message,Server, cb) {
+    let serverId = message.guild.id;
     userModel.findOne({id: message.author.id}, function (err, User) {
         if (err) return cb(err);
         if (User) {
             if (User.name !== message.author.username) {
                 User.updateName(message.author.username, function (err) {
-                   if (err) return console.log(err);
+                    if (err) return console.log(err);
                 });
             }
             if (hasServer(message, User)) {
@@ -48,13 +78,13 @@ var updateXp = function (bot, message, cb) {
                 // console.log('User has Server');
                 if (levelEnabled(message, User) && !cooldown(clientServer)) {
                     // console.log('User has Level enabled and has no Cooldown!');
-                    User.updateXP(serverId,calcXpMessage(message.content), function (err) {
+                    User.updateXP(serverId, calcXpMessage(message.content), function (err) {
                         if (err) return cb(err);
                         // console.log('Updated Xp');
-                        if (typeof (clientServer) !== 'undefined' && clientServer.xp+calcXpMessage(message.content) > calcXpNeeded(clientServer)) {
+                        if (typeof (clientServer) !== 'undefined' && clientServer.xp + calcXpMessage(message.content) > calcXpNeeded(clientServer)) {
                             User.updateLevel(serverId, function (err) {
                                 if (err) return cb(err);
-                                if (pmNotifications(message, User)) {
+                                if (pmNotifications(message, User) && typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
                                     message.author.sendMessage('You just reached **Level ' + parseInt(clientServer.level + 1) + '** on Server: **' + message.guild.name + '**');
                                 }
                             });
@@ -72,23 +102,36 @@ var updateXp = function (bot, message, cb) {
             // console.log('Create User!');
             createUser(message, true, true, function (err) {
                 if (err) return cb(err);
-                cb()
+                cb();
             });
         }
     });
-
 };
 var calcXpMessage = function (content) {
     return 5 + calcBonus(content);
 };
 var calcBonus = function (content) {
     var bonus = Math.floor(content.length / 50);
-  if (bonus> 10) {
-      return 10;
-  }
-  return bonus;
+    if (bonus > 10) {
+        return 10;
+    }
+    return bonus;
 };
-var getLevel = function getLevel(bot, message, cb) {
+var getLevel = function getLevel(bot,message, cb) {
+    serverModel.findOne({id: message.guild.id}, function (err, Server) {
+        if (err) return cb(err);
+        if (Server) {
+            if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
+                getUserLevel(bot,message, err => {
+                    if (err) return cb(err);
+                });
+            } else {
+                message.reply(`The XP system is disabled on this server!`);
+            }
+        }
+    });
+};
+var getUserLevel = function getUserLevel(bot, message, cb) {
     if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
             if (err) return cb(err);
@@ -116,12 +159,12 @@ var disableLevel = function disableLevel(bot, message) {
             if (User) {
                 if (hasServer(message, User)) {
                     if (levelEnabled(message, User)) {
-                        User.disableLevel(message.guild.id,function (err) {
+                        User.disableLevel(message.guild.id, function (err) {
                             if (err) return console.log(err);
                             message.reply('Ok, i disabled the XP System for you.');
                         });
                     } else {
-                        User.enableLevel(message.guild.id,function (err) {
+                        User.enableLevel(message.guild.id, function (err) {
                             if (err) return console.log(err);
                             message.reply('Ok, i enabled the XP System for you.');
                         });
@@ -141,18 +184,94 @@ var disableLevel = function disableLevel(bot, message) {
         });
     }
 };
+var disableLevelServer = function disableLevel(bot, message) {
+    if (message.guild) {
+        if (hasWolkeBot(bot,message)) {
+            serverModel.findOne({id: message.guild.id}, function (err, Server) {
+                if (err) return cb(err);
+                if (Server) {
+                    if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
+                        Server.updateLevels(false, err => {
+                            if (err) return console.log(err);
+                            message.reply(`Ok i just disabled the level system for this server, type this command to enable it again.`);
+                        });
+                    } else {
+                        Server.updateLevels(true, err => {
+                            if (err) return console.log(err);
+                            message.reply(`Ok i just enabled the level system for this server, type this command to disable it again.`);
+                        });
+                    }
+                } else {
+                    let server = new serverModel({
+                        id: message.guild.id,
+                        nsfwChannels: [],
+                        lastVoiceChannel: "",
+                        levelEnabled: false,
+                        pmNotifications: true
+                    });
+                    server.save(err => {
+                        if (err) return console.log(err);
+                        message.reply(`Ok i just disabled the level system for this server, type this command to enable it again.`);
+                    });
+                }
+            });
+        } else {
+            message.reply('No Permission, you need a Discord Role called WolkeBot for this Command!');
+        }
+    } else {
+        message.reply(`This Command does not work in PM'S`);
+    }
+};
+var disablePmServer = function disablePmServer(bot, message) {
+    if (message.guild) {
+        if (hasWolkeBot(bot,message)) {
+            serverModel.findOne({id: message.guild.id}, function (err, Server) {
+                if (err) return cb(err);
+                if (Server) {
+                    if (typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
+                        Server.updatePms(false, err => {
+                            if (err) return console.log(err);
+                            message.reply(`Ok i just disabled pm notifications for this server, type this command to enable it again.`);
+                        });
+                    } else {
+                        Server.updatePms(true, err => {
+                            if (err) return console.log(err);
+                            message.reply(`Ok i just enabled pm notifications for this server, type this command to disable it again.`);
+                        });
+                    }
+                } else {
+                    let server = new serverModel({
+                        id: message.guild.id,
+                        nsfwChannels: [],
+                        lastVoiceChannel: "",
+                        levelEnabled: true,
+                        pmNotifications: false
+                    });
+                    server.save(err => {
+                        if (err) return console.log(err);
+                        message.reply(`Ok i just disabled pm notifications for this server, type this command to enable it again.`);
+                    });
+                }
+            });
+        } else {
+            message.reply('No Permission, you need a Discord Role called WolkeBot for this Command!');
+        }
+    } else {
+        message.reply(`This Command does not work in PM'S`);
+    }
+};
 var disablePm = function disablePm(bot, message) {
     if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
             if (err) return cb(err);
             if (User) {
                 if (pmNotifications(message, User)) {
-                    User.disablePm(message.guild.id,function (err) {
+                    User.disablePm(message.guild.id, function (err) {
                         if (err) return console.log(err);
                         message.reply('Ok, i disabled the Pm Notifications on this Server for you.');
                     });
                 } else {
-                    User.enablePm(message.guild.id,function (err) {
+                    User.enablePm(message.guild.id, function (err) {
                         if (err) return console.log(err);
                         message.reply('Ok, i enabled the Pm Notifications on this Server for you.');
                     });
@@ -242,35 +361,38 @@ var getServerObj = function (message, level, pms) {
         banned: []
     };
 };
-var noSpam = function (bot,message) {
+var noSpam = function (bot, message) {
     // if(message.mentions.users.length > 25) {
     //     console.log('good.');
     // }
     console.log(message.mentions.length);
 };
-var checkNsfwChannel = function (bot,message,cb) {
-    serverModel.findOne({id:message.guild.id}, function (err,Server) {
+var checkNsfwChannel = function (bot, message, cb) {
+    serverModel.findOne({id: message.guild.id}, function (err, Server) {
         if (err) return console.log(err);
         if (Server) {
-           if (typeof (Server.nsfwChannels) !== 'undefined' && Server.nsfwChannels.length > 0) {
+            if (typeof (Server.nsfwChannels) !== 'undefined' && Server.nsfwChannels.length > 0) {
                 for (var i = 0; i < Server.nsfwChannels.length; i++) {
                     if (Server.nsfwChannels[i] === message.channel.id) {
                         return cb();
                     }
                 }
                 return cb('This Channel is not a NSFW Channel.');
-           } else {
-               if (typeof (Server.nsfwChannel) !== 'undefined' && Server.nsfwChannel === message.channel.id) {
-                   serverModel.update({id:message.guild.id}, {$addToSet:{nsfwChannels:Server.nsfwChannel}, $set:{nsfwChannel:""}}, function (err) {
-                     if (err) return console.log(err);
-                   });
-                   return cb();
-               } else {
-                   return cb('Please set/add a NSFW Channel with !w.setLewd (in one of the NSFW Channels) so that normal Users can use this Command too or get the WolkeBot Role.');
-               }
-           }
+            } else {
+                if (typeof (Server.nsfwChannel) !== 'undefined' && Server.nsfwChannel === message.channel.id) {
+                    serverModel.update({id: message.guild.id}, {
+                        $addToSet: {nsfwChannels: Server.nsfwChannel},
+                        $set: {nsfwChannel: ""}
+                    }, function (err) {
+                        if (err) return console.log(err);
+                    });
+                    return cb();
+                } else {
+                    return cb('Please set/add a NSFW Channel with !w.setLewd (in one of the NSFW Channels) so that normal Users can use this Command too or get the WolkeBot Role.');
+                }
+            }
         } else {
-            if (hasWolkeBot(bot,message)) {
+            if (hasWolkeBot(bot, message)) {
                 cb();
             } else {
                 cb('Please set/add a NSFW Channel with !w.setLewd (in one of the NSFW Channels) so that normal Users can use this Command too or get the WolkeBot Role.');
@@ -285,11 +407,13 @@ module.exports = {
     getLevel: getLevel,
     disableLevel: disableLevel,
     disablePm: disablePm,
+    disableLevelServer: disableLevelServer,
+    disablePmServer:disablePmServer,
     hasWolkeBot: hasWolkeBot,
     isOwner: isOwner,
-    loadServerFromUser:loadServerFromUser,
-    hasServer:hasServer,
-    getServerObj:getServerObj,
-    noSpam:noSpam,
-    checkNsfw:checkNsfwChannel
+    loadServerFromUser: loadServerFromUser,
+    hasServer: hasServer,
+    getServerObj: getServerObj,
+    noSpam: noSpam,
+    checkNsfw: checkNsfwChannel
 };
