@@ -12,13 +12,21 @@ var serverSchema = mongoose.Schema({
     prefix:String,
     disabledCmds:[],
     Groups:[],
-    Blacklist:[]
+    Blacklist:[],
+    levelEnabled:Boolean,
+    pmNotifications:Boolean
 });
 serverSchema.methods.updateVoice = function updateVoice(id,cb) {
     this.model('Servers').update({id:this.id}, {$set:{lastVoiceChannel:id}}, cb);
 };
 serverSchema.methods.updateNsfw = function updateNsfw(id,cb) {
     this.model('Servers').update({id:this.id}, {$set:{nsfwChannel:id}}, cb);
+};
+serverSchema.methods.updatePms = function updatePms(bool,cb) {
+    this.model('Servers').update({id:this.id}, {$set:{pmNotifications:bool}}, cb);
+};
+serverSchema.methods.updateLevels = function updateLevels(bool,cb) {
+    this.model('Servers').update({id:this.id}, {$set:{levelEnabled:bool}}, cb);
 };
 var serverModel = mongoose.model('Servers', serverSchema);
 module.exports = serverModel;

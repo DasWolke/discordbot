@@ -195,7 +195,7 @@ var convertDuration = function (duration) {
     if (typeof (duration) === 'undefined') {
         client.captureMessage('Duration undefined!', {extra:{'info':info}});
     }
-    var durationSplit = info.duration.split(':');
+    var durationSplit = duration.split(':');
     for (var i = 0; i < durationSplit.length; i++) {
         if (i !== durationSplit.length -1) {
             if (durationSplit[i].length === 1) {

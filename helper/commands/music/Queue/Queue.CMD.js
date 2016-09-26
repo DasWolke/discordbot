@@ -30,4 +30,4 @@ var QueueCmd = function QueueCmd(bot,message,messageSplit) {
         message.reply('This Command does not work in private Channels');
     }
 };
-module.exports = {main:QueueCmd, add:add, remove:remove,now:now};
+module.exports = {main:QueueCmd, add:add, remove:remove,now:now, show:show};

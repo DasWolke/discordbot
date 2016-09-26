@@ -80,7 +80,7 @@ i18next.use(Backend).init({
                     if (typeof (id) !== 'undefined' && id !== '') {
                         winston.info('started joining guild:' + guild.name);
                         var channel = voice.getChannelById(guild, id);
-                        if (typeof (channel) !== 'undefined') {
+                        if (typeof (channel) !== 'undefined' && channel) {
                             channel.join().then(connection => {
                                 var message = {guild: guild};
                                 voice.autoStartQueue(bot, message);
