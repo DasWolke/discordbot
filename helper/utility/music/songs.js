@@ -4,15 +4,15 @@
 var queueModel = require('../../../DB/queue');
 var voice = require('../voice');
 var voteSkip = function voteSkip(bot, message, cb) {
-    if (message.author.voiceChannel) {
+    if (message.member.voiceChannel) {
         queueModel.findOne({server: message.guild.id}, function (err, Queue) {
             if (err) return cb(err);
             if (Queue) {
                 if (Queue.songs.length > 0) {
                     if (voice.inVoice(bot, message)) {
                         var channel = voice.getVoiceChannel(bot, message);
-                        if (channel.equals(message.author.voiceChannel)) {
-                            if (channel.members.length > 2) {
+                        if (channel.id === message.member.voiceChannelID) {
+                            if (channel.members.size > 2) {
                                 Queue.checkVote(message.author.id, function (err, found) {
                                     if (err) {
                                         console.log(err);
@@ -27,14 +27,14 @@ var voteSkip = function voteSkip(bot, message, cb) {
                                             Queue.reload(function (err, Queue) {
                                                if (err) return console.log(err);
                                                 if (Queue) {
-                                                    var voiceMembers = channel.members.length -1;
+                                                    var voiceMembers = channel.members.size -1;
                                                     var votePercentage = Queue.voteSkip / voiceMembers;
                                                     console.log(votePercentage);
                                                     if (votePercentage > 0.51) {
                                                         voice.nextSong(bot,message, Queue.songs[0]);
                                                         cb(null, 'Voteskipped Song: ' + Queue.songs[0].title + '!');
                                                     } else {
-                                                        cb(null, 'Added Your Vote');
+                                                        cb(null, `Added Your Vote, votepercentage at **${votePercentage*100}%/${51}%**`);
                                                     }
                                                 }
                                             });

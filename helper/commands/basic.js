@@ -54,6 +54,8 @@ ${t('basic.help.music')}:
                 "!w.rm 10 --> removes the last 10 Messages, you can change 10 to a value between 1-100\n" +
                 "!w.noLevelServer --> disables the level system for the whole server, already gained levels are preserved. Use again to enable it again for the server.\n" +
                 "!w.noPmServer --> disables the PM notifications for the whole server. Use again to enable it again for the server.\n" +
+                "!w.setLewd --> Adds the current Channel as a NSFW Channel\n" +
+                "!w.remLewd --> Removes the current channel from the list of NSFW channels\n" +
                 "--------------------------------```";
             var reply3 =
                 "```Other Stuff:\n" +
@@ -65,9 +67,7 @@ ${t('basic.help.music')}:
                 "!w.rank --> Leaderboard for this Server\n" +
                 "!w.noLevel --> disables the level system for you. Use again to enable it again for you.\n" +
                 "!w.noPm --> disables the PM notifications for you. Use again to enable it again for you.\n" +
-                "!w.pp beatmaplink acc --> Calculates PP for the beatmap with acc, currently nomod only...\n" +
-                "!w.setLewd --> Adds the current Channel as a NSFW Channel\n" +
-                "!w.remLewd --> Removes the current channel from the list of NSFW channels\n" +
+                "!w.pp beatmaplink acc mods --> Calculates PP for the beatmap with optional accuracy\n" +
                 "!w.cookie @user --> Gives a cookie to the mentioned user or shows your cookies if no one is mentioned. (giving cookies is only usable with WolkeBot role)\n" +
                 "!w.eatCookie --> Eats a Cookie.\n" +
                 "!w.git --> Gives you the github link of the bot\n" +
