@@ -13,7 +13,7 @@ var client = new raven.Client(config.sentry_token);
 errorReporter.setT(client);
 winston.info('Starting Errorhandling!');
 client.patchGlobal(() => {
-    winston.error('Oh no i died!');
+    winston.error('Oh no I died!');
     process.exit(1);
 });
 if (!config.beta) {

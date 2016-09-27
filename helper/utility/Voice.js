@@ -361,46 +361,50 @@ var autoStartQueue = function (bot, message) {
     });
 };
 var addToQueue = function (bot, message, Song) {
-    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
-        if (err) return console.log(err);
-        var connection = getVoiceConnection(bot, message);
-        Song.user = {};
-        Song.user.id = message.author.id;
-        Song.user.name = message.author.username;
-        if (Queue) {
-            Queue.stopRepeat(function (err) {
-                if (err) return console.log(err);
-                if (Queue.songs.length === 0) {
+    if (message.guild.available && message.guild.id) {
+        queueModel.findOne({server: message.guild.id}, function (err, Queue) {
+            if (err) return console.log(err);
+            var connection = getVoiceConnection(bot, message);
+            Song.user = {};
+            Song.user.id = message.author.id;
+            Song.user.name = message.author.username;
+            if (Queue) {
+                Queue.stopRepeat(function (err) {
+                    if (err) return console.log(err);
+                    if (Queue.songs.length === 0) {
+                        if (connection) {
+                            playSong(bot, message, Song);
+                        }
+                    }
+                    for (var i = 0; i < Queue.songs.length; i++) {
+                        if (Queue.songs[i].id === Song.id) {
+                            return message.reply(Song.title + " is already in the Queue!");
+                        }
+                    }
+                    queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
+                        if (err) return console.log(err);
+                        message.reply("Successfully added " + Song.title + " to the Queue!");
+                    });
+                });
+            } else {
+                var queue = new queueModel({
+                    server: message.guild.id,
+                    songs: [Song],
+                    repeat: false,
+                    repeatId: ""
+                });
+                queue.save(function (err) {
+                    if (err) return console.log(err);
+                    message.reply("Successfully added " + Song.title + " to the Queue!");
                     if (connection) {
                         playSong(bot, message, Song);
                     }
-                }
-                for (var i = 0; i < Queue.songs.length; i++) {
-                    if (Queue.songs[i].id === Song.id) {
-                        return message.reply(Song.title + " is already in the Queue!");
-                    }
-                }
-                queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
-                    if (err) return console.log(err);
-                    message.reply("Successfully added " + Song.title + " to the Queue!");
                 });
-            });
-        } else {
-            var queue = new queueModel({
-                server: message.guild.id,
-                songs: [Song],
-                repeat: false,
-                repeatId: ""
-            });
-            queue.save(function (err) {
-                if (err) return console.log(err);
-                message.reply("Successfully added " + Song.title + " to the Queue!");
-                if (connection) {
-                    playSong(bot, message, Song);
-                }
-            });
-        }
-    });
+            }
+        });
+    } else {
+        message.reply('Seems like an error occured, please try again.');
+    }
 };
 var nowPlaying = function (bot, message) {
     queueModel.findOne({server: message.guild.id}, function (err, Queue) {
