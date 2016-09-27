@@ -40,3 +40,5 @@ jspm_packages
 config/main.json
 .idea
 audio
+cmd.bat
+temp

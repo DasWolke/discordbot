@@ -1,7 +1,6 @@
 /**
  * Created by julian on 16.05.2016.
  */
-//Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role)
 var config = require('../../config/main.json');
 var path = require('path');
 var voice = require('../utility/voice');
@@ -19,28 +18,28 @@ var basicCommands = function (bot, message) {
         case "!w.help":
             var reply = `${t('basic.help.intro_2')} ${bot.user.username}, ${t('basic.help.intro')} 
                  \`\`\`!w.help --> ${t('basic.help.help')} 
-SUPPORT: 
+${t('basic.help.support')}: 
 !w.bug --> ${t('basic.help.bug')}
 !w.add --> ${t('basic.help.add')}  
 -------------------------------- 
-Music: 
-!w.voice --> i join the Voice Channel you are currently in (only usable with WolkeBot Role) 
-!w.silent --> i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role) 
-!w.play name --> Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)
-!w.pause --> Pause the Current Song (only usable with WolkeBot Role)
-!w.resume --> Resume the pause Song (only usable with WolkeBot Role)
-!w.volume 40 --> Sets the Volume of the Bot, Values between 1-200 (only usable with WolkeBot Role)
-!w.forever name --> Plays a Song/Youtube Video in repeat until another Song is played/added to the Queue (only usable with WolkeBot Role)
-!w.search name --> Searches for a Song in the Bot Database and shows the 5 best Results 
-!w.skip --> Skips the Current Song (only usable with WolkeBot Role) 
-!w.voteskip --> Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped. 
-!w.qa name --> Adds a Song/Youtube Video to the Queue max Length: 1H30M 
-!w.qrl --> removes the latest added song out of the queue  
-!w.queue --> Shows the current Queue 
-!w.np --> Shows the currently playing Song
-!w.rq --> Adds a random Song to the Queue max Length: 1H30M 
-!w.random --> Plays a Random Song (only usable with WolkeBot Role) 
-!w.osu maplink --> download a Osu Map 
+${t('basic.help.music')}: 
+!w.voice --> ${t('basic.help.voice')} 
+!w.silent --> ${t('basic.help.silent')}
+!w.play name --> ${t('basic.help.play')}
+!w.pause --> ${t('basic.help.pause')}
+!w.resume --> ${t('basic.help.resume')}
+!w.volume 40 --> ${t('basic.help.volume')}
+!w.forever name --> ${t('basic.help.forever')}
+!w.search name --> ${t('basic.help.search')}
+!w.skip --> ${t('basic.help.skip')}
+!w.voteskip --> ${t('basic.help.voteskip')}
+!w.qa name --> ${t('basic.help.qa')}
+!w.qrl --> ${t('basic.help.qrl')}
+!w.queue --> ${t('basic.help.queue')}
+!w.np --> ${t('basic.help.np')}
+!w.rq --> ${t('basic.help.rq')}
+!w.random --> ${t('basic.help.random')}
+!w.osu maplink --> ${t('basic.help.osu')}
 --------------------------------\`\`\``;
             var reply2 =
                 "```" +
@@ -80,7 +79,7 @@ Music:
                 });
             }).catch(winston.warn);
             if (message.guild) {
-                message.reply('OK, i send you a list of commands over PM.');
+                message.reply(t('basic.help.helpReply'));
             }
             return;
         case "!w.version":

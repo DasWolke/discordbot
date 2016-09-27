@@ -13,7 +13,11 @@ var opts = {
     type: "video"
 };
 var download = function (url, message, cb) {
+    if (url.startsWith('https://www.youtube.com/playlist')) {
+        return message.reply('Please dont use Playlists right now.');
+    }
     youtubedl.getInfo(url, function (err, info) {
+        console.log(info);
         if (err) {
             message.reply('Trying to download over the proxy, this could take a bit.');
             downloadProxy(message, url, config.default_proxy, function (err, info) {

@@ -49,7 +49,7 @@
       "git":"Gives you the github link of the bot",
       "feedback":"For feedback use the support discord please ^^",
       "talk":"If you want to talk with me @mention me with a message :D",
-      "helpReply":"OK, i send you a list of commands over PM."
+      "helpReply":"OK, I send you a list of commands over PM."
     },
     "version":"Currently i am running on version {{version}}",
     "add":"Use this Link to add me to your Server: {{link}}",
