@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ascii-table": "0.0.9",
     "async": "^2.0.1",
     "cleverbot-node": "^0.2.2",
     "cloudscraper": "^1.4.0",
