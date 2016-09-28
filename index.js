@@ -81,14 +81,18 @@ i18next.use(Backend).init({
                         winston.info('started joining guild:' + guild.name);
                         var channel = voice.getChannelById(guild, id);
                         if (typeof (channel) !== 'undefined' && channel) {
-                            channel.join().then(connection => {
-                                var message = {guild: guild};
-                                voice.autoStartQueue(bot, message);
-                                cb();
-                            }).catch(cb);
+                            setTimeout(() => {
+                                channel.join().then(connection => {
+                                    var message = {guild: guild};
+                                    voice.autoStartQueue(bot, message);
+                                    cb();
+                                }).catch(cb);
+                            }, 2000);
                         }
                     } else {
-                        cb();
+                        setTimeout(() => {
+                            cb();
+                        }, 2000);
                     }
                 });
             }, (err) => {

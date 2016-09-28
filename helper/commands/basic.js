@@ -12,6 +12,7 @@ var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var logger = require('../utility/logger');
 var winston = logger.getT();
+var AsciiTable = require('ascii-table');
 var basicCommands = function (bot, message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
@@ -180,6 +181,20 @@ ${t('basic.help.music')}:
             return;
         case "!w.git":
             message.reply('https://github.com/DasWolke/discordbot');
+            return;
+        case "!w.info":
+            if (message.guild) {
+                var table = new AsciiTable();
+
+                table
+                    .addRow('ID', message.guild.id)
+                    .addRow('Name', message.guild.name)
+                    .addRow('Members', message.guild.members.size)
+                    .addRow('Creation Date', message.guild.creationDate.toDateString())
+                    .addRow('Region', message.guild.region)
+                    .addRow('Owner', message.guild.owner.user.username);
+                message.reply(`\`\`\`${table.toString()}\`\`\``);
+            }
             return;
         default:
             return;

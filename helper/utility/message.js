@@ -118,18 +118,22 @@ var calcBonus = function (content) {
     return bonus;
 };
 var getLevel = function getLevel(bot,message, cb) {
-    serverModel.findOne({id: message.guild.id}, function (err, Server) {
-        if (err) return cb(err);
-        if (Server) {
-            if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
-                getUserLevel(bot,message, err => {
-                    if (err) return cb(err);
-                });
-            } else {
-                message.reply(`The XP system is disabled on this server!`);
+    if (message.guild) {
+        serverModel.findOne({id: message.guild.id}, function (err, Server) {
+            if (err) return cb(err);
+            if (Server) {
+                if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
+                    getUserLevel(bot, message, err => {
+                        if (err) return cb(err);
+                    });
+                } else {
+                    message.reply(`The XP system is disabled on this server!`);
+                }
             }
-        }
-    });
+        });
+    } else {
+        message.reply('This command does not work in a private message!');
+    }
 };
 var getUserLevel = function getUserLevel(bot, message, cb) {
     if (message.guild) {
