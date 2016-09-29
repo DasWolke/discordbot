@@ -4,6 +4,7 @@
 var yt = require('./youtube');
 var voice = require('../utility/voice');
 var songModel = require('../../DB/song');
+var queueModel = require('../../DB/queue');
 var path = require('path');
 var ytDlAndPlayFirst = function (bot, message, messageSearch) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
@@ -13,9 +14,21 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch) {
         }
         if (Song) {
             if (voice.inVoice(bot, message)) {
-                voice.addSongFirst(bot, message, Song,false, function (err) {
+                queueModel.findOne({id:message.guild.id}, (err, Queue) => {
                     if (err) return console.log(err);
-                    voice.playSong(bot, message, Song);
+                    if (Queue && Queue.songs[0].id === Song.id) {
+                        Queue.startRepeat((err => {
+                            if (err) return console.log(err);
+                            Queue.updateRepeatId(Song.id, err => {
+                                if (err) return console.log(err);
+                            });
+                        }));
+                    } else {
+                        voice.addSongFirst(bot, message, Song, true, function (err) {
+                            if (err) return console.log(err);
+                            voice.playSong(bot, message, Song);
+                        });
+                    }
                 });
             } else {
                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
@@ -88,10 +101,7 @@ var ytDlAndPlayForever = function (bot, message, messageSearch) {
         }
         if (Song) {
             if (voice.inVoice(bot, message)) {
-                voice.addSongFirst(bot, message, Song, true,function (err) {
-                    if (err) return console.log(err);
-                    voice.playSong(bot, message, Song);
-                });
+                voice.queueAddRepeat(bot,message,Song);
             } else {
                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
             }
@@ -106,10 +116,7 @@ var ytDlAndPlayForever = function (bot, message, messageSearch) {
                     if (err) return console.log(err);
                     if (Song) {
                         if (voice.inVoice(bot, message)) {
-                            voice.addSongFirst(bot, message, Song, true, function (err) {
-                                if (err) return console.log(err);
-                                voice.playSong(bot, message, Song);
-                            });
+                            voice.queueAddRepeat(bot,message,Song);
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }

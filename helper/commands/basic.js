@@ -36,6 +36,7 @@ ${t('basic.help.music')}:
 !w.voteskip --> ${t('basic.help.voteskip')}
 !w.qa name --> ${t('basic.help.qa')}
 !w.qrl --> ${t('basic.help.qrl')}
+!w.qra number --> ${t('basic.help.qra')}
 !w.queue --> ${t('basic.help.queue')}
 !w.np --> ${t('basic.help.np')}
 !w.rq --> ${t('basic.help.rq')}
@@ -139,15 +140,6 @@ ${t('basic.help.music')}:
         case "!w.wtf":
             message.reply("http://wtf.watchon.io");
             return;
-        case "!w.stats":
-            let users = 0;
-            bot.guilds.map((guild => {
-                if (guild.id !== '110373943822540800') {
-                    users = users + guild.members.size;
-                }
-            }));
-            message.reply(`I am currently used on ${bot.guilds.size} guilds with ${users} users.`);
-            return;
         case "!w.noLevel":
             messageHelper.disableLevel(bot, message);
             return;
@@ -170,10 +162,6 @@ ${t('basic.help.music')}:
                 eatCookie(bot, message);
             }
             return;
-        case "!w.uptime":
-            let duration = moment.duration(bot.uptime);
-            message.reply(`Uptime: **${duration.humanize()}**`);
-            return;
         case "!w.rank":
             if (message.guild) {
                 message.reply(`You can find the Leaderboard for this Server here: http://bot.ram.moe/l/${message.guild.id}`);
@@ -184,7 +172,7 @@ ${t('basic.help.music')}:
             return;
         case "!w.info":
             if (message.guild) {
-                var table = new AsciiTable();
+                let table = new AsciiTable();
 
                 table
                     .addRow('ID', message.guild.id)
@@ -193,6 +181,23 @@ ${t('basic.help.music')}:
                     .addRow('Creation Date', message.guild.creationDate.toDateString())
                     .addRow('Region', message.guild.region)
                     .addRow('Owner', message.guild.owner.user.username);
+                message.reply(`\`\`\`${table.toString()}\`\`\``);
+            }
+            return;
+        case "!w.bot":
+            if (message.guild) {
+                let table = new AsciiTable();
+                let duration = moment.duration(bot.uptime);
+                let users = 0;
+                bot.guilds.map((guild => {
+                    if (guild.id !== '110373943822540800') {
+                        users = users + guild.members.size;
+                    }
+                }));
+                table
+                    .addRow('Uptime', duration.humanize())
+                    .addRow('Guilds', bot.guilds.size)
+                    .addRow('Users', users);
                 message.reply(`\`\`\`${table.toString()}\`\`\``);
             }
             return;

@@ -22,6 +22,9 @@ queueSchema.methods.reload = function reload(cb) {
 queueSchema.methods.removeLatest = function (cb) {
     this.model('Queues').update({server:this.server},{$pop: {songs: 1}}, cb);
 };
+queueSchema.methods.clear = function (songs, cb) {
+    this.model('Queues').update({server:this.server},{$set:{songs:songs}}, cb);
+};
 queueSchema.methods.removeOldest = function (cb) {
     this.model('Queues').update({server:this.server},{$pop: {songs: 1}}, cb);
 };

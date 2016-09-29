@@ -1,8 +1,22 @@
 /**
- * Created by julia on 23.07.2016.
+ * Created by julia on 29.09.2016.
  */
-var queueModel = require('../../../DB/queue');
-var voice = require('../voice');
+var queueModel = require('../../../../DB/queue');
+var voice = require('../../../utility/voice');
+var logger = require('../../../utility/logger');
+var winston = logger.getT();
+var voteskipCommand = function (bot, message) {
+    if (message.guild) {
+        voteSkip(bot, message, function (err, response) {
+            if (err) {
+                return message.reply(err);
+            }
+            message.reply(response);
+        });
+    } else {
+        message.reply('This Command does not work in private Channels');
+    }
+};
 var voteSkip = function voteSkip(bot, message, cb) {
     if (message.member.voiceChannel) {
         queueModel.findOne({server: message.guild.id}, function (err, Queue) {
@@ -15,26 +29,28 @@ var voteSkip = function voteSkip(bot, message, cb) {
                             if (channel.members.size > 2) {
                                 Queue.checkVote(message.author.id, function (err, found) {
                                     if (err) {
-                                        console.log(err);
+                                        winston.info(err);
                                         return cb('Internal Error!');
                                     }
                                     if (!found) {
                                         Queue.updateVotes(message.author.id, function (err) {
                                             if (err) {
-                                                console.log(err);
+                                                winston.info(err);
                                                 return cb('Internal Error!');
                                             }
                                             Queue.reload(function (err, Queue) {
-                                               if (err) return console.log(err);
+                                                if (err) return winston.info(err);
                                                 if (Queue) {
-                                                    var voiceMembers = channel.members.size -1;
+                                                    var voiceMembers = channel.members.size - 1;
                                                     var votePercentage = Queue.voteSkip / voiceMembers;
-                                                    console.log(votePercentage);
                                                     if (votePercentage > 0.51) {
-                                                        voice.nextSong(bot,message, Queue.songs[0]);
-                                                        cb(null, 'Voteskipped Song: ' + Queue.songs[0].title + '!');
+                                                        Queue.stopRepeat(function (err) {
+                                                            if (err) return cb(err);
+                                                            voice.nextSong(bot, message, Queue.songs[0]);
+                                                            cb(null, 'Voteskipped Song: ' + Queue.songs[0].title + '!');
+                                                        });
                                                     } else {
-                                                        cb(null, `Added Your Vote, votepercentage at **${votePercentage*100}%/${51}%**`);
+                                                        cb(null, `Added Your Vote, votepercentage at **${votePercentage * 100}%/${51}%**`);
                                                     }
                                                 }
                                             });
@@ -44,7 +60,10 @@ var voteSkip = function voteSkip(bot, message, cb) {
                                     }
                                 });
                             } else {
-                                voice.nextSong(bot, message, Queue.songs[0]);
+                                Queue.stopRepeat(function (err) {
+                                    if (err) return cb(err);
+                                    voice.nextSong(bot, message, Queue.songs[0]);
+                                });
                             }
                         } else {
                             return cb('You are not in the same Voicechannel as the Bot!');
@@ -63,4 +82,4 @@ var voteSkip = function voteSkip(bot, message, cb) {
         return cb('You can not voteskip, if you are not in a Voicechannel!');
     }
 };
-module.exports = {voteSkip: voteSkip};
+module.exports = voteskipCommand;

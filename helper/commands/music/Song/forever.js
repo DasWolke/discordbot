@@ -5,6 +5,7 @@
  * Created by julia on 24.07.2016.
  */
 var songModel = require('../../../../DB/song');
+var queueModel = require('../../../../DB/queue');
 var voice = require('../../../utility/voice');
 var ytHelper = require('../../../youtube/helper');
 var messageHelper = require('../../../utility/message');
@@ -24,10 +25,7 @@ var foreverCMD = function foreverCmd(bot,message, messageSplit) {
                         var Song = Songs[0];
                         if (Song) {
                             if (voice.inVoice(bot, message)) {
-                                voice.addSongFirst(bot, message, Song, true, function (err) {
-                                    if (err) return console.log(err);
-                                    voice.playSong(bot, message, Song);
-                                });
+                                voice.queueAddRepeat(bot,message,Song);
                             } else {
                                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                             }
