@@ -12,6 +12,7 @@ var request = require('request');
 var dispatcherArray = [];
 var errorReporter = require('./errorReporter');
 var client = errorReporter.getT();
+var shortid = require('shortid');
 var saveVoiceChannel = function saveVoiceChannel(channel, cb) {
     serverModel.findOne({id: channel.guild.id}, function (err, Server) {
         if (err) {
@@ -416,10 +417,11 @@ var nowPlaying = function (bot, message) {
                 if (inVoiceChannel(bot, message)) {
                     let dispatcher = getDispatcherFromConnection(message.guild.voiceConnection);
                     let time = Math.floor(dispatcher.time / 1000);
+                    let repeat = Queue.repeat ? "repeat:on" : "";
                     if (typeof (Queue.songs[0].duration) !== 'undefined') {
-                        message.channel.sendMessage(`Currently Playing: \`${Queue.songs[0].title} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \``);
+                        message.channel.sendMessage(`Currently Playing: \`${Queue.songs[0].title} ${repeat} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \``);
                     } else {
-                        message.channel.sendMessage(`Currently Playing: \`${Queue.songs[0].title}\``);
+                        message.channel.sendMessage(`Currently Playing: \`${Queue.songs[0].title} ${repeat}\``);
                     }
                 } else {
                     message.channel.sendMessage('Nothing is playing right now...');
@@ -486,6 +488,25 @@ var getDispatcherFromConnection = function (connection) {
     }
     return false;
 };
+var queueAddRepeat = function (bot,message, Song) {
+    queueModel.findOne({server:message.guild.id}, (err, Queue) => {
+        if (err) return console.log(err);
+        if (Queue && Queue.songs.length > 0 && Queue.songs[0].id === Song.id) {
+            Queue.startRepeat((err => {
+                if (err) return console.log(err);
+                Queue.updateRepeatId(Song.id, err => {
+                    if (err) return console.log(err);
+                    message.reply(`Started repeat for song ${Song.title}`);
+                });
+            }));
+        } else {
+            addSongFirst(bot, message, Song, true, function (err) {
+                if (err) return console.log(err);
+                playSong(bot, message, Song);
+            });
+        }
+    });
+};
 module.exports = {
     inVoice: inVoiceChannel,
     saveVoice: saveVoiceChannel,
@@ -506,5 +527,6 @@ module.exports = {
     updatePlays: updatePlays,
     setVolume: setVolume,
     checkMedia: checkMedia,
-    getDispatcher: getDispatcherFromConnection
+    getDispatcher: getDispatcherFromConnection,
+    queueAddRepeat:queueAddRepeat
 };

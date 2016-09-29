@@ -13,11 +13,12 @@ var show = function showQueueCmd(bot, message) {
                 for (var q = 0; q < Queue.songs.length; q++) {
                     if (q === 0) {
                         let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
+                        let repeat = Queue.repeat ? "repeat:on" : "";
                         if (typeof (Queue.songs[0].duration) !== 'undefined' && dispatcher) {
                             let time = Math.floor(dispatcher.time / 1000);
-                            reply = reply + `Currently Playing:\` ${Queue.songs[0].title} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \`\n`;
+                            reply = reply + `Currently Playing:\` ${Queue.songs[0].title} ${repeat} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \`\n`;
                         } else {
-                            reply = reply + `Currently Playing:\`${Queue.songs[0].title}\`\n`;
+                            reply = reply + `Currently Playing:\`${Queue.songs[0].title} ${repeat}\`\n`;
                         }
                         if (Queue.songs.length > 1) {
                             reply = `${reply}Queued:\n\`\`\``;

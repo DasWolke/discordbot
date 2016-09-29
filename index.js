@@ -97,7 +97,7 @@ i18next.use(Backend).init({
                 });
             }, (err) => {
                 if (err) {
-                    client.captureMessage(err);
+                    client.captureMessage(JSON.stringify(err));
                     return winston.error(err);
                 }
                 winston.info('Finished Loading Voice!');

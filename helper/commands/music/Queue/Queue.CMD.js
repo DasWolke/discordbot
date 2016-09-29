@@ -5,6 +5,10 @@ var show = require('./show');
 var add = require('./add');
 var remove = require('./remove');
 var now = require('../Song/now');
+var voteSkip = require('./voteskip');
+var skip = require('./skip');
+var random = require('./random');
+var clear = require('./clear');
 var messageHelper = require('../../../utility/message');
 var QueueCmd = function QueueCmd(bot,message,messageSplit) {
     if (message.guild) {
@@ -30,4 +34,4 @@ var QueueCmd = function QueueCmd(bot,message,messageSplit) {
         message.reply('This Command does not work in private Channels');
     }
 };
-module.exports = {main:QueueCmd, add:add, remove:remove,now:now, show:show};
+module.exports = {main:QueueCmd, add:add, remove:remove,now:now, show:show,skip:skip, voteSkip:voteSkip, random:random, clear:clear};
