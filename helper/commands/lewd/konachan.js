@@ -2,7 +2,7 @@
  * Created by julia on 17.08.2016.
  */
 var request = require('request');
-var general = require('../../utility/general');
+var general = require('../utility/general');
 var konachan = function (bot,message,messageSplit) {
     if (typeof (messageSplit[1]) !== 'undefined') {
         var messageSearch = "";

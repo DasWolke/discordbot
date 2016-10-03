@@ -4,7 +4,7 @@
 var X2 = require('x2js');
 var x2js = new X2();
 var request = require('request');
-var general = require('../../utility/general');
+var general = require('../../../utility/general');
 var rule34 = function (bot,message,messageSplit) {
     if (typeof (messageSplit[1]) !== 'undefined') {
         var messageSearch = "";

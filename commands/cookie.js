@@ -1,17 +1,22 @@
 /**
- * Created by julia on 17.08.2016.
+ * Created by julia on 02.10.2016.
  */
-var userModel = require('../../../DB/user');
-var messageHelper = require('../../utility/message');
-var inventoryCmd = function (bot, message, messageSplit) {
+var messageHelper = require('../utility/message');
+var voice = require('../utility/voice');
+var logger = require('../utility/logger');
+var userModel = require('../DB/user');
+var winston = logger.getT();
+var cmd = 'cookie';
+var execute = function (message) {
+    let messageSplit = message.content.split(' ');
     if (typeof (messageSplit[1]) !== 'undefined') {
-        if (messageHelper.hasWolkeBot(bot,message)) {
+        if (messageHelper.hasWolkeBot(message)) {
             let user = message.mentions.users.first();
             if (user) {
                 userModel.findOne({id: user.id}, function (err, User) {
                     if (err) return console.log(err);
                     if (User) {
-                        if (messageHelper.hasServer(message, User)) {
+                        if (messageHelper.hasGuild(message, User)) {
                             var clientServer = messageHelper.loadServerFromUser(message, User);
                             if (typeof (clientServer.cookies) !== 'undefined') {
                                 userModel.update({
@@ -19,7 +24,7 @@ var inventoryCmd = function (bot, message, messageSplit) {
                                     'servers.serverId': message.guild.id
                                 }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                     if (err) return console.log(err);
-                                    message.reply(`Gave user ${User.name} 1 Cookie!`);
+                                    message.reply(`Gave user **${User.name}** **1** Cookie!`);
                                 });
                             } else {
                                 userModel.update({
@@ -88,6 +93,5 @@ var inventoryCmd = function (bot, message, messageSplit) {
             }
         });
     }
-
 };
-module.exports = inventoryCmd;
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

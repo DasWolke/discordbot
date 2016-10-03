@@ -1,13 +1,17 @@
 /**
- * Created by julia on 04.09.2016.
+ * Created by julia on 02.10.2016.
  */
-var userModel = require('../../../DB/user');
-var messageHelper = require('../../utility/message');
-var eatCookie = function (bot,message) {
+var messageHelper = require('../utility/message');
+var voice = require('../utility/voice');
+var logger = require('../utility/logger');
+var userModel = require('../DB/user');
+var winston = logger.getT();
+var cmd = 'eatCookie';
+var execute = function (message) {
     userModel.findOne({id: message.author.id, 'servers.serverId': message.guild.id}, function (err, User) {
         if (err) return console.log(err);
         if (User) {
-            if (messageHelper.hasServer(message, User)) {
+            if (messageHelper.hasGuild(message, User)) {
                 var clientServer = messageHelper.loadServerFromUser(message, User);
                 if (typeof (clientServer.cookies) !== 'undefined' && clientServer.cookies > 0) {
                     userModel.update({
@@ -36,4 +40,4 @@ var eatCookie = function (bot,message) {
         }
     });
 };
-module.exports = eatCookie;
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

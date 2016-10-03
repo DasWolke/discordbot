@@ -2,7 +2,7 @@
  * Created by julia on 05.09.2016.
  */
 var request = require('request');
-var config = require('../../../../config/main.json');
+var config = require('../../../config/main.json');
 var data = {
     'username': config.proxer_user,
     'password': config.proxer_pass,

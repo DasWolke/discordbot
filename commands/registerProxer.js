@@ -1,12 +1,16 @@
 /**
- * Created by julia on 17.09.2016.
+ * Created by julia on 02.10.2016.
  */
+var messageHelper = require('../utility/message');
+var userModel = require('../DB/user');
+var verifyUser = require('../utility/proxer/user/verifyUser');
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var proxerReg = /(?:http|https):\/\/proxer\.me\/user\/([0-9]+)/i;
 var proxerId;
-var userModel = require('../../../DB/user');
-var messageHelper = require('../../utility/message');
-var verifyUser = require('../../utility/proxer/user/verifyUser');
-var registerUser = function (message, messageSplit) {
+var cmd = 'pr.reg';
+var execute = function (message) {
+    let messageSplit = message.content.split(' ');
     if (typeof (messageSplit[1]) !== 'undefined' && proxerReg.test(messageSplit[1])) {
         var match = proxerReg.exec(messageSplit[1]);
         if (match) {
@@ -57,4 +61,4 @@ var registerUser = function (message, messageSplit) {
         message.reply('You have to add a Link to your Proxer Account for me to verify you!');
     }
 };
-module.exports = registerUser;
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

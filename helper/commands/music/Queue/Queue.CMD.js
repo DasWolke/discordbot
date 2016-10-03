@@ -9,17 +9,17 @@ var voteSkip = require('./voteskip');
 var skip = require('./skip');
 var random = require('./random');
 var clear = require('./clear');
-var messageHelper = require('../../../utility/message');
+var messageHelper = require('../../../../utility/message');
 var QueueCmd = function QueueCmd(bot,message,messageSplit) {
     if (message.guild) {
-        let admin = messageHelper.hasWolkeBot(bot,message);
+        let admin = messageHelper.hasWolkeBot(message);
         if (typeof (messageSplit[1]) !== 'undefined') {
             if (messageSplit[1] === 'add') {
                 add(bot,message,messageSplit);
             }
             if (messageSplit[1] === 'remove') {
                 if (admin) {
-                    remove(bot, message, messageSplit);
+                    remove(message, messageSplit);
                 } else {
                     message.reply('No Permission!');
                 }

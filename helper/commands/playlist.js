@@ -3,12 +3,12 @@
  */
 var createPlaylist = require('./playlist/createPlaylist');
 var addPlaylist = require('./playlist/addToPlaylist');
-var playlistCommands = function playlistCommands(bot, message) {
+var playlistCommands = function playlistCommands(message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
         case "!w.playlist":
             if (messageSplit[1] === "create") {
-                createPlaylist(bot, message);
+                createPlaylist(message);
             }
             if (messageSplit[1] === "add") {
                 addPlaylist(bot,message);

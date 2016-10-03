@@ -3,9 +3,9 @@
  */
 var AsciiTable = require('ascii-table');
 var queueModel = require('../../../../DB/queue');
-var messageHelper = require('../../../utility/message');
-var clear = function removeFromQueue(bot, message, messageSplit) {
-    if(messageHelper.hasWolkeBot(bot,message)) {
+var messageHelper = require('../../../../utility/message');
+var clear = function removeFromQueuemessage, messageSplit) {
+    if(messageHelper.hasWolkeBot(message)) {
         if (typeof (messageSplit[1]) !== 'undefined' && messageSplit[1]) {
             let number = 0;
             try {

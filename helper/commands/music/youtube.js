@@ -3,7 +3,7 @@
  */
 var yt = require('../../youtube/youtube');
 var ytHelper = require('../../youtube/helper');
-var youtube = function (bot, message) {
+var youtube = function (message) {
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {
         case "!w.yt":
@@ -37,7 +37,7 @@ var youtube = function (bot, message) {
                     if (err) {
                         message.reply(err);
                     } else {
-                        ytHelper.ytDlAndQueue(bot, message, Result.link, ['lel', Result.link]);
+                        ytHelper.ytDlAndQueue(message, Result.link, ['lel', Result.link]);
                     }
                 });
             }

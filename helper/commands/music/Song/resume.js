@@ -1,13 +1,13 @@
 /**
  * Created by julia on 24.07.2016.
  */
-var voice = require('../../../utility/voice');
-var messageHelper = require('../../../utility/message');
-var resumeCmd = function resumeCmd(bot,message) {
+var voice = require('../../../../utility/voice');
+var messageHelper = require('../../../../utility/message');
+var resumeCmd = function resumeCmd(message) {
     if (message.guild) {
-        if (messageHelper.hasWolkeBot(bot,message)) {
-            if (voice.inVoice(bot, message)) {
-                var connection = voice.getVoiceConnection(bot, message);
+        if (messageHelper.hasWolkeBot(message)) {
+            if (voice.inVoice(message)) {
+                var connection = voice.getVoiceConnection(message);
                 var dispatcher = voice.getDispatcher(connection);
                 try {
                     dispatcher.resume();

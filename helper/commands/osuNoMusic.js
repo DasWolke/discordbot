@@ -1,7 +1,7 @@
 /**
  * Created by julia on 18.07.2016.
  */
-var osuCommands = function osuCommands(bot, message) {
+var osuCommands = function osuCommands(message) {
     var osuHelper = require('../utility/osu');
     var messageSplit = message.content.split(' ');
     switch (messageSplit[0]) {

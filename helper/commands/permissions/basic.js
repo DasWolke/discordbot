@@ -1,7 +1,7 @@
 /**
  * Created by julia on 24.07.2016.
  */
-var permissionCommands = function permissionCommands(bot, message) {
+var permissionCommands = function permissionCommands(message) {
     var messageSplit = message.content.split(' ');
             if (messageSplit[1] === "create") {
 

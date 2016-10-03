@@ -2,18 +2,18 @@
  * Created by julia on 14.07.2016.
  */
 var yt = require('./youtube');
-var voice = require('../utility/voice');
+var voice = require('../../utility/voice');
 var songModel = require('../../DB/song');
 var queueModel = require('../../DB/queue');
 var path = require('path');
-var ytDlAndPlayFirst = function (bot, message, messageSearch) {
+var ytDlAndPlayFirst = function (message, messageSearch) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
         if (err) {
             console.log(err);
             return message.reply('Internal Error');
         }
         if (Song) {
-            if (voice.inVoice(bot, message)) {
+            if (voice.inVoice(message)) {
                 queueModel.findOne({id:message.guild.id}, (err, Queue) => {
                     if (err) return console.log(err);
                     if (Queue && Queue.songs[0].id === Song.id) {
@@ -24,10 +24,9 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch) {
                             });
                         }));
                     } else {
-                        voice.addSongFirst(bot, message, Song, true, function (err) {
-                            if (err) return console.log(err);
-                            voice.playSong(bot, message, Song);
-                        });
+                        voice.addSongFirst(message, Song, true).then(() => {
+                            voice.playSong(message, Song);
+                        }).catch(console.log);
                     }
                 });
             } else {
@@ -43,11 +42,10 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch) {
                 songModel.findOne({id: info.id}, function (err, Song) {
                     if (err) return console.log(err);
                     if (Song) {
-                        if (voice.inVoice(bot, message)) {
-                            voice.addSongFirst(bot, message, Song, false, function (err) {
-                                if (err) return console.log(err);
-                                voice.playSong(bot, message, Song);
-                            });
+                        if (voice.inVoice(message)) {
+                            voice.addSongFirst(message, Song, true).then(() => {
+                                voice.playSong(message, Song);
+                            }).catch(console.log);
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
@@ -59,14 +57,14 @@ var ytDlAndPlayFirst = function (bot, message, messageSearch) {
         }
     });
 };
-var ytDlAndQueue = function (bot, message, messageSearch, messageSplit) {
+var ytDlAndQueue = function (message, messageSearch, messageSplit) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
         if (err) {
             console.log(err);
             return message.reply('Internal Error');
         }
         if (Song) {
-            if (voice.inVoice(bot, message)) {
+            if (voice.inVoice(message)) {
                 voice.addToQueue(bot,message,Song);
             } else {
                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
@@ -80,8 +78,10 @@ var ytDlAndQueue = function (bot, message, messageSearch, messageSplit) {
                 songModel.findOne({id: info.id}, function (err, Song) {
                     if (err) return console.log(err);
                     if (Song) {
-                        if (voice.inVoice(bot, message)) {
-                            voice.addToQueue(bot,message,Song);
+                        if (voice.inVoice(message)) {
+                            voice.addToQueue(bot,message,Song).then(() => {
+
+                            }).catch(console.log);
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
@@ -93,14 +93,14 @@ var ytDlAndQueue = function (bot, message, messageSearch, messageSplit) {
         }
     });
 };
-var ytDlAndPlayForever = function (bot, message, messageSearch) {
+var ytDlAndPlayForever = function (message, messageSearch) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
         if (err) {
             console.log(err);
             return message.reply('Internal Error');
         }
         if (Song) {
-            if (voice.inVoice(bot, message)) {
+            if (voice.inVoice(message)) {
                 voice.queueAddRepeat(bot,message,Song);
             } else {
                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
@@ -115,7 +115,7 @@ var ytDlAndPlayForever = function (bot, message, messageSearch) {
                 songModel.findOne({id: info.id}, function (err, Song) {
                     if (err) return console.log(err);
                     if (Song) {
-                        if (voice.inVoice(bot, message)) {
+                        if (voice.inVoice(message)) {
                             voice.queueAddRepeat(bot,message,Song);
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');

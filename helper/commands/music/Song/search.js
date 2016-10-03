@@ -2,7 +2,7 @@
  * Created by julia on 24.07.2016.
  */
 var songModel = require('../../../../DB/song');
-var messageHelper = require('../../../utility/message');
+var messageHelper = require('../../../../utility/message');
 var searchCmd = function searchCmd(bot,message,messageSplit) {
     if (typeof (messageSplit[1]) !== 'undefined') {
         var messageSearch = "";

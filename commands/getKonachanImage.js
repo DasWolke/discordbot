@@ -1,19 +1,34 @@
 /**
- * Created by julia on 17.08.2016.
+ * Created by julia on 02.10.2016.
  */
+var messageHelper = require('../utility/message');
 var request = require('request');
-var general = require('../../../utility/general');
-var yandere = function (bot,message,messageSplit) {
+var general = require('../utility/general');
+var logger = require('../utility/logger');
+var winston = logger.getT();
+var cmd = 'kona';
+var execute = function (message) {
+    let messageSplit = message.content.split(' ');
+    if (message.guild) {
+        messageHelper.checkNsfw(message, function (err) {
+            if (err) return message.reply(err);
+            konachan(message, messageSplit);
+        });
+    } else {
+        konachan(message, messageSplit);
+    }
+};
+var konachan = function (message, messageSplit) {
     if (typeof (messageSplit[1]) !== 'undefined') {
         var messageSearch = "";
-        for (var i = 1 ; i < messageSplit.length; i++) {
+        for (var i = 1; i < messageSplit.length; i++) {
             if (i === 1) {
                 messageSearch = messageSplit[i];
             } else {
                 messageSearch = messageSearch + "+" + messageSplit[i];
             }
         }
-        request.get('https://yande.re/post.json?limit=500&tags=' + messageSearch,function (error, response, body) {
+        request.get('https://konachan.com/post.json?limit=500&tags=' + messageSearch, function (error, response, body) {
             if (error) {
                 message.reply('a error occured!');
             }
@@ -42,4 +57,4 @@ var yandere = function (bot,message,messageSplit) {
         message.reply('No Search Term entered!');
     }
 };
-module.exports = yandere;
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

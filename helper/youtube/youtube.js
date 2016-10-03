@@ -21,11 +21,6 @@ var download = function (url, message, cb) {
             message.reply('Trying to download over the proxy, this could take a bit.');
             downloadProxy(message, url, config.default_proxy, function (err, info) {
                 if (err) {
-                    try {
-                        client.captureMessage(err, {extra: {'url': url, 'guild': message.guild.name}});
-                    } catch(e) {
-
-                    }
                     return cb(err);
                 }
                 cb(err, info);
@@ -125,11 +120,7 @@ var checkTime = function (info) {
             if (parseInt(durationSplit[0]) > 1) {
                 return false;
             } else {
-                if (parseInt(durationSplit[0]) === 1 && parseInt(durationSplit[1]) > 30) {
-                    return false;
-                } else {
-                    return true;
-                }
+                return (!!parseInt(durationSplit[0]) === 1 && parseInt(durationSplit[1]) > 30)
             }
         } else {
             return true;
@@ -157,7 +148,7 @@ var downloadProxy = function (message, url, proxy, cb) {
     request(options, (error, response, body) => {
         if (error) {
             client.captureMessage(error, {extra:{'url':url, 'proxy':proxy}});
-            return cb('Small Problem.');
+            return cb(error);
         }
         let parsedBody = JSON.parse(body);
         if (parsedBody.error === 0) {
@@ -190,9 +181,10 @@ var downloadProxy = function (message, url, proxy, cb) {
         } else {
             console.log(parsedBody);
             if (proxy === 2) {
+                client.captureMessage('The Proxy did not work.', {extra:{'url':url, 'proxy':proxy, 'guild':message.guild.name}});
                 return cb('The Proxy did not work.');
             } else {
-                downloadProxy(message, url, 2, cb)
+                downloadProxy(message, url, 2, cb);
             }
         }
     });

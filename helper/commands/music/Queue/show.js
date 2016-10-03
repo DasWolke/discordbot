@@ -1,10 +1,10 @@
 /**
  * Created by julia on 24.07.2016.
  */
-var general = require('../../../utility/general');
-var voice = require('../../../utility/voice');
+var general = require('../../../../utility/general');
+var voice = require('../../../../utility/voice');
 var queueModel = require('../../../../DB/queue');
-var show = function showQueueCmd(bot, message) {
+var show = function showQueueCmdmessage) {
     queueModel.findOne({server: message.guild.id}, function (err, Queue) {
         if (err) return console.log(err);
         if (Queue) {
@@ -14,7 +14,7 @@ var show = function showQueueCmd(bot, message) {
                     if (q === 0) {
                         let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
                         let repeat = Queue.repeat ? "repeat:on" : "";
-                        if (typeof (Queue.songs[0].duration) !== 'undefined' && dispatcher) {
+                        if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '' && dispatcher) {
                             let time = Math.floor(dispatcher.time / 1000);
                             reply = reply + `Currently Playing:\` ${Queue.songs[0].title} ${repeat} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \`\n`;
                         } else {

@@ -1,7 +1,7 @@
 /**
  * Created by julia on 05.09.2016.
  */
-var userModel = require('../../../../DB/user');
+var userModel = require('../../../DB/user');
 var login = require('./../login/login');
 var getInfo = require('./../messenger/getUserInfo');
 var sendMessage = require('./../messenger/sendMessage');

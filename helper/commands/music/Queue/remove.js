@@ -2,7 +2,7 @@
  * Created by julia on 24.07.2016.
  */
 var queueModel = require('../../../../DB/queue');
-var remove = function removeFromQueue(bot, message, messageSplit) {
+var remove = function removeFromQueue(message, messageSplit) {
     if (typeof (messageSplit[2]) !== 'undefined') {
         if (messageSplit[2] === 'latest') {
             queueModel.findOne({server: message.guild.id}, function (err, Queue) {

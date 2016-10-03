@@ -3,7 +3,7 @@
  */
 var playlistModel = require('../../../DB/playlist');
 var shortid = require('shortid');
-var createPlaylist = function createPlaylist(bot, message) {
+var createPlaylist = function createPlaylist(message) {
     var messageSplit = message.content.split(' ');
     if (typeof (messageSplit[2]) !== 'undefined' && messageSplit[2]) {
         var playlistName = "";

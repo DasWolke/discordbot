@@ -1,9 +1,9 @@
 /**
  * Created by julia on 18.07.2016.
  */
-var userModel = require('../../DB/user');
-var serverModel = require('../../DB/server');
-var config = require('../../config/main.json');
+var userModel = require('../DB/user');
+var serverModel = require('../DB/server');
+var config = require('../config/main.json');
 var cleanMessage = function (message) {
     return message.replace("@", "");
 };
@@ -32,17 +32,17 @@ var calcXpNeeded = function (User) {
 var calcXpNeededNumber = function (level) {
     return Math.floor(level * 2 * 3.14 * 15);
 };
-var updateXp = function (bot, message, cb) {
+var updateXp = function (message, cb) {
     serverModel.findOne({id: message.guild.id}, function (err, Server) {
         if (err) return cb(err);
         if (Server) {
             if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
-                updateUserLevel(bot, message, Server, err => {
+                updateUserLevel(message, Server, err => {
                     if (err) return cb(err);
-                    cb();
+                    return cb();
                 })
             } else {
-                cb();
+                return cb();
             }
         } else {
             let server = new serverModel({
@@ -53,7 +53,8 @@ var updateXp = function (bot, message, cb) {
                 pmNotifications: true
             });
             server.save(err => {
-                updateUserLevel(bot, message, server, err => {
+                if (err) return cb(err);
+                updateUserLevel(message, server, err => {
                     if (err) return cb(err);
                     cb();
                 });
@@ -63,7 +64,7 @@ var updateXp = function (bot, message, cb) {
     // console.log('Started update XP!');
 
 };
-var updateUserLevel = function (bot, message,Server, cb) {
+var updateUserLevel = function (message,Server, cb) {
     let serverId = message.guild.id;
     userModel.findOne({id: message.author.id}, function (err, User) {
         if (err) return cb(err);
@@ -73,7 +74,7 @@ var updateUserLevel = function (bot, message,Server, cb) {
                     if (err) return console.log(err);
                 });
             }
-            if (hasServer(message, User)) {
+            if (hasGuild(message, User)) {
                 var clientServer = loadServerFromUser(message, User);
                 // console.log('User has Server');
                 if (levelEnabled(message, User) && !cooldown(clientServer)) {
@@ -123,7 +124,7 @@ var getLevel = function getLevel(bot,message, cb) {
             if (err) return cb(err);
             if (Server) {
                 if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
-                    getUserLevel(bot, message, err => {
+                    getUserLevel(message, err => {
                         if (err) return cb(err);
                     });
                 } else {
@@ -135,12 +136,12 @@ var getLevel = function getLevel(bot,message, cb) {
         message.reply('This command does not work in a private message!');
     }
 };
-var getUserLevel = function getUserLevel(bot, message, cb) {
+var getUserLevel = function getUserLevel(message, cb) {
     if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
             if (err) return cb(err);
             if (User) {
-                if (hasServer(message, User) && levelEnabled(message, User)) {
+                if (hasGuild(message, User) && levelEnabled(message, User)) {
                     var clientServer = loadServerFromUser(message, User);
                     message.reply('You are **Level ' + clientServer.level + '** XP: ' + parseInt(clientServer.xp) + 'XP/' + parseInt(calcXpNeeded(clientServer)) + 'XP Total XP:**' + clientServer.totalXp + '**');
                 } else {
@@ -156,12 +157,12 @@ var getUserLevel = function getUserLevel(bot, message, cb) {
         });
     }
 };
-var disableLevel = function disableLevel(bot, message) {
+var disableLevel = function disableLevel(message) {
     if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
             if (err) return cb(err);
             if (User) {
-                if (hasServer(message, User)) {
+                if (hasGuild(message, User)) {
                     if (levelEnabled(message, User)) {
                         User.disableLevel(message.guild.id, function (err) {
                             if (err) return console.log(err);
@@ -188,9 +189,9 @@ var disableLevel = function disableLevel(bot, message) {
         });
     }
 };
-var disableLevelServer = function disableLevel(bot, message) {
+var disableLevelServer = function disableLevel(message) {
     if (message.guild) {
-        if (hasWolkeBot(bot,message)) {
+        if (hasWolkeBot(message)) {
             serverModel.findOne({id: message.guild.id}, function (err, Server) {
                 if (err) return cb(err);
                 if (Server) {
@@ -226,9 +227,9 @@ var disableLevelServer = function disableLevel(bot, message) {
         message.reply(`This Command does not work in PM'S`);
     }
 };
-var disablePmServer = function disablePmServer(bot, message) {
+var disablePmServer = function disablePmServer(message) {
     if (message.guild) {
-        if (hasWolkeBot(bot,message)) {
+        if (hasWolkeBot(message)) {
             serverModel.findOne({id: message.guild.id}, function (err, Server) {
                 if (err) return cb(err);
                 if (Server) {
@@ -264,7 +265,7 @@ var disablePmServer = function disablePmServer(bot, message) {
         message.reply(`This Command does not work in PM'S`);
     }
 };
-var disablePm = function disablePm(bot, message) {
+var disablePm = function disablePm(message) {
     if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
             if (err) return cb(err);
@@ -289,7 +290,7 @@ var disablePm = function disablePm(bot, message) {
         });
     }
 };
-var hasWolkeBot = function (bot, message, Member) {
+var hasWolkeBot = function (message, Member) {
     if (message.author.id === config.owner_id) {
         return true;
     }
@@ -300,7 +301,7 @@ var hasWolkeBot = function (bot, message, Member) {
     }
 
 };
-var isOwner = function (bot, message) {
+var isOwner = function (message) {
     return message.author.equals(message.guild.owner);
 };
 var levelEnabled = function (message, User) {
@@ -334,7 +335,7 @@ var cooldown = function (User) {
         return false;
     }
 };
-var hasServer = function (message, User) {
+var hasGuild = function (message, User) {
     for (var i = 0; i < User.servers.length; i++) {
         if (User.servers[i].serverId === message.guild.id) {
             return true;
@@ -365,13 +366,13 @@ var getServerObj = function (message, level, pms) {
         banned: []
     };
 };
-var noSpam = function (bot, message) {
+var noSpam = function (message) {
     // if(message.mentions.users.length > 25) {
     //     console.log('good.');
     // }
     console.log(message.mentions.length);
 };
-var checkNsfwChannel = function (bot, message, cb) {
+var checkNsfwChannel = function (message, cb) {
     serverModel.findOne({id: message.guild.id}, function (err, Server) {
         if (err) return console.log(err);
         if (Server) {
@@ -396,10 +397,10 @@ var checkNsfwChannel = function (bot, message, cb) {
                 }
             }
         } else {
-            if (hasWolkeBot(bot, message)) {
-                cb();
+            if (hasWolkeBot(message)) {
+                return cb();
             } else {
-                cb('Please set/add a NSFW Channel with !w.setLewd (in one of the NSFW Channels) so that normal Users can use this Command too or get the WolkeBot Role.');
+                return cb('Please set/add a NSFW Channel with !w.setLewd (in one of the NSFW Channels) so that normal Users can use this Command too or get the WolkeBot Role.');
             }
         }
     });
@@ -416,7 +417,7 @@ module.exports = {
     hasWolkeBot: hasWolkeBot,
     isOwner: isOwner,
     loadServerFromUser: loadServerFromUser,
-    hasServer: hasServer,
+    hasGuild: hasGuild,
     getServerObj: getServerObj,
     noSpam: noSpam,
     checkNsfw: checkNsfwChannel
