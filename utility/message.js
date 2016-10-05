@@ -118,24 +118,6 @@ var calcBonus = function (content) {
     }
     return bonus;
 };
-var getLevel = function getLevel(bot,message, cb) {
-    if (message.guild) {
-        serverModel.findOne({id: message.guild.id}, function (err, Server) {
-            if (err) return cb(err);
-            if (Server) {
-                if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
-                    getUserLevel(message, err => {
-                        if (err) return cb(err);
-                    });
-                } else {
-                    message.reply(`The XP system is disabled on this server!`);
-                }
-            }
-        });
-    } else {
-        message.reply('This command does not work in a private message!');
-    }
-};
 var getUserLevel = function getUserLevel(message, cb) {
     if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
@@ -409,16 +391,18 @@ module.exports = {
     cleanMessage: cleanMessage,
     createUser: createUser,
     updateXP: updateXp,
-    getLevel: getLevel,
+    getLevel: getUserLevel,
     disableLevel: disableLevel,
     disablePm: disablePm,
     disableLevelServer: disableLevelServer,
     disablePmServer:disablePmServer,
+    levelEnabled:levelEnabled,
     hasWolkeBot: hasWolkeBot,
     isOwner: isOwner,
     loadServerFromUser: loadServerFromUser,
     hasGuild: hasGuild,
     getServerObj: getServerObj,
     noSpam: noSpam,
-    checkNsfw: checkNsfwChannel
+    checkNsfw: checkNsfwChannel,
+    pmNotifications:pmNotifications
 };

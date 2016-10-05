@@ -15,6 +15,12 @@ var execute = function (message) {
             } catch (e) {
                 return message.reply('Could not parse the Number !');
             }
+            if (isNaN(number)) {
+                return message.reply('Could not parse the Number !');
+            }
+            if (number < 2) {
+                return message.reply('You can not delete less than 2 Messages!');
+            }
             if (number > 100) {
                 message.reply('You can not delete more than 100 Messages at once!');
             } else {

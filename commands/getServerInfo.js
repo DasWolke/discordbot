@@ -16,7 +16,7 @@ var execute = function (message) {
             .addRow('Voice channels', voiceChannels)
             .addRow('Creation Date', message.guild.creationDate.toDateString())
             .addRow('Region', message.guild.region)
-            .addRow('Owner', message.guild.owner.user.username + message.guild.owner.user.discriminator);
+            .addRow('Owner', `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`);
         message.reply(`\n\`\`\`${table.toString()}\`\`\``);
     } else {
         message.reply('This command only works in guilds!');

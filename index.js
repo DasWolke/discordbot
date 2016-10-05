@@ -9,7 +9,7 @@ winston.add(winston.transports.File, {filename: `logs/rem-main.log`});
 var logger = require('./utility/logger');
 logger.setT(winston);
 var raven = require('raven');
-var errorReporter = require('./helper/utility/errorReporter');
+var errorReporter = require('./utility/errorReporter');
 var client = new raven.Client(config.sentry_token);
 errorReporter.setT(client);
 winston.info('Starting Errorhandling!');
@@ -46,18 +46,19 @@ i18next.use(Backend).init({
     var Discord = require("discord.js");
     var options = {
         protocol_version: 6,
-        max_message_cache: 1500
+        max_message_cache: 2500
     };
     winston.info(options);
     var bot = new Discord.Client(options);
+    var CMD = require('./utility/cmdManager');
     var request = require('request');
-    var CMD = require('./helper/cmdManager');
     var mongoose = require('mongoose');
     var socket = require('socket.io-client')('http://127.0.0.1:7004/bot');
-    var socketManager = require('./helper/socket/basic');
+    var socketManager = require('./utility/socket/basic');
     var messageHelper = require('./utility/message');
     var voice = require('./utility/voice');
     var async = require('async');
+    var cleverbot = require('./utility/cleverbot');
     winston.info('Connecting to DB');
     mongoose.connect('mongodb://localhost/discordbot', (err) => {
         if (err) {
@@ -74,7 +75,7 @@ i18next.use(Backend).init({
         CMD.init();
         setTimeout(() => {
             winston.info('start loading Voice!');
-            async.eachLimit(bot.guilds.array(),1, (guild, cb) => {
+            async.eachLimit(bot.guilds.array(), 8, (guild, cb) => {
                 voice.loadVoice(guild).then(id => {
                     if (err) return cb(err);
                     if (typeof (id) !== 'undefined' && id !== '') {
@@ -84,15 +85,15 @@ i18next.use(Backend).init({
                             channel.join().then(connection => {
                                 var message = {guild: guild};
                                 voice.autoStartQueue(message);
-                                cb();
+                                return cb();
                             }).catch(cb);
                         }
                     } else {
-                        async.setImmediate(() => {
-                            cb();
-                        });
+                        setTimeout(() => {
+                            return cb();
+                        }, 1000)
                     }
-                }).catch(console.log);
+                }).catch(winston.error);
             }, (err) => {
                 if (err) {
                     return winston.error(err);
@@ -123,23 +124,24 @@ i18next.use(Backend).init({
             if (!config.beta) {
                 dogstatsd.increment('musicbot.messages');
             }
-            if (!config.beta) {
-                dogstatsd.increment('musicbot.commands');
+            if (message.content.startsWith(prefix)) {
+                message.botUser = bot;
+                if (!config.beta) {
+                    dogstatsd.increment('musicbot.commands');
+                }
+                CMD.checkCommand(message);
+            } else if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && message.guild.id !== '110373943822540800' && !message.author.bot) {
+                messageHelper.updateXP(message, (err) => {
+                    if (err) return winston.error(err);
+                });
             }
-            message.botUser = bot;
-            CMD.checkCommand(message);
+            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800') {
+                if (!config.beta) {
+                    dogstatsd.increment('musicbot.cleverbot');
+                }
+                cleverbot.talk(message);
+            }
         }
-        // } else if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && message.guild.id !== '110373943822540800' && !message.author.bot) {
-        //     messageHelper.updateXP(message, (err) => {
-        //         if (err) return winston.error(err);
-        //     });
-        // }
-        // if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800') {
-        //     if (!config.beta) {
-        //         dogstatsd.increment('musicbot.cleverbot');
-        //     }
-        //     CMD.cleverbot.talk(message);
-        // }
 
     });
     // bot.on('guildMemberAdd', (Guild, member) => {
