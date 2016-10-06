@@ -395,17 +395,20 @@ var addToQueue = function (message, Song, reply) {
                         if (Queue.songs.length === 0) {
                             if (connection) {
                                 playSong(message, Song);
+                                resolve("Successfully added " + Song.title + " to the Queue!");
                             }
                         }
                         for (var i = 0; i < Queue.songs.length; i++) {
                             if (Queue.songs[i].id === Song.id) {
-                                resolve(Song.title + " is already in the Queue!");
+                                reject(Song.title + " is already in the Queue!");
                             }
                         }
                         queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
                             if (err) reject('Internal Error');
                             if (typeof (reply) === 'undefined') {
                                 resolve("Successfully added " + Song.title + " to the Queue!");
+                            } else {
+                                resolve("");
                             }
                         });
                     });
@@ -530,10 +533,9 @@ var queueAddRepeat = function (message, Song) {
                 });
             }));
         } else {
-            addSongFirst(message, Song, true, function (err) {
-                if (err) return console.log(err);
+            addSongFirst(message, Song, true).then(() => {
                 playSong(message, Song);
-            });
+            }).catch(console.log);
         }
     });
 };

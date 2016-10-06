@@ -214,7 +214,7 @@ var unpackOsuMap = (map) => {
 var saveOsuMap = (map) => {
     return new Promise((resolve, reject) => {
         fs.unlink(`temp/${map.beatmapSetId}.zip`, err => {
-            if (err) reject (err);
+            if (err) reject(err);
             musicHelper.createSong(`${map.artist} - ${map.title}`, map.alt_title, map.fileId, map.addedBy, "", map.link, "osuV2", map.path, "server_main", map.beatmapSetId).then((song) => {
                 resolve(song);
             }).catch(reject);

@@ -4,7 +4,8 @@
 var general = require('../utility/general');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
-var osu = require('../utility/osu');
+var async = require('async');
+var AsciiTable = require('ascii-table');
 var winston = logger.getT();
 var cmd = 'rq';
 var songModel = require('../DB/song');
@@ -40,14 +41,28 @@ var execute = function (message) {
                         message.reply('A Error occured!');
                     }
                 } else {
-                    if (voice.inVoice(bot,message)) {
-                        for (var i = 0; iteration > i; i++) {
-                            setTimeout(() => {
-                                random = general.random(0, C);
-                                Song = Songs[random];
-                                voice.addToQueue(bot,message,Song, false);
-                            }, 50);
+                    if (voice.inVoice(message)) {
+                        var randoms = [];
+                        for (var i = 0; i < iteration; i++) {
+                            random = general.random(0, Songs.length);
+                            Song = Songs[random];
+                            Songs.splice(random, 1);
+                            randoms.push(Song);
                         }
+                        async.eachSeries(randoms, ((randomSong, cb) => {
+                            voice.addToQueue(message, randomSong, false).then((message) => {
+
+                                return cb();
+                            }).catch(cb);
+                        }), (err) => {
+                            if (err) return message.reply(err);
+                            let table = new AsciiTable();
+                            for (var i = 0; i < randoms.length; i++) {
+                                table.addRow(i+1, randoms[i].title);
+                            }
+                            message.reply('Added the following Songs:\n```' + table.toString() + '```');
+                        });
+
                     }
                 }
             });
@@ -56,4 +71,4 @@ var execute = function (message) {
         message.reply('This Command does not work in private Channels');
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

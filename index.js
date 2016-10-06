@@ -86,7 +86,10 @@ i18next.use(Backend).init({
                                 var message = {guild: guild};
                                 voice.autoStartQueue(message);
                                 return cb();
-                            }).catch(cb);
+                            }).catch((err) => {
+                                winston.error(err);
+                                return cb();
+                            });
                         }
                     } else {
                         setTimeout(() => {

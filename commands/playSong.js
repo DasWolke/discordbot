@@ -24,10 +24,9 @@ var execute = function (message) {
                 } else if (musicHelper.checkOsuMap(messageSplit[1])) {
                     osu.download(message).then(Song => {
                         if (voice.inVoice(message)) {
-                            voice.addSongFirst(message, Song, false, function (err) {
-                                if (err) return console.log(err);
+                            voice.addSongFirst(message, Song, false).then(() => {
                                 voice.playSong(message, Song);
-                            });
+                            }).catch(console.log);
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
@@ -38,10 +37,9 @@ var execute = function (message) {
                         var Song = Songs[0];
                         if (Song) {
                             if (voice.inVoice(message)) {
-                                voice.addSongFirst(message, Song, false, function (err) {
-                                    if (err) return console.log(err);
+                                voice.addSongFirst(message, Song, false).then(() => {
                                     voice.playSong(message, Song);
-                                });
+                                }).catch(console.log);
                             } else {
                                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                             }

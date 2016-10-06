@@ -1,7 +1,7 @@
 /**
  * Created by julia on 02.10.2016.
  */
-var cmd = 'resume';
+var cmd = 'volume';
 var voice = require('../utility/voice');
 var messageHelper = require('../utility/message');
 var execute = function (message) {

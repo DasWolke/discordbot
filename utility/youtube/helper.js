@@ -45,7 +45,7 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
                         if (voice.inVoice(message)) {
                             voice.addSongFirst(message, Song, true).then(() => {
                                 voice.playSong(message, Song);
-                            }).catch(console.log);
+                            }).catch(message.reply);
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
@@ -65,7 +65,7 @@ var ytDlAndQueue = function (message, messageSearch, messageSplit) {
         }
         if (Song) {
             if (voice.inVoice(message)) {
-                voice.addToQueue(bot,message,Song);
+                voice.addToQueue(message,Song);
             } else {
                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
             }
@@ -79,9 +79,9 @@ var ytDlAndQueue = function (message, messageSearch, messageSplit) {
                     if (err) return console.log(err);
                     if (Song) {
                         if (voice.inVoice(message)) {
-                            voice.addToQueue(bot,message,Song).then(() => {
-
-                            }).catch(console.log);
+                            voice.addToQueue(message,Song).then((reply) => {
+                                message.reply(reply);
+                            }).catch(message.reply);
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
@@ -101,7 +101,7 @@ var ytDlAndPlayForever = function (message, messageSearch) {
         }
         if (Song) {
             if (voice.inVoice(message)) {
-                voice.queueAddRepeat(bot,message,Song);
+                voice.queueAddRepeat(message,Song);
             } else {
                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
             }
@@ -116,7 +116,7 @@ var ytDlAndPlayForever = function (message, messageSearch) {
                     if (err) return console.log(err);
                     if (Song) {
                         if (voice.inVoice(message)) {
-                            voice.queueAddRepeat(bot,message,Song);
+                            voice.queueAddRepeat(message,Song);
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }

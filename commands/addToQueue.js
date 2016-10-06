@@ -29,13 +29,21 @@ var execute = function (message) {
     if (musicHelper.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && voice.checkMedia(messageSplit[2])) {
         ytHelper.ytDlAndQueue(message, messageSearch, messageSplit);
     } else if (musicHelper.checkOsuMap(messageSplit[1])) {
-        songModel.findOne({url:messageSplit[1]}, (err, Song) => {
+        songModel.findOne({url: messageSplit[1]}, (err, Song) => {
             if (err) return console.log(err);
             if (Song) {
-                voice.addToQueue(message, Song).then(message.reply).catch(message.reply);
+                voice.addToQueue(message, Song).then(reply => {
+                    message.reply(reply)
+                }).catch(err => {
+                    message.reply(err)
+                });
             } else {
                 osu.download(message).then(Song => {
-                    voice.addToQueue(message, Song).then(message.reply).catch(message.reply);
+                    voice.addToQueue(message, Song).then(reply => {
+                        message.reply(reply)
+                    }).catch(err => {
+                        message.reply(err)
+                    });
                 }).catch(message.reply);
             }
         });
@@ -51,4 +59,4 @@ var execute = function (message) {
         });
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
