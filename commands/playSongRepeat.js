@@ -6,6 +6,7 @@ var voice = require('../utility/voice');
 var logger = require('../utility/logger');
 var ytHelper = require('../utility/youtube/helper');
 var osu = require('../utility/osu');
+var musicHelper = require('../utility/music');
 var winston = logger.getT();
 var cmd = 'forever';
 var songModel = require('../DB/song');
@@ -18,8 +19,16 @@ var execute = function (message) {
                 for (var i = 1; i < messageSplit.length; i++) {
                     messageSearch = messageSearch + " " + messageSplit[i];
                 }
-                if (voice.checkMedia(messageSearch)) {
+                if (musicHelper.checkMedia(messageSearch)) {
                     ytHelper.ytDlAndPlayForever(message, messageSearch, messageSplit);
+                } else if (musicHelper.checkOsuMap(messageSplit[1])) {
+                    osu.download(message).then(Song => {
+                        if (voice.inVoice(message)) {
+                            voice.queueAddRepeat(message,Song);
+                        } else {
+                            message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                        }
+                    }).catch(message.reply);
                 } else {
                     songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
                         if (err) return console.log(err);

@@ -7,64 +7,69 @@ var cmd = 'help';
 var logger = require('../utility/logger');
 var winston = logger.getT();
 var execute = function (message) {
+    let pre = message.prefix;
     var reply = `${t('basic.help.intro_2')} ${message.botUser.user.name}, ${t('basic.help.intro')} 
                  \`\`\`!w.help --> ${t('basic.help.help')} 
 ${t('basic.help.support')}: 
-!w.bug --> ${t('basic.help.bug')}
-!w.add --> ${t('basic.help.add')}  
+${pre}bug --> ${t('basic.help.bug')}
+${pre}add --> ${t('basic.help.add')}  
 -------------------------------- 
 ${t('basic.help.music')}: 
-!w.voice --> ${t('basic.help.voice')} 
-!w.silent --> ${t('basic.help.silent')}
-!w.play name --> ${t('basic.help.play')}
-!w.pause --> ${t('basic.help.pause')}
-!w.resume --> ${t('basic.help.resume')}
-!w.volume 40 --> ${t('basic.help.volume')}
-!w.forever name --> ${t('basic.help.forever')}
-!w.search name --> ${t('basic.help.search')}
-!w.skip --> ${t('basic.help.skip')}
-!w.voteskip --> ${t('basic.help.voteskip')}
-!w.qa name --> ${t('basic.help.qa')}
-!w.qrl --> ${t('basic.help.qrl')}
-!w.qra number --> ${t('basic.help.qra')}
-!w.queue --> ${t('basic.help.queue')}
-!w.np --> ${t('basic.help.np')}
-!w.rq --> ${t('basic.help.rq')}
-!w.random --> ${t('basic.help.random')}
-!w.osu maplink --> ${t('basic.help.osu')}
+${pre}voice --> ${t('basic.help.voice')} 
+${pre}leave --> ${t('basic.help.silent')}
+${pre}play name --> ${t('basic.help.play')}
+${pre}pause --> ${t('basic.help.pause')}
+${pre}resume --> ${t('basic.help.resume')}
+${pre}volume 40 --> ${t('basic.help.volume')}
+${pre}forever name --> ${t('basic.help.forever')}
+${pre}search name --> ${t('basic.help.search')}
+${pre}skip --> ${t('basic.help.skip')}
+${pre}voteskip --> ${t('basic.help.voteskip')}
+${pre}qa name --> ${t('basic.help.qa')}
+${pre}qrl --> ${t('basic.help.qrl')}
+${pre}qra number --> ${t('basic.help.qra')}
+${pre}queue --> ${t('basic.help.queue')}
+${pre}np --> ${t('basic.help.np')}
+${pre}random --> ${t('basic.help.random')}
+${pre}rq number--> ${t('basic.help.rq')}
+${pre}osu --> ${t('basic.help.osu')}
 --------------------------------\`\`\``;
-    var reply2 =
-        "```" +
-        "Youtube:\n" +
-        "!w.yts query --> Searches Youtube and gives you the First Result\n" +
-        "!w.ytq query --> Searches Youtube and adds the First Result to the Queue\n" +
-        "--------------------------------\n" +
-        "Moderation\n" +
-        "These Commands all require that the user has a Discord Role named WolkeBot\n" +
-        "!w.ban @user --> Bans a User and deletes 7 Days of his/her messages\n" +
-        "!w.kick @user --> Kicks a User\n" +
-        "!w.rm 10 --> removes the last 10 Messages, you can change 10 to a value between 1-100\n" +
-        "!w.noLevelServer --> disables the level system for the whole server, already gained levels are preserved. Use again to enable it again for the server.\n" +
-        "!w.noPmServer --> disables the PM notifications for the whole server. Use again to enable it again for the server.\n" +
-        "!w.setLewd --> Adds the current Channel as a NSFW Channel\n" +
-        "!w.remLewd --> Removes the current channel from the list of NSFW channels\n" +
-        "--------------------------------```";
+    var reply2 =`\`\`\`
+${t('basic.help.youtube')}:
+${pre}yts query --> ${t('basic.help.yts')}
+${pre}ytq query --> ${t('basic.help.osu')}
+--------------------------------
+${t('basic.help.mod')}:
+${t('basic.help.mod-info')}
+${pre}info--> ${t('basic.help.info')}
+${pre}ban @user --> ${t('basic.help.ban')}
+${pre}kick @user --> ${t('basic.help.kick')}
+${pre}rm 10 --> ${t('basic.help.rm')}
+${pre}noLevelServer --> ${t('basic.help.noLevelServer')}
+${pre}noPmServer --> ${t('basic.help.noPmServer')}
+${pre}setLewd --> ${t('basic.help.setLewd')}
+${pre}remLewd --> ${t('basic.help.remLewd')}
+--------------------------------\`\`\``;
     var reply3 =
-        "```Other Stuff:\n" +
-        "!w.r34 tags --> Searches Rule34 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
-        "!w.kona tags --> Searches Konachan for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
-        "!w.e621 tags --> Searches E621 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
-        "!w.yandere tags --> Searches Yande.re for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.\n" +
-        "!w.level --> Your Level and XP needed for next Level\n" +
-        "!w.rank --> Leaderboard for this Server\n" +
-        "!w.noLevel --> disables the level system for you. Use again to enable it again for you.\n" +
-        "!w.noPm --> disables the PM notifications for you. Use again to enable it again for you.\n" +
-        "!w.pp beatmaplink acc mods --> Calculates PP for the beatmap with optional accuracy\n" +
-        "!w.cookie @user --> Gives a cookie to the mentioned user or shows your cookies if no one is mentioned. (giving cookies is only usable with WolkeBot role)\n" +
-        "!w.eatCookie --> Eats a Cookie.\n" +
-        "!w.git --> Gives you the github link of the bot\n" +
-        "For feedback use the support discord please ^^\n" +
-        "If you want to talk with me @mention me with a message :D```";
+        `\`\`\`
+${t('basic.help.other')}: 
+${pre}r34 tags --> ${t('basic.help.r34')}
+${pre}kona tags --> ${t('basic.help.kona')} 
+${pre}e621 tags --> ${t('basic.help.e621')} 
+${pre}yandere tags --> ${t('basic.help.yandere')}
+${pre}level --> ${t('basic.help.level')}
+${pre}rank --> ${t('basic.help.rank')} 
+${pre}noLevel --> ${t('basic.help.noLevel')}
+${pre}noPm --> ${t('basic.help.noPm')}
+${pre}pp beatmaplink acc mods --> ${t('basic.help.pp')}
+${pre}cookie @user --> ${t('basic.help.cookie')}
+${pre}eatCookie --> ${t('basic.help.eatCookie')}
+${pre}git --> ${t('basic.help.git')}
+${pre}roll number --> ${t('basic.help.roll')}
+${pre}8ball message --> ${t('basic.help.8ball')}
+${pre}garfield --> ${t('basic.help.garfield')}
+${t('basic.help.feedback')}
+${t('basic.help.talk')}\`\`\``;
     message.author.sendMessage(reply).then(replyMessage => {
         message.author.sendMessage(reply2).then(message2 => {
             message.author.sendMessage(reply3);

@@ -6,6 +6,9 @@ var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var config = require('../config/main.json');
 var execute = function (message) {
-    message.reply(t('basic.bug', {link:'https://discord.gg/yuTxmYn', interpolation: {escape: false}}));
+    if (message.guild) {
+        message.channel.sendMessage(':ok_hand: ');
+    }
+    message.author.sendMessage(t('bug', {link:'https://discord.gg/yuTxmYn', interpolation: {escape: false}}));
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

@@ -9,21 +9,25 @@ var cmd = 'kick';
 var execute = function (message) {
     if (message.guild && messageHelper.hasWolkeBot(message)) {
         let user = message.mentions.users.first();
-        if (user) {
-            message.guild.fetchMember(user).then(member => {
-                if (member.id !== message.guild.owner.id && !messageHelper.hasWolkeBot(message, member)) {
-                    member.kick().then(member => {
-                        message.reply(`Kicked User ${member.user.username}`);
-                    }).catch(err => {
-                        // console.log(err);
-                        message.reply(`An Error occurred while trying to kick ${member.user.name} !`);
-                    });
-                } else {
-                    message.reply('You can not kick the Owner or anyone with the WolkeBot Role.');
-                }
-            }).catch(console.log);
+        if (user.id !== message.botUser.user.id) {
+            if (user) {
+                message.guild.fetchMember(user).then(member => {
+                    if (member.id !== message.guild.owner.id && !messageHelper.hasWolkeBot(message, member)) {
+                        member.kick().then(member => {
+                            message.reply(`Kicked User ${member.user.username}`);
+                        }).catch(err => {
+                            // console.log(err);
+                            message.reply(`An Error occurred while trying to kick ${member.user.name} !`);
+                        });
+                    } else {
+                        message.reply('You can not kick the Owner or anyone with the WolkeBot Role.');
+                    }
+                }).catch(console.log);
+            } else {
+                message.reply('Please kick only 1 Person at a time.');
+            }
         } else {
-            message.reply('Please kick only 1 Person at a time.');
+            message.reply('You can not kick me with my own command.');
         }
     } else {
         message.reply('No Permission!');

@@ -14,6 +14,7 @@ var execute = function (message) {
             .addRow('Members', message.guild.members.size)
             .addRow('Text channels', textChannels)
             .addRow('Voice channels', voiceChannels)
+            .addRow('Roles', message.guild.roles.size)
             .addRow('Creation Date', message.guild.creationDate.toDateString())
             .addRow('Region', message.guild.region)
             .addRow('Owner', `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`);

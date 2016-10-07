@@ -272,14 +272,14 @@ var disablePm = function disablePm(message) {
         });
     }
 };
-var hasWolkeBot = function (message, Member) {
-    if (message.author.id === config.owner_id) {
+var hasWolkeBot = function (message, member) {
+    if (typeof (member) === 'undefined' && message.author.id === config.owner_id) {
         return true;
     }
-    if (typeof (Member) === 'undefined') {
+    if (typeof (member) === 'undefined') {
         return message.member.roles.exists('name', 'WolkeBot');
     } else {
-        return Member.roles.exists('name', 'WolkeBot');
+        return member.roles.exists('name', 'WolkeBot');
     }
 
 };

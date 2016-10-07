@@ -49,18 +49,21 @@ var execute = function (message) {
                             Songs.splice(random, 1);
                             randoms.push(Song);
                         }
+                        let addedSongs = 0;
                         async.eachSeries(randoms, ((randomSong, cb) => {
                             voice.addToQueue(message, randomSong, false).then((message) => {
-
+                                addedSongs = addedSongs+ 1;
                                 return cb();
                             }).catch(cb);
                         }), (err) => {
-                            if (err) return message.reply(err);
-                            let table = new AsciiTable();
-                            for (var i = 0; i < randoms.length; i++) {
-                                table.addRow(i+1, randoms[i].title);
+                            if (err) message.reply(err);
+                            if (addedSongs > 0) {
+                                let table = new AsciiTable();
+                                for (var i = 0; i < addedSongs; i++) {
+                                    table.addRow(i + 1, randoms[i].title);
+                                }
+                                message.reply('Added the following Songs:\n```' + table.toString() + '```');
                             }
-                            message.reply('Added the following Songs:\n```' + table.toString() + '```');
                         });
 
                     }

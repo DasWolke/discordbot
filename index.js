@@ -32,11 +32,11 @@ var backendOptions = {
     jsonIndent: 2
 };
 i18next.use(Backend).init({
-    whitelist: ['en', 'de'],
+    whitelist: ['en', 'de', 'ru'],
     backend: backendOptions,
     lng: 'en',
     fallbackLng: false,
-    preload: ['de', 'en']
+    preload: ['de', 'en', 'ru']
 }, (err, t) => {
     if (err) {
         client.captureMessage(err);
@@ -129,6 +129,7 @@ i18next.use(Backend).init({
             }
             if (message.content.startsWith(prefix)) {
                 message.botUser = bot;
+                message.prefix = prefix;
                 if (!config.beta) {
                     dogstatsd.increment('musicbot.commands');
                 }
@@ -138,7 +139,7 @@ i18next.use(Backend).init({
                     if (err) return winston.error(err);
                 });
             }
-            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800') {
+            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800' && !message.content.startsWith(prefix)) {
                 if (!config.beta) {
                     dogstatsd.increment('musicbot.cleverbot');
                 }

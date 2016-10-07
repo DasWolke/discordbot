@@ -5,25 +5,27 @@ var messageHelper = require('../utility/message');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
 var winston = logger.getT();
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var cmd = 'voice';
 var execute = function (message) {
     if (message.guild && message.member.voiceChannel) {
         if (messageHelper.hasWolkeBot(message)) {
             message.member.voiceChannel.join().then(connection => {
-                message.channel.sendMessage(`Ok, joining your voice channel now ${message.author}`);
+                message.channel.sendMessage(`${t('joinVoice.join')} ${message.author}`);
                 voice.saveVoice(message.member.voiceChannel).then(() => {
                     winston.info(`Saved Voice of Guild ${message.guild.name}`);
                 }).catch(winston.warn);
                 voice.startQueue(message);
             }).catch(err => {
                 winston.warn(err);
-                message.reply('An Error has occured while trying to join Voice!')
+                message.reply(t('joinVoice.error'))
             });
         } else {
-            message.reply('No Permission! You need to give yourself the WolkeBot Role to use this.');
+            message.reply(t('joinVoice.permission'));
         }
     } else {
-        message.reply("You are not in a Voice Channel!");
+        message.reply(t('joinVoice.no-voice'));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

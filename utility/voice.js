@@ -401,6 +401,7 @@ var addToQueue = function (message, Song, reply) {
                         for (var i = 0; i < Queue.songs.length; i++) {
                             if (Queue.songs[i].id === Song.id) {
                                 reject(Song.title + " is already in the Queue!");
+                                break;
                             }
                         }
                         queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
