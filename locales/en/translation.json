@@ -69,5 +69,30 @@
       "error":"An Error has occured while trying to join Voice!",
       "permission":"No Permission! You need to give yourself the WolkeBot Role to use this.",
       "no-voice":"You are not in a Voice Channel!"
-    }
+    },
+  "8ball":[
+    "No.",
+    "Yes.",
+    "Maybe.",
+    "I would not do it.",
+    "Very bad idea.",
+    "Just do it.",
+    "That is a great idea.",
+    "Are you sure about that ?"
+  ],
+  "ban":{
+    "success":"Banned User {{user}}",
+    "privilege":"My Role does not have the Privilege to ban {{user}} !",
+    "err":"An Error occurred while trying to ban {{user}} !",
+    "ban-perms":"You can not ban the Owner or anyone with the WolkeBot Role.",
+    "self":"You can not ban me with my own command.",
+    "no-mention":"Please mention a User you want to ban.",
+    "no-perm":"No Permission!"
+  },
+  "roll": {
+    "whole-number":"Please add a whole number!",
+    "nan":"Whatever you just send, please just add a whole number. :) ",
+    "negative":"I cant roll with a {{number}}",
+    "success":"Rolled a {{first}} out of {{second}}"
+  }
 }

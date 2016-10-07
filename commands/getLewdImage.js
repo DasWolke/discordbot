@@ -4,8 +4,11 @@
 var cmd = 'lewd';
 var lewd = require('../config/lewd.json');
 var generalHelper = require('../utility/general');
+var path = require('path');
 var execute = function (message) {
     let number = generalHelper.random(0, lewd.images.length-1);
-    message.channel.sendFile(lewd.images[number]);
+    message.channel.sendFile(path.join(__dirname, '../lewdImages/' + lewd.images[number])).then(message => {
+
+    }).catch(console.log);
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

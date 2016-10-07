@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var cmd = 'roll';
 var generalHelper = require('../utility/general');
 var execute = function (message) {
@@ -10,15 +12,15 @@ var execute = function (message) {
         try {
             number = parseInt(messageSplit[1]);
         } catch (e) {
-            return message.reply('Please add a whole number!');
+            return message.reply(t('roll.whole-number'));
         }
         if (isNaN(number)) {
-            return message.reply(`Whatever you just send, please just add a whole number. :) `);
+            return message.reply(t('roll.nan'));
         }
         if (number < 1) {
-            return message.reply(`I cant roll with a ${number}`);
+            return message.reply(t('roll.negative', {number:number}));
         }
     }
-    message.reply(`Rolled a ${generalHelper.random(1, number)} out of ${number}`);
+    message.reply(t('roll.success', {first:generalHelper.random(1, number), second:number}));
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

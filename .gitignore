@@ -42,3 +42,5 @@ config/main.json
 audio
 cmd.bat
 temp
+lewdImages/*
+remImages/*
