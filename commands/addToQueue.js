@@ -26,9 +26,10 @@ var execute = function (message) {
             messageSearch = messageSearch + " " + messageSplit[a]
         }
     }
-    if (musicHelper.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && voice.checkMedia(messageSplit[2])) {
+    if (musicHelper.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && musicHelper.checkMedia(messageSplit[2])) {
         ytHelper.ytDlAndQueue(message, messageSearch, messageSplit);
     } else if (musicHelper.checkOsuMap(messageSplit[1])) {
+        message.channel.sendMessage(`Started download of \`${messageSplit[1]}\``);
         songModel.findOne({url: messageSplit[1]}, (err, Song) => {
             if (err) return console.log(err);
             if (Song) {
@@ -49,12 +50,12 @@ var execute = function (message) {
         });
     } else {
         messageSearch = messageSearch.replace('-', '');
-        songModel.find({$text: {$search: `${messageSearch}`}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
+        songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec((err, Songs) => {
             if (err) return console.log(err);
             if (Songs !== null && Songs.length > 0) {
                 voice.addToQueue(message, Songs[0]).then(message.reply).catch(message.reply);
             } else {
-                message.reply('No Song found with Search Term `' + messageHelper.cleanMessage(messageSearch) + '`');
+                message.reply(`No Song found with Search Term \` ${messageHelper.cleanMessage(messageSearch)}\``);
             }
         });
     }

@@ -150,7 +150,12 @@ var downloadProxy = function (message, url, proxy, cb) {
             client.captureMessage(error, {extra:{'url':url, 'proxy':proxy}});
             return cb(error);
         }
-        let parsedBody = JSON.parse(body);
+        let parsedBody = {error:1};
+        try {
+            parsedBody = JSON.parse(body);
+        } catch (e) {
+            client.captureMessage(e, {extra:{'url':url, 'proxy':proxy, 'json':body}});
+        }
         if (parsedBody.error === 0) {
             console.log(parsedBody.path);
             console.log(`${proxy_url}${parsedBody.path}`);

@@ -132,6 +132,9 @@ i18next.use(Backend).init({
                 message.prefix = prefix;
                 if (!config.beta) {
                     dogstatsd.increment('musicbot.commands');
+                    if (message.content === prefix + 'help') {
+                        dogstatsd.increment('musicbot.help');
+                    }
                 }
                 CMD.checkCommand(message);
             } else if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && message.guild.id !== '110373943822540800' && !message.author.bot) {

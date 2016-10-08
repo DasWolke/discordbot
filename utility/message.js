@@ -5,7 +5,7 @@ var userModel = require('../DB/user');
 var serverModel = require('../DB/server');
 var config = require('../config/main.json');
 var cleanMessage = function (message) {
-    return message.replace("@", "");
+    return message.content.replace("@", "");
 };
 var createUser = function (message, level, pms, cb) {
     var guild = getServerObj(message, level, pms);
