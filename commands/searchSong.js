@@ -20,7 +20,7 @@ var execute = function (message) {
                 }
                 message.reply(reply);
             } else {
-                message.reply("No Songs found with Search Term " + messageHelper.cleanMessage(messageSearch));
+                message.reply("No Songs found with Search Term " + messageSearch);
             }
         });
     } else {

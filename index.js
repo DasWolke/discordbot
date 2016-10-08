@@ -46,7 +46,8 @@ i18next.use(Backend).init({
     var Discord = require("discord.js");
     var options = {
         protocol_version: 6,
-        max_message_cache: 2500
+        max_message_cache: 2500,
+        disable_everyone:true
     };
     winston.info(options);
     var bot = new Discord.Client(options);

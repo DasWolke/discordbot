@@ -57,7 +57,7 @@
       "garfield": "Gives you a random garfield command",
       "feedback": "For feedback use the support discord please ^^",
       "talk": "If you want to talk with me @mention me with a message :D",
-      "helpReply": "OK, I send you a list of commands over PM. If you like Rem, please consider donating here: <https://bot.ram.moe/donate>"
+      "helpReply": "OK, I sent you a list of commands over PM. If you like Rem, please consider donating here: <https://bot.ram.moe/donate>"
     }
   },
     "version":"Currently i am running on version {{version}}",

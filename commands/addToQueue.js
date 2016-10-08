@@ -55,7 +55,7 @@ var execute = function (message) {
             if (Songs !== null && Songs.length > 0) {
                 voice.addToQueue(message, Songs[0]).then(message.reply).catch(message.reply);
             } else {
-                message.reply(`No Song found with Search Term \` ${messageHelper.cleanMessage(messageSearch)}\``);
+                message.reply(`No Song found with Search Term \` ${messageSearch}\``);
             }
         });
     }
