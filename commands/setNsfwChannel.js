@@ -22,7 +22,7 @@ var execute = function (message) {
                     nsfwChannels: [message.channel.id],
                     cmdChannel: "",
                     permissions: [],
-                    prefix: "!w",
+                    prefix: "!w.",
                     disabledCmds: [],
                     Groups: [],
                     Blacklist: []

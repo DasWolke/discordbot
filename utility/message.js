@@ -5,7 +5,7 @@ var userModel = require('../DB/user');
 var serverModel = require('../DB/server');
 var config = require('../config/main.json');
 var cleanMessage = function (message) {
-    return message.content.replace("@", "");
+    return message.replace("@", "");
 };
 var createUser = function (message, level, pms, cb) {
     var guild = getServerObj(message, level, pms);
@@ -50,7 +50,8 @@ var updateXp = function (message, cb) {
                 nsfwChannels: [],
                 lastVoiceChannel: "",
                 levelEnabled: true,
-                pmNotifications: true
+                pmNotifications: true,
+                prefix:"!w."
             });
             server.save(err => {
                 if (err) return cb(err);
@@ -194,7 +195,8 @@ var disableLevelServer = function disableLevel(message) {
                         nsfwChannels: [],
                         lastVoiceChannel: "",
                         levelEnabled: false,
-                        pmNotifications: true
+                        pmNotifications: true,
+                        prefix:"!w."
                     });
                     server.save(err => {
                         if (err) return console.log(err);
@@ -232,7 +234,8 @@ var disablePmServer = function disablePmServer(message) {
                         nsfwChannels: [],
                         lastVoiceChannel: "",
                         levelEnabled: true,
-                        pmNotifications: false
+                        pmNotifications: false,
+                        prefix:"!w."
                     });
                     server.save(err => {
                         if (err) return console.log(err);

@@ -66,7 +66,7 @@ var clearLastVoice = function clearLastVoice(message) {
                     nsfwChannels: [],
                     cmdChannels: [],
                     permissions: [],
-                    prefix: "!w",
+                    prefix: "!w.",
                     disabledCmds: [],
                     Groups: [],
                     Blacklist: []
@@ -98,7 +98,7 @@ var loadLastVoice = function loadLastVoice(guild) {
                             nsfwChannels: [],
                             cmdChannels: [],
                             permissions: [],
-                            prefix: "!w",
+                            prefix: "!w.",
                             disabledCmds: [],
                             Groups: [],
                             Blacklist: []

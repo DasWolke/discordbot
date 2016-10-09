@@ -29,7 +29,7 @@ var download = function (url, message, cb) {
             songModel.findOne({id: info.id}, function (err, Song) {
                 if (err) return cb(err);
                 if (!Song) {
-                    var video = youtubedl(url, ["--restrict-filenames"], {cwd: __dirname});
+                    var video = youtubedl(url, ["--restrict-filenames", "-4"], {cwd: __dirname});
                     var filename = info.id + ".temp";
                     var stream = video.pipe(fs.createWriteStream('temp/' + filename));
                     video.on('info', function (info) {

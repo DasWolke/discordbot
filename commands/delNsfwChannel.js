@@ -22,7 +22,7 @@ var execute = function (message) {
                     nsfwChannels: [],
                     cmdChannels: [],
                     permissions: [],
-                    prefix: "!w",
+                    prefix: "!w.",
                     disabledCmds: [],
                     Groups: [],
                     Blacklist: []

@@ -39,6 +39,7 @@
       "noPmServer": "Disables the pm notifications for the entire server, use the command again to re-enable it",
       "setLewd": "Adds the current Channel as a NSFW Channel",
       "remLewd": "Removes the current channel from the list of NSFW channels",
+      "setPrefix":"Sets the prefix of the bot, no spaces/mentions allowed!",
       "other": "Other Stuff",
       "r34": "Searches Rule34 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
       "kona": "Searches Konachan for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",

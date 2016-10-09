@@ -28,5 +28,8 @@ serverSchema.methods.updatePms = function updatePms(bool,cb) {
 serverSchema.methods.updateLevels = function updateLevels(bool,cb) {
     this.model('Servers').update({id:this.id}, {$set:{levelEnabled:bool}}, cb);
 };
+serverSchema.methods.updatePrefix = function updatePrefix(prefix,cb) {
+    this.model('Servers').update({id:this.id}, {$set:{prefix:prefix}}, cb);
+};
 var serverModel = mongoose.model('Servers', serverSchema);
 module.exports = serverModel;

@@ -9,7 +9,7 @@ var winston = logger.getT();
 var execute = function (message) {
     let pre = message.prefix;
     var reply = `${t('basic.help.intro_2')} ${message.botUser.user.name}, ${t('basic.help.intro')} 
-                 \`\`\`!w.help --> ${t('basic.help.help')} 
+                 \`\`\`${pre}help --> ${t('basic.help.help')} 
 ${t('basic.help.support')}: 
 ${pre}bug --> ${t('basic.help.bug')}
 ${pre}add --> ${t('basic.help.add')}  
@@ -49,6 +49,7 @@ ${pre}noLevelServer --> ${t('basic.help.noLevelServer')}
 ${pre}noPmServer --> ${t('basic.help.noPmServer')}
 ${pre}setLewd --> ${t('basic.help.setLewd')}
 ${pre}remLewd --> ${t('basic.help.remLewd')}
+${pre}setPrefix --> ${t('basic.help.setPrefix')}
 --------------------------------\`\`\``;
     var reply3 =
         `\`\`\`
