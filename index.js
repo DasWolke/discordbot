@@ -11,6 +11,7 @@ logger.setT(winston);
 var raven = require('raven');
 var errorReporter = require('./utility/errorReporter');
 var client = new raven.Client(config.sentry_token);
+var serverModel = require('./DB/server');
 errorReporter.setT(client);
 winston.info('Starting Errorhandling!');
 if (!config.beta) {
@@ -47,7 +48,7 @@ i18next.use(Backend).init({
     var options = {
         protocol_version: 6,
         max_message_cache: 2500,
-        disable_everyone:true
+        disable_everyone: true
     };
     winston.info(options);
     var bot = new Discord.Client(options);
@@ -128,26 +129,59 @@ i18next.use(Backend).init({
             if (!config.beta) {
                 dogstatsd.increment('musicbot.messages');
             }
-            if (message.content.startsWith(prefix)) {
-                message.botUser = bot;
-                message.prefix = prefix;
-                if (!config.beta) {
-                    dogstatsd.increment('musicbot.commands');
-                    if (message.content === prefix + 'help') {
-                        dogstatsd.increment('musicbot.help');
-                    }
-                }
-                CMD.checkCommand(message);
-            } else if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && message.guild.id !== '110373943822540800' && !message.author.bot) {
-                messageHelper.updateXP(message, (err) => {
+            if (message.guild) {
+                serverModel.findOne({id: message.guild.id}, function (err, Server) {
                     if (err) return winston.error(err);
+                    if (Server && typeof (Server.prefix) !== 'undefined' && Server.prefix && Server.prefix !== '') {
+                        if (message.content.startsWith(Server.prefix)) {
+                            message.botUser = bot;
+                            message.prefix = Server.prefix;
+                            if (!config.beta) {
+                                dogstatsd.increment('musicbot.commands');
+                                if (message.content === Server.prefix + 'help') {
+                                    dogstatsd.increment('musicbot.help');
+                                }
+                            }
+                            return CMD.checkCommand(message);
+                        } else {
+                            if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && message.guild.id !== '110373943822540800' && !message.author.bot) {
+                                messageHelper.updateXP(message, (err) => {
+                                    if (err) return winston.error(err);
+                                });
+                            }
+                            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800' && !message.content.startsWith(prefix)) {
+                                if (!config.beta) {
+                                    dogstatsd.increment('musicbot.cleverbot');
+                                }
+                                cleverbot.talk(message);
+                            }
+                        }
+                    } else {
+                        if (message.content.startsWith(prefix)) {
+                            message.botUser = bot;
+                            message.prefix = prefix;
+                            if (!config.beta) {
+                                dogstatsd.increment('musicbot.commands');
+                                if (message.content === prefix + 'help') {
+                                    dogstatsd.increment('musicbot.help');
+                                }
+                            }
+                            CMD.checkCommand(message);
+                        } else {
+                            if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && message.guild.id !== '110373943822540800' && !message.author.bot) {
+                                messageHelper.updateXP(message, (err) => {
+                                    if (err) return winston.error(err);
+                                });
+                            }
+                            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800' && !message.content.startsWith(prefix)) {
+                                if (!config.beta) {
+                                    dogstatsd.increment('musicbot.cleverbot');
+                                }
+                                cleverbot.talk(message);
+                            }
+                        }
+                    }
                 });
-            }
-            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800' && !message.content.startsWith(prefix)) {
-                if (!config.beta) {
-                    dogstatsd.increment('musicbot.cleverbot');
-                }
-                cleverbot.talk(message);
             }
         }
 

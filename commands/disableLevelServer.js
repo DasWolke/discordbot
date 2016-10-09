@@ -27,7 +27,8 @@ var execute = function (message) {
                         nsfwChannels: [],
                         lastVoiceChannel: "",
                         levelEnabled: false,
-                        pmNotifications: true
+                        pmNotifications: true,
+                        prefix:"!w."
                     });
                     server.save(err => {
                         if (err) return console.log(err);

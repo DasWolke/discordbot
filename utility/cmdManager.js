@@ -80,8 +80,8 @@ var saveCommands = function (t) {
 };
 var checkCommand = function (msg) {
     try {
-        if (msg.content.startsWith(prefix)) {
-            let command = msg.content.substr(prefix.length).split(' ')[0];
+        if (msg.content.startsWith(msg.prefix)) {
+            let command = msg.content.substr(msg.prefix.length).split(' ')[0];
             let accessLevel = commands[command].accessLevel;
             let userAccessLevel = 2;
             if (userAccessLevel >= accessLevel) {
