@@ -2,7 +2,6 @@
  * Created by julia on 02.10.2016.
  */
 var songModel = require('../DB/song');
-var messageHelper = require('../utility/message');
 var cmd = 'search';
 var execute = function (message) {
     let messageSplit = message.content.split(' ');

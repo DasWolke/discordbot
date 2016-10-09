@@ -1,7 +1,6 @@
 /**
  * Created by julia on 02.10.2016.
  */
-var messageHelper = require('../utility/message');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
 var ytHelper = require('../utility/youtube/helper');
