@@ -17,14 +17,9 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
                 queueModel.findOne({id:message.guild.id}, (err, Queue) => {
                     if (err) return console.log(err);
                     if (Queue && Queue.songs[0].id === Song.id) {
-                        Queue.startRepeat((err => {
-                            if (err) return console.log(err);
-                            Queue.updateRepeatId(Song.id, err => {
-                                if (err) return console.log(err);
-                            });
-                        }));
+                        message.reply('This Song is already playing!');
                     } else {
-                        voice.addSongFirst(message, Song, true).then(() => {
+                        voice.addSongFirst(message, Song, false).then(() => {
                             voice.playSong(message, Song);
                         }).catch(console.log);
                     }
@@ -43,7 +38,7 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
                     if (err) return console.log(err);
                     if (Song) {
                         if (voice.inVoice(message)) {
-                            voice.addSongFirst(message, Song, true).then(() => {
+                            voice.addSongFirst(message, Song, false).then(() => {
                                 voice.playSong(message, Song);
                             }).catch(message.reply);
                         } else {

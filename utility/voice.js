@@ -220,7 +220,7 @@ var addSongFirst = function addSongFirst(message, Song, repeat) {
             Song.user.name = message.author.username;
             Songs.push(Song);
             if (Queue) {
-                if (repeat) {
+                if (typeof(repeat) !== 'undefined' && repeat) {
                     Queue.startRepeat(function (err) {
                         if (err) reject('Internal Error');
                     });
@@ -252,7 +252,7 @@ var addSongFirst = function addSongFirst(message, Song, repeat) {
                 }
             } else {
                 var queue;
-                if (typeof(repeat) !== 'undefined') {
+                if (typeof(repeat) !== 'undefined' && repeat) {
                     queue = new queueModel({
                         server: message.guild.id,
                         voteSkip: 0,
