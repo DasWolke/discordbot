@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
@@ -17,13 +19,13 @@ var execute = function (message) {
             try {
                 number = parseInt(messageSplit[1]);
             } catch (e) {
-                return message.reply('Please add a whole number!');
+                return message.reply(t('generic.whole-num', {lng:message.lang}));
             }
             if (isNaN(number)) {
-                return message.reply(`Whatever you just send, please just add a whole number. :) `);
+                return message.reply(t('generic.nan', {lng:message.lang}));
             }
             if (number < 1) {
-                return message.reply(`You cant remove ${number} songs!`);
+                return message.reply(t('qra.to-small', {lng:message.lang, number:number}));
             }
             queueModel.findOne({server: message.guild.id}, function (err, Queue) {
                 if (err) return console.log(err);
@@ -33,15 +35,15 @@ var execute = function (message) {
                         Queue.clear(keptSongs, err => {
                             if (err) return console.log(err);
                             let songs = Queue.songs.slice(Queue.songs.length - number, Queue.songs.length);
-                            message.reply(`Removed  the following Songs:\n ${buildReply(songs)}`);
+                            message.reply(t('qra.success', {lng:message.lang, table:buildReply(songs),interpolation: {escape: false}}));
                         });
                     } else if (Queue.songs.length === 1) {
-                        message.reply('Use !w.skip to skip the current Song!');
+                        message.reply(t('qra.one-song', {lng:message.lang, prefix:message.prefix}));
                     } else {
-                        message.reply('No Song in the Queue at the Moment!');
+                        message.reply(t('generic.no-song-in-queue', {lng:message.lang}));
                     }
                 } else {
-                    message.reply('No Song in the Queue at the Moment!');
+                    message.reply(t('generic.no-song-in-queue', {lng:message.lang}));
                 }
             });
         } else {
@@ -56,17 +58,17 @@ var execute = function (message) {
                             message.reply(`Removed the following Songs:\n ${buildReply(songs)}`);
                         });
                     } else if (Queue.songs.length === 1) {
-                        message.reply('Use !w.skip to skip the current Song!');
+                        message.reply(t('qra.one-song', {lng:message.lang, prefix:message.prefix}));
                     } else {
-                        message.reply('No Song in the Queue at the Moment!');
+                        message.reply(t('generic.no-song-in-queue', {lng:message.lang}));
                     }
                 } else {
-                    message.reply('No Song in the Queue at the Moment!');
+                    message.reply(t('generic.no-song-in-queue', {lng:message.lang}));
                 }
             });
         }
     } else {
-        message.reply('You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.');
+        message.reply(t('generic.no-permission', {lng:message.lang}));
     }
 };
 var buildReply = function (songs) {

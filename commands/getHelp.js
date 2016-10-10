@@ -8,76 +8,76 @@ var logger = require('../utility/logger');
 var winston = logger.getT();
 var execute = function (message) {
     let pre = message.prefix;
-    var reply = `${t('basic.help.intro_2')} ${message.botUser.user.name}, ${t('basic.help.intro')} 
-                 \`\`\`${pre}help --> ${t('basic.help.help')} 
-${t('basic.help.support')}: 
-${pre}bug --> ${t('basic.help.bug')}
-${pre}add --> ${t('basic.help.add')}  
+    var reply = `${t('basic.help.intro_2', {lng: message.lang})} ${message.botUser.user.name}, ${t('basic.help.intro',{lng: message.lang})} 
+                 \`\`\`${pre}help --> ${t('basic.help.help',{lng: message.lang})} 
+${t('basic.help.support',{lng: message.lang})}: 
+${pre}bug --> ${t('basic.help.bug',{lng: message.lang})}
+${pre}add --> ${t('basic.help.add',{lng: message.lang})}  
 -------------------------------- 
-${t('basic.help.music')}: 
-${pre}voice --> ${t('basic.help.voice')} 
-${pre}leave --> ${t('basic.help.silent')}
-${pre}play name --> ${t('basic.help.play')}
-${pre}pause --> ${t('basic.help.pause')}
-${pre}resume --> ${t('basic.help.resume')}
-${pre}volume 40 --> ${t('basic.help.volume')}
-${pre}forever name --> ${t('basic.help.forever')}
-${pre}search name --> ${t('basic.help.search')}
-${pre}skip --> ${t('basic.help.skip')}
-${pre}voteskip --> ${t('basic.help.voteskip')}
-${pre}qa name --> ${t('basic.help.qa')}
-${pre}qrl --> ${t('basic.help.qrl')}
-${pre}qra number --> ${t('basic.help.qra')}
-${pre}queue --> ${t('basic.help.queue')}
-${pre}np --> ${t('basic.help.np')}
-${pre}random --> ${t('basic.help.random')}
-${pre}rq number--> ${t('basic.help.rq')}
-${pre}osu --> ${t('basic.help.osu')}
+${t('basic.help.music',{lng: message.lang})}: 
+${pre}voice --> ${t('basic.help.voice',{lng: message.lang})} 
+${pre}leave --> ${t('basic.help.silent',{lng: message.lang})}
+${pre}play name --> ${t('basic.help.play',{lng: message.lang})}
+${pre}pause --> ${t('basic.help.pause',{lng: message.lang})}
+${pre}resume --> ${t('basic.help.resume',{lng: message.lang})}
+${pre}volume 40 --> ${t('basic.help.volume',{lng: message.lang})}
+${pre}forever name --> ${t('basic.help.forever',{lng: message.lang})}
+${pre}search name --> ${t('basic.help.search',{lng: message.lang})}
+${pre}skip --> ${t('basic.help.skip',{lng: message.lang})}
+${pre}voteskip --> ${t('basic.help.voteskip',{lng: message.lang})}
+${pre}qa name --> ${t('basic.help.qa',{lng: message.lang})}
+${pre}qrl --> ${t('basic.help.qrl',{lng: message.lang})}
+${pre}qra number --> ${t('basic.help.qra',{lng: message.lang})}
+${pre}queue --> ${t('basic.help.queue',{lng: message.lang})}
+${pre}np --> ${t('basic.help.np',{lng: message.lang})}
+${pre}random --> ${t('basic.help.random',{lng: message.lang})}
+${pre}rq number--> ${t('basic.help.rq',{lng: message.lang})}
+${pre}osu --> ${t('basic.help.osu',{lng: message.lang})}
 --------------------------------\`\`\``;
     var reply2 =`\`\`\`
-${t('basic.help.youtube')}:
-${pre}yts query --> ${t('basic.help.yts')}
-${pre}ytq query --> ${t('basic.help.osu')}
+${t('basic.help.youtube',{lng: message.lang})}:
+${pre}yts query --> ${t('basic.help.yts',{lng: message.lang})}
+${pre}ytq query --> ${t('basic.help.osu',{lng: message.lang})}
 --------------------------------
-${t('basic.help.mod')}:
-${t('basic.help.mod-info')}
-${pre}info--> ${t('basic.help.info')}
-${pre}ban @user --> ${t('basic.help.ban')}
-${pre}kick @user --> ${t('basic.help.kick')}
-${pre}rm 10 --> ${t('basic.help.rm')}
-${pre}noLevelServer --> ${t('basic.help.noLevelServer')}
-${pre}noPmServer --> ${t('basic.help.noPmServer')}
-${pre}setLewd --> ${t('basic.help.setLewd')}
-${pre}remLewd --> ${t('basic.help.remLewd')}
-${pre}setPrefix --> ${t('basic.help.setPrefix')}
+${t('basic.help.mod',{lng: message.lang})}:
+${t('basic.help.mod-info',{lng: message.lang})}
+${pre}info--> ${t('basic.help.info',{lng: message.lang})}
+${pre}ban @user --> ${t('basic.help.ban',{lng: message.lang})}
+${pre}kick @user --> ${t('basic.help.kick',{lng: message.lang})}
+${pre}rm 10 --> ${t('basic.help.rm',{lng: message.lang})}
+${pre}noLevelServer --> ${t('basic.help.noLevelServer',{lng: message.lang})}
+${pre}noPmServer --> ${t('basic.help.noPmServer',{lng: message.lang})}
+${pre}setLewd --> ${t('basic.help.setLewd',{lng: message.lang})}
+${pre}remLewd --> ${t('basic.help.remLewd',{lng: message.lang})}
+${pre}setPrefix --> ${t('basic.help.setPrefix',{lng: message.lang})}
 --------------------------------\`\`\``;
     var reply3 =
         `\`\`\`
-${t('basic.help.other')}: 
-${pre}r34 tags --> ${t('basic.help.r34')}
-${pre}kona tags --> ${t('basic.help.kona')} 
-${pre}e621 tags --> ${t('basic.help.e621')} 
-${pre}yandere tags --> ${t('basic.help.yandere')}
-${pre}level --> ${t('basic.help.level')}
-${pre}rank --> ${t('basic.help.rank')} 
-${pre}noLevel --> ${t('basic.help.noLevel')}
-${pre}noPm --> ${t('basic.help.noPm')}
-${pre}pp beatmaplink acc mods --> ${t('basic.help.pp')}
-${pre}cookie @user --> ${t('basic.help.cookie')}
-${pre}eatCookie --> ${t('basic.help.eatCookie')}
-${pre}git --> ${t('basic.help.git')}
-${pre}roll number --> ${t('basic.help.roll')}
-${pre}8ball message --> ${t('basic.help.8ball')}
-${pre}garfield --> ${t('basic.help.garfield')}
-${t('basic.help.feedback')}
-${t('basic.help.talk')}\`\`\``;
+${t('basic.help.other',{lng: message.lang})}: 
+${pre}r34 tags --> ${t('basic.help.r34',{lng: message.lang})}
+${pre}kona tags --> ${t('basic.help.kona',{lng: message.lang})} 
+${pre}e621 tags --> ${t('basic.help.e621',{lng: message.lang})} 
+${pre}yandere tags --> ${t('basic.help.yandere',{lng: message.lang})}
+${pre}level --> ${t('basic.help.level',{lng: message.lang})}
+${pre}rank --> ${t('basic.help.rank',{lng: message.lang})} 
+${pre}noLevel --> ${t('basic.help.noLevel',{lng: message.lang})}
+${pre}noPm --> ${t('basic.help.noPm',{lng: message.lang})}
+${pre}pp beatmaplink acc mods --> ${t('basic.help.pp',{lng: message.lang})}
+${pre}cookie @user --> ${t('basic.help.cookie',{lng: message.lang})}
+${pre}eatCookie --> ${t('basic.help.eatCookie',{lng: message.lang})}
+${pre}git --> ${t('basic.help.git',{lng: message.lang})}
+${pre}roll number --> ${t('basic.help.roll',{lng: message.lang})}
+${pre}8ball message --> ${t('basic.help.8ball',{lng: message.lang})}
+${pre}garfield --> ${t('basic.help.garfield',{lng: message.lang})}
+${t('basic.help.feedback',{lng: message.lang})}
+${t('basic.help.talk',{lng: message.lang})}\`\`\``;
     message.author.sendMessage(reply).then(replyMessage => {
         message.author.sendMessage(reply2).then(message2 => {
             message.author.sendMessage(reply3);
         });
     }).catch(winston.warn);
     if (message.guild) {
-        message.reply(t('basic.help.helpReply'));
+        message.reply(t('basic.help.helpReply',{lng: message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

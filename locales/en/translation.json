@@ -1,4 +1,12 @@
 {
+  "generic":{
+    "error":"An error occured!",
+    "noPm":"This Command does not work in private Channels!",
+    "whole-num":"Please add a whole number!",
+    "nan":"Whatever you just send, please just add a whole number. :) ",
+    "no-song-in-queue":"No Song in the Queue at the Moment!",
+    "no-permission":"You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it."
+  },
   "basic": {
     "help": {
       "intro": "lets have fun together here on Discord (/^▽^)/ Commands you can write:",
@@ -95,5 +103,32 @@
     "nan":"Whatever you just send, please just add a whole number. :) ",
     "negative":"I cant roll with a {{number}}",
     "success":"Rolled a {{first}} out of {{second}}"
+  },
+  "qa":{
+    "nothing-found":"No Song found with Search Term `{{search}}` ",
+    "empty-search":"You did not enter a search Term!",
+    "started-download":"Started download of `{{url}}` "
+  },
+  "rq":{
+    "db-error":"A database error occured!",
+    "no-voice":"I am not connected to any Voice Channel on this Server",
+    "success-multiple":"Added the following Songs:\n```{{table}}```"
+  },
+  "qra":{
+    "to-small":"You cant remove {{number}} songs!",
+    "success":"Removed  the following Songs:\n {{table}}",
+    "one-song":"Use {{prefix}}skip to skip the current Song!"
+  },
+  "cookie":{
+    "give":"Gave user **{{name}}** **1** cookie!",
+    "new-server":"Try again please.",
+    "arere":"Arere... something went wrong...",
+    "perms":"You need a discord role called WolkeBot to give cookies!",
+    "one-user":"Please mention **1 User**, not more, not less!",
+    "count":"You have **{{number}} Cookies** right now."
+  },
+  "eastereggs":{
+    "jay":"Jay loves you~ :heart: ",
+    "magic":"xX_Cats_Xx was here -10.10.2016"
   }
 }

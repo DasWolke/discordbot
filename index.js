@@ -126,6 +126,7 @@ i18next.use(Backend).init({
     });
     bot.on("message", (message) => {
         if (!message.guild || config.beta && message.guild.id !== '110373943822540800' || !config.beta) {
+            message.lang = 'en';
             if (!config.beta) {
                 dogstatsd.increment('musicbot.messages');
             }
@@ -182,6 +183,18 @@ i18next.use(Backend).init({
                         }
                     }
                 });
+            } else {
+                if (message.content.startsWith(prefix)) {
+                    message.botUser = bot;
+                    message.prefix = prefix;
+                    if (!config.beta) {
+                        dogstatsd.increment('musicbot.commands');
+                        if (message.content === prefix + 'help') {
+                            dogstatsd.increment('musicbot.help');
+                        }
+                    }
+                    CMD.checkCommand(message);
+                }
             }
         }
 

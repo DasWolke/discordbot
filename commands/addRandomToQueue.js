@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var general = require('../utility/general');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
@@ -22,7 +24,7 @@ var execute = function (message) {
             iteration = 0;
         }
         songModel.count({}, function (err, C) {
-            if (err) return message.reply("A Database Error occured!");
+            if (err) return message.reply(t('qa.db-error', {lng:message.lang}));
             var random = general.random(0, C);
             songModel.find({}, function (err, Songs) {
                 if (err) return winston.error(err);
@@ -35,10 +37,10 @@ var execute = function (message) {
                                 message.reply(reply);
                             }).catch(message.reply);
                         } else {
-                            message.reply("I am not connected to any Voice Channel on this Server!");
+                            message.reply(t('qa.no-voice', {lng:message.lang}));
                         }
                     } else {
-                        message.reply('A Error occured!');
+                        message.reply(t('generic.error', {lng:message.lang}));
                     }
                 } else {
                     if (voice.inVoice(message)) {
@@ -62,7 +64,7 @@ var execute = function (message) {
                                 for (var i = 0; i < addedSongs; i++) {
                                     table.addRow(i + 1, randoms[i].title);
                                 }
-                                message.reply('Added the following Songs:\n```' + table.toString() + '```');
+                                message.reply(t('rq.success-multiple', {table:table.toString(), lng:message.lang, interpolation: {escape: false}}));
                             }
                         });
 
@@ -71,7 +73,7 @@ var execute = function (message) {
             });
         });
     } else {
-        message.reply('This Command does not work in private Channels');
+        message.reply(t('generic.noPm', {lng: message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
