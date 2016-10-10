@@ -51,7 +51,7 @@ var updateXp = function (message, cb) {
                 lastVoiceChannel: "",
                 levelEnabled: true,
                 pmNotifications: true,
-                prefix:"!w."
+                prefix: "!w."
             });
             server.save(err => {
                 if (err) return cb(err);
@@ -65,7 +65,7 @@ var updateXp = function (message, cb) {
     // console.log('Started update XP!');
 
 };
-var updateUserLevel = function (message,Server, cb) {
+var updateUserLevel = function (message, Server, cb) {
     let serverId = message.guild.id;
     userModel.findOne({id: message.author.id}, function (err, User) {
         if (err) return cb(err);
@@ -135,7 +135,7 @@ var getUserLevel = function getUserLevel(message, cb) {
                     if (err) return cb(err);
                     cb()
                 });
-                message.reply('You are **Level ' + 1 + '** XP: ' + parseInt(2) + 'XP/' + parseInt(calcXpNeededNumber(1)) + 'XP');
+                message.reply('You are **Level ' + 1 + '** XP: ' + parseInt(5) + 'XP/' + parseInt(calcXpNeededNumber(1)) + 'XP');
             }
         });
     }
@@ -196,7 +196,7 @@ var disableLevelServer = function disableLevel(message) {
                         lastVoiceChannel: "",
                         levelEnabled: false,
                         pmNotifications: true,
-                        prefix:"!w."
+                        prefix: "!w."
                     });
                     server.save(err => {
                         if (err) return console.log(err);
@@ -235,7 +235,7 @@ var disablePmServer = function disablePmServer(message) {
                         lastVoiceChannel: "",
                         levelEnabled: true,
                         pmNotifications: false,
-                        prefix:"!w."
+                        prefix: "!w."
                     });
                     server.save(err => {
                         if (err) return console.log(err);
@@ -390,6 +390,26 @@ var checkNsfwChannel = function (message, cb) {
         }
     });
 };
+var checkCmdChannel = function (message, cb) {
+    serverModel.findOne({id: message.guild.id}, function (err, Server) {
+        if (err) return console.log(err);
+        if (Server) {
+            if (typeof (Server.cmdChannels) !== 'undefined' && Server.cmdChannels.length > 0) {
+                for (var i = 0; i < Server.cmdChannels.length; i++) {
+                    if (Server.cmdChannels[i] === message.channel.id) {
+                        return cb();
+                    }
+                }
+                return cb({ignore: true});
+            } else {
+                return cb();
+            }
+
+        } else {
+            return cb();
+        }
+    });
+};
 module.exports = {
     cleanMessage: cleanMessage,
     createUser: createUser,
@@ -398,8 +418,8 @@ module.exports = {
     disableLevel: disableLevel,
     disablePm: disablePm,
     disableLevelServer: disableLevelServer,
-    disablePmServer:disablePmServer,
-    levelEnabled:levelEnabled,
+    disablePmServer: disablePmServer,
+    levelEnabled: levelEnabled,
     hasWolkeBot: hasWolkeBot,
     isOwner: isOwner,
     loadServerFromUser: loadServerFromUser,
@@ -407,5 +427,5 @@ module.exports = {
     getServerObj: getServerObj,
     noSpam: noSpam,
     checkNsfw: checkNsfwChannel,
-    pmNotifications:pmNotifications
+    pmNotifications: pmNotifications
 };

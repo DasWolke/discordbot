@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
@@ -24,7 +26,7 @@ var execute = function (message) {
                                     'servers.serverId': message.guild.id
                                 }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                     if (err) return console.log(err);
-                                    message.reply(`Gave user **${User.name}** **1** Cookie!`);
+                                    message.reply(t('cookie.give', {lng:message.lang, user:User.name}));
                                 });
                             } else {
                                 userModel.update({
@@ -32,7 +34,7 @@ var execute = function (message) {
                                     'servers.serverId': message.guild.id
                                 }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                     if (err) return console.log(err);
-                                    message.reply(`Gave user ${User.name} 1 Cookie!`);
+                                    message.reply(t('cookie.give', {lng:message.lang, user:User.name}));
                                 });
                             }
                         } else {
@@ -53,27 +55,27 @@ var execute = function (message) {
                                             'servers.serverId': message.guild.id
                                         }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                             if (err) return console.log(err);
-                                            message.reply(`Gave user ${User.name} 1 Cookie!`);
+                                            message.reply(t('cookie.give', {lng:message.lang, user:User.name}));
                                         });
                                     } else {
                                         var server = messageHelper.getServerObj(message,true,true);
                                         User.addServer(server, function (err) {
                                             if (err) return console.log(err);
-                                            message.reply('Try again please.');
+                                            message.reply(t('cookie.new-server', {lng:message.lang}));
                                         });
                                     }
                                 } else {
-                                    message.reply("Arere... something went wrong...");
+                                    message.reply(t('cookie.arere', {lng:message.lang}));
                                 }
                             });
                         });
                     }
                 });
             } else {
-                message.reply('Please mention **1 User**, not more, not less!');
+                message.reply(t('cookie.one-user', {lng:message.lang}));
             }
         } else {
-            message.reply('You need the WolkeBot role to give cookies!');
+            message.reply(t('generic.no-permission', {lng:message.lang}));
         }
     } else {
         userModel.findOne({id: message.author.id, 'servers.serverId': message.guild.id}, function (err, User) {
@@ -81,15 +83,15 @@ var execute = function (message) {
             if (User) {
                 var clientServer = messageHelper.loadServerFromUser(message, User);
                 if (typeof (clientServer.cookies) !== 'undefined') {
-                    message.reply(`You have **${clientServer.cookies} Cookie(s)** right now.`);
+                    message.reply(t('cookie.count', {lng:message.lang, number:clientServer.cookies}));
                 } else {
-                    message.reply("You have **0 Cookies** right now.")
+                    message.reply(t('cookie.count', {lng:message.lang, number:0}))
                 }
             } else {
                 messageHelper.createUser(message, true, true, function (err) {
                     if (err) return console.log(err);
                 });
-                message.reply("You have **0 Cookies** right now.");
+                message.reply(t('cookie.count', {lng:message.lang, number:0}));
             }
         });
     }

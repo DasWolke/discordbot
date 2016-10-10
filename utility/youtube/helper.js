@@ -21,7 +21,7 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
                     } else {
                         voice.addSongFirst(message, Song, false).then(() => {
                             voice.playSong(message, Song);
-                        }).catch(console.log);
+                        }).catch(err => {message.reply(err)});
                     }
                 });
             } else {
@@ -40,7 +40,7 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
                         if (voice.inVoice(message)) {
                             voice.addSongFirst(message, Song, false).then(() => {
                                 voice.playSong(message, Song);
-                            }).catch(message.reply);
+                            }).catch(err => {message.reply(err)});
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
@@ -60,7 +60,11 @@ var ytDlAndQueue = function (message, messageSearch, messageSplit) {
         }
         if (Song) {
             if (voice.inVoice(message)) {
-                voice.addToQueue(message,Song);
+                voice.addToQueue(message, Song).then(reply => {
+                    message.reply(reply)
+                }).catch(err => {
+                    message.reply(err)
+                });
             } else {
                 message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
             }
@@ -74,9 +78,11 @@ var ytDlAndQueue = function (message, messageSearch, messageSplit) {
                     if (err) return console.log(err);
                     if (Song) {
                         if (voice.inVoice(message)) {
-                            voice.addToQueue(message,Song).then((reply) => {
-                                message.reply(reply);
-                            }).catch(message.reply);
+                            voice.addToQueue(message, Song).then(reply => {
+                                message.reply(reply)
+                            }).catch(err => {
+                                message.reply(err)
+                            });
                         } else {
                             message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
                         }
