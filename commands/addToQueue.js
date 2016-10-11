@@ -18,15 +18,8 @@ var execute = function (message) {
             return message.reply(t('qa.empty-search', {lng: message.lang}));
         }
         var messageSearch = "";
-        var a = 0;
-        if (messageSplit[1] === 'add' && typeof (messageSplit[2]) !== 'undefined') {
-            for (a = 2; a < messageSplit.length; a++) {
-                messageSearch = messageSearch + " " + messageSplit[a]
-            }
-        } else {
-            for (a = 1; a < messageSplit.length; a++) {
-                messageSearch = messageSearch + " " + messageSplit[a]
-            }
+        for (var a = 1; a < messageSplit.length; a++) {
+            messageSearch = messageSearch + " " + messageSplit[a]
         }
         if (musicHelper.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && musicHelper.checkMedia(messageSplit[2])) {
             ytHelper.ytDlAndQueue(message, messageSearch, messageSplit);
