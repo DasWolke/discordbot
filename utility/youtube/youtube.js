@@ -14,6 +14,7 @@ var client = errorReporter.getT();
 var AsciiTable = require('ascii-table');
 var voice = require("../voice.js");
 var playlistReg = /[&?]list=([a-z0-9_\-]+)/gi;
+var music = require('../music');
 var opts = {
     maxResults: 5,
     key: config.youtube_api,
@@ -121,42 +122,48 @@ var downloadPlaylist = function (url, message, playlistId, cb) {
     }, function (err, data) {
         if (err) return console.log(err);
         let songs = [];
-
-        // async.eachSeries(data.items, (Item, cb) => {
-        //     downloadSingle(`https://youtube.com/watch?v=${Item.contentDetails.videoId}`, message, (err, info) => {
-        //         if (err) return cb(err);
-        //         songModel.findOne({id:info.id}, (err, Song) => {
-        //             if (err) return cb(err);
-        //             if (Song) {
-        //                 voice.addToQueue(message, Song, false).then((message) => {
-        //                     console.log('Added Song to queue!');
-        //                     songs.push(Song);
-        //                     return cb();
-        //                 }).catch(cb);
-        //             } else {
-        //                 async.setImmediate(() => {
-        //                     return (cb('Something went wrong somewhere...'));
-        //                 });
-        //             }
-        //         });
-        //     })
-        // }, (err) => {
-        //     if (err) return cb(err);
-        //     cb(null, songs);
-        // });
-    });
-};
-var searchForIdInPlaylist = function (playlist, id) {
-    return new Promise((resolve, reject) => {
-        if (cycleThroughPlaylist(playlist, id)) {
-            return cycleThroughPlaylist(playlist, id);
+        let z;
+        if ((z = music.ytRegex.exec(url)) !== null) {
+            let playlist = searchForIdInPlaylist(data, z[1]);
+            async.eachSeries(playlist, (Item, cb) => {
+                downloadSingle(`https://youtube.com/watch?v=${Item.contentDetails.videoId}`, message, (err, info) => {
+                    if (err) return cb(err);
+                    songModel.findOne({id: info.id}, (err, Song) => {
+                        if (err) return cb(err);
+                        if (Song) {
+                            voice.addToQueue(message, Song, false).then((message) => {
+                                console.log('Added Song to queue!');
+                                songs.push(Song);
+                                return cb();
+                            }).catch(cb);
+                        } else {
+                            async.setImmediate(() => {
+                                return (cb('Something went wrong somewhere...'));
+                            });
+                        }
+                    });
+                })
+            }, (err) => {
+                if (err) return cb(err);
+                cb(null, songs);
+            });
+        } else {
+            cb('Problem extracting ID!');
         }
     });
+
+};
+var searchForIdInPlaylist = function (playlist, id) {
+        if (cycleThroughPlaylist(playlist, id)) {
+            return cycleThroughPlaylist(playlist, id);
+        } else {
+            return [];
+        }
 };
 var cycleThroughPlaylist = function (playlist, id) {
     for (var i = 0; i < playlist.items.length; i++) {
         if (playlist.items[i].contentDetails.videoId === id) {
-            return playlist.slice(i, i + 2);
+            return playlist.items.slice(i, i + 3);
         }
     }
     return null;

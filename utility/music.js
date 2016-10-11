@@ -2,6 +2,8 @@
  * Created by julia on 01.10.2016.
  */
 var songModel = require('../DB/song');
+var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
+var SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 var createSong = function (title, alt_title, id, addedBy, duration, url, dl, path, proxy, setId) {
     return new Promise((resolve, reject) => {
         let song = new songModel({
@@ -32,12 +34,10 @@ var checkOsuMap = function (url) {
     return(!!setRegex.test(url));
 };
 var checkMedia = function (url) {
-        var SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
-        var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
         if (YoutubeReg.test(url)) {
             return true;
         } else {
             return !!SoundcloudReg.test(url);
         }
 };
-module.exports = {createSong:createSong, checkOsuMap:checkOsuMap, checkMedia:checkMedia};
+module.exports = {createSong:createSong, checkOsuMap:checkOsuMap, checkMedia:checkMedia, ytRegex:YoutubeReg};
