@@ -21,23 +21,23 @@ var opts = {
     type: "video"
 };
 var download = function (url, message, cb) {
-    console.log(url);
-    let m;
-    if ((m = playlistReg.exec(url)) !== null) {
-        console.log('using Playlist!');
-        downloadPlaylist(url, message, m[1], (err, results) => {
-            if (err) return console.log(err);
-            let table = new AsciiTable;
-            for (var i = 0; i < results.length; i++) {
-                table.addRow(i + 1, results[i].title);
-            }
-            message.reply(`Downloaded the following Songs:\n \`\`\` ${table.toString()}\`\`\` `);
-        });
-    } else {
+    // console.log(url);
+    // let m;
+    // if ((m = playlistReg.exec(url)) !== null) {
+    //     console.log('using Playlist!');
+    //     downloadPlaylist(url, message, m[1], (err, results) => {
+    //         if (err) return console.log(err);
+    //         let table = new AsciiTable;
+    //         for (var i = 0; i < results.length; i++) {
+    //             table.addRow(i + 1, results[i].title);
+    //         }
+    //         message.reply(`Downloaded the following Songs:\n \`\`\` ${table.toString()}\`\`\` `);
+    //     });
+    // } else {
         downloadSingle(url, message, (err, info) => {
             cb(err, info);
         });
-    }
+    // }
 };
 var downloadSingle = function (url, message, cb) {
     youtubedl.getInfo(url, function (err, info) {
@@ -60,7 +60,7 @@ var downloadSingle = function (url, message, cb) {
                         console.log('Download started');
                         console.log('filename: ' + info._filename);
                         console.log('size: ' + info.size);
-                        console.log('duration: ' + convertDuration(info));
+                        console.log('duration: ' + info.duration);
                     });
                     video.on('complete', function complete(info) {
                         console.log('filename: ' + info._filename + ' finished');
@@ -176,7 +176,6 @@ var search = function (message, cb) {
         for (var i = 1; i < messageSplit.length; i++) {
             messageClean = messageClean + " " + messageSplit[i];
         }
-        console.log(messageClean);
         youtubesearch(messageClean, opts, function (err, results) {
             if (err) {
                 console.log(err);
@@ -265,7 +264,7 @@ var downloadProxy = function (message, url, proxy, cb) {
     });
 };
 var checkTime = function (info) {
-    if (typeof (info.duration) === 'undefined' && typeof (info.length_seconds) === 'undefined') {
+    if (typeof (info.duration) === 'undefined') {
         client.captureMessage('Duration undefined!', {extra: {'info': info}});
         return true;
     }
@@ -290,7 +289,7 @@ var checkTime = function (info) {
 };
 var convertDuration = function (info) {
     let durationConv = "";
-    if (typeof (info.duration) === 'undefined' && typeof (info.length_seconds) === 'undefined') {
+    if (typeof (info.duration) === 'undefined') {
         client.captureMessage('Duration undefined!', {extra: {'info': info}});
     }
     if (typeof (info.duration) !== 'undefined') {
@@ -311,17 +310,6 @@ var convertDuration = function (info) {
             }
         }
         console.log(durationConv);
-    } else {
-        let duration = moment.duration(info.length_seconds, 's');
-        let hours = duration.hours();
-        let minutes = duration.minutes();
-        let seconds = duration.seconds();
-        if (hours > 0) {
-            durationConv = `${hours}:${minutes}:${seconds}`
-        } else {
-            durationConv = `${minutes}:${seconds}`
-        }
-        return convertDuration({duration: durationConv});
     }
     return durationConv;
 };
