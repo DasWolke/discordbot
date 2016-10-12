@@ -15,7 +15,7 @@ var execute = function (message) {
             return message.reply(t('roll.whole-number'));
         }
         if (isNaN(number)) {
-            return message.reply(t('roll.nan'));
+            return message.reply(t('generic.nan'));
         }
         if (number < 1) {
             return message.reply(t('roll.negative', {number:number}));

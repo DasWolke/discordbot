@@ -83,8 +83,8 @@
     "No.",
     "Yes.",
     "Maybe.",
-    "I would not do it.",
-    "Very bad idea.",
+    "I do not think so.",
+    "Definitely no",
     "Just do it.",
     "That is a great idea.",
     "Are you sure about that ?"
@@ -100,7 +100,6 @@
   },
   "roll": {
     "whole-number":"Please add a whole number!",
-    "nan":"Whatever you just send, please just add a whole number. :) ",
     "negative":"I cant roll with a {{number}}",
     "success":"Rolled a {{first}} out of {{second}}"
   },
@@ -120,7 +119,7 @@
     "one-song":"Use {{prefix}}skip to skip the current Song!"
   },
   "cookie":{
-    "give":"Gave user **{{name}}** **1** cookie!",
+    "give":"Gave user **{{user}}** **1** cookie!",
     "new-server":"Try again please.",
     "arere":"Arere... something went wrong...",
     "perms":"You need a discord role called WolkeBot to give cookies!",

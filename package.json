@@ -30,9 +30,10 @@
     "socket.io-client": "^1.5.0",
     "unzip": "^0.1.11",
     "x2js": "^3.0.1",
+    "youtube-api": "^2.0.4",
     "youtube-dl": "^1.11.1",
     "youtube-search": "^1.0.6",
-    "ytdl-core": "^0.7.17"
+    "ytdl-core": "^0.7.18"
   },
   "devDependencies": {
     "winston": "^2.2.0"

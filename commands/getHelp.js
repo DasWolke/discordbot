@@ -8,7 +8,7 @@ var logger = require('../utility/logger');
 var winston = logger.getT();
 var execute = function (message) {
     let pre = message.prefix;
-    var reply = `${t('basic.help.intro_2', {lng: message.lang})} ${message.botUser.user.name}, ${t('basic.help.intro',{lng: message.lang})} 
+    var reply = `${t('basic.help.intro_2', {lng: message.lang})} ${message.botUser.user.username}, ${t('basic.help.intro',{lng: message.lang})} 
                  \`\`\`${pre}help --> ${t('basic.help.help',{lng: message.lang})} 
 ${t('basic.help.support',{lng: message.lang})}: 
 ${pre}bug --> ${t('basic.help.bug',{lng: message.lang})}

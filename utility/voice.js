@@ -33,7 +33,7 @@ var saveVoiceChannel = function saveVoiceChannel(channel) {
                     nsfwChannels: [],
                     cmdChannels: [],
                     permissions: [],
-                    prefix: "!w",
+                    prefix: "!w.",
                     disabledCmds: [],
                     Groups: [],
                     Blacklist: []
