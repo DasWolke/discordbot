@@ -51,7 +51,7 @@ var voteSkip = function voteSkip(message, cb) {
                                                             cb(null, 'Voteskipped Song: ' + Queue.songs[0].title + '!');
                                                         });
                                                     } else {
-                                                        cb(null, `Added Your Vote, votepercentage at **${votePercentage * 100}%/${51}%**`);
+                                                        cb(null, `Added Your Vote, votepercentage at **${(votePercentage * 100).toFixed(2)}%/${51}%**`);
                                                     }
                                                 }
                                             });

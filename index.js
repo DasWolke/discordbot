@@ -133,6 +133,9 @@ i18next.use(Backend).init({
             if (message.guild) {
                 serverModel.findOne({id: message.guild.id}, function (err, Server) {
                     if (err) return winston.error(err);
+                    if (Server && typeof (Server.lng) !== 'undefined' && Server.lng && Server.lng !== '') {
+                        message.lang = Server.lng;
+                    }
                     if (Server && typeof (Server.prefix) !== 'undefined' && Server.prefix && Server.prefix !== '') {
                         if (message.content.startsWith(Server.prefix)) {
                             message.botUser = bot;
@@ -169,7 +172,7 @@ i18next.use(Backend).init({
                             }
                             CMD.checkCommand(message);
                         } else {
-                            if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && message.guild.id !== '110373943822540800' && !message.author.bot) {
+                            if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && !message.author.bot) {
                                 messageHelper.updateXP(message, (err) => {
                                     if (err) return winston.error(err);
                                 });

@@ -24,7 +24,7 @@ var execute = function (message) {
         if (musicHelper.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && musicHelper.checkMedia(messageSplit[2])) {
             ytHelper.ytDlAndQueue(message, messageSearch, messageSplit);
         } else if (musicHelper.checkOsuMap(messageSplit[1])) {
-            message.channel.sendMessage(t('qa.started-download', {lng: message.lang, url: messageSplit[1]}));
+            message.channel.sendMessage(t('qa.started-download', {lng: message.lang, url: messageSplit[1],interpolation: {escape: false}}));
             songModel.findOne({url: messageSplit[1]}, (err, Song) => {
                 if (err) return console.log(err);
                 if (Song) {

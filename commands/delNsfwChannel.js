@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var serverModel = require('../DB/server');
 var logger = require('../utility/logger');
@@ -13,7 +15,7 @@ var execute = function (message) {
             if (Server) {
                 serverModel.update({id: message.guild.id}, {$pull: {nsfwChannels: message.channel.id}}, function (err) {
                     if (err) return console.log(err);
-                    message.reply(`Successfully removed ${message.channel.name} from the NSFW Channels!`)
+                    message.reply(t('rem-lewd.success', {lng:message.lang, channel:message.channel,interpolation: {escape: false}}))
                 });
             } else {
                 var server = new serverModel({
@@ -28,11 +30,11 @@ var execute = function (message) {
                     Blacklist: []
                 });
                 server.save();
-                message.reply(`There are no NSFW Channels yet.`);
+                message.reply(t('rem-lewd.no-nsfw', {lng:message.lang}));
             }
         });
     } else {
-        message.reply("You need the WolkeBot Discord Role for this Command!");
+        message.reply(t('generic.no-permission', {lng:message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

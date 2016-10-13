@@ -5,7 +5,8 @@
     "whole-num":"Please add a whole number!",
     "nan":"Whatever you just send, please just add a whole number. :) ",
     "no-song-in-queue":"No Song in the Queue at the Moment!",
-    "no-permission":"You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it."
+    "no-permission":"You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
+    "no-voice":"I am not connected to any Voice Channel on this Server"
   },
   "basic": {
     "help": {
@@ -69,16 +70,16 @@
       "helpReply": "OK, I sent you a list of commands over PM. If you like Rem, please consider donating here: <https://bot.ram.moe/donate>"
     }
   },
-    "version":"Currently i am running on version {{version}}",
-    "add":"Use this Link to add me to your Server: {{link}}",
-    "bug":"Please join the support Discord: {{link}} to report a Bug.",
-    "level":"defined in message helper",
-    "joinVoice":{
-      "join":"Ok, joining your voice channel now",
-      "error":"An Error has occured while trying to join Voice!",
-      "permission":"No Permission! You need to give yourself the WolkeBot Role to use this.",
-      "no-voice":"You are not in a Voice Channel!"
-    },
+  "version":"Currently i am running on version {{version}}",
+  "add":"Use this Link to add me to your Server: {{link}}",
+  "bug":"Please join the support Discord: {{link}} to report a Bug.",
+  "level":"defined in message helper",
+  "joinVoice":{
+    "join":"Ok, joining your voice channel now",
+    "error":"An Error has occured while trying to join Voice!",
+    "permission":"No Permission! You need to give yourself the WolkeBot Role to use this.",
+    "no-voice":"You are not in a Voice Channel!"
+  },
   "8ball":[
     "No.",
     "Yes.",
@@ -110,7 +111,6 @@
   },
   "rq":{
     "db-error":"A database error occured!",
-    "no-voice":"I am not connected to any Voice Channel on this Server",
     "success-multiple":"Added the following Songs:\n```{{table}}```"
   },
   "qra":{
@@ -129,5 +129,49 @@
   "eastereggs":{
     "jay":"Jay loves you~ :heart: ",
     "magic":"xX_Cats_Xx was here -10.10.2016"
+  },
+  "set-lang":{
+    "no-lang":"You did not specify a language!",
+    "success":"Ok i just set the language for this server to {{language}}.",
+    "unsupported":"This language is not implemented yet, but you can help with it by adding a pull request with your language on github!"
+  },
+  "np":{
+    "song-duration":"Currently playing:` {{title}} {{current}}/{{duration}} {{repeat}} `",
+    "song":"Currently playing:`{{title}} {{repeat}}`",
+    "repeat-on":"repeat:on"
+  },
+  "queue":{
+    "queued":"Queued:"
+  },
+  "rem-lewd":{
+    "no-nsfw":"There are no NSFW Channels yet.",
+    "success":"Successfully removed {{channel}} from the NSFW channels!"
+  },
+  "no-level-server":{
+    "success-disable":"Ok I just disabled the level system for this server, type this command again to enable it.",
+    "success-enable":"Ok I just enabled the level system for this server, type this command again to disable it."
+  },
+  "no-pm-server":{
+    "success-disable":"Ok I just disabled pm notifications for this server, type this command again to enable them.",
+    "success-enable":"Ok I just enabled pm notifications for this server, type this command again to disable them."
+  },
+  "no-level":{
+    "success-disable":"Ok, I disabled the level system for you, type this command again to enable it.",
+    "success-enable":"Ok, I enabled the level system for you, type this command again to disable it."
+  },
+  "no-pm":{
+    "success-disable":"Ok I just disabled pm notifications for this server, type this command again to enable them.",
+    "success-enable":"Ok I just enabled pm notifications for this server, type this command again to disable them."
+  },
+  "eat-cookie":{
+    "success":"You just ate {{number}} Cookie(s)!",
+    "failure":"You dont have any Cookies to eat."
+  },
+  "bot-info":{
+    "channels-per-guild":"Avg. Channels per guild",
+    "users-per-guild":"Avg. Users per guild",
+    "users":"Users",
+    "channels":"Channels",
+    "guilds":""
   }
 }

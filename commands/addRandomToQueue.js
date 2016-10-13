@@ -37,7 +37,7 @@ var execute = function (message) {
                                 message.reply(reply);
                             }).catch(message.reply);
                         } else {
-                            message.reply(t('qa.no-voice', {lng:message.lang}));
+                            message.reply(t('generic.no-voice', {lng:message.lang}));
                         }
                     } else {
                         message.reply(t('generic.error', {lng:message.lang}));
@@ -68,6 +68,8 @@ var execute = function (message) {
                             }
                         });
 
+                    } else {
+                        message.reply(t('generic.no-voice', {lng:message.lang}));
                     }
                 }
             });

@@ -16,13 +16,13 @@ var execute = function (message) {
                 message.guild.fetchMember(user).then(member => {
                     if (member.id !== message.guild.owner.id && !messageHelper.hasWolkeBot(message, member)) {
                         member.ban(7).then(member => {
-                            message.reply(t('ban.success', {user:member.user.username}));
+                            message.reply(t('ban.success', {user:member.user.username,lng: message.lang}));
                         }).catch(err => {
                             console.log(err.response);
                             if (err.response.statusCode === 403) {
-                                message.reply(t('ban.privilege', {user:member.user.username}));
+                                message.reply(t('ban.privilege', {user:member.user.username,lng: message.lang}));
                             } else {
-                                message.reply(t('ban.err', {user:member.user.username}));
+                                message.reply(t('ban.err', {user:member.user.username,lng: message.lang}));
                             }
                         });
                     } else {
@@ -30,13 +30,13 @@ var execute = function (message) {
                     }
                 }).catch(console.log);
             } else {
-                message.reply(t('ban.self'));
+                message.reply(t('ban.self', {lng: message.lang}));
             }
         } else {
-            message.reply(t('ban.no-mention'));
+            message.reply(t('ban.no-mention', {lng: message.lang}));
         }
     } else {
-        message.reply(t('ban.no-perm'));
+        message.reply(t('ban.no-perm', {lng: message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:1, exec:execute};

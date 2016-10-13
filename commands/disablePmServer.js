@@ -1,6 +1,8 @@
 /**
  * Created by julia on 03.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var cmd = 'noPmServer';
 var serverModel = require('../DB/server');
 var messageHelper = require('../utility/message');
@@ -13,12 +15,12 @@ var execute = function (message) {
                     if (typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
                         Server.updatePms(false, err => {
                             if (err) return console.log(err);
-                            message.reply(`Ok i just disabled pm notifications for this server, type this command to enable it again.`);
+                            message.reply(t('no-pm-server.success-disable', {lng:message.lang}));
                         });
                     } else {
                         Server.updatePms(true, err => {
                             if (err) return console.log(err);
-                            message.reply(`Ok i just enabled pm notifications for this server, type this command to disable it again.`);
+                            message.reply(t('no-pm-server.success-enable', {lng:message.lang}));
                         });
                     }
                 } else {
@@ -32,15 +34,15 @@ var execute = function (message) {
                     });
                     server.save(err => {
                         if (err) return console.log(err);
-                        message.reply(`Ok i just disabled pm notifications for this server, type this command to enable it again.`);
+                        message.reply(t('no-pm-server.success-disable', {lng:message.lang}));
                     });
                 }
             });
         } else {
-            message.reply('No Permission, you need a Discord Role called WolkeBot for this Command!');
+            message.reply(t('generic.no-permission', {lng:message.lang}));
         }
     } else {
-        message.reply(`This Command does not work in PM'S`);
+        message.reply(t('generic.noPm', {lng:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

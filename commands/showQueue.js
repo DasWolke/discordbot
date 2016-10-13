@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var general = require('../utility/general');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
@@ -17,15 +19,15 @@ var execute = function (message) {
                     for (var q = 0; q < Queue.songs.length; q++) {
                         if (q === 0) {
                             let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
-                            let repeat = Queue.repeat ? "repeat:on" : "";
+                            let repeat = Queue.repeat ? t('np.repeat-on') : "";
                             if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '' && dispatcher) {
                                 let time = Math.floor(dispatcher.time / 1000);
-                                reply = reply + `Currently Playing:\` ${Queue.songs[0].title} ${repeat} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \`\n`;
+                                reply = reply + `${t('np.song-duration', {lng: message.lang, title:Queue.songs[0].title, repeat:repeat, duration:Queue.songs[0].duration, current:time})} \`\n`;
                             } else {
-                                reply = reply + `Currently Playing:\`${Queue.songs[0].title} ${repeat}\`\n`;
+                                reply = reply + `${t('np.song-duration', {lng: message.lang, title:Queue.songs[0].title, repeat:repeat})}\`\n`;
                             }
                             if (Queue.songs.length > 1) {
-                                reply = `${reply}Queued:\n\`\`\``;
+                                reply = `${reply}${t('np.song-duration', {lng: message.lang})}\n\`\`\``;
                             }
                         } else {
                             let end = '\n';
@@ -44,14 +46,14 @@ var execute = function (message) {
                         msg.delete(60 * 1000);
                     }).catch(console.log);
                 } else {
-                    message.reply('There is no Song in the Queue right now!');
+                    message.reply(t('generic.no-song-in-queue', {lng: message.lang}));
                 }
             } else {
-                message.reply('There is no Song in the Queue right now!');
+                message.reply(t('generic.no-song-in-queue', {lng: message.lang}));
             }
         });
     } else {
-        message.reply('This Command does not work in private messages!');
+        message.reply(t('generic.noPm', {lng:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

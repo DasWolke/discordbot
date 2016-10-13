@@ -9,6 +9,6 @@ var execute = function (message) {
     if (message.guild) {
         message.channel.sendMessage(':ok_hand: ');
     }
-    message.author.sendMessage(t('bug', {link:'https://discord.gg/yuTxmYn', interpolation: {escape: false}}));
+    message.author.sendMessage(t('bug', {lng:message.lang,link:'https://discord.gg/vX96Zz8', interpolation: {escape: false}}));
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

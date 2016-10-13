@@ -9,6 +9,6 @@ var execute = function (message) {
     if (message.guild) {
         message.channel.sendMessage(':ok_hand: ');
     }
-    message.author.sendMessage(t('add', {link:`\<https://discordapp.com/oauth2/authorize?client_id=${config.client_id}&scope=bot&permissions=66321471\>`, interpolation: {escape: false}}));
+    message.author.sendMessage(t('add', {link:`\<https://discordapp.com/oauth2/authorize?client_id=${config.client_id}&scope=bot&permissions=66321471\>`, lng:message.lang, interpolation: {escape: false}}));
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

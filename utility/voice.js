@@ -435,35 +435,36 @@ var addToQueue = function (message, Song, reply) {
     });
 };
 var nowPlaying = function (message) {
-    queueModel.findOne({server: message.guild.id}, function (err, Queue) {
-        if (err) return console.log(err);
-        if (Queue) {
-            if (Queue.songs.length === 0) {
-                message.channel.sendMessage('Nothing is playing right now...');
-            } else {
-                if (inVoiceChannel(message)) {
-                    let dispatcher = getDispatcherFromConnection(message.guild.voiceConnection);
-                    let time = Math.floor(dispatcher.time / 1000);
-                    let repeat = Queue.repeat ? "repeat:on" : "";
-                    if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '') {
-                        message.channel.sendMessage(`Currently Playing: \`${Queue.songs[0].title} ${repeat} ${general.convertSeconds(time)}/${Queue.songs[0].duration} \``);
-                    } else {
-                        message.channel.sendMessage(`Currently Playing: \`${Queue.songs[0].title} ${repeat}\``);
-                    }
+    return new Promise((resolve, reject) => {
+        queueModel.findOne({server: message.guild.id}, function (err, Queue) {
+            if (err) reject (err);
+            if (Queue) {
+                if (Queue.songs.length === 0) {
+                    resolve({playing:false, title:''});
                 } else {
-                    message.channel.sendMessage('Nothing is playing right now...');
+                    if (inVoiceChannel(message)) {
+                        let dispatcher = getDispatcherFromConnection(message.guild.voiceConnection);
+                        let time = Math.floor(dispatcher.time / 1000);
+                        if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '') {
+                            resolve({playing:true, duration:Queue.songs[0].duration, current:general.convertSeconds(time), title:Queue.songs[0].title, repeat:Queue.repeat});
+                        } else {
+                            resolve({playing:true, title:Queue.songs[0].title, repeat:Queue.repeat});
+                        }
+                    } else {
+                        resolve({playing:false, title:''});
+                    }
                 }
+            } else {
+                var queue = new queueModel({
+                    server: message.guild.id,
+                    songs: []
+                });
+                queue.save(function (err) {
+                    if (err) reject(err);
+                    resolve({playing:false, song:''});
+                });
             }
-        } else {
-            var queue = new queueModel({
-                server: message.guild.id,
-                songs: []
-            });
-            queue.save(function (err) {
-                if (err) return console.log(err);
-                message.channel.sendMessage('Nothing is playing right now...');
-            });
-        }
+        });
     });
 };
 var setVolume = function (message) {

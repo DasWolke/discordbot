@@ -1,6 +1,8 @@
 /**
  * Created by julia on 03.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var cmd = 'noPm';
 var userModel = require('../DB/user');
 var messageHelper = require('../utility/message');
@@ -12,23 +14,23 @@ var execute = function (message) {
                 if (messageHelper.pmNotifications(message, User)) {
                     User.disablePm(message.guild.id, function (err) {
                         if (err) return console.log(err);
-                        message.reply('Ok, i disabled the Pm Notifications on this Server for you.');
+                        message.reply(t('no-pm.success-disable', {lng:message.lang}));
                     });
                 } else {
                     User.enablePm(message.guild.id, function (err) {
                         if (err) return console.log(err);
-                        message.reply('Ok, i enabled the Pm Notifications on this Server for you.');
+                        message.reply(t('no-pm.success-enable', {lng:message.lang}));
                     });
                 }
             } else {
                 messageHelper.createUser(message, true, false, function (err) {
                     if (err) return console.log(err);
-                    message.reply('Ok, i disabled the Pm Notifications on this Server for you.');
+                    message.reply(t('no-pm.success-disable', {lng:message.lang}));
                 });
             }
         });
     } else {
-        message.reply('This command only works in guild channels!');
+        message.reply(t('generic.noPm', {lng:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

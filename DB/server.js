@@ -15,6 +15,7 @@ var serverSchema = mongoose.Schema({
     levelUpRewards:[],
     Groups:[],
     Blacklist:[],
+    lng:String,
     levelEnabled:Boolean,
     pmNotifications:Boolean
 });
@@ -32,6 +33,9 @@ serverSchema.methods.updateLevels = function updateLevels(bool,cb) {
 };
 serverSchema.methods.updatePrefix = function updatePrefix(prefix,cb) {
     this.model('Servers').update({id:this.id}, {$set:{prefix:prefix}}, cb);
+};
+serverSchema.methods.updateLanguage = function updateLanguage(lng,cb) {
+    this.model('Servers').update({id:this.id}, {$set:{lng:lng}}, cb);
 };
 var serverModel = mongoose.model('Servers', serverSchema);
 module.exports = serverModel;
