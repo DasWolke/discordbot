@@ -160,8 +160,8 @@
     "success-enable":"Ok, I enabled the level system for you, type this command again to disable it."
   },
   "no-pm":{
-    "success-disable":"Ok I just disabled pm notifications for this server, type this command again to enable them.",
-    "success-enable":"Ok I just enabled pm notifications for this server, type this command again to disable them."
+    "success-disable":"Ok I just disabled pm notifications for you, type this command again to enable them.",
+    "success-enable":"Ok I just enabled pm notifications for you, type this command again to disable them."
   },
   "eat-cookie":{
     "success":"You just ate {{number}} Cookie(s)!",

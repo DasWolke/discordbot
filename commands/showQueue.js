@@ -22,12 +22,12 @@ var execute = function (message) {
                             let repeat = Queue.repeat ? t('np.repeat-on') : "";
                             if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '' && dispatcher) {
                                 let time = Math.floor(dispatcher.time / 1000);
-                                reply = reply + `${t('np.song-duration', {lng: message.lang, title:Queue.songs[0].title, repeat:repeat, duration:Queue.songs[0].duration, current:time})} \`\n`;
+                                reply = reply + `${t('np.song-duration', {lng: message.lang, title:Queue.songs[0].title, repeat:repeat, duration:Queue.songs[0].duration, current:general.convertSeconds(time)})} \n`;
                             } else {
-                                reply = reply + `${t('np.song-duration', {lng: message.lang, title:Queue.songs[0].title, repeat:repeat})}\`\n`;
+                                reply = reply + `${t('np.song-duration', {lng: message.lang, title:Queue.songs[0].title, repeat:repeat})}\n`;
                             }
                             if (Queue.songs.length > 1) {
-                                reply = `${reply}${t('np.song-duration', {lng: message.lang})}\n\`\`\``;
+                                reply = `${reply}${t('queue.queued', {lng: message.lang})}\n\`\`\``;
                             }
                         } else {
                             let end = '\n';
