@@ -67,6 +67,10 @@ ${pre}git --> ${t('help.git',{lngs: message.lang})}
 ${pre}roll number --> ${t('help.roll',{lngs: message.lang})}
 ${pre}8ball message --> ${t('help.8ball',{lngs: message.lang})}
 ${pre}garfield --> ${t('help.garfield',{lngs: message.lang})}
+${pre}cat --> ${t('help.cat',{lngs: message.lang})}
+${pre}hug --> ${t('help.hug',{lngs: message.lang})}
+${pre}slap --> ${t('help.slap',{lngs: message.lang})}
+${pre}setLang --> ${t('help.setLang',{lngs: message.lang})}
 ${t('help.feedback',{lngs: message.lang})}
 ${t('help.talk',{lngs: message.lang})}\`\`\``;
     message.author.sendMessage(reply).then(replyMessage => {
