@@ -8,8 +8,9 @@
     "no-song-playing":"There is no song playing at the moment!",
     "no-permission": "You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
     "no-voice": "I am not connected to any voice channel on this Server!",
-    "level-update":"You just reached **Level  {{level}}** on **{{server}}**",
-    "empty-search": "You did not enter a search Term!"
+    "level-update":":tada: You just reached **Level  {{level}}** on **{{server}}**",
+    "empty-search": "You did not enter a search Term!",
+    "negative":"Please dont use a negative number!"
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ Commands you can write:",
@@ -68,9 +69,10 @@
     "8ball": "Gives you the Opinion of the magic 8ball to a question",
     "garfield": "Gives you a random garfield command",
     "cat":"Sends you a random cat image",
-    "hug":"hug",
-    "slap":"slap",
+    "hug":"Gives you a hug gif",
+    "slap":"Gives you a slap gif",
     "setLang":"sets the language",
+    "report":"If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
     "feedback": "For feedback use the support discord please ^^",
     "talk": "If you want to talk with me @mention me with a message :D",
     "helpReply": "OK, I sent you a list of commands over PM."
@@ -98,7 +100,7 @@
       "Yes.",
       "Maybe.",
       "I do not think so.",
-      "Definitely no",
+      "Definitely no.",
       "Just do it.",
       "That is a great idea.",
       "Are you sure about that ?"
@@ -139,7 +141,7 @@
   "qra": {
     "to-small": "You cant remove {{number}} songs!",
     "success": "Removed  the following Songs:\n {{table}}",
-    "one-song": "Use {{prefix}}skip to skip the current Song!"
+    "one-song": "Use {{prefix}}fskip to skip the current Song!"
   },
   "cookie": {
     "give": "Gave user **{{user}}** **1** cookie!",
@@ -244,7 +246,15 @@
     "success":"Found the following song: {{link}}"
   },
   "skip":{
-    "success":":track_next: "
+    "success":":track_next: Skipped song {{title}}",
+    "stop":":stop_button: Stopped current song"
+  },
+  "vskip":{
+    "user-no-voice":"You can not voteskip, if you are not in the same voicechannel!",
+    "same-voice":"You are not in the same voicechannel as I am!",
+    "dup":"You already voted!",
+    "success-add":"Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
+    "success-skip":"Voteskipped Song: **{{title}}**"
   },
   "rm":{
     "less-2":"You can not delete less than 2 messages!",
@@ -254,5 +264,9 @@
   },
   "search":{
     "success":"Found the following Songs:"
-  }
+  },
+  "set-lewd":{
+    "success":"Successfully added {{channel}} to the NSFW Channels!"
+  },
+  "report":"OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!"
 }

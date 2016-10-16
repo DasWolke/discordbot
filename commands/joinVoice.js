@@ -9,7 +9,7 @@ var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var cmd = 'voice';
 var execute = function (message) {
-    if (message.guild && message.member.voiceChannel) {
+    if (message.guild && message.member.voiceChannel && !message.guild.voiceConnection) {
         message.member.voiceChannel.join().then(connection => {
             message.channel.sendMessage(`${t('joinVoice.join')} ${message.author}`);
             voice.saveVoice(message.member.voiceChannel).then(() => {

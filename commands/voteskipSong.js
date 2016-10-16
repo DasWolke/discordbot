@@ -1,11 +1,13 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
 var queueModel = require('../DB/queue');
 var winston = logger.getT();
-var cmd = 'voteskip';
+var cmd = 'skip';
 var execute = function (message) {
     if (message.guild) {
         voteSkip(message, function (err, response) {
@@ -15,7 +17,7 @@ var execute = function (message) {
             message.reply(response);
         });
     } else {
-        message.reply('This Command does not work in private Channels');
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 var voteSkip = function voteSkip(message, cb) {
@@ -31,13 +33,13 @@ var voteSkip = function voteSkip(message, cb) {
                                 Queue.checkVote(message.author.id, function (err, found) {
                                     if (err) {
                                         winston.info(err);
-                                        return cb('Internal Error!');
+                                        return cb(t('generic.error', {lngs:message.lang}));
                                     }
                                     if (!found) {
                                         Queue.updateVotes(message.author.id, function (err) {
                                             if (err) {
                                                 winston.info(err);
-                                                return cb('Internal Error!');
+                                                return cb(t('generic.error', {lngs:message.lang}));
                                             }
                                             Queue.reload(function (err, Queue) {
                                                 if (err) return winston.info(err);
@@ -49,15 +51,16 @@ var voteSkip = function voteSkip(message, cb) {
                                                             if (err) return cb(err);
                                                             voice.nextSong(message, Queue.songs[0]);
                                                             cb(null, 'Voteskipped Song: ' + Queue.songs[0].title + '!');
+                                                            cb(null,  t('vksip.success-skip', {lngs:message.lang,title:Queue.songs[0].title}));
                                                         });
                                                     } else {
-                                                        cb(null, `Added Your Vote, votepercentage at **${(votePercentage * 100).toFixed(2)}%/${51}%**`);
+                                                        cb(null, t('vksip.success-add', {lngs:message.lang, current:(votePercentage * 100).toFixed(2), needed:51}));
                                                     }
                                                 }
                                             });
                                         });
                                     } else {
-                                        cb('You already Voted!');
+                                        cb(t('vksip.dup', {lngs:message.lang}));
                                     }
                                 });
                             } else {
@@ -67,20 +70,20 @@ var voteSkip = function voteSkip(message, cb) {
                                 });
                             }
                         } else {
-                            return cb('You are not in the same Voicechannel as the Bot!');
+                            return cb(t('vksip.same-voice', {lngs:message.lang}));
                         }
                     } else {
-                        return cb('No Voice Connection at the Moment!');
+                        return cb(t('generic.no-voice', {lngs:message.lang}));
                     }
                 } else {
-                    return cb('No Song in the Queue!');
+                    return cb(t('generic.no-song-in-queue', {lngs:message.lang}));
                 }
             } else {
-                return cb('No Song in the Queue!');
+                return cb(t('generic.no-song-in-queue', {lngs:message.lang}));
             }
         });
     } else {
-        return cb('You can not voteskip, if you are not in a Voicechannel!');
+        return cb(t('vskip.user-no-voice', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

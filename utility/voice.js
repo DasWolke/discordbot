@@ -298,7 +298,7 @@ var updateDispatcherArray = function (guild_id, dispatcher) {
 var playSong = function (message, Song, Queueused) {
     var connection = message.guild.voiceConnection;
     if (connection) {
-        let dispatcher = connection.playFile(path.resolve(Song.path), {volume: 0.25});
+        let dispatcher = connection.playFile(path.resolve(Song.path), {volume: message.dbServer.volume});
         updateDispatcherArray(message.guild.id, dispatcher);
         console.log(path.resolve(Song.path));
         updatePlays(Song.id).then(() => {
@@ -502,23 +502,34 @@ var setVolume = function (message) {
             var connection = getVoiceConnection(message);
             var dispatcher = getDispatcherFromConnection(connection);
             if (typeof (messageSplit[1]) !== 'undefined') {
+                let volume;
                 try {
-                    var volume = parseInt(messageSplit[1]) / 100;
+                    volume = parseInt(messageSplit[1]);
                 } catch (e) {
-                    return reject(t('general.whole-num', {lngs: message.lang}));
+                    return message.reply(t('generic.whole-num'));
                 }
+                if (isNaN(volume)) {
+                    return message.reply(t('generic.nan'));
+                }
+                if (volume < 0) {
+                    return message.reply(t('generic.negative', {number:volume}));
+                }
+                volume = volume/100;
                 try {
                     dispatcher.setVolume(volume);
+                    message.dbServer.updateVolume(volume, (err) => {
+                        console.log(err);
+                    });
                 } catch (e) {
                     console.log(e);
-                    return reject(t('voice.error-volume', {lngs: message.lang}));
+                    resolve(t('voice.error-volume', {lngs: message.lang}));
                 }
-                resolve(t('voice.success-volume', {lngs: message.lang, volume: (volume * 100) + '%'}));
+                resolve(t('voice.success-volume', {lngs: message.lang, volume: (volume*100) + '%'}));
             } else {
-                return reject(t('voice.no-volume', {lngs: message.lang}));
+                resolve(t('voice.no-volume', {lngs: message.lang}));
             }
         } else {
-            return reject(t('generic.no-voice', {lngs: message.lang}));
+            resolve(t('generic.no-voice', {lngs: message.lang}));
         }
     });
 };

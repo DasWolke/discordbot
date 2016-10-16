@@ -141,6 +141,11 @@ i18next.use(Backend).init({
             if (message.guild) {
                 serverModel.findOne({id: message.guild.id}, function (err, Server) {
                     if (err) return winston.error(err);
+                    message.dbServer = {};
+                    message.dbServer.volume = 0.25;
+                    if (Server) {
+                        message.dbServer = Server;
+                    }
                     if (Server && typeof (Server.lng) !== 'undefined' && Server.lng && Server.lng !== '') {
                         message.lang = [Server.lng, 'en'];
                     }

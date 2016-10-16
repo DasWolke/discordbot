@@ -10,16 +10,16 @@ var execute = function (message) {
         if (err) {
             switch (err.type) {
                 case "api-body":
-                    message.reply(t('pp.err.api-body'));
+                    message.reply(t('pp.err.api-body', {lngs:message.lang}));
                     return;
                 case "osu-api":
-                    message.reply(t('pp.err.osu-api'));
+                    message.reply(t('pp.err.osu-api', {lngs:message.lang}));
                     return;
                 case "unvalid-link":
-                    message.reply(t('pp.err.unvalid-link'));
+                    message.reply(t('pp.err.unvalid-link', {lngs:message.lang}));
                     return;
                 case "no-link":
-                    message.reply(t('pp.err.no-link'));
+                    message.reply(t('pp.err.no-link', {lngs:message.lang}));
                     return;
                 default:
                     return;

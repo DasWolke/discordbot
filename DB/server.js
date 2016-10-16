@@ -17,7 +17,8 @@ var serverSchema = mongoose.Schema({
     Blacklist:[],
     lng:String,
     levelEnabled:Boolean,
-    pmNotifications:Boolean
+    pmNotifications:Boolean,
+    volume:String
 });
 serverSchema.methods.updateVoice = function updateVoice(id,cb) {
     this.model('Servers').update({id:this.id}, {$set:{lastVoiceChannel:id}}, cb);
@@ -36,6 +37,9 @@ serverSchema.methods.updatePrefix = function updatePrefix(prefix,cb) {
 };
 serverSchema.methods.updateLanguage = function updateLanguage(lng,cb) {
     this.model('Servers').update({id:this.id}, {$set:{lng:lng}}, cb);
+};
+serverSchema.methods.updateVolume = function updateVolume(volume,cb) {
+    this.model('Servers').update({id:this.id}, {$set:{volume:volume}}, cb);
 };
 var serverModel = mongoose.model('Servers', serverSchema);
 module.exports = serverModel;

@@ -23,8 +23,8 @@ ${pre}resume --> ${t('help.resume',{lngs: message.lang})}
 ${pre}volume 40 --> ${t('help.volume',{lngs: message.lang})}
 ${pre}forever name --> ${t('help.forever',{lngs: message.lang})}
 ${pre}search name --> ${t('help.search',{lngs: message.lang})}
-${pre}skip --> ${t('help.skip',{lngs: message.lang})}
-${pre}voteskip --> ${t('help.voteskip',{lngs: message.lang})}
+${pre}fskip --> ${t('help.skip',{lngs: message.lang})}
+${pre}skip --> ${t('help.voteskip',{lngs: message.lang})}
 ${pre}qa name --> ${t('help.qa',{lngs: message.lang})}
 ${pre}qra number --> ${t('help.qra',{lngs: message.lang})}
 ${pre}queue --> ${t('help.queue',{lngs: message.lang})}
@@ -70,6 +70,7 @@ ${pre}garfield --> ${t('help.garfield',{lngs: message.lang})}
 ${pre}cat --> ${t('help.cat',{lngs: message.lang})}
 ${pre}hug --> ${t('help.hug',{lngs: message.lang})}
 ${pre}slap --> ${t('help.slap',{lngs: message.lang})}
+${pre}report --> ${t('help.report',{lngs: message.lang})}
 ${pre}setLang --> ${t('help.setLang',{lngs: message.lang})}
 ${t('help.feedback',{lngs: message.lang})}
 ${t('help.talk',{lngs: message.lang})}\`\`\``;

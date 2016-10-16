@@ -25,7 +25,7 @@ var execute = function (message) {
                             }
                         });
                     } else {
-                        message.reply(t('ban.perms'));
+                        message.reply(t('ban.perms', {lngs:message.lang}));
                     }
                 }).catch(console.log);
             } else {

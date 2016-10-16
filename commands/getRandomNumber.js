@@ -12,7 +12,7 @@ var execute = function (message) {
         try {
             number = parseInt(messageSplit[1]);
         } catch (e) {
-            return message.reply(t('roll.whole-number'));
+            return message.reply(t('generic.whole-num'));
         }
         if (isNaN(number)) {
             return message.reply(t('generic.nan'));

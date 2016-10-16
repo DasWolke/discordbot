@@ -19,7 +19,7 @@ var execute = function (message) {
                         if (Server) {
                             Server.updateLanguage(messageSplit[1], err => {
                                 if (err) return console.log(err);
-                                message.reply(t('set-lang.success', {lngs:messageSplit[1], language:messageSplit[1]}));
+                                message.reply(t('set-lang.success', {lng:messageSplit[1], language:messageSplit[1]}));
                             });
                         } else {
                             let server = new serverModel({
@@ -33,7 +33,7 @@ var execute = function (message) {
                             });
                             server.save(err => {
                                 if (err) return console.log(err);
-                                message.reply(t('set-lang.success', {lngs:messageSplit[1],language:messageSplit[1]}));
+                                message.reply(t('set-lang.success', {lng:messageSplit[1],language:messageSplit[1]}));
                             });
                         }
                     });

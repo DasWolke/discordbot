@@ -1,14 +1,16 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
 var osu = require('../utility/osu');
 var winston = logger.getT();
-var cmd = 'skip';
+var cmd = 'fskip';
 var queueModel = require('../DB/queue');
-var config = require('../config/main.json')
+var config = require('../config/main.json');
 var execute = function (message) {
     if (message.guild) {
         if (voice.inVoice(message)) {
@@ -21,33 +23,33 @@ var execute = function (message) {
                             Queue.stopRepeat(function (err) {
                                 if (err) return winston.error(err);
                                 voice.nextSong(message, Queue.songs[0], false);
-                                message.reply("Skipped Song " + Queue.songs[0].title);
+                                message.reply(t('skip.success', {lngs:message.lang, title:Queue.songs[0].title}));
                             });
                         } else {
                             if (dispatcher) {
                                 dispatcher.end();
-                                message.reply("Stopped current Song!");
+                                message.reply(t('skip.stop', {lngs:message.lang}));
                             } else {
-                                message.reply('There is no Song playing right now!');
+                                message.reply(t('generic.no-song-playing', {lngs:message.lang}));
                             }
                         }
                     } else {
                         if (connection && connection.playing) {
                             connection.stopPlaying();
-                            message.reply("Stopped current Song!");
+                            message.reply(t('skip.stop', {lngs:message.lang}));
                         } else {
-                            message.reply('There is no Song in the Queue right now!');
+                            message.reply(t('generic.no-song-in-queue', {lngs:message.lang}));
                         }
                     }
                 });
             } else {
-                message.reply('No Permission! Use !w.voteskip or give yourself the WolkeBot Role.');
+                message.reply(t('generic.no-permission', {lngs:message.lang}));
             }
         } else {
-            message.reply("I am not connected to any Voice Channel on this Server!");
+            message.reply(t('generic.no-voice', {lngs:message.lang}));
         }
     } else {
-        message.reply('This Command does not work in private Channels');
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

@@ -15,7 +15,7 @@ var execute = function (message) {
             if (Server) {
                 serverModel.update({id: message.guild.id}, {$addToSet: {nsfwChannels: message.channel.id}}, function (err) {
                     if (err) return console.log(err);
-                    message.reply(`Successfully added ${message.channel.name} to the NSFW Channels!`);
+                    message.reply(t('set-lewd.success', {lngs:message.lang, channel:message.channel, interpolation:{escape:false}}));
                 });
             } else {
                 var server = new serverModel({
@@ -30,11 +30,11 @@ var execute = function (message) {
                     Blacklist: []
                 });
                 server.save();
-                message.reply(`Successfully added ${message.channel.name} to the NSFW Channels!`);
+                message.reply(t('set-lewd.success', {lngs:message.lang, channel:message.channel, interpolation:{escape:false}}));
             }
         });
     } else {
-        message.reply("You need the WolkeBot Discord Role for this Command!");
+        message.reply(t('generic.no-permission', {lngs:message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

@@ -13,70 +13,66 @@ var cmd = 'cookie';
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (typeof (messageSplit[1]) !== 'undefined') {
-        if (messageHelper.hasWolkeBot(message) || config.beta) {
-            let user = message.mentions.users.first();
-            if (user) {
-                userModel.findOne({id: user.id}, function (err, User) {
-                    if (err) return console.log(err);
-                    if (User) {
-                        if (messageHelper.hasGuild(message, User)) {
-                            var clientServer = messageHelper.loadServerFromUser(message, User);
-                            if (typeof (clientServer.cookies) !== 'undefined') {
-                                userModel.update({
-                                    id: User.id,
-                                    'servers.serverId': message.guild.id
-                                }, {$inc: {'servers.$.cookies': 1}}, function (err) {
-                                    if (err) return console.log(err);
-                                    message.reply(t('cookie.give', {lngs:message.lang, user:User.name}));
-                                });
-                            } else {
-                                userModel.update({
-                                    id: User.id,
-                                    'servers.serverId': message.guild.id
-                                }, {$inc: {'servers.$.cookies': 1}}, function (err) {
-                                    if (err) return console.log(err);
-                                    message.reply(t('cookie.give', {lngs:message.lang, user:User.name}));
-                                });
-                            }
-                        } else {
-                            User.addServer(messageHelper.getServerObj(message, true, true), function (err) {
+        let user = message.mentions.users.first();
+        if (user) {
+            userModel.findOne({id: user.id}, function (err, User) {
+                if (err) return console.log(err);
+                if (User) {
+                    if (messageHelper.hasGuild(message, User)) {
+                        var clientServer = messageHelper.loadServerFromUser(message, User);
+                        if (typeof (clientServer.cookies) !== 'undefined') {
+                            userModel.update({
+                                id: User.id,
+                                'servers.serverId': message.guild.id
+                            }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                 if (err) return console.log(err);
+                                message.reply(t('cookie.give', {lngs: message.lang, user: User.name}));
+                            });
+                        } else {
+                            userModel.update({
+                                id: User.id,
+                                'servers.serverId': message.guild.id
+                            }, {$inc: {'servers.$.cookies': 1}}, function (err) {
+                                if (err) return console.log(err);
+                                message.reply(t('cookie.give', {lngs: message.lang, user: User.name}));
                             });
                         }
                     } else {
-                        messageHelper.createUser({author:user, guild:message.guild}, true, true, function (err) {
+                        User.addServer(messageHelper.getServerObj(message, true, true), function (err) {
                             if (err) return console.log(err);
-                            userModel.findOne({id: user.id}, function (err, User) {
-                                if (err) return console.log(err);
-                                if (User) {
-                                    var clientServer = messageHelper.loadServerFromUser(message, User);
-                                    if (typeof (clientServer.cookies) !== 'undefined') {
-                                        userModel.update({
-                                            id: User.id,
-                                            'servers.serverId': message.guild.id
-                                        }, {$inc: {'servers.$.cookies': 1}}, function (err) {
-                                            if (err) return console.log(err);
-                                            message.reply(t('cookie.give', {lngs:message.lang, user:User.name}));
-                                        });
-                                    } else {
-                                        var server = messageHelper.getServerObj(message,true,true);
-                                        User.addServer(server, function (err) {
-                                            if (err) return console.log(err);
-                                            message.reply(t('cookie.new-server', {lngs:message.lang}));
-                                        });
-                                    }
-                                } else {
-                                    message.reply(t('cookie.arere', {lngs:message.lang}));
-                                }
-                            });
                         });
                     }
-                });
-            } else {
-                message.reply(t('cookie.one-user', {lngs:message.lang}));
-            }
+                } else {
+                    messageHelper.createUser({author: user, guild: message.guild}, true, true, function (err) {
+                        if (err) return console.log(err);
+                        userModel.findOne({id: user.id}, function (err, User) {
+                            if (err) return console.log(err);
+                            if (User) {
+                                var clientServer = messageHelper.loadServerFromUser(message, User);
+                                if (typeof (clientServer.cookies) !== 'undefined') {
+                                    userModel.update({
+                                        id: User.id,
+                                        'servers.serverId': message.guild.id
+                                    }, {$inc: {'servers.$.cookies': 1}}, function (err) {
+                                        if (err) return console.log(err);
+                                        message.reply(t('cookie.give', {lngs: message.lang, user: User.name}));
+                                    });
+                                } else {
+                                    var server = messageHelper.getServerObj(message, true, true);
+                                    User.addServer(server, function (err) {
+                                        if (err) return console.log(err);
+                                        message.reply(t('cookie.new-server', {lngs: message.lang}));
+                                    });
+                                }
+                            } else {
+                                message.reply(t('cookie.arere', {lngs: message.lang}));
+                            }
+                        });
+                    });
+                }
+            });
         } else {
-            message.reply(t('generic.no-permission', {lngs:message.lang}));
+            message.reply(t('cookie.one-user', {lngs: message.lang}));
         }
     } else {
         userModel.findOne({id: message.author.id, 'servers.serverId': message.guild.id}, function (err, User) {
@@ -84,15 +80,15 @@ var execute = function (message) {
             if (User) {
                 var clientServer = messageHelper.loadServerFromUser(message, User);
                 if (typeof (clientServer.cookies) !== 'undefined') {
-                    message.reply(t('cookie.count', {lngs:message.lang, number:clientServer.cookies}));
+                    message.reply(t('cookie.count', {lngs: message.lang, number: clientServer.cookies}));
                 } else {
-                    message.reply(t('cookie.count', {lngs:message.lang, number:0}))
+                    message.reply(t('cookie.count', {lngs: message.lang, number: 0}))
                 }
             } else {
                 messageHelper.createUser(message, true, true, function (err) {
                     if (err) return console.log(err);
                 });
-                message.reply(t('cookie.count', {lngs:message.lang, number:0}));
+                message.reply(t('cookie.count', {lngs: message.lang, number: 0}));
             }
         });
     }
