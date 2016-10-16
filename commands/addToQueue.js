@@ -64,6 +64,7 @@ var execute = function (message) {
             songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec((err, Songs) => {
                 if (err) return console.log(err);
                 if (Songs !== null && Songs.length > 0) {
+                    let Song = Songs[0];
                     voice.addToQueue(message, Song, null, (err, reply) => {
                         if (err) return message.reply(err);
                         if (reply) {
