@@ -21,21 +21,21 @@ var execute = function (message) {
                         'servers.serverId': message.guild.id
                     }, {$inc: {'servers.$.cookies': -1}}, function (err) {
                         if (err) return console.log(err);
-                        message.reply(`${t('eat-cookie.success', {lng:message.lang, number:1})} \n http://i.giphy.com/L0nV2FkR5RpkY.gif`);
+                        message.reply(`${t('eat-cookie.success', {lngs:message.lang, number:1})} \n http://i.giphy.com/L0nV2FkR5RpkY.gif`);
                     });
                 } else {
-                    message.channel.sendMessage(t('eat-cookie.failure', {lng:message.lang}) + ' \n http://i.giphy.com/Kf2ndcv58AepW.gif');
+                    message.channel.sendMessage(t('eat-cookie.failure', {lngs:message.lang}) + ' \n http://i.giphy.com/Kf2ndcv58AepW.gif');
                 }
             } else {
                 User.addServer(message.getServerObj(message, true, true), function (err) {
                     if (err) return console.log(err);
                 });
-                message.channel.sendMessage(t('eat-cookie.failure', {lng:message.lang}) + '\n http://i.giphy.com/Kf2ndcv58AepW.gif');
+                message.channel.sendMessage(t('eat-cookie.failure', {lngs:message.lang}) + '\n http://i.giphy.com/Kf2ndcv58AepW.gif');
             }
         } else {
             messageHelper.createUser(message, true, true, function (err) {
                 if (err) return console.log(err);
-                message.channel.sendMessage(t('eat-cookie.failure', {lng:message.lang}) + '\n http://i.giphy.com/Kf2ndcv58AepW.gif');
+                message.channel.sendMessage(t('eat-cookie.failure', {lngs:message.lang}) + '\n http://i.giphy.com/Kf2ndcv58AepW.gif');
             });
         }
     });

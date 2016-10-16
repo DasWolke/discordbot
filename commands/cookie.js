@@ -26,7 +26,7 @@ var execute = function (message) {
                                     'servers.serverId': message.guild.id
                                 }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                     if (err) return console.log(err);
-                                    message.reply(t('cookie.give', {lng:message.lang, user:User.name}));
+                                    message.reply(t('cookie.give', {lngs:message.lang, user:User.name}));
                                 });
                             } else {
                                 userModel.update({
@@ -34,7 +34,7 @@ var execute = function (message) {
                                     'servers.serverId': message.guild.id
                                 }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                     if (err) return console.log(err);
-                                    message.reply(t('cookie.give', {lng:message.lang, user:User.name}));
+                                    message.reply(t('cookie.give', {lngs:message.lang, user:User.name}));
                                 });
                             }
                         } else {
@@ -55,27 +55,27 @@ var execute = function (message) {
                                             'servers.serverId': message.guild.id
                                         }, {$inc: {'servers.$.cookies': 1}}, function (err) {
                                             if (err) return console.log(err);
-                                            message.reply(t('cookie.give', {lng:message.lang, user:User.name}));
+                                            message.reply(t('cookie.give', {lngs:message.lang, user:User.name}));
                                         });
                                     } else {
                                         var server = messageHelper.getServerObj(message,true,true);
                                         User.addServer(server, function (err) {
                                             if (err) return console.log(err);
-                                            message.reply(t('cookie.new-server', {lng:message.lang}));
+                                            message.reply(t('cookie.new-server', {lngs:message.lang}));
                                         });
                                     }
                                 } else {
-                                    message.reply(t('cookie.arere', {lng:message.lang}));
+                                    message.reply(t('cookie.arere', {lngs:message.lang}));
                                 }
                             });
                         });
                     }
                 });
             } else {
-                message.reply(t('cookie.one-user', {lng:message.lang}));
+                message.reply(t('cookie.one-user', {lngs:message.lang}));
             }
         } else {
-            message.reply(t('generic.no-permission', {lng:message.lang}));
+            message.reply(t('generic.no-permission', {lngs:message.lang}));
         }
     } else {
         userModel.findOne({id: message.author.id, 'servers.serverId': message.guild.id}, function (err, User) {
@@ -83,15 +83,15 @@ var execute = function (message) {
             if (User) {
                 var clientServer = messageHelper.loadServerFromUser(message, User);
                 if (typeof (clientServer.cookies) !== 'undefined') {
-                    message.reply(t('cookie.count', {lng:message.lang, number:clientServer.cookies}));
+                    message.reply(t('cookie.count', {lngs:message.lang, number:clientServer.cookies}));
                 } else {
-                    message.reply(t('cookie.count', {lng:message.lang, number:0}))
+                    message.reply(t('cookie.count', {lngs:message.lang, number:0}))
                 }
             } else {
                 messageHelper.createUser(message, true, true, function (err) {
                     if (err) return console.log(err);
                 });
-                message.reply(t('cookie.count', {lng:message.lang, number:0}));
+                message.reply(t('cookie.count', {lngs:message.lang, number:0}));
             }
         });
     }

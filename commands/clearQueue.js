@@ -19,13 +19,13 @@ var execute = function (message) {
             try {
                 number = parseInt(messageSplit[1]);
             } catch (e) {
-                return message.reply(t('generic.whole-num', {lng:message.lang}));
+                return message.reply(t('generic.whole-num', {lngs:message.lang}));
             }
             if (isNaN(number)) {
-                return message.reply(t('generic.nan', {lng:message.lang}));
+                return message.reply(t('generic.nan', {lngs:message.lang}));
             }
             if (number < 1) {
-                return message.reply(t('qra.to-small', {lng:message.lang, number:number}));
+                return message.reply(t('qra.to-small', {lngs:message.lang, number:number}));
             }
             queueModel.findOne({server: message.guild.id}, function (err, Queue) {
                 if (err) return console.log(err);
@@ -35,15 +35,15 @@ var execute = function (message) {
                         Queue.clear(keptSongs, err => {
                             if (err) return console.log(err);
                             let songs = Queue.songs.slice(Queue.songs.length - number, Queue.songs.length);
-                            message.reply(t('qra.success', {lng:message.lang, table:buildReply(songs),interpolation: {escape: false}}));
+                            message.reply(t('qra.success', {lngs:message.lang, table:buildReply(songs),interpolation: {escape: false}}));
                         });
                     } else if (Queue.songs.length === 1) {
-                        message.reply(t('qra.one-song', {lng:message.lang, prefix:message.prefix}));
+                        message.reply(t('qra.one-song', {lngs:message.lang, prefix:message.prefix}));
                     } else {
-                        message.reply(t('generic.no-song-in-queue', {lng:message.lang}));
+                        message.reply(t('generic.no-song-in-queue', {lngs:message.lang}));
                     }
                 } else {
-                    message.reply(t('generic.no-song-in-queue', {lng:message.lang}));
+                    message.reply(t('generic.no-song-in-queue', {lngs:message.lang}));
                 }
             });
         } else {
@@ -58,17 +58,17 @@ var execute = function (message) {
                             message.reply(`Removed the following Songs:\n ${buildReply(songs)}`);
                         });
                     } else if (Queue.songs.length === 1) {
-                        message.reply(t('qra.one-song', {lng:message.lang, prefix:message.prefix}));
+                        message.reply(t('qra.one-song', {lngs:message.lang, prefix:message.prefix}));
                     } else {
-                        message.reply(t('generic.no-song-in-queue', {lng:message.lang}));
+                        message.reply(t('generic.no-song-in-queue', {lngs:message.lang}));
                     }
                 } else {
-                    message.reply(t('generic.no-song-in-queue', {lng:message.lang}));
+                    message.reply(t('generic.no-song-in-queue', {lngs:message.lang}));
                 }
             });
         }
     } else {
-        message.reply(t('generic.no-permission', {lng:message.lang}));
+        message.reply(t('generic.no-permission', {lngs:message.lang}));
     }
 };
 var buildReply = function (songs) {

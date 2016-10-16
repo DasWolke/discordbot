@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var cmd = 'pause';
 var voice = require('../utility/voice');
 var messageHelper = require('../utility/message');
@@ -14,19 +16,16 @@ var execute = function (message) {
                     dispatcher.pause();
                 } catch (e) {
                     console.log(e);
-                    message.reply("No Song playing at the Moment!");
+                    message.reply(t('generic.no-song-playing', {lngs: message.lang}));
                 }
+            } else {
+                message.reply(t('generic.no-permission', {lngs: message.lang}));
             }
-            else {
-                message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
-            }
+        } else {
+            message.reply(t('generic.no-voice', {lngs: message.lang}));
         }
-        else {
-            message.reply('No Permission! You need to give yourself the WolkeBot Role to use this.');
-        }
-    }
-    else {
-        message.reply("This Commands Only Works in Server Channels!");
+    } else {
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

@@ -15,7 +15,7 @@ var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
         if (typeof(messageSplit[1]) === 'undefined') {
-            return message.reply(t('qa.empty-search', {lng: message.lang}));
+            return message.reply(t('qa.empty-search', {lngs: message.lang}));
         }
         var messageSearch = "";
         for (var a = 1; a < messageSplit.length; a++) {
@@ -24,7 +24,7 @@ var execute = function (message) {
         if (musicHelper.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && musicHelper.checkMedia(messageSplit[2])) {
             ytHelper.ytDlAndQueue(message, messageSearch, messageSplit);
         } else if (musicHelper.checkOsuMap(messageSplit[1])) {
-            message.channel.sendMessage(t('qa.started-download', {lng: message.lang, url: messageSplit[1],interpolation: {escape: false}}));
+            message.channel.sendMessage(t('qa.started-download', {lngs: message.lang, url: messageSplit[1],interpolation: {escape: false}}));
             songModel.findOne({url: messageSplit[1]}, (err, Song) => {
                 if (err) return console.log(err);
                 if (Song) {
@@ -54,12 +54,12 @@ var execute = function (message) {
                         message.reply(err)
                     });
                 } else {
-                    message.reply(t('qa.nothing-found', {search: messageSearch, lng: message.lang}));
+                    message.reply(t('qa.nothing-found', {search: messageSearch, lngs: message.lang}));
                 }
             });
         }
     } else {
-        message.reply(t('generic.noPm', {lng: message.lang}));
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

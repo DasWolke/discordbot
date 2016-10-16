@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var cmd = 'info';
 var AsciiTable = require('ascii-table');
 var execute = function (message) {
@@ -9,18 +11,18 @@ var execute = function (message) {
         let textChannels = message.guild.channels.findAll('type', 'text').length;
         let voiceChannels = message.guild.channels.findAll('type', 'voice').length;
         table
-            .addRow('ID', message.guild.id)
-            .addRow('Name', message.guild.name)
-            .addRow('Members', message.guild.members.size)
-            .addRow('Text channels', textChannels)
-            .addRow('Voice channels', voiceChannels)
-            .addRow('Roles', message.guild.roles.size)
-            .addRow('Creation Date', message.guild.creationDate.toDateString())
-            .addRow('Region', message.guild.region)
-            .addRow('Owner', `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`);
+            .addRow(t('server-info.id', {lngs:message.lang}), message.guild.id)
+            .addRow(t('server-info.name', {lngs:message.lang}), message.guild.name)
+            .addRow(t('server-info.member', {lngs:message.lang}), message.guild.members.size)
+            .addRow(t('server-info.text', {lngs:message.lang}), textChannels)
+            .addRow(t('server-info.voice', {lngs:message.lang}), voiceChannels)
+            .addRow(t('server-info.roles', {lngs:message.lang}), message.guild.roles.size)
+            .addRow(t('server-info.creation', {lngs:message.lang}), message.guild.creationDate.toDateString())
+            .addRow(t('server-info.region', {lngs:message.lang}), message.guild.region)
+            .addRow(t('server-info.owner', {lngs:message.lang}), `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`);
         message.reply(`\n\`\`\`${table.toString()}\`\`\``);
     } else {
-        message.reply('This command only works in guilds!');
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

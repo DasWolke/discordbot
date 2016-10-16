@@ -36,7 +36,7 @@ i18next.use(Backend).init({
     whitelist: ['en', 'de', 'ru'],
     backend: backendOptions,
     lng: 'en',
-    fallbackLng: false,
+    fallbacklngs: false,
     preload: ['de', 'en', 'ru']
 }, (err, t) => {
     if (err) {
@@ -62,7 +62,13 @@ i18next.use(Backend).init({
     var async = require('async');
     var cleverbot = require('./utility/cleverbot');
     winston.info('Connecting to DB');
-    mongoose.connect('mongodb://localhost/discordbot', (err) => {
+    let url;
+    if (config.beta) {
+        url = 'mongodb://localhost/discordbot-beta';
+    } else {
+        url = 'mongodb://localhost/discordbot';
+    }
+    mongoose.connect(url, (err) => {
         if (err) {
             client.captureMessage(err);
             return winston.error("Unable to connect to Mongo Server!");
@@ -75,37 +81,37 @@ i18next.use(Backend).init({
     bot.on('ready', () => {
         bot.user.setStatus('online', `!w.help | bot.ram.moe`).then().catch(winston.info);
         CMD.init();
-        setTimeout(() => {
-            winston.info('start loading Voice!');
-            async.eachLimit(bot.guilds.array(), 8, (guild, cb) => {
-                voice.loadVoice(guild).then(id => {
-                    if (err) return cb(err);
-                    if (typeof (id) !== 'undefined' && id !== '') {
-                        winston.info('started joining guild:' + guild.name);
-                        var channel = voice.getChannelById(guild, id);
-                        if (typeof (channel) !== 'undefined' && channel) {
-                            channel.join().then(connection => {
-                                var message = {guild: guild};
-                                voice.autoStartQueue(message);
-                                return cb();
-                            }).catch((err) => {
-                                winston.error(err);
-                                return cb();
-                            });
-                        }
-                    } else {
-                        setTimeout(() => {
-                            return cb();
-                        }, 1000)
-                    }
-                }).catch(winston.error);
-            }, (err) => {
-                if (err) {
-                    return winston.error(err);
-                }
-                winston.info('Finished Loading Voice!');
-            });
-        }, 10000);
+        // setTimeout(() => {
+        //     winston.info('start loading Voice!');
+        //     async.eachLimit(bot.guilds.array(), 8, (guild, cb) => {
+        //         voice.loadVoice(guild).then(id => {
+        //             if (err) return cb(err);
+        //             if (typeof (id) !== 'undefined' && id !== '') {
+        //                 winston.info('started joining guild:' + guild.name);
+        //                 var channel = voice.getChannelById(guild, id);
+        //                 if (typeof (channel) !== 'undefined' && channel) {
+        //                     channel.join().then(connection => {
+        //                         var message = {guild: guild};
+        //                         voice.autoStartQueue(message);
+        //                         return cb();
+        //                     }).catch((err) => {
+        //                         winston.error(err);
+        //                         return cb();
+        //                     });
+        //                 }
+        //             } else {
+        //                 setTimeout(() => {
+        //                     return cb();
+        //                 }, 1000)
+        //             }
+        //         }).catch(winston.error);
+        //     }, (err) => {
+        //         if (err) {
+        //             return winston.error(err);
+        //         }
+        //         winston.info('Finished Loading Voice!');
+        //     });
+        // }, 10000);
         if (!config.beta) {
             updateStats();
             dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
@@ -126,7 +132,7 @@ i18next.use(Backend).init({
     });
     bot.on("message", (message) => {
         if (!message.guild || config.beta && message.guild.id !== '110373943822540800' || !config.beta) {
-            message.lang = 'en';
+            message.lang = ['en', 'en'];
             if (!config.beta) {
                 dogstatsd.increment('musicbot.messages');
             }
@@ -134,7 +140,7 @@ i18next.use(Backend).init({
                 serverModel.findOne({id: message.guild.id}, function (err, Server) {
                     if (err) return winston.error(err);
                     if (Server && typeof (Server.lng) !== 'undefined' && Server.lng && Server.lng !== '') {
-                        message.lang = Server.lng;
+                        message.lang = [Server.lng, 'en'];
                     }
                     if (Server && typeof (Server.prefix) !== 'undefined' && Server.prefix && Server.prefix !== '') {
                         if (message.content.startsWith(Server.prefix)) {

@@ -15,6 +15,8 @@ var AsciiTable = require('ascii-table');
 var voice = require("../voice.js");
 var playlistReg = /[&?]list=([a-z0-9_\-]+)/gi;
 var music = require('../music');
+var i18nBean = require('../i18nManager');
+var t = i18nBean.getT();
 var opts = {
     maxResults: 5,
     key: config.youtube_api,
@@ -40,9 +42,15 @@ var download = function (url, message, cb) {
     // }
 };
 var downloadSingle = function (url, message, cb) {
-    youtubedl.getInfo(url, function (err, info) {
+    let dl;
+    if(music.ytRegex.test(url)) {
+        dl = ytdl;
+    } else {
+        dl = youtubedl;
+    }
+    dl.getInfo(url, function (err, info) {
         if (err) {
-            message.reply('Trying to download over the proxy, this could take a bit.');
+            message.channel.sendMessage(t('voice.use-proxy', {lngs:message.lang}));
             downloadProxy(message, url, config.default_proxy, function (err, info) {
                 if (err) {
                     return cb(err);
@@ -50,10 +58,17 @@ var downloadSingle = function (url, message, cb) {
                 cb(err, info);
             });
         } else if (checkTime(info)) {
-            songModel.findOne({id: info.id}, function (err, Song) {
+            let id;
+            if(music.ytRegex.test(url)) {
+                id = info.video_id;
+            } else {
+                id = info.id;
+            }
+            info.id = id;
+            songModel.findOne({id: id}, function (err, Song) {
                 if (err) return cb(err);
                 if (!Song) {
-                    var video = youtubedl(url, ["--restrict-filenames", "-4"], {cwd: __dirname});
+                    var video = youtubedl(url, ["--restrict-filenames", "-4", "-f", "bestaudio"], {cwd: __dirname});
                     var filename = info.id + ".temp";
                     var stream = video.pipe(fs.createWriteStream('temp/' + filename));
                     video.on('info', function (info) {
@@ -67,9 +82,9 @@ var downloadSingle = function (url, message, cb) {
                         cb(null, info);
                     });
                     video.on('end', function () {
-                        ffmpeg(fs.createReadStream('temp/' + filename)).output('./audio/' + info.id + '.mp3')
+                        ffmpeg(fs.createReadStream('temp/' + filename)).output('./audio/' + id + '.mka').outputOptions(['-vn', '-acodec copy'])
                             .on('stderr', err => {
-                                //console.log('Stderr output: ' + err);
+
                             }).on('error', err => {
                             console.log(err);
                             cb(err);
@@ -80,17 +95,17 @@ var downloadSingle = function (url, message, cb) {
                                 var song = new songModel({
                                     title: info.title,
                                     alt_title: info.alt_title,
-                                    id: info.id,
+                                    id: id,
                                     addedBy: message.author.id,
                                     addedAt: Date.now(),
                                     duration: convertDuration(info),
-                                    type: "audio/mp3",
+                                    type: "audio/mka",
                                     url: url,
                                     dl: "stream",
                                     dlBy: "main",
                                     cached: true,
                                     cachedAt: new Date(),
-                                    path: `audio/${info.id}.mp3`
+                                    path: `audio/${id}.mka`
                                 });
                                 song.save(function (err) {
                                     if (err) return cb(err);
@@ -132,13 +147,12 @@ var downloadPlaylist = function (url, message, playlistId, cb) {
                         if (err) return cb(err);
                         if (Song) {
                             voice.addToQueue(message, Song, false).then((message) => {
-                                console.log('Added Song to queue!');
                                 songs.push(Song);
                                 return cb();
                             }).catch(cb);
                         } else {
                             async.setImmediate(() => {
-                                return (cb('Something went wrong somewhere...'));
+                                return (cb(':x: '));
                             });
                         }
                     });
@@ -179,16 +193,16 @@ var search = function (message, cb) {
         youtubesearch(messageClean, opts, function (err, results) {
             if (err) {
                 console.log(err);
-                return cb('Error with Youtube Search!');
+                return cb(':x: ');
             }
             if (results.length > 0) {
                 cb(null, results[0]);
             } else {
-                cb('No song found');
+                cb(':x: ');
             }
         });
     } else {
-        cb('No Search Query Provided!');
+        cb(t('qa.empty-search', {lngs:message.lang}));
     }
 };
 var downloadProxy = function (message, url, proxy, cb) {
@@ -310,6 +324,12 @@ var convertDuration = function (info) {
             }
         }
         console.log(durationConv);
+    } else {
+            let d = Number(info.length_seconds);
+            var h = Math.floor(d / 3600);
+            var m = Math.floor(d % 3600 / 60);
+            var s = Math.floor(d % 3600 % 60);
+            return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
     }
     return durationConv;
 };

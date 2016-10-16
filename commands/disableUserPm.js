@@ -14,23 +14,23 @@ var execute = function (message) {
                 if (messageHelper.pmNotifications(message, User)) {
                     User.disablePm(message.guild.id, function (err) {
                         if (err) return console.log(err);
-                        message.reply(t('no-pm.success-disable', {lng:message.lang}));
+                        message.reply(t('no-pm.success-disable', {lngs:message.lang}));
                     });
                 } else {
                     User.enablePm(message.guild.id, function (err) {
                         if (err) return console.log(err);
-                        message.reply(t('no-pm.success-enable', {lng:message.lang}));
+                        message.reply(t('no-pm.success-enable', {lngs:message.lang}));
                     });
                 }
             } else {
                 messageHelper.createUser(message, true, false, function (err) {
                     if (err) return console.log(err);
-                    message.reply(t('no-pm.success-disable', {lng:message.lang}));
+                    message.reply(t('no-pm.success-disable', {lngs:message.lang}));
                 });
             }
         });
     } else {
-        message.reply(t('generic.noPm', {lng:message.lang}));
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var cmd = 'setPrefix';
 var messageHelper = require('../utility/message');
 var serverModel = require('../DB/server');
@@ -15,7 +17,7 @@ var execute = function (message) {
                     if (Server) {
                         Server.updatePrefix(messageSplit[1], err => {
                             if (err) return console.log(err);
-                            message.reply(`Ok i just set the prefix to ${messageSplit[1]}`);
+                            message.reply(t('prefix.success', {lngs:message.lang, prefix:messageSplit[1]}));
                         });
                     } else {
                         let server = new serverModel({
@@ -28,18 +30,18 @@ var execute = function (message) {
                         });
                         server.save(err => {
                             if (err) return console.log(err);
-                            message.reply(`Ok i just set the prefix to ${messageSplit[1]}`);
+                            message.reply(t('prefix.success', {lngs:message.lang, prefix:messageSplit[1]}));
                         });
                     }
                 });
             } else {
-                message.reply('Please add a prefix!');
+                message.reply(t('prefix.no-prefix', {lngs:message.lang}));
             }
         } else {
-            message.reply('No Permission, you need a Discord Role called WolkeBot for this Command!');
+            message.reply(t('generic.no-permission', {lngs:message.lang}));
         }
     } else {
-        message.reply(`This Command does not work in PM'S`);
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

@@ -15,7 +15,7 @@ var execute = function (message) {
             if (Server) {
                 serverModel.update({id: message.guild.id}, {$pull: {nsfwChannels: message.channel.id}}, function (err) {
                     if (err) return console.log(err);
-                    message.reply(t('rem-lewd.success', {lng:message.lang, channel:message.channel,interpolation: {escape: false}}))
+                    message.reply(t('rem-lewd.success', {lngs:message.lang, channel:message.channel,interpolation: {escape: false}}))
                 });
             } else {
                 var server = new serverModel({
@@ -30,11 +30,11 @@ var execute = function (message) {
                     Blacklist: []
                 });
                 server.save();
-                message.reply(t('rem-lewd.no-nsfw', {lng:message.lang}));
+                message.reply(t('rem-lewd.no-nsfw', {lngs:message.lang}));
             }
         });
     } else {
-        message.reply(t('generic.no-permission', {lng:message.lang}));
+        message.reply(t('generic.no-permission', {lngs:message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

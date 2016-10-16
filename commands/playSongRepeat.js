@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var voice = require('../utility/voice');
 var logger = require('../utility/logger');
@@ -26,7 +28,7 @@ var execute = function (message) {
                         if (voice.inVoice(message)) {
                             voice.queueAddRepeat(message,Song);
                         } else {
-                            message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                            message.reply(t('generic.no-voice', {lngs:message.lang}));
                         }
                     }).catch(message.reply);
                 } else {
@@ -37,21 +39,21 @@ var execute = function (message) {
                             if (voice.inVoice(message)) {
                                 voice.queueAddRepeat(message,Song);
                             } else {
-                                message.reply('It looks like i am not connected to any Voice Channel of this Server at the Moment, connect me with !w.voice');
+                                message.reply(t('generic.no-voice', {lngs:message.lang}));
                             }
                         } else {
-                            message.reply('No Song Found!');
+                            message.reply(t('play.no-result', {lngs:message.lang}));
                         }
                     });
                 }
             } else {
-                message.reply('No Search term entered!');
+                message.reply(t('generic.empty-search', {lngs:message.lang}));
             }
         } else {
-            message.reply('No Permission! You need to give yourself the WolkeBot Role to use this.');
+            message.reply(t('generic.no-permission', {lngs:message.lang}));
         }
     } else {
-        message.reply("This Commands Only Works in Server Channels!");
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

@@ -22,12 +22,12 @@ var execute = function (message) {
                             let repeat = Queue.repeat ? t('np.repeat-on') : "";
                             if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '' && dispatcher) {
                                 let time = Math.floor(dispatcher.time / 1000);
-                                reply = reply + `${t('np.song-duration', {lng: message.lang, title:Queue.songs[0].title, repeat:repeat, duration:Queue.songs[0].duration, current:general.convertSeconds(time)})} \n`;
+                                reply = reply + `${t('np.song-duration', {lngs: message.lang, title:Queue.songs[0].title, repeat:repeat, duration:Queue.songs[0].duration, current:general.convertSeconds(time), interpolation: {escape: false}})} \n`;
                             } else {
-                                reply = reply + `${t('np.song-duration', {lng: message.lang, title:Queue.songs[0].title, repeat:repeat})}\n`;
+                                reply = reply + `${t('np.song-duration', {lngs: message.lang, title:Queue.songs[0].title, repeat:repeat, interpolation: {escape: false}})}\n`;
                             }
                             if (Queue.songs.length > 1) {
-                                reply = `${reply}${t('queue.queued', {lng: message.lang})}\n\`\`\``;
+                                reply = `${reply}${t('queue.queued', {lngs: message.lang})}\n\`\`\``;
                             }
                         } else {
                             let end = '\n';
@@ -46,14 +46,14 @@ var execute = function (message) {
                         msg.delete(60 * 1000);
                     }).catch(console.log);
                 } else {
-                    message.reply(t('generic.no-song-in-queue', {lng: message.lang}));
+                    message.reply(t('generic.no-song-in-queue', {lngs: message.lang}));
                 }
             } else {
-                message.reply(t('generic.no-song-in-queue', {lng: message.lang}));
+                message.reply(t('generic.no-song-in-queue', {lngs: message.lang}));
             }
         });
     } else {
-        message.reply(t('generic.noPm', {lng:message.lang}));
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

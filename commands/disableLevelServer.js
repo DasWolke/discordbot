@@ -15,12 +15,12 @@ var execute = function (message) {
                     if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
                         Server.updateLevels(false, err => {
                             if (err) return console.log(err);
-                            message.reply(t('no-level-server.success-disable', {lng:message.lang}));
+                            message.reply(t('no-level-server.success-disable', {lngs:message.lang}));
                         });
                     } else {
                         Server.updateLevels(true, err => {
                             if (err) return console.log(err);
-                            message.reply(t('no-level-server.success-enable', {lng:message.lang}));
+                            message.reply(t('no-level-server.success-enable', {lngs:message.lang}));
                         });
                     }
                 } else {
@@ -34,15 +34,15 @@ var execute = function (message) {
                     });
                     server.save(err => {
                         if (err) return console.log(err);
-                        message.reply(t('no-level-server.success-disable', {lng:message.lang}));
+                        message.reply(t('no-level-server.success-disable', {lngs:message.lang}));
                     });
                 }
             });
         } else {
-            message.reply(t('generic.no-permission', {lng:message.lang}));
+            message.reply(t('generic.no-permission', {lngs:message.lang}));
         }
     } else {
-        message.reply(t('generic.noPm', {lng:message.lang}));
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

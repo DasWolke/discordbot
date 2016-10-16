@@ -43,7 +43,7 @@ var Mods = {
     Key2: 1 << 28,
     LastMod: 1 << 29
 };
-var calcPP = function (message) {
+var calcPP = function (message, cb) {
     var messageSplit = message.content.split(' ');
     if (messageSplit[1]) {
         let map = messageSplit[1];
@@ -53,7 +53,7 @@ var calcPP = function (message) {
         } catch (e) {
         }
         if (isNaN(Accuracy)) {
-            Accuracy  = 95;
+            Accuracy = 95;
         }
         if (setRegex.test(map)) {
             var modNumber = calcMods(message);
@@ -67,22 +67,22 @@ var calcPP = function (message) {
                             try {
                                 var parsedBody = JSON.parse(body);
                             } catch (e) {
-                                return message.reply('Could not read Api Response!');
+                                return cb({type: 'api-body'});
                             }
-                            message.reply(`PP for Map \`${beatmap.artist} - ${beatmap.title} [${parsedBody.version}] with Acc ${parsedBody.acc}%\` \`${parsedBody.pp}\` \` ${modString(parsedBody.mods)}\` `).then().catch(console.log);
+                            cb(null, {beatmap: beatmap, body: parsedBody});
                         });
                     } else {
                         console.log('well...');
                     }
                 } else {
-                    message.reply('The Osu api seems to have a small problem.');
+                    cb({type: 'osu-api'})
                 }
             }).catch();
         } else {
-            message.reply('This is not a valid osu link!');
+            cb({type: 'unvalid-link'})
         }
     } else {
-        message.reply('No Map Link Supplied!');
+        cb({type: 'no-link'});
     }
 };
 var calcMods = function (message) {
@@ -221,4 +221,4 @@ var saveOsuMap = (map) => {
         });
     });
 };
-module.exports = {calcPP: calcPP, download:osuMapDownload};
+module.exports = {calcPP: calcPP, download: osuMapDownload};

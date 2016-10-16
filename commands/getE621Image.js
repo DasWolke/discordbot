@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var request = require('request');
 var general = require('../utility/general');
@@ -11,7 +13,7 @@ var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
         messageHelper.checkNsfw(message, function (err) {
-            if (err) return message.reply(err);
+            if (err) return message.reply(t('nsfw-images.no-nsfw-channel', {lngs:message.lang}));
             e621(message, messageSplit);
         });
     } else {
@@ -19,7 +21,6 @@ var execute = function (message) {
     }
 };
 var e621 = function (message,messageSplit) {
-    if (typeof (messageSplit[1]) !== 'undefined') {
         var messageSearch = "";
         for (var i = 1 ; i < messageSplit.length; i++) {
             if (i === 1) {
@@ -36,7 +37,7 @@ var e621 = function (message,messageSplit) {
         };
         request.get(options,function (error, response, body) {
             if (error) {
-                message.reply('An error occured!');
+                message.reply(t('generic.error', {lngs:message.lang}));
             }
             if (!error && response.statusCode == 200) {
                 try {
@@ -55,12 +56,9 @@ var e621 = function (message,messageSplit) {
 
                     }
                 } else {
-                    message.reply('No images found with Tags: ' + messageSearch.replace(/\+/g, " "));
+                    message.reply(t('nsfw-images.nothing-found', {lngs:message.lang, tags:messageSearch.replace(/\+/g, " ")}));
                 }
             }
         });
-    } else {
-        message.reply('No Search Term entered!');
-    }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

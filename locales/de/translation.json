@@ -134,5 +134,10 @@
     "no-lang":"Es wurde keine Sprache angegeben.",
     "success":"Ok, dieser Server benutzt nun {{language}} als Sprache.",
     "unsupported":"Diese Sprache ist bisher leider nicht eingebaut, du kannst aber eine Übersetzung über github einsenden."
+  },
+  "server-info": {
+    "id": "ID",
+    "name": "Name",
+    "member": "Mitglieder"
   }
 }

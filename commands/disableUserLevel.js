@@ -15,29 +15,29 @@ var execute = function (message) {
                     if (messageHelper.levelEnabled(message, User)) {
                         User.disableLevel(message.guild.id, function (err) {
                             if (err) return console.log(err);
-                            message.reply(t('no-level.success-disable', {lng:message.lang}));
+                            message.reply(t('no-level.success-disable', {lngs:message.lang}));
                         });
                     } else {
                         User.enableLevel(message.guild.id, function (err) {
                             if (err) return console.log(err);
-                            message.reply(t('no-level.success-enable', {lng:message.lang}));
+                            message.reply(t('no-level.success-enable', {lngs:message.lang}));
                         });
                     }
                 } else {
                     User.addServer(messageHelper.getServerObj(message, false, false), function (err) {
                         if (err) return console.log(err);
-                        message.reply(t('no-level.success-disable', {lng:message.lang}));
+                        message.reply(t('no-level.success-disable', {lngs:message.lang}));
                     });
                 }
             } else {
                 messageHelper.createUser(message, false, false, function (err) {
                     if (err) return console.log(err);
-                    message.reply(t('no-level.success-disable', {lng:message.lang}));
+                    message.reply(t('no-level.success-disable', {lngs:message.lang}));
                 });
             }
         });
     } else {
-        message.reply(t('generic.noPm', {lng:message.lang}));
+        message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

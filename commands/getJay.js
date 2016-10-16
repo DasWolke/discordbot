@@ -6,6 +6,6 @@ var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var cmd = 'jay';
 var execute = function (message) {
-    message.reply(t('eastereggs.jay', {lng:message.lang}));
+    message.reply(t('eastereggs.jay', {lngs:message.lang}));
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

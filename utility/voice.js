@@ -1,6 +1,8 @@
 /**
  * Created by julia on 10.07.2016.
  */
+var i18nBean = require('./i18nManager');
+var t = i18nBean.getT();
 var fs = require('fs');
 var ytdl = require('ytdl-core');
 var queueModel = require('../DB/queue');
@@ -17,7 +19,7 @@ var saveVoiceChannel = function saveVoiceChannel(channel) {
     return new Promise((resolve, reject) => {
         serverModel.findOne({id: channel.guild.id}, function (err, Server) {
             if (err) {
-                reject('error!!!');
+                reject('err in db');
             }
             if (Server) {
                 Server.updateVoice(channel.id, function (err) {
@@ -222,31 +224,31 @@ var addSongFirst = function addSongFirst(message, Song, repeat) {
             if (Queue) {
                 if (typeof(repeat) !== 'undefined' && repeat) {
                     Queue.startRepeat(function (err) {
-                        if (err) reject('Internal Error');
+                        if (err) reject(t('generic.error', {lngs:message.lang}));
                     });
                     Queue.updateRepeatId(Song.id, function (err) {
-                        if (err) reject('Internal Error');
+                        if (err) reject(t('generic.error', {lngs:message.lang}));
                     });
                 } else {
                     Queue.stopRepeat(function (err) {
-                        if (err) reject('Internal Error');
+                        if (err) reject(t('generic.error', {lngs:message.lang}));
                     });
                     Queue.updateRepeatId("", function (err) {
-                        if (err) reject('Internal Error');
+                        if (err) reject(t('generic.error', {lngs:message.lang}));
                     });
                 }
                 if (Queue.songs.length !== 0) {
                     //i hate this stuff
                     queueModel.update({_id: Queue._id}, {$pull: {songs: {id: Song.id}}}, function (err) {
-                        if (err) reject('Internal Error');
+                        if (err) reject(t('generic.error', {lngs:message.lang}));
                         queueModel.update({_id: Queue._id}, {$push: {songs: {$each: Songs, $position: 0}}}, function (err) {
-                            if (err) reject('Internal Error');
+                            if (err) reject(t('generic.error', {lngs:message.lang}));
                             resolve();
                         });
                     });
                 } else {
                     queueModel.update({_id: Queue._id}, {$push: {songs: {$each: Songs, $position: 0}}}, function (err) {
-                        if (err) reject('Internal Error');
+                        if (err) reject(t('generic.error', {lngs:message.lang}));
                         resolve();
                     });
                 }
@@ -269,7 +271,7 @@ var addSongFirst = function addSongFirst(message, Song, repeat) {
                     });
                 }
                 queue.save(err => {
-                    if (err) reject('Internal Error');
+                    if (err) reject(t('generic.error', {lngs:message.lang}));
                     resolve();
                 });
             }
@@ -295,7 +297,7 @@ var playSong = function (message, Song, Queueused) {
 
         }).catch(err => {client.captureMessage(`Error at Update Plays in Play Song: ${err}`)});
         if (typeof(Queueused) === 'undefined') {
-            message.channel.sendMessage("Now playing Song: " + Song.title);
+            message.channel.sendMessage(t('play.playing', {lngs:message.lang, song:Song.title}));
         }
         dispatcher.on("end", function () {
             console.log("File ended!");
@@ -391,23 +393,23 @@ var addToQueue = function (message, Song, reply) {
                 Song.user.name = message.author.username;
                 if (Queue) {
                     Queue.stopRepeat(function (err) {
-                        if (err) reject('Internal Error');
+                        if (err) reject(t('generic.error', {lngs:message.lang}));
                         if (Queue.songs.length === 0) {
                             if (connection) {
                                 playSong(message, Song);
-                                resolve("Successfully added " + Song.title + " to the Queue!");
+                                resolve(t('qa.success', {lngs:message.lang, song:Song.title, interpolation:{escape:false}}));
                             }
                         }
                         for (var i = 0; i < Queue.songs.length; i++) {
                             if (Queue.songs[i].id === Song.id) {
-                                reject(Song.title + " is already in the Queue!");
+                                reject(t('voice.in-queue', {lngs:message.lang, song:Song.title, interpolation:{escape:false}}));
                                 break;
                             }
                         }
                         queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
-                            if (err) reject('Internal Error');
+                            if (err) reject(t('generic.error', {lngs:message.lang}));
                             if (typeof (reply) === 'undefined') {
-                                resolve("Successfully added " + Song.title + " to the Queue!");
+                                resolve(t('qa.success', {lngs:message.lang, song:Song.title, interpolation:{escape:false}}));
                             } else {
                                 resolve("");
                             }
@@ -421,16 +423,16 @@ var addToQueue = function (message, Song, reply) {
                         repeatId: ""
                     });
                     queue.save(function (err) {
-                        if (err) reject('Internal Error');
+                        if (err) reject(t('generic.error', {lngs:message.lang}));
                         if (connection) {
                             playSong(message, Song);
                         }
-                        resolve("Successfully added " + Song.title + " to the Queue!");
+                        resolve(t('qa.success', {lngs:message.lang, song:Song.title, interpolation:{escape:false}}));
                     });
                 }
             });
         } else {
-            reject('Seems like an error occured, please try again.');
+            reject(t('generic.error', {lngs:message.lang}));
         }
     });
 };
@@ -477,20 +479,20 @@ var setVolume = function (message) {
                 try {
                     var volume = parseInt(messageSplit[1]) / 100;
                 } catch (e) {
-                    return reject('Please input a Number!');
+                    return reject(t('general.whole-num', {lngs:message.lang}));
                 }
                 try {
                     dispatcher.setVolume(volume);
                 } catch (e) {
                     console.log(e);
-                    return reject('Error while setting Volume!');
+                    return reject(t('voice.error-volume', {lngs:message.lang}));
                 }
-                resolve('Set Volume to ' + volume * 100);
+                resolve(t('voice.success-volume', {lngs:message.lang, volume:(volume*100) + '%'}));
             } else {
-                return reject('No Volume set!');
+                return reject(t('voice.no-volume', {lngs:message.lang}));
             }
         } else {
-            return reject('No Voice Connection on this Server at the Moment.');
+            return reject(t('generic.no-voice', {lngs:message.lang}));
         }
     });
 };
@@ -531,7 +533,7 @@ var queueAddRepeat = function (message, Song) {
                 if (err) return console.log(err);
                 Queue.updateRepeatId(Song.id, err => {
                     if (err) return console.log(err);
-                    message.reply(`Started repeat for song ${Song.title}`);
+                    message.reply(t('voice.repeat-start', {lngs:message.lang, song:Song.title}));
                 });
             }));
         } else {

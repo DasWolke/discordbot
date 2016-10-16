@@ -24,7 +24,7 @@ var execute = function (message) {
             iteration = 0;
         }
         songModel.count({}, function (err, C) {
-            if (err) return message.reply(t('qa.db-error', {lng:message.lang}));
+            if (err) return message.reply(t('qa.db-error', {lngs:message.lang}));
             var random = general.random(0, C);
             songModel.find({}, function (err, Songs) {
                 if (err) return winston.error(err);
@@ -37,10 +37,10 @@ var execute = function (message) {
                                 message.reply(reply);
                             }).catch(message.reply);
                         } else {
-                            message.reply(t('generic.no-voice', {lng:message.lang}));
+                            message.reply(t('generic.no-voice', {lngs:message.lang}));
                         }
                     } else {
-                        message.reply(t('generic.error', {lng:message.lang}));
+                        message.reply(t('generic.error', {lngs:message.lang}));
                     }
                 } else {
                     if (voice.inVoice(message)) {
@@ -64,18 +64,18 @@ var execute = function (message) {
                                 for (var i = 0; i < addedSongs; i++) {
                                     table.addRow(i + 1, randoms[i].title);
                                 }
-                                message.reply(t('rq.success-multiple', {table:table.toString(), lng:message.lang, interpolation: {escape: false}}));
+                                message.reply(t('rq.success-multiple', {table:table.toString(), lngs:message.lang, interpolation: {escape: false}}));
                             }
                         });
 
                     } else {
-                        message.reply(t('generic.no-voice', {lng:message.lang}));
+                        message.reply(t('generic.no-voice', {lngs:message.lang}));
                     }
                 }
             });
         });
     } else {
-        message.reply(t('generic.noPm', {lng: message.lang}));
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
