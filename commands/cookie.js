@@ -8,11 +8,12 @@ var voice = require('../utility/voice');
 var logger = require('../utility/logger');
 var userModel = require('../DB/user');
 var winston = logger.getT();
+var config = require('../config/main.json');
 var cmd = 'cookie';
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (typeof (messageSplit[1]) !== 'undefined') {
-        if (messageHelper.hasWolkeBot(message)) {
+        if (messageHelper.hasWolkeBot(message) || config.beta) {
             let user = message.mentions.users.first();
             if (user) {
                 userModel.findOne({id: user.id}, function (err, User) {

@@ -6,7 +6,7 @@ var t = i18nBean.getT();
 var cmd = 'pause';
 var voice = require('../utility/voice');
 var messageHelper = require('../utility/message');
-var config = require('../config/main.json')
+var config = require('../config/main.json');
 var execute = function (message) {
     if (message.guild) {
         if (messageHelper.hasWolkeBot(message) || config.beta) {
