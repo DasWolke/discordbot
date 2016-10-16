@@ -31,7 +31,7 @@ var execute = function (message) {
         for (var a = 1; a < messageSplit.length; a++) {
             messageSearch = messageSearch + " " + messageSplit[a]
         }
-        if (musicHelper.checkMedia(messageSplit[1]) || typeof (messageSplit[2]) !== 'undefined' && musicHelper.checkMedia(messageSplit[2])) {
+        if (musicHelper.checkMedia(messageSplit[1])) {
             ytHelper.ytDlAndQueue(message, messageSearch, messageSplit);
         } else if (musicHelper.checkOsuMap(messageSplit[1])) {
             message.channel.sendMessage(t('qa.started-download', {

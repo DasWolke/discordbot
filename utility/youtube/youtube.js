@@ -87,7 +87,7 @@ var downloadSingle = function (url, message, cb) {
 
                             }).on('error', err => {
                             console.log(err);
-                            cb(err);
+                            return cb(err);
                         }).on('end', (stdout, stderr) => {
                             console.log('Finished Converting');
                             fs.unlink('temp/' + filename, function (err) {

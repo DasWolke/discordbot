@@ -420,7 +420,7 @@ var addToQueue = function (message, Song, reply, cb) {
                         }
                         queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
                             if (err) return cb(t('generic.error', {lngs: message.lang}));
-                            if (typeof (reply) === 'undefined' && reply) {
+                            if (typeof (reply) === 'undefined' || !reply) {
                                 return cb(null, (t('qa.success', {
                                     lngs: message.lang,
                                     song: Song.title,
