@@ -215,16 +215,16 @@ i18next.use(Backend).init({
         }
 
     });
-    bot.on('guildMemberAdd', (Guild, member) => {
-        if (Guild.id !== '110373943822540800') {
-            Guild.defaultChannel.sendMessage(`Welcome ${member.user} on **${Guild.name}**`);
-        }
-    });
-    bot.on('guildMemberRemove', (Guild, member) => {
-        if (Guild.id !== '110373943822540800') {
-            Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
-        }
-    });
+    // bot.on('guildMemberAdd', (Guild, member) => {
+    //     if (Guild.id !== '110373943822540800') {
+    //         Guild.defaultChannel.sendMessage(`Welcome ${member.user} on **${Guild.name}**`);
+    //     }
+    // });
+    // bot.on('guildMemberRemove', (Guild, member) => {
+    //     if (Guild.id !== '110373943822540800') {
+    //         Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
+    //     }
+    // });
     bot.on("debug", winston.info);
     bot.on("warn", winston.info);
     bot.on('error', (error) => {
