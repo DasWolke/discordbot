@@ -10,14 +10,14 @@ var osu = require('../utility/osu');
 var winston = logger.getT();
 var cmd = 'stream';
 var config = require('../config/main.json');
-var icecast = require("icecast");
+var icy = require("icy");
 var fs = require('fs');
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
         if (messageHelper.hasWolkeBot(message) || config.beta) {
             if (typeof (messageSplit[1]) !== 'undefined') {
-                icecast.get(messageSplit[1], function (res) {
+                icy.get(messageSplit[1], function (res) {
                     console.log(res.rawHeaders);
                     voice.streamSong(message, messageSplit[1]);
                 });
