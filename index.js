@@ -209,10 +209,14 @@ i18next.use(Backend).init({
 
     });
     bot.on('guildMemberAdd', (Guild, member) => {
-        Guild.defaultChannel.sendMessage(`Welcome ${member.user} on **${Guild.name}**`);
+        if (Guild.id !== '110373943822540800') {
+            Guild.defaultChannel.sendMessage(`Welcome ${member.user} on **${Guild.name}**`);
+        }
     });
     bot.on('guildMemberRemove', (Guild, member) => {
-        Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
+        if (Guild.id !== '110373943822540800') {
+            Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
+        }
     });
     bot.on("debug", winston.info);
     bot.on("warn", winston.info);
