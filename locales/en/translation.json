@@ -88,7 +88,8 @@
     "join": "Ok, joining your voice channel now",
     "error": "An error has occured while trying to join your voicechannel!",
     "permission": "No permission! You need to give yourself the WolkeBot role to use this.",
-    "no-voice": "You are not in a voice channel!"
+    "no-voice": "You are not in a voice channel!",
+    "already-voice":"I am already in a voice channel, move me to change it!"
   },
   "nsfw-images": {
     "nothing-found": "No images found with tags: `{{tags}}`",

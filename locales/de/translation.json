@@ -85,7 +85,8 @@
     "join": "Ok, Ich betrete nun deinen Voicechannel!",
     "error": "Oh Nein, ein Fehler ist aufgetreten während ich probiert habe deinen Voicechannel zu betreten!",
     "permission": "Keine Berechtigung!, Du brauchst die WolkeBot Rolle um diesen Befehl auszuführen.",
-    "no-voice": "Du bist in keinem Voicechannel"
+    "no-voice": "Du bist in keinem Voicechannel",
+    "already-voice":"Ich bin bereits in einem Voice Channel.!"
   },
   "nsfw-images": {
     "nothing-found": "Ich habe keine Bilder mit diesen Tags gefunden: `{{tags}}`",

@@ -11,17 +11,21 @@ var cmd = 'voice';
 var execute = function (message) {
     if (message.guild && message.member.voiceChannel && !message.guild.voiceConnection) {
         message.member.voiceChannel.join().then(connection => {
-            message.channel.sendMessage(`${t('joinVoice.join')} ${message.author}`);
+            message.channel.sendMessage(`${t('joinVoice.join', {lngs:message.lang})} ${message.author}`);
             voice.saveVoice(message.member.voiceChannel).then(() => {
                 winston.info(`Saved Voice of Guild ${message.guild.name}`);
             }).catch(winston.warn);
             voice.startQueue(message);
         }).catch(err => {
             winston.warn(err);
-            message.reply(t('joinVoice.error'))
+            message.reply(t('joinVoice.error', {lngs:message.lang}))
         });
     } else {
-        message.reply(t('joinVoice.no-voice'));
+        if (!message.guild.voiceConnection) {
+            message.reply(t('joinVoice.no-voice', {lngs:message.lang}));
+        } else {
+            message.reply(t('joinVoice.already-voice', {lngs:message.lang}))
+        }
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
