@@ -92,16 +92,19 @@
     "nothing-found": "No images found with tags: `{{tags}}`",
     "no-nsfw-channel": "Please set/add a NSFW channel with !w.setLewd (in one of the NSFW Channels) to use NSFW Commands"
   },
-  "8ball": [
-    "No.",
-    "Yes.",
-    "Maybe.",
-    "I do not think so.",
-    "Definitely no",
-    "Just do it.",
-    "That is a great idea.",
-    "Are you sure about that ?"
-  ],
+  "8ball": {
+    "answers":[
+      "No.",
+      "Yes.",
+      "Maybe.",
+      "I do not think so.",
+      "Definitely no",
+      "Just do it.",
+      "That is a great idea.",
+      "Are you sure about that ?"
+    ],
+    "no-message":"You did not enter a question."
+  },
   "ban": {
     "success": "Banned User {{user}}",
     "privilege": "My role does not have the right to ban {{user}} !",
