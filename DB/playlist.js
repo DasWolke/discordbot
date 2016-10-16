@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var playlistSchema = mongoose.Schema({
     title:String,
     createdBy:String,
+    serverPlaylist:Boolean,
     createdAt:Date,
     id:String,
     public:Boolean,
