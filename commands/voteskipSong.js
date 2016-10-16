@@ -51,26 +51,27 @@ var voteSkip = function voteSkip(message, cb) {
                                                             if (err) return cb(err);
                                                             voice.nextSong(message, Queue.songs[0]);
                                                             cb(null, 'Voteskipped Song: ' + Queue.songs[0].title + '!');
-                                                            cb(null,  t('vksip.success-skip', {lngs:message.lang,title:Queue.songs[0].title}));
+                                                            cb(null,  t('vskip.success-skip', {lngs:message.lang,title:Queue.songs[0].title}));
                                                         });
                                                     } else {
-                                                        cb(null, t('vksip.success-add', {lngs:message.lang, current:(votePercentage * 100).toFixed(2), needed:51}));
+                                                        cb(null, t('vskip.success-add', {lngs:message.lang, current:(votePercentage * 100).toFixed(2), needed:51}));
                                                     }
                                                 }
                                             });
                                         });
                                     } else {
-                                        cb(t('vksip.dup', {lngs:message.lang}));
+                                        cb(t('vskip.dup', {lngs:message.lang}));
                                     }
                                 });
                             } else {
                                 Queue.stopRepeat(function (err) {
                                     if (err) return cb(err);
                                     voice.nextSong(message, Queue.songs[0]);
+                                    cb(null,  t('vskip.success-skip', {lngs:message.lang,title:Queue.songs[0].title}));
                                 });
                             }
                         } else {
-                            return cb(t('vksip.same-voice', {lngs:message.lang}));
+                            return cb(t('vskip.same-voice', {lngs:message.lang}));
                         }
                     } else {
                         return cb(t('generic.no-voice', {lngs:message.lang}));

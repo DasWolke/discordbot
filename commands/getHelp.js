@@ -30,7 +30,6 @@ ${pre}qra number --> ${t('help.qra',{lngs: message.lang})}
 ${pre}queue --> ${t('help.queue',{lngs: message.lang})}
 ${pre}np --> ${t('help.np',{lngs: message.lang})}
 ${pre}rq number--> ${t('help.rq',{lngs: message.lang})}
-${pre}osu --> ${t('help.osu',{lngs: message.lang})}
 --------------------------------\`\`\``;
     var reply2 =`\`\`\`
 ${t('help.youtube',{lngs: message.lang})}:
