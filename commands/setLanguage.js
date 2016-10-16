@@ -7,10 +7,11 @@ var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var serverModel = require('../DB/server');
 var msgReg = /<@[0-9]+>/;
+var config = require('../config/main.json')
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
-        if (messageHelper.hasWolkeBot(message)) {
+        if (messageHelper.hasWolkeBot(message) || config.beta) {
             if (typeof (messageSplit[1]) !== 'undefined' && !msgReg.test(messageSplit[1])) {
                 if(messageSplit[1] === 'ru' || messageSplit[1] === 'de' || messageSplit[1] === 'en') {
                     serverModel.findOne({id: message.guild.id}, function (err, Server) {

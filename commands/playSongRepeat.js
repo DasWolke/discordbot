@@ -12,10 +12,11 @@ var musicHelper = require('../utility/music');
 var winston = logger.getT();
 var cmd = 'forever';
 var songModel = require('../DB/song');
+var config = require('../config/main.json')
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
-        if (messageHelper.hasWolkeBot(message)) {
+        if (messageHelper.hasWolkeBot(message) || config.beta) {
             if (typeof (messageSplit[1]) !== 'undefined') {
                 var messageSearch = "";
                 for (var i = 1; i < messageSplit.length; i++) {

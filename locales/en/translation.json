@@ -67,6 +67,10 @@
     "roll": "Roles a a number between zero and number, if there is no number it will be out of 10",
     "8ball": "Gives you the Opinion of the magic 8ball to a question",
     "garfield": "Gives you a random garfield command",
+    "cat":"Sends you a random cat image",
+    "hug":"hug",
+    "slap":"slap",
+    "setLang":"sets the language",
     "feedback": "For feedback use the support discord please ^^",
     "talk": "If you want to talk with me @mention me with a message :D",
     "helpReply": "OK, I sent you a list of commands over PM."

@@ -8,10 +8,11 @@ var osu = require('../utility/osu');
 var winston = logger.getT();
 var cmd = 'skip';
 var queueModel = require('../DB/queue');
+var config = require('../config/main.json')
 var execute = function (message) {
     if (message.guild) {
         if (voice.inVoice(message)) {
-            if (messageHelper.hasWolkeBot(message)) {
+            if (messageHelper.hasWolkeBot(message) || config.beta) {
                 queueModel.findOne({server: message.guild.id}, function (err, Queue) {
                     if (err) return winston.error(err);
                     let dispatcher = voice.getDispatcher(message.guild.voiceConnection);

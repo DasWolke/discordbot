@@ -8,11 +8,12 @@ var voice = require('../utility/voice');
 var logger = require('../utility/logger');
 var winston = logger.getT();
 var cmd = 'leave';
+var config = require('../config/main.json');
 var execute = function (message) {
     if (message.guild) {
         if (voice.inVoice(message)) {
             var channel = voice.getVoiceChannel(message);
-            if (messageHelper.hasWolkeBot(message)) {
+            if (messageHelper.hasWolkeBot(message) || config.beta) {
                 channel.leave();
                 voice.clearVoice(message, function (err) {
                     if (err) return winston.warn(err);
