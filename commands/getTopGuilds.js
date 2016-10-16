@@ -5,15 +5,19 @@ var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var cmd = 'top';
 var AsciiTable = require('ascii-table');
-let _ = require('underscore');
+let _ = require('lodash');
 var execute = function (message) {
     if (message.guild) {
+        let easyGuild = [];
         let table = new AsciiTable();
-        let guilds = message.botUser.guilds.array();
-        guilds = _.sortBy(guilds, 'members.size');
+        message.botUser.guilds.map((guild) => {
+            easyGuild.push({name:guild.name, size:guild.members.size, memberCount:guild.memberCount});
+        });
+        let guilds = _.sortBy(easyGuild, 'size');
         guilds = guilds.slice(0, 5);
+        guilds = _.reverse(guilds);
         for (var i = 0; i < guilds.length; i++) {
-            table.addRow(i+1, guilds[i].name, guilds[i].members.size);
+            table.addRow(i+1, guilds[i].name, guilds[i].size);
         }
         message.reply(`\n\`\`\`${table.toString()}\`\`\``);
     } else {

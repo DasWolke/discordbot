@@ -127,7 +127,7 @@
     "nothing-found": "No Song found with Search Term `{{search}}` ",
     "empty-search": "You did not enter a search Term!",
     "started-download": "Started download of `{{url}}` ",
-    "success":"Queued {{song}}"
+    "success":"Queued **{{song}}**"
   },
   "rq": {
     "db-error": "A database error occured!",
@@ -220,7 +220,7 @@
   "leave":"Ok i left the voice channel.",
   "play":{
     "no-result":"No song found!",
-    "playing":"Now playing **{{song}}**"
+    "playing":":musical_note: Now playing **{{song}}**"
   },
   "prefix":{
     "success":"Ok i just set the prefix to {{prefix}}",
@@ -234,7 +234,10 @@
     "repeat-start":"Started repeat for **{{song}}**",
     "already-playing":"This Song is already playing!",
     "blocked":"This Video is not available to download.",
-    "dl-start":"Started Download!",
+    "dl-start":":hourglass: Started Download!",
     "use-proxy":"Trying to download over the proxy, this could take a bit."
+  },
+  "skip":{
+    "success":":track_next: "
   }
 }
