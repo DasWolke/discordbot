@@ -142,7 +142,7 @@ i18next.use(Backend).init({
                 serverModel.findOne({id: message.guild.id}, function (err, Server) {
                     if (err) return winston.error(err);
                     message.dbServer = {};
-                    message.dbServer.volume = 0.25;
+                    message.dbServer.volume = "0.10";
                     if (Server) {
                         message.dbServer = Server;
                     }
