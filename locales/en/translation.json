@@ -237,7 +237,19 @@
     "dl-start":":hourglass: Started Download!",
     "use-proxy":"Trying to download over the proxy, this could take a bit."
   },
+  "yts":{
+    "success":"Found the following song: {{link}}"
+  },
   "skip":{
     "success":":track_next: "
+  },
+  "rm":{
+    "less-2":"You can not delete less than 2 messages!",
+    "over-100":"You can not delete more than 100 Messages at once!",
+    "success":"Successfully deleted {{number}} message.",
+    "error":"Error while trying to delete Messages!"
+  },
+  "search":{
+    "success":"Found the following Songs:"
   }
 }

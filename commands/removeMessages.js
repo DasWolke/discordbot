@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var logger = require('../utility/logger');
 var winston = logger.getT();
@@ -13,31 +15,31 @@ var execute = function (message) {
             try {
                 number = parseInt(messageSplit[1]);
             } catch (e) {
-                return message.reply('Could not parse the Number !');
+                return message.reply(t('generic.nan', {lngs:message.lang}));
             }
             if (isNaN(number)) {
-                return message.reply('Could not parse the Number !');
+                return message.reply(t('generic.nan', {lngs:message.lang}));
             }
             if (number < 2) {
-                return message.reply('You can not delete less than 2 Messages!');
+                return message.reply(t('rm.less-2', {lngs:message.lang}));
             }
             if (number > 100) {
-                message.reply('You can not delete more than 100 Messages at once!');
+                return message.reply(t('rm.over-100', {lngs:message.lang}));
             } else {
                 message.channel.fetchMessages({before: message.id, limit: number}).then(messages => {
                     message.channel.bulkDelete(messages).then(messages => {
-                        message.reply(`Successfully deleted ${number} messages`);
+                        message.reply(t('rm.success', {lngs:message.lang, number:number}));
                     }).catch(err => {
-                        message.reply('Error while trying to delete Messages!');
-                        console.log(err);
+                        message.reply(t('rm.error', {lngs:message.lang}));
+                        winston.error(err);
                     });
-                }).catch(console.log);
+                }).catch(winston.error);
             }
         } else {
-            message.reply('No Number of Messages to delete provided!');
+            message.reply(t('generic.whole-num', {lngs:message.lang}));
         }
     } else {
-        message.reply('You need the WolkeBot Role to use this Command.');
+        message.reply(t('generic.no-permission', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:1, exec:execute};

@@ -11,6 +11,16 @@ var AsciiTable = require('ascii-table');
 var winston = logger.getT();
 var cmd = 'rq';
 var songModel = require('../DB/song');
+var pre = function (message) {
+    if (message.guild) {
+        voice.getInVoice(message, (err, msg) => {
+            if (err) return message.reply(err);
+            execute(msg);
+        });
+    } else {
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
+    }
+};
 var execute = function (message) {
     if (message.guild) {
         let messageSplit = message.content.split(' ');
@@ -33,9 +43,10 @@ var execute = function (message) {
                     if (typeof(Songs[random]) !== 'undefined') {
                         Song = Songs[random];
                         if (voice.inVoice(message)) {
-                            voice.addToQueue(message, Song).then(reply => {
-                                message.reply(reply);
-                            }).catch(message.reply);
+                            voice.addToQueue(message, Song, false, (err, result) => {
+                                if (err) return message.reply(err);
+                                message.reply(result);
+                            });
                         } else {
                             message.reply(t('generic.no-voice', {lngs:message.lang}));
                         }
@@ -53,10 +64,11 @@ var execute = function (message) {
                         }
                         let addedSongs = 0;
                         async.eachSeries(randoms, ((randomSong, cb) => {
-                            voice.addToQueue(message, randomSong, false).then((message) => {
+                            voice.addToQueue(message, randomSong, false, (err, result) => {
+                                if (err) return cb(err);
                                 addedSongs = addedSongs+ 1;
                                 return cb();
-                            }).catch(cb);
+                            });
                         }), (err) => {
                             if (err) message.reply(err);
                             if (addedSongs > 0) {
@@ -78,4 +90,4 @@ var execute = function (message) {
         message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: pre};

@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var songModel = require('../DB/song');
 var cmd = 'search';
 var execute = function (message) {
@@ -13,17 +15,17 @@ var execute = function (message) {
         songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(5).exec(function (err, Songs) {
             if (err) return console.log(err);
             if (Songs !== null && Songs.length > 0) {
-                var reply = "Found the following Songs:\n\n";
+                var reply = t('search.success', {lngs: message.lang}) + "\n\n";
                 for (var x = 0; x < Songs.length; x++) {
                     reply = reply + parseInt(x + 1) + ": ```" + Songs[x].title + "```\n\n";
                 }
                 message.reply(reply);
             } else {
-                message.reply("No Songs found with Search Term " + messageSearch);
+                message.reply(t('qa.nothing-found', {search: messageSearch, lngs: message.lang}));
             }
         });
     } else {
-        message.reply("No Search Term entered!");
+        message.reply(t('generic.empty-search', {lngs:message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

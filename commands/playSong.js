@@ -12,7 +12,17 @@ var osu = require('../utility/osu');
 var winston = logger.getT();
 var cmd = 'play';
 var songModel = require('../DB/song');
-var config = require('../config/main.json')
+var config = require('../config/main.json');
+var pre = function (message) {
+    if (message.guild) {
+        voice.getInVoice(message, (err, msg) => {
+            if (err) return message.reply(err);
+            execute(msg);
+        })
+    } else {
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
+    }
+};
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
@@ -61,4 +71,4 @@ var execute = function (message) {
         message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd:cmd, accessLevel:0, exec:pre};

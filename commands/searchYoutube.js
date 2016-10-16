@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var cmd = 'yts';
 var yt = require('../utility/youtube/youtube');
 var execute = function (message) {
@@ -8,7 +10,7 @@ var execute = function (message) {
         if (err) {
             message.reply(err);
         } else {
-            message.reply('Found the Following Song ' + Result.link);
+            message.reply(t('yts.success', {lngs:message.lang, link:Result.link, interpolation:{escape:false}}));
         }
     });
 };

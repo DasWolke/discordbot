@@ -15,6 +15,7 @@ var dispatcherArray = [];
 var errorReporter = require('./errorReporter');
 var client = errorReporter.getT();
 var shortid = require('shortid');
+var async = require('async');
 var saveVoiceChannel = function saveVoiceChannel(channel) {
     return new Promise((resolve, reject) => {
         serverModel.findOne({id: channel.guild.id}, function (err, Server) {
@@ -120,7 +121,7 @@ var loadLastVoice = function loadLastVoice(guild) {
     });
 };
 var joinVoiceChannel = function joinVoiceChannel(channel) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         channel.join().then(resolve).catch(reject);
     });
 };
@@ -213,7 +214,7 @@ var nextSong = function nextSong(message, Song) {
     }
 };
 var addSongFirst = function addSongFirst(message, Song, repeat) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         queueModel.findOne({server: message.guild.id}, function (err, Queue) {
             if (err) return cb(err);
             var Songs = [];
@@ -224,31 +225,38 @@ var addSongFirst = function addSongFirst(message, Song, repeat) {
             if (Queue) {
                 if (typeof(repeat) !== 'undefined' && repeat) {
                     Queue.startRepeat(function (err) {
-                        if (err) reject(t('generic.error', {lngs:message.lang}));
+                        if (err) reject(t('generic.error', {lngs: message.lang}));
                     });
                     Queue.updateRepeatId(Song.id, function (err) {
-                        if (err) reject(t('generic.error', {lngs:message.lang}));
+                        if (err) reject(t('generic.error', {lngs: message.lang}));
                     });
                 } else {
                     Queue.stopRepeat(function (err) {
-                        if (err) reject(t('generic.error', {lngs:message.lang}));
+                        if (err) reject(t('generic.error', {lngs: message.lang}));
                     });
                     Queue.updateRepeatId("", function (err) {
-                        if (err) reject(t('generic.error', {lngs:message.lang}));
+                        if (err) reject(t('generic.error', {lngs: message.lang}));
                     });
                 }
                 if (Queue.songs.length !== 0) {
                     //i hate this stuff
                     queueModel.update({_id: Queue._id}, {$pull: {songs: {id: Song.id}}}, function (err) {
-                        if (err) reject(t('generic.error', {lngs:message.lang}));
-                        queueModel.update({_id: Queue._id}, {$push: {songs: {$each: Songs, $position: 0}}}, function (err) {
-                            if (err) reject(t('generic.error', {lngs:message.lang}));
+                        if (err) reject(t('generic.error', {lngs: message.lang}));
+                        queueModel.update({_id: Queue._id}, {
+                            $push: {
+                                songs: {
+                                    $each: Songs,
+                                    $position: 0
+                                }
+                            }
+                        }, function (err) {
+                            if (err) reject(t('generic.error', {lngs: message.lang}));
                             resolve();
                         });
                     });
                 } else {
                     queueModel.update({_id: Queue._id}, {$push: {songs: {$each: Songs, $position: 0}}}, function (err) {
-                        if (err) reject(t('generic.error', {lngs:message.lang}));
+                        if (err) reject(t('generic.error', {lngs: message.lang}));
                         resolve();
                     });
                 }
@@ -271,7 +279,7 @@ var addSongFirst = function addSongFirst(message, Song, repeat) {
                     });
                 }
                 queue.save(err => {
-                    if (err) reject(t('generic.error', {lngs:message.lang}));
+                    if (err) reject(t('generic.error', {lngs: message.lang}));
                     resolve();
                 });
             }
@@ -295,9 +303,11 @@ var playSong = function (message, Song, Queueused) {
         console.log(path.resolve(Song.path));
         updatePlays(Song.id).then(() => {
 
-        }).catch(err => {client.captureMessage(`Error at Update Plays in Play Song: ${err}`)});
+        }).catch(err => {
+            client.captureMessage(`Error at Update Plays in Play Song: ${err}`)
+        });
         if (typeof(Queueused) === 'undefined') {
-            message.channel.sendMessage(t('play.playing', {lngs:message.lang, song:Song.title}));
+            message.channel.sendMessage(t('play.playing', {lngs: message.lang, song: Song.title}));
         }
         dispatcher.on("end", function () {
             console.log("File ended!");
@@ -316,36 +326,30 @@ var playSong = function (message, Song, Queueused) {
         // });
     }
 };
-// var streamSong = function (message, messageSplit) {
-//     var connection = getVoiceConnection(message);
-//     if (!connection.playing) {
-//         try {
-//             connection.resume();
-//         } catch (e) {
-//
-//         }
-//     }
-//     var stream;
-//     request('http://listen.technobase.fm/tunein-mp3-pls').pipe(stream);
-// connection.stopPlaying();
-// connection.playRawStream(stream, {volume: 0.25}).then(function (intent) {
-// updatePlays(Song.id, function (err) {
-//     if (err) return console.log(err);
-// });
-// if (typeof(Queueused) === 'undefined') {
-// message.channel.sendMessage("Now playing Song: " + Song.title);
-// }
-// intent.on("end", function () {
-//     console.log("File ended!");
-// nextSong(message, Song);
-//         });
-//         intent.on("error", function (err) {
-//             console.log(err);
-//         });
-//     }).catch(function (err) {
-//         console.log(err);
-//     });
-// };
+var streamSong = function (message, stream) {
+    var connection = getVoiceConnection(message);
+    if (!connection.playing) {
+        try {
+            connection.resume();
+        } catch (e) {
+
+        }
+    }
+    let dispatcher = connection.playStream(stream, {volume: 0.25});
+    // updatePlays(Song.id, function (err) {
+    //     if (err) return console.log(err);
+    // });
+    // if (typeof(Queueused) === 'undefined') {
+    //     message.channel.sendMessage("Now playing Song: " + Song.title);
+    // }
+    dispatcher.on("end", function () {
+        console.log("Stream ended");
+        // nextSong(message, Song);
+    });
+    dispatcher.on("error", function (err) {
+        console.log(err);
+    });
+};
 var startQueue = function (message) {
     queueModel.findOne({server: message.guild.id}, function (err, Queue) {
         if (err) return console.log(err);
@@ -382,78 +386,100 @@ var autoStartQueue = function (message) {
         }
     });
 };
-var addToQueue = function (message, Song, reply) {
-    return new Promise((resolve, reject) => {
-        if (message.guild.available && message.guild.id) {
-            queueModel.findOne({server: message.guild.id}, function (err, Queue) {
-                if (err) reject('Internal Error');
-                var connection = getVoiceConnection(message);
-                Song.user = {};
-                Song.user.id = message.author.id;
-                Song.user.name = message.author.username;
-                if (Queue) {
-                    Queue.stopRepeat(function (err) {
-                        if (err) reject(t('generic.error', {lngs:message.lang}));
-                        if (Queue.songs.length === 0) {
-                            if (connection) {
-                                playSong(message, Song);
-                                resolve(t('qa.success', {lngs:message.lang, song:Song.title, interpolation:{escape:false}}));
-                            }
-                        }
-                        for (var i = 0; i < Queue.songs.length; i++) {
-                            if (Queue.songs[i].id === Song.id) {
-                                reject(t('voice.in-queue', {lngs:message.lang, song:Song.title, interpolation:{escape:false}}));
-                                break;
-                            }
-                        }
-                        queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
-                            if (err) reject(t('generic.error', {lngs:message.lang}));
-                            if (typeof (reply) === 'undefined') {
-                                resolve(t('qa.success', {lngs:message.lang, song:Song.title, interpolation:{escape:false}}));
-                            } else {
-                                resolve("");
-                            }
-                        });
-                    });
-                } else {
-                    var queue = new queueModel({
-                        server: message.guild.id,
-                        songs: [Song],
-                        repeat: false,
-                        repeatId: ""
-                    });
-                    queue.save(function (err) {
-                        if (err) reject(t('generic.error', {lngs:message.lang}));
+var addToQueue = function (message, Song, reply, cb) {
+    if (message.guild.available && message.guild.id) {
+        queueModel.findOne({server: message.guild.id}, function (err, Queue) {
+            if (err) return cb('Internal Error');
+            var connection = getVoiceConnection(message);
+            Song.user = {};
+            Song.user.id = message.author.id;
+            Song.user.name = message.author.username;
+            if (Queue) {
+                Queue.stopRepeat(function (err) {
+                    if (err) return cb(t('generic.error', {lngs: message.lang}));
+                    if (Queue.songs.length === 0) {
                         if (connection) {
                             playSong(message, Song);
                         }
-                        resolve(t('qa.success', {lngs:message.lang, song:Song.title, interpolation:{escape:false}}));
+                    }
+                    async.eachSeries(Queue.songs, (songQ, call) => {
+                        if (songQ.id === Song.id) {
+                            return call(t('voice.in-queue', {
+                                lngs: message.lang,
+                                song: Song.title,
+                                interpolation: {escape: false}
+                            }));
+                        } else {
+                            async.setImmediate(() => {
+                                return call();
+                            });
+                        }
+                    }, (err) => {
+                        if (err) {
+                            return cb(err);
+                        }
+                        queueModel.update({_id: Queue._id}, {$addToSet: {songs: Song}}, function (err) {
+                            if (err) return cb(t('generic.error', {lngs: message.lang}));
+                            if (typeof (reply) === 'undefined' && reply) {
+                                return cb(null, (t('qa.success', {
+                                    lngs: message.lang,
+                                    song: Song.title,
+                                    interpolation: {escape: false}
+                                })));
+                            } else {
+                                return cb(null, "");
+                            }
+                        });
                     });
-                }
-            });
-        } else {
-            reject(t('generic.error', {lngs:message.lang}));
-        }
-    });
+                });
+            } else {
+                var queue = new queueModel({
+                    server: message.guild.id,
+                    songs: [Song],
+                    repeat: false,
+                    repeatId: ""
+                });
+                queue.save((err) => {
+                    if (err) return cb(t('generic.error', {lngs: message.lang}));
+                    if (connection) {
+                        playSong(message, Song);
+                    }
+                    return cb(null, t('qa.success', {
+                        lngs: message.lang,
+                        song: Song.title,
+                        interpolation: {escape: false}
+                    }));
+                });
+            }
+        });
+    } else {
+        return cb(t('generic.error', {lngs: message.lang}));
+    }
 };
 var nowPlaying = function (message) {
     return new Promise((resolve, reject) => {
         queueModel.findOne({server: message.guild.id}, function (err, Queue) {
-            if (err) reject (err);
+            if (err) reject(err);
             if (Queue) {
                 if (Queue.songs.length === 0) {
-                    resolve({playing:false, title:''});
+                    resolve({playing: false, title: ''});
                 } else {
                     if (inVoiceChannel(message)) {
                         let dispatcher = getDispatcherFromConnection(message.guild.voiceConnection);
                         let time = Math.floor(dispatcher.time / 1000);
                         if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '') {
-                            resolve({playing:true, duration:Queue.songs[0].duration, current:general.convertSeconds(time), title:Queue.songs[0].title, repeat:Queue.repeat});
+                            resolve({
+                                playing: true,
+                                duration: Queue.songs[0].duration,
+                                current: general.convertSeconds(time),
+                                title: Queue.songs[0].title,
+                                repeat: Queue.repeat
+                            });
                         } else {
-                            resolve({playing:true, title:Queue.songs[0].title, repeat:Queue.repeat});
+                            resolve({playing: true, title: Queue.songs[0].title, repeat: Queue.repeat});
                         }
                     } else {
-                        resolve({playing:false, title:''});
+                        resolve({playing: false, title: ''});
                     }
                 }
             } else {
@@ -463,7 +489,7 @@ var nowPlaying = function (message) {
                 });
                 queue.save(function (err) {
                     if (err) reject(err);
-                    resolve({playing:false, song:''});
+                    resolve({playing: false, song: ''});
                 });
             }
         });
@@ -479,20 +505,20 @@ var setVolume = function (message) {
                 try {
                     var volume = parseInt(messageSplit[1]) / 100;
                 } catch (e) {
-                    return reject(t('general.whole-num', {lngs:message.lang}));
+                    return reject(t('general.whole-num', {lngs: message.lang}));
                 }
                 try {
                     dispatcher.setVolume(volume);
                 } catch (e) {
                     console.log(e);
-                    return reject(t('voice.error-volume', {lngs:message.lang}));
+                    return reject(t('voice.error-volume', {lngs: message.lang}));
                 }
-                resolve(t('voice.success-volume', {lngs:message.lang, volume:(volume*100) + '%'}));
+                resolve(t('voice.success-volume', {lngs: message.lang, volume: (volume * 100) + '%'}));
             } else {
-                return reject(t('voice.no-volume', {lngs:message.lang}));
+                return reject(t('voice.no-volume', {lngs: message.lang}));
             }
         } else {
-            return reject(t('generic.no-voice', {lngs:message.lang}));
+            return reject(t('generic.no-voice', {lngs: message.lang}));
         }
     });
 };
@@ -533,7 +559,7 @@ var queueAddRepeat = function (message, Song) {
                 if (err) return console.log(err);
                 Queue.updateRepeatId(Song.id, err => {
                     if (err) return console.log(err);
-                    message.reply(t('voice.repeat-start', {lngs:message.lang, song:Song.title}));
+                    message.reply(t('voice.repeat-start', {lngs: message.lang, song: Song.title}));
                 });
             }));
         } else {
@@ -543,6 +569,25 @@ var queueAddRepeat = function (message, Song) {
         }
     });
 };
+var getInVoice = function (message, cb) {
+    if (message.guild) {
+        if (!inVoiceChannel(message)) {
+            if (message.member.voiceChannel) {
+                message.member.voiceChannel.join().then(() => {
+                    startQueue(message);
+                    cb(null, message);
+                }).catch(err => {
+                    console.log(err);
+                    return cb(t('joinVoice.error', {lngs: message.lang}));
+                });
+            } else {
+                return cb(t('joinVoice.no-voice', {lngs:message.lang}));
+            }
+        } else {
+            cb(null, message);
+        }
+    }
+};
 module.exports = {
     inVoice: inVoiceChannel,
     saveVoice: saveVoiceChannel,
@@ -551,6 +596,7 @@ module.exports = {
     joinVoice: joinVoiceChannel,
     nextSong: nextSong,
     playSong: playSong,
+    streamSong: streamSong,
     now: nowPlaying,
     getVoiceConnection: getVoiceConnection,
     getVoiceConnectionByServer: getVoiceConnectionServer,
@@ -564,5 +610,6 @@ module.exports = {
     setVolume: setVolume,
     checkMedia: checkMedia,
     getDispatcher: getDispatcherFromConnection,
-    queueAddRepeat: queueAddRepeat
+    queueAddRepeat: queueAddRepeat,
+    getInVoice: getInVoice
 };

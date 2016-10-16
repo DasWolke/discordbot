@@ -13,8 +13,9 @@ var execute = function (message) {
                 var dispatcher = voice.getDispatcher(connection);
                 try {
                     dispatcher.resume();
+                    message.channel.sendMessage(':arrow_forward: ');
                 } catch (e) {
-                    message.reply("No Song playing at the Moment!");
+                    message.channel.sendMessage("No Song playing at the Moment!");
                 }
             }
             else {

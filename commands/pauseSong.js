@@ -15,9 +15,10 @@ var execute = function (message) {
                 var dispatcher = voice.getDispatcher(connection);
                 try {
                     dispatcher.pause();
+                    message.channel.sendMessage(':play_pause: ');
                 } catch (e) {
                     console.log(e);
-                    message.reply(t('generic.no-song-playing', {lngs: message.lang}));
+                    message.channel.sendMessage(t('generic.no-song-playing', {lngs: message.lang}));
                 }
             } else {
                 message.reply(t('generic.no-permission', {lngs: message.lang}));

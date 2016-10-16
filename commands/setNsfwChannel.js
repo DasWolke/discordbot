@@ -1,6 +1,8 @@
 /**
  * Created by julia on 02.10.2016.
  */
+var i18nBean = require('../utility/i18nManager');
+var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var serverModel = require('../DB/server');
 var logger = require('../utility/logger');
