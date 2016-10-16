@@ -6,6 +6,8 @@ var winston = require('winston');
 var prefix = "!w.";
 winston.info(`Starting Init of Bot!`);
 winston.add(winston.transports.File, {filename: `logs/rem-main.log`});
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {'timestamp':true});
 var logger = require('./utility/logger');
 logger.setT(winston);
 var raven = require('raven');
@@ -159,7 +161,7 @@ i18next.use(Backend).init({
                                     if (err) return winston.error(err);
                                 });
                             }
-                            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800' && !message.content.startsWith(prefix)) {
+                            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800' && !message.content.startsWith(prefix) && !message.author.bot) {
                                 if (!config.beta) {
                                     dogstatsd.increment('musicbot.cleverbot');
                                 }
@@ -183,7 +185,7 @@ i18next.use(Backend).init({
                                     if (err) return winston.error(err);
                                 });
                             }
-                            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800' && !message.content.startsWith(prefix)) {
+                            if (message.guild && !!message.mentions.users.get(bot.user.id) && message.guild.id !== '110373943822540800' && !message.content.startsWith(prefix) && !message.author.bot) {
                                 if (!config.beta) {
                                     dogstatsd.increment('musicbot.cleverbot');
                                 }
