@@ -247,7 +247,7 @@
     "success":"Найдена следующая песня: {{link}}"
   },
   "skip":{
-    "success":":track_next: Песня `{{title}}` пропущена",
+    "success":":track_next: Песня **{{title}}** пропущена",
     "stop":":stop_button: Текущая песня остановлена"
   },
   "vskip":{
