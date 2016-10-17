@@ -12,6 +12,16 @@ var cmd = 'stream';
 var config = require('../config/main.json');
 var icy = require("icy");
 var fs = require('fs');
+var pre = function (message) {
+    if (message.guild) {
+        voice.getInVoice(message, (err, msg) => {
+            if (err) return message.reply(err);
+            execute(msg);
+        })
+    } else {
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
+    }
+};
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
@@ -19,7 +29,7 @@ var execute = function (message) {
             if (typeof (messageSplit[1]) !== 'undefined') {
                 icy.get(messageSplit[1], function (res) {
                     console.log(res.rawHeaders);
-                    voice.streamSong(message, messageSplit[1]);
+                    voice.streamSong(message, res);
                 });
             } else {
                 message.reply(t('generic.empty-search', {lngs:message.lang}));
@@ -31,4 +41,4 @@ var execute = function (message) {
         message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
-module.exports = {cmd:cmd, accessLevel:3, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 2, exec: pre};

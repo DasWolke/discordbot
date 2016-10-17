@@ -257,7 +257,7 @@
   "rm":{
     "less-2":"Du kannst nicht weniger als 2 Nachrichten löschen!",
     "over-100":"Du kannst nicht mehr als 100 Nachrichten auf einmal löschen!",
-    "success":"{{number}} wurden gelöscht.",
+    "success": "{{number}} Nachrichten wurden gelöscht.",
     "error":"Ein Fehler ist aufgetreten beim Versuch die Nachrichten zu löschen!"
   },
   "search":{
