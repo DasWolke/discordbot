@@ -307,7 +307,11 @@ var playSong = function (message, Song, Queueused) {
             client.captureMessage(`Error at Update Plays in Play Song: ${err}`)
         });
         if (typeof(Queueused) === 'undefined') {
-            message.channel.sendMessage(t('play.playing', {lngs: message.lang, song: Song.title}));
+            message.channel.sendMessage(t('play.playing', {
+                lngs: message.lang,
+                song: Song.title,
+                interpolation: {escape: false}
+            }));
         }
         dispatcher.on("end", function () {
             console.log("File ended!");

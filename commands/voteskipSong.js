@@ -50,24 +50,36 @@ var voteSkip = function voteSkip(message, cb) {
                                                         Queue.stopRepeat(function (err) {
                                                             if (err) return cb(err);
                                                             voice.nextSong(message, Queue.songs[0]);
-                                                            cb(null, 'Voteskipped Song: ' + Queue.songs[0].title + '!');
-                                                            cb(null,  t('vskip.success-skip', {lngs:message.lang,title:Queue.songs[0].title}));
+                                                            cb(null, t('vskip.success-skip', {
+                                                                lngs: message.lang,
+                                                                title: Queue.songs[0].title,
+                                                                interpolation: {escape: false}
+                                                            }));
                                                         });
                                                     } else {
-                                                        cb(null, t('vskip.success-add', {lngs:message.lang, current:(votePercentage * 100).toFixed(2), needed:51}));
+                                                        cb(null, t('vskip.success-add', {
+                                                            lngs: message.lang,
+                                                            current: (votePercentage * 100).toFixed(2),
+                                                            needed: 51,
+                                                            interpolation: {escape: false}
+                                                        }));
                                                     }
                                                 }
                                             });
                                         });
                                     } else {
-                                        cb(t('vskip.dup', {lngs:message.lang}));
+                                        cb(t('vskip.dup', {lngs: message.lang, interpolation: {escape: false}}));
                                     }
                                 });
                             } else {
                                 Queue.stopRepeat(function (err) {
                                     if (err) return cb(err);
                                     voice.nextSong(message, Queue.songs[0]);
-                                    cb(null,  t('vskip.success-skip', {lngs:message.lang,title:Queue.songs[0].title}));
+                                    cb(null, t('vskip.success-skip', {
+                                        lngs: message.lang,
+                                        title: Queue.songs[0].title,
+                                        interpolation: {escape: false}
+                                    }));
                                 });
                             }
                         } else {

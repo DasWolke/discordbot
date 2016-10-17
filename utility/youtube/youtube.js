@@ -36,21 +36,21 @@ var download = function (url, message, cb) {
     //         message.reply(`Downloaded the following Songs:\n \`\`\` ${table.toString()}\`\`\` `);
     //     });
     // } else {
-        downloadSingle(url, message, (err, info) => {
-            cb(err, info);
-        });
+    downloadSingle(url, message, (err, info) => {
+        cb(err, info);
+    });
     // }
 };
 var downloadSingle = function (url, message, cb) {
     let dl;
-    if(music.ytRegex.test(url)) {
+    if (music.ytRegex.test(url)) {
         dl = ytdl;
     } else {
         dl = youtubedl;
     }
     dl.getInfo(url, function (err, info) {
         if (err) {
-            message.channel.sendMessage(t('voice.use-proxy', {lngs:message.lang}));
+            message.channel.sendMessage(t('voice.use-proxy', {lngs: message.lang}));
             downloadProxy(message, url, config.default_proxy, function (err, info) {
                 if (err) {
                     return cb(err);
@@ -59,7 +59,7 @@ var downloadSingle = function (url, message, cb) {
             });
         } else if (checkTime(info)) {
             let id;
-            if(music.ytRegex.test(url)) {
+            if (music.ytRegex.test(url)) {
                 id = info.video_id;
             } else {
                 id = info.id;
@@ -69,10 +69,16 @@ var downloadSingle = function (url, message, cb) {
                 if (err) return cb(err);
                 if (!Song) {
                     var video;
-                    if(music.ytRegex.test(url)) {
-                        video = youtubedl(url, ["--restrict-filenames", "-4", "-f", "bestaudio"], {cwd: __dirname,maxBuffer: 1024 * 1000});
+                    if (music.ytRegex.test(url)) {
+                        video = youtubedl(url, ["--restrict-filenames", "-4", "-f", "bestaudio"], {
+                            cwd: __dirname,
+                            maxBuffer: Infinity
+                        });
                     } else {
-                        video = youtubedl(url, ["--restrict-filenames", "-4"], {cwd: __dirname,maxBuffer: 1024 * 1000});
+                        video = youtubedl(url, ["--restrict-filenames", "-4"], {
+                            cwd: __dirname,
+                            maxBuffer: Infinity
+                        });
                     }
                     var filename = info.id + ".temp";
                     var stream = video.pipe(fs.createWriteStream('temp/' + filename));
@@ -173,11 +179,11 @@ var downloadPlaylist = function (url, message, playlistId, cb) {
 
 };
 var searchForIdInPlaylist = function (playlist, id) {
-        if (cycleThroughPlaylist(playlist, id)) {
-            return cycleThroughPlaylist(playlist, id);
-        } else {
-            return [];
-        }
+    if (cycleThroughPlaylist(playlist, id)) {
+        return cycleThroughPlaylist(playlist, id);
+    } else {
+        return [];
+    }
 };
 var cycleThroughPlaylist = function (playlist, id) {
     for (var i = 0; i < playlist.items.length; i++) {
@@ -207,7 +213,7 @@ var search = function (message, cb) {
             }
         });
     } else {
-        cb(t('qa.empty-search', {lngs:message.lang}));
+        cb(t('qa.empty-search', {lngs: message.lang}));
     }
 };
 var downloadProxy = function (message, url, proxy, cb) {
@@ -330,11 +336,11 @@ var convertDuration = function (info) {
         }
         console.log(durationConv);
     } else {
-            let d = Number(info.length_seconds);
-            var h = Math.floor(d / 3600);
-            var m = Math.floor(d % 3600 / 60);
-            var s = Math.floor(d % 3600 % 60);
-            return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
+        let d = Number(info.length_seconds);
+        var h = Math.floor(d / 3600);
+        var m = Math.floor(d % 3600 / 60);
+        var s = Math.floor(d % 3600 % 60);
+        return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
     }
     return durationConv;
 };
