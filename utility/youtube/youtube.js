@@ -70,9 +70,9 @@ var downloadSingle = function (url, message, cb) {
                 if (!Song) {
                     var video;
                     if(music.ytRegex.test(url)) {
-                        video = youtubedl(url, ["--restrict-filenames", "-4", "-f", "bestaudio"], {cwd: __dirname});
+                        video = youtubedl(url, ["--restrict-filenames", "-4", "-f", "bestaudio"], {cwd: __dirname,maxBuffer: 1024 * 1000});
                     } else {
-                        video = youtubedl(url, ["--restrict-filenames", "-4"], {cwd: __dirname});
+                        video = youtubedl(url, ["--restrict-filenames", "-4"], {cwd: __dirname,maxBuffer: 1024 * 1000});
                     }
                     var filename = info.id + ".temp";
                     var stream = video.pipe(fs.createWriteStream('temp/' + filename));
@@ -308,7 +308,7 @@ var checkTime = function (info) {
 };
 var convertDuration = function (info) {
     let durationConv = "";
-    if (typeof (info.duration) === 'undefined') {
+    if (typeof (info.duration) === 'undefined' && typeof (info.length_seconds) === 'undefined') {
         client.captureMessage('Duration undefined!', {extra: {'info': info}});
     }
     if (typeof (info.duration) !== 'undefined') {

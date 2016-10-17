@@ -74,7 +74,7 @@
     "talk": "Wenn du mir mit reden willst, erwähn mich einfach :D",
     "helpReply": "OK, Ich habe dir die Liste mit Befehlen in einer PM gesendet!"
   },
-  "version": "Momentan verwendet ich Version{{version}}",
+  "version": "Momentan verwende ich Version{{version}}",
   "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{link}}",
   "bug": "Bitte komm auf den Support Discord: {{link}} um einen Fehler zu melden!",
   "level": {
@@ -109,7 +109,7 @@
     "success": "{{user}} wurde gebannt!",
     "privilege": "Meine Rechte reichen nicht aus um {{user}} zu bannen!",
     "err": "Ein Fehler ist aufgetreten während ich {{user}} bannen wollte!",
-    "perms": "Du kannst den Besitzer oder jemand mit der WolkeBot rolle nicht bannen.",
+    "perms": "Du kannst den Besitzer oder jemand mit der WolkeBot Rolle nicht bannen.",
     "self": "Netter Versuch, aber du kannst mich nicht mit meinem eigenen Befehl bannen.",
     "no-mention": "Bitte erwähne den Nutzer, den du bannen willst!"
   },
@@ -117,7 +117,7 @@
     "success":"{{user}} wurde gekickt!",
     "privilege": "Meine Rechte reichen nicht aus um {{user}} zu kicken!",
     "err": "Ein Fehler ist aufgetreten während ich {{user}} kicken wollte!",
-    "perms": "Du kannst den Besitzer oder jemand mit der WolkeBot rolle nicht kicken.",
+    "perms": "Du kannst den Besitzer oder jemand mit der WolkeBot Rolle nicht kicken.",
     "self": "Netter Versuch, aber du kannst mich nicht mit meinem eigenen Befehl kicken!",
     "no-mention": "Bitte erwähne den Nutzer, den du kicken willst!"
   },
