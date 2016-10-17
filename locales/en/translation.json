@@ -1,7 +1,7 @@
 {
   "generic": {
     "error": "An error occured!",
-    "no-pm": "This Command does not work in private Channels!",
+    "no-pm": ":no_entry: This Command does not work in private channels!",
     "whole-num": "Please add a whole number!",
     "nan": "Whatever you just send, please just add a whole number. :) ",
     "no-song-in-queue": "There is song in the queue, maybe add one :musical_note: ?",

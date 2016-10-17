@@ -13,8 +13,8 @@ var execute = function (message) {
         easyGuild.push({name: guild.name, size: guild.members.size, memberCount: guild.memberCount});
     });
     let guilds = _.sortBy(easyGuild, 'size');
-    guilds = guilds.slice(0, 5);
     guilds = _.reverse(guilds);
+    guilds = guilds.slice(0, 5);
     for (var i = 0; i < guilds.length; i++) {
         table.addRow(i + 1, guilds[i].name, guilds[i].size);
     }

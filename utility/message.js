@@ -127,7 +127,7 @@ var getUserLevel = function getUserLevel(message, cb) {
                     var clientServer = loadServerFromUser(message, User);
                     cb(null, clientServer)
                 } else {
-                    cb(false);
+                    cb('OH Nooooo');
                 }
             } else {
                 createUser(message, true, true, function (err) {

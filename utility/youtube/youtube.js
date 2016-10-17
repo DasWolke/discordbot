@@ -68,7 +68,12 @@ var downloadSingle = function (url, message, cb) {
             songModel.findOne({id: id}, function (err, Song) {
                 if (err) return cb(err);
                 if (!Song) {
-                    var video = youtubedl(url, ["--restrict-filenames", "-4", "-f", "bestaudio"], {cwd: __dirname});
+                    var video;
+                    if(music.ytRegex.test(url)) {
+                        video = youtubedl(url, ["--restrict-filenames", "-4", "-f", "bestaudio"], {cwd: __dirname});
+                    } else {
+                        video = youtubedl(url, ["--restrict-filenames", "-4"], {cwd: __dirname});
+                    }
                     var filename = info.id + ".temp";
                     var stream = video.pipe(fs.createWriteStream('temp/' + filename));
                     video.on('info', function (info) {
@@ -278,7 +283,7 @@ var downloadProxy = function (message, url, proxy, cb) {
     });
 };
 var checkTime = function (info) {
-    if (typeof (info.duration) === 'undefined') {
+    if (typeof (info.duration) === 'undefined' && typeof (info.length_seconds) === 'undefined') {
         client.captureMessage('Duration undefined!', {extra: {'info': info}});
         return true;
     }
