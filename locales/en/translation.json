@@ -157,9 +157,9 @@
     "magic": "xX_Cats_Xx was here -10.10.2016"
   },
   "set-lang": {
-    "no-lang": "You did not specify a language!",
+    "no-lang": "You did not specify a language! Currently there are de (german), en (english) and ru (russian) available.",
     "success": "Ok i just set the language for this server to {{language}}.",
-    "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github!"
+    "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. Currently there are de (german), en (english) and ru (russian) available."
   },
   "np": {
     "song-duration": "Currently playing:` {{title}} {{current}}/{{duration}} {{repeat}} `",
