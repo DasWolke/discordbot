@@ -3,6 +3,7 @@
  */
 var cmd = 'mod';
 var radio = require('./mod/radio');
+var lang = require('./mod/lang');
 var config = require('../config/main.json');
 var execute = function (message) {
     if (message.author.id === config.owner_id) {
@@ -13,6 +14,7 @@ var execute = function (message) {
                     radio.exec(message);
                     return;
                 case "lang":
+                    lang.exec(message);
                     return;
                 default:
                     return;

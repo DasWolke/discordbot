@@ -6,13 +6,14 @@
  */
 var cmd = 'radio';
 // var config = require('../../config/main.json');
+var add = require('./radio/add');
 var execute = function (message) {
     let messageSplit = message.content.split(' ').slice(2);
-    console.log(messageSplit);
+    // console.log(messageSplit);
     if (messageSplit.length > 0) {
         switch (messageSplit[0]) {
             case "add":
-
+                add.exec(message);
                 return;
             case "list":
                 return;

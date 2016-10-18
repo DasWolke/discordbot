@@ -22,7 +22,7 @@ var createUser = function (message, level, pms, cb) {
         favorites: [],
         cookies: []
     });
-    freshUser.save(function (err) {
+    freshUser.save((err) => {
         // console.log('Created User!');
         if (err) return cb(err);
         cb();
@@ -86,7 +86,11 @@ var updateUserLevel = function (message, Server, cb) {
                             User.updateLevel(serverId, function (err) {
                                 if (err) return cb(err);
                                 if (pmNotifications(message, User) && typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
-                                    message.author.sendMessage(t('generic.level-update', {lngs:message.lang, level:clientServer.level + 1, server:message.guild.name}));
+                                    message.author.sendMessage(t('generic.level-update', {
+                                        lngs: message.lang,
+                                        level: clientServer.level + 1,
+                                        server: message.guild.name
+                                    }));
                                 }
                             });
                         }
@@ -130,12 +134,11 @@ var getUserLevel = function getUserLevel(message, cb) {
                     cb('OH Nooooo');
                 }
             } else {
+                let clientServer = {level: 1, xp: 5, totalXp: 5};
                 createUser(message, true, true, function (err) {
                     if (err) return cb(err);
-                    cb()
+                    cb(null, clientServer);
                 });
-                let clientServer = {level:1, xp:5, totalXp:5};
-                cb(null, clientServer);
             }
         });
     }
@@ -282,5 +285,5 @@ module.exports = {
     noSpam: noSpam,
     checkNsfw: checkNsfwChannel,
     pmNotifications: pmNotifications,
-    calcXpNeeded:calcXpNeeded
+    calcXpNeeded: calcXpNeeded
 };
