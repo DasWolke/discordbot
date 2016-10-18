@@ -10,7 +10,10 @@ var execute = function (message) {
     let easyGuild = [];
     let table = new AsciiTable();
     message.botUser.guilds.map((guild) => {
-        easyGuild.push({name: guild.name, size: guild.members.size, memberCount: guild.memberCount});
+        let users = guild.members.filter((member) => {
+            return !member.user.bot
+        });
+        easyGuild.push({name: guild.name, size: users.size, memberCount: guild.memberCount});
     });
     let guilds = _.sortBy(easyGuild, 'size');
     guilds = _.reverse(guilds);
