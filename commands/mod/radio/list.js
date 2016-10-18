@@ -4,10 +4,7 @@
 /**
  * Created by julia on 02.10.2016.
  */
-var cmd = 'list';
-var logger = require('../../../utility/logger');
-var winston = logger.getT();
-var AsciiTable = require('ascii-table');
+var cmd = 'add';
 var songModel = require('../../../DB/song');
 // var config = require('../../config/main.json');
 var execute = function (message) {
@@ -21,27 +18,14 @@ var execute = function (message) {
         }
     }
     if (messageSplit.length > 0) {
-        songModel.find({
-            $text: {
-                $search: messageFormat,
-                type: "radio"
-            }
-        }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(10).exec(function (err, Radios) {
+        songModel.find({$text: {$search: messageFormat}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(5).exec(function (err, Songs) {
             if (err) return message.reply(err);
-            let table = new AsciiTable();
-            for (var i = 0; i < Radios.length; i++) {
-                table.addRow(i + 1, Radios[i].title);
-            }
-            message.channel.sendMessage(`\`\`\`${table.toString()}\`\`\``);
+            message.reply(JSON.stringify(Songs));
         });
     } else {
-        songModel.find({type: "radio"}).limit(10).exec(function (err, Radios) {
+        songModel.find({type: "radio"}, {score: {$meta: "textScore"}}).limit(10).exec(function (err, Songs) {
             if (err) return message.reply(err);
-            let table = new AsciiTable();
-            for (var i = 0; i < Radios.length; i++) {
-                table.addRow(i + 1, Radios[i].title);
-            }
-            message.channel.sendMessage(`\`\`\`${table.toString()}\`\`\``);
+            message.reply(JSON.stringify(Songs));
         });
     }
 };
