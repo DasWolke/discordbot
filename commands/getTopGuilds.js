@@ -1,8 +1,6 @@
 /**
  * Created by julia on 02.10.2016.
  */
-var i18nBean = require('../utility/i18nManager');
-var t = i18nBean.getT();
 var cmd = 'top';
 var AsciiTable = require('ascii-table');
 let _ = require('lodash');

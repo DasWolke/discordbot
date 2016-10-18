@@ -127,7 +127,7 @@ i18next.use(Backend).init({
         }
         setInterval(() => {
             updateStats();
-        }, 1000 * 60 * 60 * 3);
+        }, 1000 * 60 * 60);
     });
     bot.on('reconnecting', () => {
         // winston.info('Reconnecting to Discord!');
