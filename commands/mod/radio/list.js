@@ -5,7 +5,6 @@
  * Created by julia on 02.10.2016.
  */
 var cmd = 'add';
-var shortid = require('shortid');
 var songModel = require('../../../DB/song');
 // var config = require('../../config/main.json');
 var execute = function (message) {
@@ -18,23 +17,16 @@ var execute = function (message) {
             messageFormat = messageFormat + " " + messageSplit[i];
         }
     }
-    messageSplit = messageFormat.split('|');
     if (messageSplit.length > 0) {
-        let song = new songModel({
-            title: messageSplit[0],
-            id: shortid.generate(),
-            addedBy: message.author.id,
-            addedAt: Date.now(),
-            duration: "",
-            type: "radio",
-            url: messageSplit[1]
-        });
-        song.save(err => {
+        songModel.find({$text: {$search: messageFormat}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(5).exec(function (err, Songs) {
             if (err) return message.reply(err);
-            message.reply(`Radio ${song.title} with stream url ${song.url} added!`);
-        })
+            message.reply(JSON.stringify(Songs));
+        });
     } else {
-        message.reply('Please add a Name and Stream for the Station');
+        songModel.find({type: "radio"}, {score: {$meta: "textScore"}}).limit(10).exec(function (err, Songs) {
+            if (err) return message.reply(err);
+            message.reply(JSON.stringify(Songs));
+        });
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

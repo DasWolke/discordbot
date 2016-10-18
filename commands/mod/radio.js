@@ -7,6 +7,7 @@
 var cmd = 'radio';
 // var config = require('../../config/main.json');
 var add = require('./radio/add');
+var list = require('./radio/list');
 var execute = function (message) {
     let messageSplit = message.content.split(' ').slice(2);
     // console.log(messageSplit);
@@ -16,6 +17,7 @@ var execute = function (message) {
                 add.exec(message);
                 return;
             case "list":
+                list.exec(message);
                 return;
             case "remove":
                 return;
