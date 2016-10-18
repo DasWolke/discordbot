@@ -1,10 +1,9 @@
 /**
  * Created by julia on 02.10.2016.
  */
-var i18nBean = require('../utility/i18nManager');
-var async = require('async');
-var cmd = 'reloadLang';
-var config = require('../config/main.json');
+var i18nBean = require('../../../utility/i18nManager');
+var cmd = 'reload';
+var config = require('../../../config/main.json');
 var execute = function (message) {
     if (message.author.id === config.owner_id) {
         try {

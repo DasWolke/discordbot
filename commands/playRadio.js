@@ -41,4 +41,4 @@ var execute = function (message) {
         message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
-module.exports = {cmd: cmd, accessLevel: 2, exec: pre};
+module.exports = {cmd: cmd, accessLevel: 3, exec: pre};

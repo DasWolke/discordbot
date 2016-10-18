@@ -332,27 +332,22 @@ var playSong = function (message, Song, Queueused) {
 };
 var streamSong = function (message, stream) {
     var connection = getVoiceConnection(message);
-    if (!connection.playing) {
-        try {
-            connection.resume();
-        } catch (e) {
-
-        }
+    if (connection) {
+        let dispatcher = connection.playStream(stream, {volume: 0.25});
+        // updatePlays(Song.id, function (err) {
+        //     if (err) return console.log(err);
+        // });
+        // if (typeof(Queueused) === 'undefined') {
+        //     message.channel.sendMessage("Now playing Song: " + Song.title);
+        // }
+        dispatcher.on("end", function () {
+            console.log("Stream ended");
+            // nextSong(message, Song);
+        });
+        dispatcher.on("error", function (err) {
+            console.log(err);
+        });
     }
-    let dispatcher = connection.playStream(stream, {volume: 0.25});
-    // updatePlays(Song.id, function (err) {
-    //     if (err) return console.log(err);
-    // });
-    // if (typeof(Queueused) === 'undefined') {
-    //     message.channel.sendMessage("Now playing Song: " + Song.title);
-    // }
-    dispatcher.on("end", function () {
-        console.log("Stream ended");
-        // nextSong(message, Song);
-    });
-    dispatcher.on("error", function (err) {
-        console.log(err);
-    });
 };
 var startQueue = function (message) {
     queueModel.findOne({server: message.guild.id}, function (err, Queue) {

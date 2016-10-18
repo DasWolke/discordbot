@@ -154,9 +154,9 @@
     "magic": "xX_Cats_Xx war hier -10.10.2016"
   },
   "set-lang": {
-    "no-lang": "Du hast keine Sprache angegeben!",
+    "no-lang": "Du hast keine Sprache angegeben! Momentan verfügbar sind de (Deutsch), en (Englisch) und ru (Russisch)",
     "success": "Ok Ich habe die Sprache auf {{language}} umgestellt.",
-    "unsupported": "Diese Sprache ist bisher noch nicht eingebaut worden, aber du kannst helfen indem du eine pullrequest mit der gewünschten Sprache auf github öffnest"
+    "unsupported": "Diese Sprache ist bisher noch nicht eingebaut worden, aber du kannst helfen indem du eine pullrequest mit der gewünschten Sprache auf github öffnest. Momentan verfügbar sind de (Deutsch), en (Englisch) und ru (Russisch)"
   },
   "np": {
     "song-duration": "Aktuell läuft:` {{title}} {{current}}/{{duration}} {{repeat}} `",
@@ -213,7 +213,7 @@
     "id": "ID",
     "name": "Name",
     "member": "Mitglieder",
-    "text": "Text channel",
+    "text": "Text Channel",
     "voice": "Sprach Channel",
     "roles": "Rollen",
     "creation": "Erstelldatum",

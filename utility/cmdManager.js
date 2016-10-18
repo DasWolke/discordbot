@@ -2,7 +2,6 @@
  * Created by julian on 16.05.2016.
  */
 var commands = {};
-var prefix = "!w.";
 const fs = require('fs');
 const path = require('path');
 var logger = require('./logger');

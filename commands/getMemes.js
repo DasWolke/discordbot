@@ -8,4 +8,4 @@ var execute = function (message) {
         console.log(body);
     });
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 3, exec: execute};
