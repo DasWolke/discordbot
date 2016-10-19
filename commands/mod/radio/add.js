@@ -20,21 +20,28 @@ var execute = function (message) {
     }
     messageSplit = messageFormat.split('|');
     if (messageSplit.length > 0) {
-        let song = new songModel({
-            title: messageSplit[0],
-            id: shortid.generate(),
-            addedBy: message.author.id,
-            addedAt: Date.now(),
-            duration: "",
-            type: "radio",
-            url: messageSplit[1]
-        });
-        song.save(err => {
+        songModel.findOne({url: messageSplit[1]}, (err, Radio) => {
             if (err) return message.reply(err);
-            message.reply(`Radio ${song.title} with stream url ${song.url} added!`);
-        })
+            if (Radio) {
+                message.reply(JSON.stringify(Radio));
+            } else {
+                let song = new songModel({
+                    title: messageSplit[0],
+                    id: shortid.generate(),
+                    addedBy: message.author.id,
+                    addedAt: Date.now(),
+                    duration: "",
+                    type: "radio",
+                    url: messageSplit[1]
+                });
+                song.save(err => {
+                    if (err) return message.reply(err);
+                    message.reply(`Radio ${song.title} with stream url ${song.url} added!`);
+                });
+            }
+        });
     } else {
-        message.reply('Please add a Name and Stream for the Station');
+        message.reply('Please add a Name and Stream for the Station like this: name|stream');
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

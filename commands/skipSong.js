@@ -23,7 +23,11 @@ var execute = function (message) {
                             Queue.stopRepeat(function (err) {
                                 if (err) return winston.error(err);
                                 voice.nextSong(message, Queue.songs[0], false);
-                                message.reply(t('skip.success', {lngs:message.lang, title:Queue.songs[0].title}));
+                                message.reply(t('skip.success', {
+                                    lngs: message.lang,
+                                    title: Queue.songs[0].title,
+                                    interpolation: {escape: false}
+                                }));
                             });
                         } else {
                             if (dispatcher) {

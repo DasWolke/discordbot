@@ -271,6 +271,24 @@ var checkCmdChannel = function (message, cb) {
         }
     });
 };
+var filterSelection = (message, collector) => {
+    switch (message.content) {
+        case "1":
+            return true;
+        case "2":
+            return true;
+        case "3":
+            return true;
+        case "4":
+            return true;
+        case "5":
+            return true;
+        case "c":
+            return true;
+        default:
+            return false;
+    }
+};
 module.exports = {
     cleanMessage: cleanMessage,
     createUser: createUser,
@@ -285,5 +303,6 @@ module.exports = {
     noSpam: noSpam,
     checkNsfw: checkNsfwChannel,
     pmNotifications: pmNotifications,
-    calcXpNeeded: calcXpNeeded
+    calcXpNeeded: calcXpNeeded,
+    filterSelection: filterSelection
 };

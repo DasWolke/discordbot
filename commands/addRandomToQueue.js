@@ -33,10 +33,10 @@ var execute = function (message) {
         if (isNaN(iteration)) {
             iteration = 0;
         }
-        songModel.count({}, function (err, C) {
+        songModel.count({type: {$ne: 'radio'}}, function (err, C) {
             if (err) return message.reply(t('qa.db-error', {lngs:message.lang}));
             var random = general.random(0, C);
-            songModel.find({}, function (err, Songs) {
+            songModel.find({type: {$ne: 'radio'}}, function (err, Songs) {
                 if (err) return winston.error(err);
                 let Song;
                 if (iteration === 0) {
@@ -53,7 +53,7 @@ var execute = function (message) {
                     } else {
                         message.reply(t('generic.error', {lngs:message.lang}));
                     }
-                } else {
+                } else if (iteration < 101) {
                     if (voice.inVoice(message)) {
                         var randoms = [];
                         for (var i = 0; i < iteration; i++) {
@@ -83,6 +83,8 @@ var execute = function (message) {
                     } else {
                         message.reply(t('generic.no-voice', {lngs:message.lang}));
                     }
+                } else {
+                    message.reply(':x: :keycap_ten: :zero: :musical_note: ');
                 }
             });
         });
