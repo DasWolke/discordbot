@@ -6,8 +6,6 @@ var t = i18nBean.getT();
 var userModel = require('../DB/user');
 var serverModel = require('../DB/server');
 var config = require('../config/main.json');
-var logger = require('./logger');
-var winston = logger.getT();
 var cleanMessage = function (message) {
     return message.replace("@", "");
 };
@@ -25,7 +23,7 @@ var createUser = function (message, level, pms, cb) {
         cookies: []
     });
     freshUser.save((err) => {
-        // winston.info('Created User!');
+        // console.log('Created User!');
         if (err) return cb(err);
         cb();
     });
@@ -63,7 +61,7 @@ var updateXp = function (message, cb) {
             });
         }
     });
-    // winston.info('Started update XP!');
+    // console.log('Started update XP!');
 
 };
 var updateUserLevel = function (message, Server, cb) {
@@ -73,28 +71,22 @@ var updateUserLevel = function (message, Server, cb) {
         if (User) {
             if (User.name !== message.author.username) {
                 User.updateName(message.author.username, function (err) {
-                    if (err) return winston.info(err);
+                    if (err) return console.log(err);
                 });
             }
             if (hasGuild(message, User)) {
                 var clientServer = loadServerFromUser(message, User);
-                // winston.info('User has Server');
+                // console.log('User has Server');
                 if (levelEnabled(message, User) && !cooldown(clientServer)) {
-                    // winston.info('User has Level enabled and has no Cooldown!');
+                    // console.log('User has Level enabled and has no Cooldown!');
                     User.updateXP(serverId, calcXpMessage(message.content), function (err) {
                         if (err) return cb(err);
-                        // winston.info('Updated Xp');
+                        // console.log('Updated Xp');
                         if (typeof (clientServer) !== 'undefined' && clientServer.xp + calcXpMessage(message.content) > calcXpNeeded(clientServer)) {
                             User.updateLevel(serverId, function (err) {
                                 if (err) return cb(err);
                                 if (pmNotifications(message, User) && typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
                                     message.author.sendMessage(t('generic.level-update', {
-                                        lngs: message.lang,
-                                        level: clientServer.level + 1,
-                                        server: message.guild.name
-                                    }));
-                                } else if (typeof (Server.pmNotifications) !== 'undefined' || Server.pmNotifications) {
-                                    message.reply(t('generic.level-update', {
                                         lngs: message.lang,
                                         level: clientServer.level + 1,
                                         server: message.guild.name
@@ -105,12 +97,14 @@ var updateUserLevel = function (message, Server, cb) {
                     });
                 }
             } else {
+                // console.log('added Server!');
                 User.addServer(getServerObj(message, true, true), function (err) {
                     if (err) return cb(err);
                     cb();
                 });
             }
         } else {
+            // console.log('Create User!');
             createUser(message, true, true, function (err) {
                 if (err) return cb(err);
                 cb();
@@ -224,13 +218,13 @@ var getServerObj = function (message, level, pms) {
 };
 var noSpam = function (message) {
     // if(message.mentions.users.length > 25) {
-    //     winston.info('good.');
+    //     console.log('good.');
     // }
-    winston.info(message.mentions.length);
+    console.log(message.mentions.length);
 };
 var checkNsfwChannel = function (message, cb) {
     serverModel.findOne({id: message.guild.id}, function (err, Server) {
-        if (err) return winston.info(err);
+        if (err) return console.log(err);
         if (Server) {
             if (typeof (Server.nsfwChannels) !== 'undefined' && Server.nsfwChannels.length > 0) {
                 for (var i = 0; i < Server.nsfwChannels.length; i++) {
@@ -245,7 +239,7 @@ var checkNsfwChannel = function (message, cb) {
                         $addToSet: {nsfwChannels: Server.nsfwChannel},
                         $set: {nsfwChannel: ""}
                     }, function (err) {
-                        if (err) return winston.info(err);
+                        if (err) return console.log(err);
                     });
                     return cb();
                 } else {
@@ -259,7 +253,7 @@ var checkNsfwChannel = function (message, cb) {
 };
 var checkCmdChannel = function (message, cb) {
     serverModel.findOne({id: message.guild.id}, function (err, Server) {
-        if (err) return winston.info(err);
+        if (err) return console.log(err);
         if (Server) {
             if (typeof (Server.cmdChannels) !== 'undefined' && Server.cmdChannels.length > 0) {
                 for (var i = 0; i < Server.cmdChannels.length; i++) {
@@ -295,14 +289,6 @@ var filterSelection = (message, collector) => {
             return false;
     }
 };
-var buildPrologMessage = (content) => {
-    let msg = "\`\`\`css\n";
-    for (var i = 0; i < content.length; i++) {
-        msg = msg + content[i];
-    }
-    msg = msg + "\`\`\`";
-    return msg;
-};
 module.exports = {
     cleanMessage: cleanMessage,
     createUser: createUser,
@@ -318,6 +304,5 @@ module.exports = {
     checkNsfw: checkNsfwChannel,
     pmNotifications: pmNotifications,
     calcXpNeeded: calcXpNeeded,
-    filterSelection: filterSelection,
-    buildPrologMessage: buildPrologMessage
+    filterSelection: filterSelection
 };

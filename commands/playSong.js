@@ -39,7 +39,7 @@ var execute = function (message) {
                         if (voice.inVoice(message)) {
                             voice.addSongFirst(message, Song, false).then(() => {
                                 voice.playSong(message, Song);
-                            }).catch(winston.info);
+                            }).catch(console.log);
                         } else {
                             message.reply(t('generic.no-voice', {lngs:message.lang}));
                         }
@@ -49,13 +49,13 @@ var execute = function (message) {
                         $text: {$search: messageSearch},
                         type: {$ne: 'radio'}
                     }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
-                        if (err) return winston.info(err);
+                        if (err) return console.log(err);
                         var Song = Songs[0];
                         if (Song) {
                             if (voice.inVoice(message)) {
                                 voice.addSongFirst(message, Song, false).then(() => {
                                     voice.playSong(message, Song);
-                                }).catch(winston.info);
+                                }).catch(console.log);
                             } else {
                                 message.reply(t('generic.no-voice', {lngs:message.lang}));
                             }

@@ -10,7 +10,7 @@ var execute = function (message) {
         voice.now(message).then(result => {
             if (result.playing) {
                 let repeat = (result.repeat) ? t('np.repeat-on') : '';
-                if (typeof (result.duration) !== 'undefined' && result.duration !== '') {
+                if (typeof (result.duration) !== 'undefined') {
                     message.reply(t('np.song-duration', {
                         lngs: message.lang,
                         title: result.title,
