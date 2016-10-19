@@ -11,9 +11,21 @@ var execute = function (message) {
             if (result.playing) {
                 let repeat = (result.repeat) ? t('np.repeat-on') : '';
                 if (typeof (result.duration) !== 'undefined') {
-                    message.reply(t('np.song-duration', {lngs: message.lang, title:result.title, repeat:repeat, duration:result.duration, current:result.current}));
+                    message.reply(t('np.song-duration', {
+                        lngs: message.lang,
+                        title: result.title,
+                        repeat: repeat,
+                        duration: result.duration,
+                        current: result.current,
+                        interpolation: {escape: false}
+                    }));
                 } else {
-                    message.reply(t('np.song', {lngs: message.lang, title:result.title, repeat:repeat}));
+                    message.reply(t('np.song', {
+                        lngs: message.lang,
+                        title: result.title,
+                        repeat: repeat,
+                        interpolation: {escape: false}
+                    }));
                 }
             } else {
                 message.reply(t('generic.no-song-in-queue', {lngs: message.lang}));

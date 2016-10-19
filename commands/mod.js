@@ -16,6 +16,9 @@ var execute = function (message) {
                 case "lang":
                     lang.exec(message);
                     return;
+                // case "resolve":
+                //     message.reply(encodeURIComponent('麻枝 准×やなぎなぎ終わりの世界から'));
+                //     return;
                 default:
                     return;
             }

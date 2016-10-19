@@ -38,7 +38,7 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
                     return message.reply(t('voice.blocked', {lngs: message.lang}));
                 }
                 message.reply(t('qa.success', {lngs: message.lang, song: info.title}));
-                songModel.findOne({id: info.id}, function (err, Song) {
+                songModel.findOne({id: info.id, type: {$ne: 'radio'}}, function (err, Song) {
                     if (err) return console.log(err);
                     if (Song) {
                         if (voice.inVoice(message)) {
@@ -59,7 +59,7 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
     });
 };
 var ytDlAndQueue = function (message, messageSearch, messageSplit) {
-    songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
+    songModel.findOne({url: messageSearch.trim(), type: {$ne: 'radio'}}, function (err, Song) {
         if (err) {
             console.log(err);
             return message.reply(t('generic.error', {lngs: message.lang}));
@@ -103,7 +103,7 @@ var ytDlAndQueue = function (message, messageSearch, messageSplit) {
     });
 };
 var ytDlAndPlayForever = function (message, messageSearch) {
-    songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
+    songModel.findOne({url: messageSearch.trim(), type: {$ne: 'radio'}}, function (err, Song) {
         if (err) {
             console.log(err);
             return message.reply(t('generic.error', {lngs: message.lang}));

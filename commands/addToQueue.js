@@ -39,7 +39,7 @@ var execute = function (message) {
                 url: messageSplit[1],
                 interpolation: {escape: false}
             }));
-            songModel.findOne({url: messageSplit[1]}, (err, Song) => {
+            songModel.findOne({url: messageSplit[1], type: {$ne: 'radio'}}, (err, Song) => {
                 if (err) return console.log(err);
                 if (Song) {
                     voice.addToQueue(message, Song, null, (err, reply) => {
@@ -61,7 +61,10 @@ var execute = function (message) {
             });
         } else {
             messageSearch = messageSearch.replace('-', '');
-            songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec((err, Songs) => {
+            songModel.find({
+                $text: {$search: messageSearch},
+                type: {$ne: 'radio'}
+            }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec((err, Songs) => {
                 if (err) return console.log(err);
                 if (Songs !== null && Songs.length > 0) {
                     let Song = Songs[0];
@@ -72,7 +75,11 @@ var execute = function (message) {
                         }
                     });
                 } else {
-                    message.reply(t('qa.nothing-found', {search: messageSearch, lngs: message.lang}));
+                    message.reply(t('qa.nothing-found', {
+                        search: messageSearch,
+                        lngs: message.lang,
+                        interpolation: {escape: false}
+                    }));
                 }
             });
         }

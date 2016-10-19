@@ -45,7 +45,10 @@ var execute = function (message) {
                         }
                     }).catch(message.reply);
                 } else {
-                    songModel.find({$text: {$search: messageSearch}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
+                    songModel.find({
+                        $text: {$search: messageSearch},
+                        type: {$ne: 'radio'}
+                    }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
                         if (err) return console.log(err);
                         var Song = Songs[0];
                         if (Song) {
