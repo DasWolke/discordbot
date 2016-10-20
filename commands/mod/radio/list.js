@@ -4,7 +4,7 @@
 /**
  * Created by julia on 02.10.2016.
  */
-var cmd = 'add';
+var cmd = 'list';
 var AsciiTable = require('ascii-table');
 var songModel = require('../../../DB/song');
 // var config = require('../../config/main.json');
@@ -25,7 +25,7 @@ var execute = function (message) {
             for (var i = 0; i < Radios.length; i++) {
                 table.addRow(i + 1, Radios[i].title);
             }
-            message.channel.sendMessage(table.toString());
+            message.channel.sendMessage(`\`\`\`${table.toString()}\`\`\``);
         });
     } else {
         songModel.find({type: "radio"}).limit(10).exec(function (err, Radios) {
@@ -34,7 +34,7 @@ var execute = function (message) {
             for (var i = 0; i < Radios.length; i++) {
                 table.addRow(i + 1, Radios[i].title);
             }
-            message.channel.sendMessage(table.toString());
+            message.channel.sendMessage(`\`\`\`${table.toString()}\`\`\``);
         });
     }
 };

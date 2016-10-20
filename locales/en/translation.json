@@ -10,8 +10,7 @@
     "no-voice": "I am not connected to any voice channel on this Server!",
     "level-update":":tada: You just reached **Level  {{level}}** on **{{server}}**",
     "empty-search": "You did not enter a search Term!",
-    "negative": "Please dont use a negative number!",
-    "cancel": "c:cancel"
+    "negative":"Please dont use a negative number!"
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ Commands you can write:",
@@ -32,11 +31,13 @@
     "skip": "Skips the Current Song (only usable with WolkeBot Role)",
     "voteskip": "Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped.",
     "qa": "Adds a Song/Youtube Video to the Queue max Length: 1H30M",
+    "qrl": "Deprecated --> replaced by !w.qra 1",
     "qra": "removes either all Songs except the one that is playing right now or a certain number of songs (requires WolkeBot Role)",
     "queue": "Shows the current Queue",
     "np": "Shows the currently playing Song",
     "rq": "Adds a random Song/a number of songs to the Queue",
-    "stream": "Streams the selected Internet radio, you can search for radios or directly add them by appending -u url to the command",
+    "random": "Deprecated as !w.rq does the same.",
+    "osu": "Deprecated as Osu Songs can now be downloaded with the normal music commands",
     "youtube": "[Youtube]",
     "yts": "Searches Youtube and gives you the First Result",
     "ytq": "Searches Youtube and adds the First Result to the Queue",
@@ -48,7 +49,6 @@
     "rm": "removes the last 10 Messages, you can change 10 to a value between 1-100",
     "noLevelServer": "Disables the level system for the entire server, use the command again to re-enable it",
     "noPmServer": "Disables the pm notifications for the entire server, use the command again to re-enable it",
-    "noChServer": "Disables the pm notifications for the entire server and enables channel notifications instead, use the command again to revert it",
     "setLewd": "Adds the current Channel as a NSFW Channel",
     "remLewd": "Removes the current channel from the list of NSFW channels",
     "setPrefix": "Sets the prefix of the bot, no spaces/mentions allowed!",
@@ -69,9 +69,9 @@
     "8ball": "Gives you the Opinion of the magic 8ball to a question",
     "garfield": "Gives you a random garfield command",
     "cat":"Sends you a random cat image",
-    "hug": "Gives you an anime hug gif",
-    "slap": "Gives you an anime slap gif",
-    "setLang": "sets the language, (currently supported are de (german), en (english) and ru (russian)",
+    "hug":"Gives you a hug gif",
+    "slap":"Gives you a slap gif",
+    "setLang":"sets the language",
     "report":"If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
     "feedback": "For feedback use the support discord please ^^",
     "talk": "If you want to talk with me @mention me with a message :D",
@@ -133,16 +133,15 @@
     "nothing-found": "No Song found with Search Term `{{search}}` ",
     "empty-search": "You did not enter a search Term!",
     "started-download": "Started download of `{{- url}}` ",
-    "success": "Queued **{{- song}}**"
+    "success":"Queued **{{song}}**"
   },
   "rq": {
     "db-error": "A database error occured!",
-    "success-multiple": "Added the following Songs:\n```{{- table}}```"
+    "success-multiple": "Added the following Songs:\n```{{table}}```"
   },
   "qra": {
     "to-small": "You cant remove {{number}} songs!",
-    "success": "Removed  the following songs:\n {{- table}}",
-    "too-big": "Removed {{number}} songs",
+    "success": "Removed  the following Songs:\n {{table}}",
     "one-song": "Use {{- prefix}}fskip to skip the current Song!"
   },
   "cookie": {
@@ -163,8 +162,8 @@
     "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. Currently there are de (german), en (english) and ru (russian) available."
   },
   "np": {
-    "song-duration": "Currently playing:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
-    "song": "Currently playing: `{{-title}} {{repeat}}`",
+    "song-duration": "Currently playing:` {{title}} {{current}}/{{duration}} {{repeat}} `",
+    "song": "Currently playing:`{{title}} {{repeat}}`",
     "repeat-on": "repeat:on"
   },
   "queue": {
@@ -172,7 +171,7 @@
   },
   "rem-lewd": {
     "no-nsfw": "There are no NSFW Channels yet.",
-    "success": "Successfully removed {{- channel}} from the NSFW channels!"
+    "success": "Successfully removed {{channel}} from the NSFW channels!"
   },
   "no-level-server": {
     "success-disable": "Ok I just disabled the level system for this server, type this command again to enable it.",
@@ -181,10 +180,6 @@
   "no-pm-server": {
     "success-disable": "Ok I just disabled pm notifications for this server, type this command again to enable them.",
     "success-enable": "Ok I just enabled pm notifications for this server, type this command again to disable them."
-  },
-  "no-channel-server": {
-    "success-disable": "Ok I just disabled pm notifications for this server and enabled the channel notifications, type this command again to revert it.",
-    "success-enable": "Ok I just enabled pm notifications for this server and disabled the channel notifications, type this command again to revert it."
   },
   "no-level": {
     "success-disable": "Ok, I disabled the level system for you, type this command again to enable it.",
@@ -215,7 +210,7 @@
       "no-link": "This is not a valid osu link!",
       "unvalid-link": "No map link supplied!"
     },
-    "success": "PP for map `{{- artist}} - {{- title}} [{{- version}}] with Acc {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}`"
+    "success": "PP for map `{{artist}} - {{title}} [{{version}}] with Acc {{accuracy}}%` `{{pp}}PP` `{{mods}}`"
   },
   "server-info": {
     "id": "ID",
@@ -234,7 +229,7 @@
     "playing": ":musical_note: Now playing **{{- song}}**"
   },
   "prefix":{
-    "success": "Ok i just set the prefix to {{- prefix}}",
+    "success":"Ok i just set the prefix to {{prefix}}",
     "no-prefix":"Please add a prefix!"
   },
   "voice":{
@@ -244,8 +239,8 @@
     "no-volume":"No volume set!",
     "repeat-start": "Started repeat for **{{- song}}**",
     "already-playing":"This Song is already playing!",
-    "blocked": "This Video is not available to download. Maybe it is too long or blocked/removed",
-    "dl-start": ":hourglass: loading song!",
+    "blocked":"This Video is not available to download.",
+    "dl-start":":hourglass: Started Download!",
     "use-proxy":"Trying to download over the proxy, this could take a bit."
   },
   "yts":{
