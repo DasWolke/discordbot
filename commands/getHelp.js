@@ -10,13 +10,13 @@ var execute = function (message) {
     let pre = message.prefix;
     var reply = `${t('help.intro_2', {lngs: message.lang})} ${message.botUser.user.username}, ${t('help.intro',{lngs: message.lang})} 
                  \`\`\`\css
-${pre}help > ${t('help.help', {lngs: message.lang})} 
+${pre}help : ${t('help.help', {lngs: message.lang})} 
 ${t('help.support', {lngs: message.lang})}
-${pre}bug > ${t('help.bug', {lngs: message.lang})}
-${pre}add > ${t('help.add', {lngs: message.lang})}  
+${pre}bug : ${t('help.bug', {lngs: message.lang})}
+${pre}add : ${t('help.add', {lngs: message.lang})}  
 -------------------------------- 
 ${t('help.music', {lngs: message.lang})}
-${pre}voice > ${t('help.voice', {lngs: message.lang})} 
+${pre}voice : ${t('help.voice', {lngs: message.lang})} 
 ${pre}leave : ${t('help.silent', {lngs: message.lang})}
 ${pre}play name : ${t('help.play', {lngs: message.lang})}
 ${pre}pause : ${t('help.pause', {lngs: message.lang})}

@@ -78,8 +78,8 @@
     "helpReply": "OK, I sent you a list of commands over PM."
   },
   "version": "Currently i am running on version {{version}}",
-  "add": "Use this link to add me to your Server: {{link}}",
-  "bug": "Please join the support discord: {{link}} to report a bug.",
+  "add": "Use this link to add me to your Server: {{- link}}",
+  "bug": "Please join the support discord: {{- link}} to report a bug.",
   "level": {
     "result": "You are **Level {{level}}** XP: **{{current}}XP**/**{{needed}}XP** Total XP:**{{total}}**",
     "disabled": "The XP system is disabled on this server!"
@@ -132,7 +132,7 @@
   "qa": {
     "nothing-found": "No Song found with Search Term `{{search}}` ",
     "empty-search": "You did not enter a search Term!",
-    "started-download": "Started download of `{{url}}` ",
+    "started-download": "Started download of `{{- url}}` ",
     "success":"Queued **{{song}}**"
   },
   "rq": {
@@ -142,10 +142,10 @@
   "qra": {
     "to-small": "You cant remove {{number}} songs!",
     "success": "Removed  the following Songs:\n {{table}}",
-    "one-song": "Use {{prefix}}fskip to skip the current Song!"
+    "one-song": "Use {{- prefix}}fskip to skip the current Song!"
   },
   "cookie": {
-    "give": "Gave user **{{user}}** **1** cookie!",
+    "give": "Gave user **{{- user}}** **1** cookie!",
     "new-server": "Try again please.",
     "arere": "Arere... something went wrong...",
     "perms": "You need a discord role called WolkeBot to give cookies!",
@@ -158,7 +158,7 @@
   },
   "set-lang": {
     "no-lang": "You did not specify a language! Currently there are de (german), en (english) and ru (russian) available.",
-    "success": "Ok i just set the language for this server to {{language}}.",
+    "success": "Ok i just set the language for this server to {{- language}}.",
     "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. Currently there are de (german), en (english) and ru (russian) available."
   },
   "np": {
@@ -202,7 +202,7 @@
     "avg-users": "Avg. Users per guild",
     "voice": "Voiceconnections"
   },
-  "rank": "You can find the Leaderboard for this Server here: {{link}}",
+  "rank": "You can find the Leaderboard for this Server here: {{- link}}",
   "pp": {
     "err": {
       "api-body": "Could not parse api response!",
@@ -226,28 +226,28 @@
   "leave":"Ok i left the voice channel.",
   "play":{
     "no-result":"No song found!",
-    "playing":":musical_note: Now playing **{{song}}**"
+    "playing": ":musical_note: Now playing **{{- song}}**"
   },
   "prefix":{
     "success":"Ok i just set the prefix to {{prefix}}",
     "no-prefix":"Please add a prefix!"
   },
   "voice":{
-    "in-queue":"**{{song}}** is already in the queue.",
+    "in-queue": "**{{- song}}** is already in the queue.",
     "error-volume":"Error while setting volume!",
-    "success-volume":"Set volume to {{volume}}",
+    "success-volume": "Set volume to {{- volume}}",
     "no-volume":"No volume set!",
-    "repeat-start":"Started repeat for **{{song}}**",
+    "repeat-start": "Started repeat for **{{- song}}**",
     "already-playing":"This Song is already playing!",
     "blocked":"This Video is not available to download.",
     "dl-start":":hourglass: Started Download!",
     "use-proxy":"Trying to download over the proxy, this could take a bit."
   },
   "yts":{
-    "success":"Found the following song: {{link}}"
+    "success": "Found the following song: {{- link}}"
   },
   "skip":{
-    "success":":track_next: Skipped song {{title}}",
+    "success": ":track_next: Skipped song {{- title}}",
     "stop":":stop_button: Stopped current song"
   },
   "vskip":{
@@ -255,7 +255,7 @@
     "same-voice":"You are not in the same voicechannel as I am!",
     "dup":"You already voted!",
     "success-add":"Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
-    "success-skip":"Voteskipped Song: **{{title}}**"
+    "success-skip": "Voteskipped Song: **{{- title}}**"
   },
   "rm":{
     "less-2":"You can not delete less than 2 messages!",
@@ -267,7 +267,7 @@
     "success":"Found the following Songs:"
   },
   "set-lewd":{
-    "success":"Successfully added {{channel}} to the NSFW Channels!"
+    "success": "Successfully added {{- channel}} to the NSFW Channels!"
   },
   "report":"OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!"
 }

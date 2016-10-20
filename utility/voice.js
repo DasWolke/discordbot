@@ -173,7 +173,11 @@ var nextSong = function nextSong(message, Song) {
                                                 });
                                             } else {
                                                 Queue.resetVotes();
-                                                dispatcher.end();
+                                                try {
+                                                    dispatcher.end();
+                                                } catch (e) {
+
+                                                }
                                             }
                                         });
                                     });
@@ -205,7 +209,11 @@ var nextSong = function nextSong(message, Song) {
                     }
                 } else {
                     Queue.resetVotes();
-                    dispatcher.end();
+                    try {
+                        dispatcher.end();
+                    } catch (e) {
+
+                    }
                 }
             } else {
 
@@ -358,7 +366,11 @@ var startQueue = function (message) {
                 if (Queue.songs.length > 0) {
                     Queue.resetVotes(function (err) {
                         if (err) return client.captureMessage(`Error at reset Votes in start Queue: ${err}`, {extra: {'Guild': message.guild.id}});
-                        playSong(message, Queue.songs[0], true);
+                        if (Queue.songs[0].type !== 'radio') {
+                            playSong(message, Queue.songs[0], true);
+                        } else {
+                            nextSong(message, Queue.songs[0]);
+                        }
                     });
                 } else {
 
