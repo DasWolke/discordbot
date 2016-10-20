@@ -19,7 +19,12 @@ var execute = function (message) {
         }
     }
     if (messageSplit.length > 0) {
-        songModel.find({$text: {$search: messageFormat}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(10).exec(function (err, Radios) {
+        songModel.find({
+            $text: {
+                $search: messageFormat,
+                type: "radio"
+            }
+        }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(10).exec(function (err, Radios) {
             if (err) return message.reply(err);
             let table = new AsciiTable();
             for (var i = 0; i < Radios.length; i++) {

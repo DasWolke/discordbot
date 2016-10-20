@@ -81,6 +81,10 @@ var input = function (message, Radios) {
             icy.get(Radios[number - 1].url, (res) => {
                 voice.addSongFirst(message, Radios[number - 1], false).then(() => {
                     voice.streamSong(message, res);
+                    message.channel.sendMessage(t('play.playing', {
+                        song: Radios[number - 1].title,
+                        interpolation: {escape: false}
+                    }));
                 }).catch(message.reply);
             });
         }
