@@ -289,6 +289,14 @@ var filterSelection = (message, collector) => {
             return false;
     }
 };
+var buildPrologMessage = (content) => {
+    let msg = "\`\`\`css\n";
+    for (var i = 0; i < content.length; i++) {
+        msg = msg + content[i];
+    }
+    msg = msg + "\`\`\`";
+    return msg;
+};
 module.exports = {
     cleanMessage: cleanMessage,
     createUser: createUser,
@@ -304,5 +312,6 @@ module.exports = {
     checkNsfw: checkNsfwChannel,
     pmNotifications: pmNotifications,
     calcXpNeeded: calcXpNeeded,
-    filterSelection: filterSelection
+    filterSelection: filterSelection,
+    buildPrologMessage: buildPrologMessage
 };

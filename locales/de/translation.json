@@ -75,8 +75,8 @@
     "helpReply": "OK, Ich habe dir die Liste mit Befehlen in einer PM gesendet!"
   },
   "version": "Momentan verwende ich Version{{version}}",
-  "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{link}}",
-  "bug": "Bitte komm auf den Support Discord: {{link}} um einen Fehler zu melden!",
+  "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
+  "bug": "Bitte komm auf den Support Discord: {{- link}} um einen Fehler zu melden!",
   "level": {
     "result": "Momentan hast du **Level {{level}}** XP: **{{current}}XP**/**{{needed}}XP** XP Gesamt:**{{total}}**",
     "disabled": "Das Level System ist auf diesem Server ausgeschalten!"
@@ -107,16 +107,16 @@
   },
   "ban": {
     "success": "{{user}} wurde gebannt!",
-    "privilege": "Meine Rechte reichen nicht aus um {{user}} zu bannen!",
-    "err": "Ein Fehler ist aufgetreten während ich {{user}} bannen wollte!",
+    "privilege": "Meine Rechte reichen nicht aus um {{- user}} zu bannen!",
+    "err": "Ein Fehler ist aufgetreten während ich {{- user}} bannen wollte!",
     "perms": "Du kannst den Besitzer oder jemand mit der WolkeBot Rolle nicht bannen.",
     "self": "Netter Versuch, aber du kannst mich nicht mit meinem eigenen Befehl bannen.",
     "no-mention": "Bitte erwähne den Nutzer, den du bannen willst!"
   },
   "kick":{
-    "success":"{{user}} wurde gekickt!",
-    "privilege": "Meine Rechte reichen nicht aus um {{user}} zu kicken!",
-    "err": "Ein Fehler ist aufgetreten während ich {{user}} kicken wollte!",
+    "success": "{{- user}} wurde gekickt!",
+    "privilege": "Meine Rechte reichen nicht aus um {{- user}} zu kicken!",
+    "err": "Ein Fehler ist aufgetreten während ich {{- user}} kicken wollte!",
     "perms": "Du kannst den Besitzer oder jemand mit der WolkeBot Rolle nicht kicken.",
     "self": "Netter Versuch, aber du kannst mich nicht mit meinem eigenen Befehl kicken!",
     "no-mention": "Bitte erwähne den Nutzer, den du kicken willst!"
@@ -129,20 +129,20 @@
   "qa": {
     "nothing-found": "Ich habe kein Lied mit dem Begriff `{{search}}` gefunden!",
     "empty-search": "Du hast keinen Suchbegriff eingegeben",
-    "started-download": ":hourglass: Ok, ich lade nun`{{url}}` ",
-    "success":"**{{song}}** ist jetzt in der Warteschlange!"
+    "started-download": ":hourglass: Ok, ich lade nun`{{- url}}` ",
+    "success": "**{{- song}}** ist jetzt in der Warteschlange!"
   },
   "rq": {
     "db-error": "Ein Fehler ist aufgetreten!",
-    "success-multiple": "Ich habe die folgenden Lieder hinzugefügt:\n```{{table}}```"
+    "success-multiple": "Ich habe die folgenden Lieder hinzugefügt:\n```{{- table}}```"
   },
   "qra": {
     "to-small": "Du kannst nicht {{number}} Lieder aus der Warteschlange entfernen!",
-    "success": "Ich habe die folgenden Lieder aus der Warteschlange entfernt:\n {{table}}",
-    "one-song": "Benutze {{prefix}}fskip um den aktuellen Song zu überspringen"
+    "success": "Ich habe die folgenden Lieder aus der Warteschlange entfernt:\n {{- table}}",
+    "one-song": "Benutze {{- prefix}}fskip um den aktuellen Song zu überspringen"
   },
   "cookie": {
-    "give": "**{{user}}** hat **1** Keks bekommen!",
+    "give": "**{{- user}}** hat **1** Keks bekommen!",
     "new-server": "Probier es bitte erneut!",
     "arere": "Arere... da ist was falsch gelaufen",
     "perms": "Du brauchst die WolkeBot Rolle um Kekse zu verteilen",
@@ -155,12 +155,12 @@
   },
   "set-lang": {
     "no-lang": "Du hast keine Sprache angegeben! Momentan verfügbar sind de (Deutsch), en (Englisch) und ru (Russisch)",
-    "success": "Ok Ich habe die Sprache auf {{language}} umgestellt.",
+    "success": "Ok Ich habe die Sprache auf {{- language}} umgestellt.",
     "unsupported": "Diese Sprache ist bisher noch nicht eingebaut worden, aber du kannst helfen indem du eine pullrequest mit der gewünschten Sprache auf github öffnest. Momentan verfügbar sind de (Deutsch), en (Englisch) und ru (Russisch)"
   },
   "np": {
-    "song-duration": "Aktuell läuft:` {{title}} {{current}}/{{duration}} {{repeat}} `",
-    "song": "Aktuell läuft:`{{title}} {{repeat}}`",
+    "song-duration": "Aktuell läuft:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
+    "song": "Aktuell läuft:`{{- title}} {{repeat}}`",
     "repeat-on": "Wiederholung:Aktiviert"
   },
   "queue": {
@@ -168,7 +168,7 @@
   },
   "rem-lewd": {
     "no-nsfw": "Bisher wurden noch keine NSFW-Channel hinzugefügt",
-    "success": "{{channel}} wurde erfolgreich von den NSFW-Channels entfernt!"
+    "success": "{{- channel}} wurde erfolgreich von den NSFW-Channels entfernt!"
   },
   "no-level-server": {
     "success-disable": "Ok, Ich habe das Level System für diesen Server deaktiviert.",
@@ -223,14 +223,14 @@
   "leave":"Ok, ich habe den Voicechannel verlassen",
   "play":{
     "no-result":"Kein Lied gefunden!",
-    "playing":":musical_note: Jetzt spielt **{{song}}**"
+    "playing": ":musical_note: Jetzt spielt **{{- song}}**"
   },
   "prefix":{
-    "success":"Ok, ich habe gerade das prefix auf `{{prefix}}` umgestellt!",
+    "success": "Ok, ich habe gerade das prefix auf `{{- prefix}}` umgestellt!",
     "no-prefix":"Bitte hänge das gewünschte Prefix an die Nachricht an!"
   },
   "voice":{
-    "in-queue":"**{{song}}** ist bereits in der Warteschlange!",
+    "in-queue": "**{{- song}}** ist bereits in der Warteschlange!",
     "error-volume":"Beim setzen der Lautstärke ist ein Fehler aufgetreten!",
     "success-volume":"Lautstärke wurde auf {{volume}} gesetzt!",
     "no-volume":"Keine Lautstärke angegeben!",
@@ -241,10 +241,10 @@
     "use-proxy":"Ich probiere ein paar kleine Tricks um das Lied zu bekommen, bitte gedulde dich einen Moment!"
   },
   "yts":{
-    "success":"Ich hab das folgende Video gefunden: {{link}}"
+    "success": "Ich hab das folgende Video gefunden: {{- link}}"
   },
   "skip":{
-    "success":":track_next: {{title}} wurde übersprungen!",
+    "success": ":track_next: {{- title}} wurde übersprungen!",
     "stop":":stop_button: Lied wurde gestoppt."
   },
   "vskip":{
@@ -252,7 +252,7 @@
     "same-voice":"Du kannst nicht voteskippen wenn du nicht im selben Voicechannel bist wie ich!",
     "dup":"Du hast bereits abgestimmt!",
     "success-add":"Deine Wahl wurde hinzugefügt, aktueller Stand **{{current}}%/{{needed}}%**",
-    "success-skip":"**{{title}}** wurde übersprungen!"
+    "success-skip": "**{{- title}}** wurde übersprungen!"
   },
   "rm":{
     "less-2":"Du kannst nicht weniger als 2 Nachrichten löschen!",
@@ -264,7 +264,7 @@
     "success":"Ich habe die folgenden Songs gefunden:"
   },
   "set-lewd":{
-    "success":"{{channel}} wurde erfolgreich zu den NSFW-Channeln hinzugefügt!"
+    "success": "{{- channel}} wurde erfolgreich zu den NSFW-Channeln hinzugefügt!"
   },
   "report":"OK, Ich habe deinen Bug Report an Wolke gesendet. Bitte missbrauche diese Funktion nicht, da du gesperrt werden könntest!"
 }
