@@ -257,7 +257,7 @@ i18next.use(Backend).init({
             winston.info(body);
         });
         let requestOptionsCarbon = {
-            url: `https://bots.discord.pw/api/bots/${id}/stats`,
+            url: `https://www.carbonitex.net/discord/data/botdata.php`,
             method: 'POST',
             json: {
                 "server_count": bot.guilds.size,
