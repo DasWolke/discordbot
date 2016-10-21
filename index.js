@@ -127,7 +127,7 @@ i18next.use(Backend).init({
         }
         setInterval(() => {
             updateStats();
-        }, 1000 * 60 * 60 * 3);
+        }, 1000 * 60 * 30);
     });
     bot.on('reconnecting', () => {
         // winston.info('Reconnecting to Discord!');
@@ -254,6 +254,22 @@ i18next.use(Backend).init({
                 return winston.error(err);
             }
             winston.info('Stats Updated!');
+            winston.info(body);
+        });
+        let requestOptionsCarbon = {
+            url: `https://bots.discord.pw/api/bots/${id}/stats`,
+            method: 'POST',
+            json: {
+                "server_count": bot.guilds.size,
+                "key":config.carbon_token
+            }
+        };
+        request(requestOptionsCarbon, function (err, response, body) {
+            if (err) {
+                client.captureMessage(err);
+                return winston.error(err);
+            }
+            winston.info('Stats Updated Carbon!');
             winston.info(body);
         });
     };

@@ -309,7 +309,7 @@ var checkTime = function (info) {
             }
         }
     } else {
-        return (!!parseInt(info.length_seconds) < 5400);
+        return (parseInt(info.length_seconds) < 5400);
     }
 };
 var convertDuration = function (info) {
