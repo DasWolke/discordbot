@@ -58,6 +58,7 @@ var downloadSingle = function (url, message, cb) {
                 cb(err, info);
             });
         } else if (checkTime(info)) {
+            console.log(checkTime(info));
             let id;
             if (music.ytRegex.test(url)) {
                 id = info.video_id;
