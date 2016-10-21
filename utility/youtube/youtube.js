@@ -17,20 +17,18 @@ var playlistReg = /[&?]list=([a-z0-9_\-]+)/gi;
 var music = require('../music');
 var i18nBean = require('../i18nManager');
 var t = i18nBean.getT();
-var logger = require('../logger');
-var winston = logger.getT();
 var opts = {
     maxResults: 5,
     key: config.youtube_api,
     type: "video"
 };
 var download = function (url, message, cb) {
-    // winston.info(url);
+    // console.log(url);
     // let m;
     // if ((m = playlistReg.exec(url)) !== null) {
-    //     winston.info('using Playlist!');
+    //     console.log('using Playlist!');
     //     downloadPlaylist(url, message, m[1], (err, results) => {
-    //         if (err) return winston.info(err);
+    //         if (err) return console.log(err);
     //         let table = new AsciiTable;
     //         for (var i = 0; i < results.length; i++) {
     //             table.addRow(i + 1, results[i].title);
@@ -43,11 +41,7 @@ var download = function (url, message, cb) {
     });
     // }
 };
-var downloadSingle = function (url, message, cb, fb) {
-    let useFB = false;
-    if (typeof fb !== 'undefined') {
-        useFB = true;
-    }
+var downloadSingle = function (url, message, cb) {
     let dl;
     if (music.ytRegex.test(url)) {
         dl = ytdl;
@@ -55,7 +49,6 @@ var downloadSingle = function (url, message, cb, fb) {
         dl = youtubedl;
     }
     dl.getInfo(url, function (err, info) {
-
         if (err) {
             message.channel.sendMessage(t('voice.use-proxy', {lngs: message.lang}));
             downloadProxy(message, url, config.default_proxy, function (err, info) {
@@ -65,7 +58,7 @@ var downloadSingle = function (url, message, cb, fb) {
                 cb(err, info);
             });
         } else if (checkTime(info)) {
-            winston.info(checkTime(info));
+            console.log(checkTime(info));
             let id;
             if (music.ytRegex.test(url)) {
                 id = info.video_id;
@@ -77,8 +70,8 @@ var downloadSingle = function (url, message, cb, fb) {
                 if (err) return cb(err);
                 if (!Song) {
                     var video;
-                    if (music.ytRegex.test(url) && !useFB) {
-                        video = youtubedl(url, ["--restrict-filenames", "-4", "--prefer-free-formats"], {
+                    if (music.ytRegex.test(url)) {
+                        video = youtubedl(url, ["--restrict-filenames", "-4", "-f", "bestaudio"], {
                             cwd: __dirname,
                             maxBuffer: Infinity
                         });
@@ -88,19 +81,16 @@ var downloadSingle = function (url, message, cb, fb) {
                             maxBuffer: Infinity
                         });
                     }
-                    video.on('error', function (err) {
-                        // console.log(err);
-                    });
                     var filename = info.id + ".temp";
                     var stream = video.pipe(fs.createWriteStream('temp/' + filename));
                     video.on('info', function (info) {
-                        winston.info('Download started');
-                        winston.info('filename: ' + info._filename);
-                        winston.info('size: ' + info.size);
-                        winston.info('duration: ' + info.duration);
+                        console.log('Download started');
+                        console.log('filename: ' + info._filename);
+                        console.log('size: ' + info.size);
+                        console.log('duration: ' + info.duration);
                     });
                     video.on('complete', function complete(info) {
-                        winston.info('filename: ' + info._filename + ' finished');
+                        console.log('filename: ' + info._filename + ' finished');
                         cb(null, info);
                     });
                     video.on('end', function () {
@@ -108,10 +98,10 @@ var downloadSingle = function (url, message, cb, fb) {
                             .on('stderr', err => {
 
                             }).on('error', err => {
-                            winston.info(err);
+                            console.log(err);
                             return cb(err);
                         }).on('end', (stdout, stderr) => {
-                            winston.info('Finished Converting');
+                            console.log('Finished Converting');
                             fs.unlink('temp/' + filename, function (err) {
                                 if (err) return cb(err);
                                 var song = new songModel({
@@ -145,6 +135,7 @@ var downloadSingle = function (url, message, cb, fb) {
             cb('The Song is to long.', info);
         }
     });
+
 };
 var downloadPlaylist = function (url, message, playlistId, cb) {
     Youtube.authenticate({
@@ -156,7 +147,7 @@ var downloadPlaylist = function (url, message, playlistId, cb) {
         maxResults: 50,
         playlistId: playlistId,
     }, function (err, data) {
-        if (err) return winston.info(err);
+        if (err) return console.log(err);
         let songs = [];
         let z;
         if ((z = music.ytRegex.exec(url)) !== null) {
@@ -213,7 +204,7 @@ var search = function (message, cb) {
         }
         youtubesearch(messageClean, opts, function (err, results) {
             if (err) {
-                winston.info(err);
+                console.log(err);
                 return cb(':x: ');
             }
             if (results.length > 0) {
@@ -256,8 +247,8 @@ var downloadProxy = function (message, url, proxy, cb) {
             client.captureMessage(e, {extra: {'url': url, 'proxy': proxy, 'json': body}});
         }
         if (parsedBody.error === 0) {
-            winston.info(parsedBody.path);
-            winston.info(`${proxy_url}${parsedBody.path}`);
+            console.log(parsedBody.path);
+            console.log(`${proxy_url}${parsedBody.path}`);
             var stream = request(`${proxy_url}${parsedBody.path}`).on('error', (err) => {
                 return cb(err);
             }).pipe(fs.createWriteStream(`audio/${parsedBody.info.id}.mp3`));
@@ -344,7 +335,7 @@ var convertDuration = function (info) {
                 }
             }
         }
-        winston.info(durationConv);
+        console.log(durationConv);
     } else {
         let d = Number(info.length_seconds);
         var h = Math.floor(d / 3600);

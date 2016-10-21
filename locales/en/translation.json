@@ -239,8 +239,8 @@
     "no-volume":"No volume set!",
     "repeat-start": "Started repeat for **{{- song}}**",
     "already-playing":"This Song is already playing!",
-    "blocked":"This Video is not available to download.",
-    "dl-start":":hourglass: Started Download!",
+    "blocked": "This Video is not available to download. Maybe it is too long or blocked/removed",
+    "dl-start": ":hourglass: loading song!",
     "use-proxy":"Trying to download over the proxy, this could take a bit."
   },
   "yts":{
