@@ -13,4 +13,7 @@ var playlistSchema = mongoose.Schema({
 
 });
 var playlistModel = mongoose.model('Playlists', playlistSchema);
+playlistSchema.methods.addSong = function addSong(song, cb) {
+    this.model('Playlists').update({id: this.id}, {$addToSet: {songs: song}}, cb);
+};
 module.exports = playlistModel;

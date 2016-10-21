@@ -236,7 +236,7 @@
     "no-volume":"Keine Lautstärke angegeben!",
     "repeat-start":":repeat_one: Wiederholung gestartet für **{{song}}**",
     "already-playing":"Dieses Lied spielt bereits!",
-    "blocked":"Dieses Lied ist nicht downloadbar",
+    "blocked": "Dieses Lied ist nicht downloadbar, vielleicht ist es zu lang oder geblockt.",
     "dl-start":":hourglass: Download gestartet!",
     "use-proxy":"Ich probiere ein paar kleine Tricks um das Lied zu bekommen, bitte gedulde dich einen Moment!"
   },
