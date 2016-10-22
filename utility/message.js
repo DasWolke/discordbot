@@ -232,7 +232,7 @@ var checkNsfwChannel = function (message, cb) {
                         return cb();
                     }
                 }
-                return cb(false);
+                return cb('NEIN');
             } else {
                 if (typeof (Server.nsfwChannel) !== 'undefined' && Server.nsfwChannel === message.channel.id) {
                     serverModel.update({id: message.guild.id}, {
@@ -243,11 +243,11 @@ var checkNsfwChannel = function (message, cb) {
                     });
                     return cb();
                 } else {
-                    return cb(false);
+                    return cb('NEIN');
                 }
             }
         } else {
-            return cb(false);
+            return cb('NEIN');
         }
     });
 };
