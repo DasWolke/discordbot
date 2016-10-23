@@ -42,3 +42,4 @@ config/main.json
 audio
 cmd.bat
 temp
+yarn.lock
