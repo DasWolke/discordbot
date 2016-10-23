@@ -10,7 +10,7 @@ var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (typeof (messageSplit[1]) !== 'undefined') {
         userModel.findOne({id: message.author.id}, function (err, User) {
-            if (err) return console.log(err);
+            if (err) return winston.info(err);
             if (User) {
                 if (typeof (User.verified) !== 'undefined' && User.verified) {
                     message.reply(`You are already verified with the Account: https://proxer.me/user/${User.proxerId}`);
@@ -18,7 +18,7 @@ var execute = function (message) {
                     if (typeof (User.verificationToken) !== 'undefined') {
                         if (messageSplit[1] === User.verificationToken) {
                             userModel.update({id: User.id}, {$set: {verified: true}}, (err) => {
-                                if (err) return console.log(err);
+                                if (err) return winston.info(err);
                                 message.reply(`Ok i successfully verified you.`);
                             });
                         } else {
@@ -31,7 +31,7 @@ var execute = function (message) {
             } else {
                 messageHelper.createUser(message, true, true, function (err) {
                     userModel.findOne({id: message.author.id}, function (err, User) {
-                        if (err) return console.log(err);
+                        if (err) return winston.info(err);
                         if (User) {
                             if (typeof (User.verified) !== 'undefined' && User.verified) {
                                 message.reply(`You are already verified with the Account: https://proxer.me/user/${User.proxerId}`);
@@ -39,7 +39,7 @@ var execute = function (message) {
                                 if (typeof (User.verificationToken) !== 'undefined') {
                                     if (messageSplit[1] === User.verificationToken) {
                                         userModel.update({id: User.id}, {$set: {verified: true}}, (err) => {
-                                            if (err) return console.log(err);
+                                            if (err) return winston.info(err);
                                             message.reply(`Ok i successfully verified you.`);
                                         });
                                     } else {

@@ -11,10 +11,10 @@ var cmd = 'setLewd';
 var execute = function (message) {
     if (message.guild && messageHelper.hasWolkeBot(message)) {
         serverModel.findOne({id: message.guild.id}, function (err, Server) {
-            if (err) return console.log(err);
+            if (err) return winston.info(err);
             if (Server) {
                 serverModel.update({id: message.guild.id}, {$addToSet: {nsfwChannels: message.channel.id}}, function (err) {
-                    if (err) return console.log(err);
+                    if (err) return winston.info(err);
                     message.reply(t('set-lewd.success', {lngs:message.lang, channel:message.channel, interpolation:{escape:false}}));
                 });
             } else {

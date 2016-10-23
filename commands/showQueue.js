@@ -12,11 +12,17 @@ var cmd = 'queue';
 var execute = function (message) {
     if (message.guild) {
         queueModel.findOne({server: message.guild.id}, function (err, Queue) {
-            if (err) return console.log(err);
+            if (err) return winston.info(err);
             if (Queue) {
                 if (Queue.songs.length > 0) {
                     var reply = "";
-                    for (var q = 0; q < Queue.songs.length; q++) {
+                    let iteration = 20;
+                    if (Queue.songs.length > 20) {
+
+                    } else {
+                        iteration = Queue.songs.length;
+                    }
+                    for (var q = 0; q < iteration; q++) {
                         if (q === 0) {
                             let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
                             let repeat = Queue.repeat ? t('np.repeat-on') : "";
@@ -47,9 +53,12 @@ var execute = function (message) {
                         }
 
                     }
+                    if (Queue.songs.length > 20) {
+                        reply = reply + `${parseInt(21)} **...**`;
+                    }
                     message.channel.sendMessage(reply).then(msg => {
                         msg.delete(60 * 1000);
-                    }).catch(console.log);
+                    }).catch(winston.info);
                 } else {
                     message.reply(t('generic.no-song-in-queue', {lngs: message.lang}));
                 }

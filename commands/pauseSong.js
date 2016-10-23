@@ -17,7 +17,7 @@ var execute = function (message) {
                     dispatcher.pause();
                     message.channel.sendMessage(':play_pause: ');
                 } catch (e) {
-                    console.log(e);
+                    winston.info(e);
                     message.channel.sendMessage(t('generic.no-song-playing', {lngs: message.lang}));
                 }
             } else {

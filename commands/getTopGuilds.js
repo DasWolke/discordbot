@@ -11,13 +11,18 @@ var execute = function (message) {
         let users = guild.members.filter((member) => {
             return !member.user.bot
         });
-        easyGuild.push({name: guild.name, size: users.size, memberCount: guild.memberCount});
+        easyGuild.push({
+            name: guild.name,
+            size: users.size,
+            memberCount: guild.memberCount,
+            withBots: guild.members.size
+        });
     });
     let guilds = _.sortBy(easyGuild, 'size');
     guilds = _.reverse(guilds);
-    guilds = guilds.slice(0, 5);
+    guilds = guilds.slice(0, 10);
     for (var i = 0; i < guilds.length; i++) {
-        table.addRow(i + 1, guilds[i].name, guilds[i].size);
+        table.addRow(i + 1, guilds[i].name, guilds[i].size, `Bots:${guilds[i].withBots - guilds[i].size}`);
     }
     message.reply(`\n\`\`\`${table.toString()}\`\`\``);
 };

@@ -7,7 +7,9 @@ var t = i18nBean.getT();
 var messageHelper = require('../utility/message');
 var serverModel = require('../DB/server');
 var msgReg = /<@[0-9]+>/;
-var config = require('../config/main.json')
+var config = require('../config/main.json');
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
@@ -18,8 +20,11 @@ var execute = function (message) {
                         if (err) return cb(err);
                         if (Server) {
                             Server.updateLanguage(messageSplit[1], err => {
-                                if (err) return console.log(err);
-                                message.reply(t('set-lang.success', {lng:messageSplit[1], language:messageSplit[1]}));
+                                if (err) return winston.info(err);
+                                message.channel.sendMessage(t('set-lang.success', {
+                                    lng: messageSplit[1],
+                                    language: messageSplit[1]
+                                }));
                             });
                         } else {
                             let server = new serverModel({
@@ -32,22 +37,25 @@ var execute = function (message) {
                                 prefix:"!w."
                             });
                             server.save(err => {
-                                if (err) return console.log(err);
-                                message.reply(t('set-lang.success', {lng:messageSplit[1],language:messageSplit[1]}));
+                                if (err) return winston.info(err);
+                                message.channel.sendMessage(t('set-lang.success', {
+                                    lng: messageSplit[1],
+                                    language: messageSplit[1]
+                                }));
                             });
                         }
                     });
                 } else {
-                    message.reply(t('set-lang.unsupported', {lngs:message.lang}));
+                    message.channel.sendMessage(t('set-lang.unsupported', {lngs: message.lang}));
                 }
             } else {
-                message.reply(t('set-lang.no-lang', {lngs:message.lang}));
+                message.channel.sendMessage(t('set-lang.no-lang', {lngs: message.lang}));
             }
         } else {
-            message.reply(t('generic.no-permission', {lngs:message.lang}));
+            message.channel.sendMessage(t('generic.no-permission', {lngs: message.lang}));
         }
     } else {
-        message.reply(t('generic.no-pm', {lngs:message.lang}));
+        message.channel.sendMessage(t('generic.no-pm', {lngs: message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

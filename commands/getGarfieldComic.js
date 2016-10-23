@@ -3,6 +3,8 @@
  */
 var cmd = 'garfield';
 var general = require('../utility/general');
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var moment = require('moment');
 var execute = function (message) {
     let year = general.random(1990, 2016);
@@ -12,6 +14,6 @@ var execute = function (message) {
     let dateYear = date.year();
     message.channel.sendMessage(`https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/${dateYear}/${dateFormat}.gif`).then(messageSent => {
 
-    }).catch(console.log);
+    }).catch(winston.info);
 };
 module.exports = {cmd:cmd, accessLevel:0, exec:execute};

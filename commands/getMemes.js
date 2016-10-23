@@ -3,9 +3,11 @@
  */
 var cmd = 'memes';
 var request = require('request');
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var execute = function (message) {
     request.get('https://memegen.link/api', (err, result ,body) => {
-        console.log(body);
+        winston.info(body);
     });
 };
 module.exports = {cmd: cmd, accessLevel: 3, exec: execute};

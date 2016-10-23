@@ -11,6 +11,8 @@ var shortid = require('shortid');
 var musicHelper = require('./music');
 var setRegex = /.*http(s|):\/\/osu.ppy.sh\/(b)\/([0-9]*)((\?|\&)m=[0-9]|)/;
 var osuApi = new osu.Api(config.osu_token);
+var logger = require('./logger');
+var winston = logger.getT();
 var Mods = {
     None: 0,
     NoFail: 1 << 0,
@@ -63,7 +65,7 @@ var calcPP = function (message, cb) {
                     let beatmap = beatmaps[0];
                     if (typeof (beatmap.id) !== 'undefined') {
                         request(`https://next.itsyuka.pw/pp?b=${beatmap.id}&acc=${Accuracy}&mods=${modNumber}`, function (err, res, body) {
-                            if (err) return console.log(err);
+                            if (err) return winston.info(err);
                             try {
                                 var parsedBody = JSON.parse(body);
                             } catch (e) {
@@ -72,7 +74,7 @@ var calcPP = function (message, cb) {
                             cb(null, {beatmap: beatmap, body: parsedBody});
                         });
                     } else {
-                        console.log('well...');
+                        winston.info('well...');
                     }
                 } else {
                     cb({type: 'osu-api'})

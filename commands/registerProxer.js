@@ -18,12 +18,12 @@ var execute = function (message) {
         }
         if (proxerId) {
             userModel.findOne({proxerId: proxerId}, function (err, User) {
-                if (err) return console.log(err);
+                if (err) return winston.info(err);
                 if (User) {
                     return message.reply('The ID is already Used!');
                 } else {
                     userModel.findOne({id: message.author.id}, function (err, User) {
-                        if (err) return console.log(err);
+                        if (err) return winston.info(err);
                         if (User) {
                             if (typeof (User.proxerId) !== 'undefined') {
                                 return message.reply('You should already have a Verification Code.');
@@ -32,17 +32,17 @@ var execute = function (message) {
                                 message.reply(`You are already verified with the Account: https://proxer.me/user/${User.proxerId}`);
                             } else {
                                 verifyUser(message.author.id, proxerId, function (err, result, name) {
-                                    if (err) return console.log(err);
+                                    if (err) return winston.info(err);
                                     message.reply(`Ok i send your Proxer Account ${name} a PM with a verification Code`);
                                 });
                             }
                         } else {
                             messageHelper.createUser(message, true, true, function (err) {
                                 userModel.findOne({id: message.author.id}, function (err, User) {
-                                    if (err) return console.log(err);
+                                    if (err) return winston.info(err);
                                     if (User) {
                                         verifyUser(message.author.id, proxerId, function (err, result, name) {
-                                            if (err) return console.log(err);
+                                            if (err) return winston.info(err);
                                             message.reply(`Ok i send your Proxer Account ${name} a PM with a verification Code`);
                                         });
                                     } else {

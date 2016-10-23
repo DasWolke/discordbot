@@ -16,26 +16,35 @@ var execute = function (message) {
                 message.guild.fetchMember(user).then(member => {
                     if (member.id !== message.guild.owner.id && !messageHelper.hasWolkeBot(message, member)) {
                         member.ban(7).then(member => {
-                            message.reply(t('ban.success', {user:member.user.username,lngs: message.lang}));
+                            message.channel.sendMessage(t('ban.success', {
+                                user: member.user.username,
+                                lngs: message.lang
+                            }));
                         }).catch(err => {
                             if (err.response.statusCode === 403) {
-                                message.reply(t('ban.privilege', {user:member.user.username,lngs: message.lang}));
+                                message.channel.sendMessage(t('ban.privilege', {
+                                    user: member.user.username,
+                                    lngs: message.lang
+                                }));
                             } else {
-                                message.reply(t('ban.err', {user:member.user.username,lngs: message.lang}));
+                                message.channel.sendMessage(t('ban.err', {
+                                    user: member.user.username,
+                                    lngs: message.lang
+                                }));
                             }
                         });
                     } else {
-                        message.reply(t('ban.perms', {lngs:message.lang}));
+                        message.channel.sendMessage(t('ban.perms', {lngs: message.lang}));
                     }
-                }).catch(console.log);
+                }).catch(winston.info);
             } else {
-                message.reply(t('ban.self', {lngs: message.lang}));
+                message.channel.sendMessage(t('ban.self', {lngs: message.lang}));
             }
         } else {
-            message.reply(t('ban.no-mention', {lngs: message.lang}));
+            message.channel.sendMessage(t('ban.no-mention', {lngs: message.lang}));
         }
     } else {
-        message.reply(t('generic.no-permission', {lngs: message.lang}));
+        message.channel.sendMessage(t('generic.no-permission', {lngs: message.lang}));
     }
 };
 module.exports = {cmd:cmd, accessLevel:1, exec:execute};

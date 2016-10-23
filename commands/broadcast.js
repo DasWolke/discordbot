@@ -3,6 +3,8 @@
  */
 var async = require('async');
 var cmd = 'broadcast';
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var config = require('../config/main.json');
 var execute = function (message) {
     if (message.author.id === config.owner_id) {
@@ -13,7 +15,7 @@ var execute = function (message) {
                 guild.defaultChannel.sendMessage(content).then(message => {
                     cb();
                 }).catch(err => {
-                    console.log(err);
+                    winston.info(err);
                     cb();
                 });
             } else {
@@ -22,8 +24,8 @@ var execute = function (message) {
                 });
             }
         }, (err) => {
-            if (err) return console.log(err);
-            message.reply(`Sent broadcast to ${guilds.length-1} Guilds`);
+            if (err) return winston.info(err);
+            message.channel.sendMessage(`Sent broadcast to ${guilds.length - 1} Guilds`);
         });
     }
 };

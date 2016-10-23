@@ -27,7 +27,7 @@ var execute = function (message) {
                     } else {
                         message.reply(t('kick.perms', {lngs: message.lang}));
                     }
-                }).catch(console.log);
+                }).catch(winston.info);
             } else {
                 message.reply(t('kick.no-mention', {lngs: message.lang}));
             }

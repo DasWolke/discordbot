@@ -4,6 +4,8 @@
 var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var cmd = 'pp';
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var osuHelper = require('../utility/osu');
 var execute = function (message) {
     osuHelper.calcPP(message, (err, result) => {

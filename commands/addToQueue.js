@@ -14,18 +14,18 @@ var songModel = require('../DB/song');
 var pre = function (message) {
     if (message.guild) {
         voice.getInVoice(message, (err, msg) => {
-            if (err) return message.reply(err);
+            if (err) return message.channel.sendMessage(err);
             execute(msg);
         })
     } else {
-        message.reply(t('generic.no-pm', {lngs: message.lang}));
+        message.channel.sendMessage(t('generic.no-pm', {lngs: message.lang}));
     }
 };
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
         if (typeof(messageSplit[1]) === 'undefined') {
-            return message.reply(t('qa.empty-search', {lngs: message.lang}));
+            return message.channel.sendMessage(t('qa.empty-search', {lngs: message.lang}));
         }
         var messageSearch = "";
         for (var a = 1; a < messageSplit.length; a++) {
@@ -40,23 +40,23 @@ var execute = function (message) {
                 interpolation: {escape: false}
             }));
             songModel.findOne({url: messageSplit[1], type: {$ne: 'radio'}}, (err, Song) => {
-                if (err) return console.log(err);
+                if (err) return winston.info(err);
                 if (Song) {
                     voice.addToQueue(message, Song, null, (err, reply) => {
-                        if (err) return message.reply(err);
+                        if (err) return message.channel.sendMessage(err);
                         if (reply) {
-                            message.reply(reply)
+                            message.channel.sendMessage(reply)
                         }
                     });
                 } else {
                     osu.download(message).then(Song => {
                         voice.addToQueue(message, Song, null, (err, reply) => {
-                            if (err) return message.reply(err);
+                            if (err) return message.channel.sendMessage(err);
                             if (reply) {
-                                message.reply(reply)
+                                message.channel.sendMessage(reply)
                             }
                         });
-                    }).catch(message.reply);
+                    }).catch(message.channel.sendMessage);
                 }
             });
         } else {
@@ -65,17 +65,17 @@ var execute = function (message) {
                 $text: {$search: messageSearch},
                 type: {$ne: 'radio'}
             }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec((err, Songs) => {
-                if (err) return console.log(err);
+                if (err) return winston.info(err);
                 if (Songs !== null && Songs.length > 0) {
                     let Song = Songs[0];
                     voice.addToQueue(message, Song, null, (err, reply) => {
-                        if (err) return message.reply(err);
+                        if (err) return message.channel.sendMessage(err);
                         if (reply) {
-                            message.reply(reply)
+                            message.channel.sendMessage(reply)
                         }
                     });
                 } else {
-                    message.reply(t('qa.nothing-found', {
+                    message.channel.sendMessage(t('qa.nothing-found', {
                         search: messageSearch,
                         lngs: message.lang,
                         interpolation: {escape: false}
@@ -84,7 +84,7 @@ var execute = function (message) {
             });
         }
     } else {
-        message.reply(t('generic.no-pm', {lngs: message.lang}));
+        message.channel.sendMessage(t('generic.no-pm', {lngs: message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: pre};

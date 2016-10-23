@@ -7,6 +7,8 @@ var cmd = 'setPrefix';
 var messageHelper = require('../utility/message');
 var serverModel = require('../DB/server');
 var msgReg = /<@[0-9]+>/;
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
@@ -16,7 +18,7 @@ var execute = function (message) {
                     if (err) return cb(err);
                     if (Server) {
                         Server.updatePrefix(messageSplit[1], err => {
-                            if (err) return console.log(err);
+                            if (err) return winston.info(err);
                             message.reply(t('prefix.success', {lngs:message.lang, prefix:messageSplit[1]}));
                         });
                     } else {
@@ -29,7 +31,7 @@ var execute = function (message) {
                             prefix: messageSplit[1]
                         });
                         server.save(err => {
-                            if (err) return console.log(err);
+                            if (err) return winston.info(err);
                             message.reply(t('prefix.success', {lngs:message.lang, prefix:messageSplit[1]}));
                         });
                     }

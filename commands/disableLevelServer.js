@@ -6,6 +6,8 @@ var t = i18nBean.getT();
 var cmd = 'noLevelServer';
 var serverModel = require('../DB/server');
 var messageHelper = require('../utility/message');
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var execute = function (message) {
     if (message.guild) {
         if (messageHelper.hasWolkeBot(message)) {
@@ -14,12 +16,12 @@ var execute = function (message) {
                 if (Server) {
                     if (typeof (Server.levelEnabled) === 'undefined' || Server.levelEnabled) {
                         Server.updateLevels(false, err => {
-                            if (err) return console.log(err);
+                            if (err) return winston.info(err);
                             message.reply(t('no-level-server.success-disable', {lngs:message.lang}));
                         });
                     } else {
                         Server.updateLevels(true, err => {
-                            if (err) return console.log(err);
+                            if (err) return winston.info(err);
                             message.reply(t('no-level-server.success-enable', {lngs:message.lang}));
                         });
                     }
@@ -33,7 +35,7 @@ var execute = function (message) {
                         prefix:"!w."
                     });
                     server.save(err => {
-                        if (err) return console.log(err);
+                        if (err) return winston.info(err);
                         message.reply(t('no-level-server.success-disable', {lngs:message.lang}));
                     });
                 }
