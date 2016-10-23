@@ -48,7 +48,7 @@
     "rm": "Löscht die letzten 10 gesendendeten Nachrichten (Werte zwischen 2-100 möglich)",
     "noLevelServer": "Schaltet das Level System für den gesamten Server aus, wenn der Befehl erneut ausgeführt wird, ist es wieder aktiviert.",
     "noPmServer": "Deaktiviert PM-Benachrichtigungen für den gesamten Server, wenn der Befehl erneut ausgeführt wird, sind sie wieder aktiviert.",
-    "noChannelServer": "Deaktiviert PM-Benachrichtigungen für den gesamten Server und aktiviert channel benachrichtigungen, wenn der Befehl erneut ausgeführt wird, ist es wieder umgekehrt.",
+    "noChServer": "Deaktiviert PM-Benachrichtigungen für den gesamten Server und aktiviert channel benachrichtigungen, wenn der Befehl erneut ausgeführt wird, ist es wieder umgekehrt.",
     "setLewd": "Aktiviert die NSFW-Befehle für den aktuellen Channel",
     "remLewd": "Deaktiviert die NSFW-Befehle für den aktuellen Channel",
     "setPrefix": "Ändert das Prefix, keine Erwähnungen oder Leerzeichen erlaubt!",
@@ -75,7 +75,7 @@
     "setLang": "stellt die Sprache ein, momentan verfügbar sind de (deutsch), en (english) und ru (russisch)",
     "feedback": "Benutze für Feedback bitte den Support Discord ^^",
     "talk": "Wenn du mir mit reden willst, erwähn mich einfach :D",
-    "helpReply": "OK, Ich habe dir die Liste mit Befehlen in einer PM gesendet!"
+    "helpReply": "OK, Ich habe dir die Liste mit Befehlen in einer PN gesendet!"
   },
   "version": "Momentan verwende ich Version{{version}}",
   "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
