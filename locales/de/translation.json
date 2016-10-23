@@ -5,12 +5,13 @@
     "whole-num": "Bitte füge eine ganze Zahl an!",
     "nan": "Was auch immer du gerade gesendet hast, nimm bitte eine ganze Zahl. :)",
     "no-song-in-queue": "Momentan ist kein Lied in der Warteschlange, füge doch eins hinzu :musical_note: ?",
-    "no-song-playing":"Momentan wird kein Lied abgespielt.",
+    "no-song-playing": "Momentan wird kein Lied abgespielt.",
     "no-permission": "Du hast keine Berechtigung für diesen Befehl, erstelle eine Discord Rolle namens WolkeBot und gib sie dir um diesen Befehl zu nutzen.",
     "no-voice": "Ich bin aktuell mit keinem Voicechannel auf diesem Server verbunden!",
-    "level-update":":tada: Du hast gerade **Level {{level}}** auf **{{server}}** erreicht.",
+    "level-update": ":tada: Du hast gerade **Level {{level}}** auf **{{server}}** erreicht.",
     "empty-search": "Du hast keinen Suchbegriff eingegeben!",
-    "negative":"Bitte benutze keine negative Zahl >_<"
+    "negative": "Bitte benutze keine negative Zahl >_<",
+    "cancel": "c:Suche abbrechen"
   },
   "help": {
     "intro": "lass uns zusammen viel Spass haben hier auf Discord (/^▽^)/ Hier sind meine Befehle:",
@@ -35,6 +36,7 @@
     "queue": "Zeigt die Warteschlange",
     "np": "Zeigt den aktuellen Song",
     "rq": "Fügt einen/mehrere Lieder zur Warteschlange hinzu",
+    "stream": "Streamt ein Radio, du kannst nach Radios suchen oder über -u url direkt einen bestimmten stream starten.",
     "youtube": "Youtube",
     "yts": "Sucht auf Youtube und gibt dir das erste Ergebnis",
     "ytq": "Sucht auf Youtube und fügt das erste Ergebnis in die Warteschlange ein.",
@@ -46,6 +48,7 @@
     "rm": "Löscht die letzten 10 gesendendeten Nachrichten (Werte zwischen 2-100 möglich)",
     "noLevelServer": "Schaltet das Level System für den gesamten Server aus, wenn der Befehl erneut ausgeführt wird, ist es wieder aktiviert.",
     "noPmServer": "Deaktiviert PM-Benachrichtigungen für den gesamten Server, wenn der Befehl erneut ausgeführt wird, sind sie wieder aktiviert.",
+    "noChannelServer": "Deaktiviert PM-Benachrichtigungen für den gesamten Server und aktiviert channel benachrichtigungen, wenn der Befehl erneut ausgeführt wird, ist es wieder umgekehrt.",
     "setLewd": "Aktiviert die NSFW-Befehle für den aktuellen Channel",
     "remLewd": "Deaktiviert die NSFW-Befehle für den aktuellen Channel",
     "setPrefix": "Ändert das Prefix, keine Erwähnungen oder Leerzeichen erlaubt!",
@@ -65,11 +68,11 @@
     "roll": "Würfelt eine zufällige Zahl zwischen 1 und 10 oder der gesendeteten Zahl",
     "8ball": "Der Magische Ball beantwortet eine Ja/Nein Frage",
     "garfield": "Sendet dir ein zufälliges Garfield Comic",
-    "cat":"Sendet ein zufälliges Bild einer Katze",
-    "hug":"Gibt dir ein Anime Umarmung Gif",
-    "slap":"Gibt dir ein Anime Schlag Gif",
-    "report":"Wenn du zu schüchtern bist um auf den Support Discord zu kommen, kannst du hiermit Wolke eine Nachricht schreiben.",
-    "setLang":"stellt die Sprache ein",
+    "cat": "Sendet ein zufälliges Bild einer Katze",
+    "hug": "Gibt dir ein Anime Umarmung Gif",
+    "slap": "Gibt dir ein Anime Schlag Gif",
+    "report": "Wenn du zu schüchtern bist um auf den Support Discord zu kommen, kannst du hiermit Wolke eine Nachricht schreiben.",
+    "setLang": "stellt die Sprache ein, momentan verfügbar sind de (deutsch), en (english) und ru (russisch)",
     "feedback": "Benutze für Feedback bitte den Support Discord ^^",
     "talk": "Wenn du mir mit reden willst, erwähn mich einfach :D",
     "helpReply": "OK, Ich habe dir die Liste mit Befehlen in einer PM gesendet!"
@@ -86,14 +89,14 @@
     "error": "Oh Nein, ein Fehler ist aufgetreten während ich probiert habe deinen Voicechannel zu betreten!",
     "permission": "Keine Berechtigung!, Du brauchst die WolkeBot Rolle um diesen Befehl auszuführen.",
     "no-voice": "Du bist in keinem Voicechannel",
-    "already-voice":"Ich bin bereits in einem Voice Channel.!"
+    "already-voice": "Ich bin bereits in einem Voice Channel.!"
   },
   "nsfw-images": {
-    "nothing-found": "Ich habe keine Bilder mit diesen Tags gefunden: `{{tags}}`",
+    "nothing-found": "Ich habe keine Bilder mit diesen Tags gefunden: `{{- tags}}`",
     "no-nsfw-channel": "Bitte füge einen NSFW-Channel hinzu."
   },
   "8ball": {
-    "answers":[
+    "answers": [
       "Nein",
       "Ja.",
       "Vielleicht.",
@@ -103,7 +106,7 @@
       "Das ist eine großartige Idee!",
       "Bist du dir da auch ganz sicher ?"
     ],
-    "no-message":"Du hast keine Frage eingegeben"
+    "no-message": "Du hast keine Frage eingegeben"
   },
   "ban": {
     "success": "{{user}} wurde gebannt!",
@@ -113,7 +116,7 @@
     "self": "Netter Versuch, aber du kannst mich nicht mit meinem eigenen Befehl bannen.",
     "no-mention": "Bitte erwähne den Nutzer, den du bannen willst!"
   },
-  "kick":{
+  "kick": {
     "success": "{{- user}} wurde gekickt!",
     "privilege": "Meine Rechte reichen nicht aus um {{- user}} zu kicken!",
     "err": "Ein Fehler ist aufgetreten während ich {{- user}} kicken wollte!",
@@ -123,11 +126,11 @@
   },
   "roll": {
     "whole-number": "Bitte sende eine ganze Zahl",
-    "negative": "Ich kann leider nicht mit einer {{number}} würfeln!",
+    "negative": "Ich kann leider nicht mit einer {{- number}} würfeln!",
     "success": "Ich habe eine {{first}} aus {{second}} verschieden Möglichkeiten gewürfelt!"
   },
   "qa": {
-    "nothing-found": "Ich habe kein Lied mit dem Begriff `{{search}}` gefunden!",
+    "nothing-found": "Ich habe kein Lied mit dem Begriff `{{- search}}` gefunden!",
     "empty-search": "Du hast keinen Suchbegriff eingegeben",
     "started-download": ":hourglass: Ok, ich lade nun`{{- url}}` ",
     "success": "**{{- song}}** ist jetzt in der Warteschlange!"
@@ -139,6 +142,7 @@
   "qra": {
     "to-small": "Du kannst nicht {{number}} Lieder aus der Warteschlange entfernen!",
     "success": "Ich habe die folgenden Lieder aus der Warteschlange entfernt:\n {{- table}}",
+    "too-big": "Ich habe {{number}} Lieder entfernt.",
     "one-song": "Benutze {{- prefix}}fskip um den aktuellen Song zu überspringen"
   },
   "cookie": {
@@ -159,8 +163,8 @@
     "unsupported": "Diese Sprache ist bisher noch nicht eingebaut worden, aber du kannst helfen indem du eine pullrequest mit der gewünschten Sprache auf github öffnest. Momentan verfügbar sind de (Deutsch), en (Englisch) und ru (Russisch)"
   },
   "np": {
-    "song-duration": "Aktuell läuft:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
-    "song": "Aktuell läuft:`{{- title}} {{repeat}}`",
+    "song-duration": "Aktuell läuft: `{{- title}} {{current}}/{{duration}} {{repeat}} `",
+    "song": "Aktuell läuft: `{{- title}} {{repeat}}`",
     "repeat-on": "Wiederholung:Aktiviert"
   },
   "queue": {
@@ -177,6 +181,10 @@
   "no-pm-server": {
     "success-disable": "Die PM-Benachrichtigungen sind jetzt Serverweit ausgeschalten.",
     "success-enable": "Die PM-Benachrichtigungen sind jetzt Serverweit angeschalten."
+  },
+  "no-channel-server": {
+    "success-disable": "Die PM-Benachrichtigungen sind jetzt Serverweit ausgeschalten. Dafür sind jetzt Channel Benachrichtigungen aktiviert.",
+    "success-enable": "Die PM-Benachrichtigungen sind jetzt Serverweit angeschalten. Dafür sind jetzt Channel Benachrichtigungen deaktiviert."
   },
   "no-level": {
     "success-disable": "Das Level System ist nun für dich deaktiviert!",
@@ -207,7 +215,7 @@
       "no-link": "Das ist kein gültiger osu! link!",
       "unvalid-link": "Du hast keinen Map Link angegeben!"
     },
-    "success": "PP für beatmap `{{artist}} - {{title}} [{{version}}] mit Genauigkeit {{accuracy}}%` `{{pp}}PP` `{{mods}}`"
+    "success": "PP für beatmap `{{- artist}} - {{title}} [{{- version}}] mit Genauigkeit {{accuracy}}%` `{{pp}}PP` `{{- mods}}`"
   },
   "server-info": {
     "id": "ID",
@@ -220,51 +228,51 @@
     "region": "Region",
     "owner": "Besitzer"
   },
-  "leave":"Ok, ich habe den Voicechannel verlassen",
-  "play":{
-    "no-result":"Kein Lied gefunden!",
+  "leave": "Ok, ich habe den Voicechannel verlassen",
+  "play": {
+    "no-result": "Kein Lied gefunden!",
     "playing": ":musical_note: Jetzt spielt **{{- song}}**"
   },
-  "prefix":{
+  "prefix": {
     "success": "Ok, ich habe gerade das prefix auf `{{- prefix}}` umgestellt!",
-    "no-prefix":"Bitte hänge das gewünschte Prefix an die Nachricht an!"
+    "no-prefix": "Bitte hänge das gewünschte Prefix an die Nachricht an!"
   },
-  "voice":{
+  "voice": {
     "in-queue": "**{{- song}}** ist bereits in der Warteschlange!",
-    "error-volume":"Beim setzen der Lautstärke ist ein Fehler aufgetreten!",
-    "success-volume":"Lautstärke wurde auf {{volume}} gesetzt!",
-    "no-volume":"Keine Lautstärke angegeben!",
-    "repeat-start":":repeat_one: Wiederholung gestartet für **{{song}}**",
-    "already-playing":"Dieses Lied spielt bereits!",
+    "error-volume": "Beim setzen der Lautstärke ist ein Fehler aufgetreten!",
+    "success-volume": "Lautstärke wurde auf {{volume}} gesetzt!",
+    "no-volume": "Keine Lautstärke angegeben!",
+    "repeat-start": ":repeat_one: Wiederholung gestartet für **{{- song}}**",
+    "already-playing": "Dieses Lied spielt bereits!",
     "blocked": "Dieses Lied ist nicht downloadbar, vielleicht ist es zu lang oder geblockt.",
-    "dl-start":":hourglass: Download gestartet!",
-    "use-proxy":"Ich probiere ein paar kleine Tricks um das Lied zu bekommen, bitte gedulde dich einen Moment!"
+    "dl-start": ":hourglass: Download gestartet!",
+    "use-proxy": "Ich probiere ein paar kleine Tricks um das Lied zu bekommen, bitte gedulde dich einen Moment!"
   },
-  "yts":{
+  "yts": {
     "success": "Ich hab das folgende Video gefunden: {{- link}}"
   },
-  "skip":{
+  "skip": {
     "success": ":track_next: {{- title}} wurde übersprungen!",
-    "stop":":stop_button: Lied wurde gestoppt."
+    "stop": ":stop_button: Lied wurde gestoppt."
   },
-  "vskip":{
-    "user-no-voice":"Du kannst nicht voteskippen wenn du nicht im selben Voicechannel bist wie ich!",
-    "same-voice":"Du kannst nicht voteskippen wenn du nicht im selben Voicechannel bist wie ich!",
-    "dup":"Du hast bereits abgestimmt!",
-    "success-add":"Deine Wahl wurde hinzugefügt, aktueller Stand **{{current}}%/{{needed}}%**",
+  "vskip": {
+    "user-no-voice": "Du kannst nicht voteskippen wenn du nicht im selben Voicechannel bist wie ich!",
+    "same-voice": "Du kannst nicht voteskippen wenn du nicht im selben Voicechannel bist wie ich!",
+    "dup": "Du hast bereits abgestimmt!",
+    "success-add": "Deine Wahl wurde hinzugefügt, aktueller Stand **{{current}}%/{{needed}}%**",
     "success-skip": "**{{- title}}** wurde übersprungen!"
   },
-  "rm":{
-    "less-2":"Du kannst nicht weniger als 2 Nachrichten löschen!",
-    "over-100":"Du kannst nicht mehr als 100 Nachrichten auf einmal löschen!",
+  "rm": {
+    "less-2": "Du kannst nicht weniger als 2 Nachrichten löschen!",
+    "over-100": "Du kannst nicht mehr als 100 Nachrichten auf einmal löschen!",
     "success": "{{number}} Nachrichten wurden gelöscht.",
-    "error":"Ein Fehler ist aufgetreten beim Versuch die Nachrichten zu löschen!"
+    "error": "Ein Fehler ist aufgetreten beim Versuch die Nachrichten zu löschen!"
   },
-  "search":{
-    "success":"Ich habe die folgenden Songs gefunden:"
+  "search": {
+    "success": "Ich habe die folgenden Songs gefunden:"
   },
-  "set-lewd":{
+  "set-lewd": {
     "success": "{{- channel}} wurde erfolgreich zu den NSFW-Channeln hinzugefügt!"
   },
-  "report":"OK, Ich habe deinen Bug Report an Wolke gesendet. Bitte missbrauche diese Funktion nicht, da du gesperrt werden könntest!"
+  "report": "OK, Ich habe deinen Bug Report an Wolke gesendet. Bitte missbrauche diese Funktion nicht, da du gesperrt werden könntest!"
 }

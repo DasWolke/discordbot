@@ -5,6 +5,8 @@
  * Created by julia on 02.10.2016.
  */
 var cmd = 'add';
+var logger = require('../../../utility/logger');
+var winston = logger.getT();
 var shortid = require('shortid');
 var songModel = require('../../../DB/song');
 // var config = require('../../config/main.json');
