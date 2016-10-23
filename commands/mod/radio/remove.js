@@ -5,6 +5,8 @@
  * Created by julia on 02.10.2016.
  */
 var cmd = 'remove';
+var logger = require('../../../utility/logger');
+var winston = logger.getT();
 var AsciiTable = require('ascii-table');
 var messageHelper = require('../../../utility/message');
 var MessageCollector = require('discord.js').MessageCollector;

@@ -47,7 +47,7 @@ var execute = function (message) {
                         $text: {$search: messageSearch},
                         type: {$ne: 'radio'}
                     }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(1).exec(function (err, Songs) {
-                        if (err) return console.log(err);
+                        if (err) return winston.info(err);
                         var Song = Songs[0];
                         if (Song) {
                             if (voice.inVoice(message)) {
