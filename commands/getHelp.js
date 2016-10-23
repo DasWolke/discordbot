@@ -19,6 +19,7 @@ ${t('help.music', {lngs: message.lang})}
 ${pre}voice : ${t('help.voice', {lngs: message.lang})} 
 ${pre}leave : ${t('help.silent', {lngs: message.lang})}
 ${pre}play name : ${t('help.play', {lngs: message.lang})}
+${pre}stream name or [-u] url: ${t('help.stream', {lngs: message.lang})}
 ${pre}pause : ${t('help.pause', {lngs: message.lang})}
 ${pre}resume : ${t('help.resume', {lngs: message.lang})}
 ${pre}volume 40 : ${t('help.volume', {lngs: message.lang})}
@@ -35,7 +36,7 @@ ${pre}rq number: ${t('help.rq', {lngs: message.lang})}
     var reply2 = `\`\`\`\css
 ${t('help.youtube', {lngs: message.lang})}
 ${pre}yts query : ${t('help.yts', {lngs: message.lang})}
-${pre}ytq query : ${t('help.osu', {lngs: message.lang})}
+${pre}ytq query : ${t('help.ytq', {lngs: message.lang})}
 --------------------------------
 ${t('help.mod',{lngs: message.lang})}:
 ${t('help.mod-info',{lngs: message.lang})}
@@ -45,6 +46,7 @@ ${pre}kick user : ${t('help.kick', {lngs: message.lang})}
 ${pre}rm 10 : ${t('help.rm', {lngs: message.lang})}
 ${pre}noLevelServer : ${t('help.noLevelServer', {lngs: message.lang})}
 ${pre}noPmServer : ${t('help.noPmServer', {lngs: message.lang})}
+${pre}noChServer : ${t('help.noChServer', {lngs: message.lang})}
 ${pre}setLewd : ${t('help.setLewd', {lngs: message.lang})}
 ${pre}remLewd : ${t('help.remLewd', {lngs: message.lang})}
 ${pre}setPrefix : ${t('help.setPrefix', {lngs: message.lang})}
