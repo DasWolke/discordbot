@@ -7,7 +7,7 @@ var prefix = "!w.";
 winston.info(`Starting Init of Bot!`);
 winston.add(winston.transports.File, {filename: `logs/rem-main.log`});
 winston.remove(winston.transports.Console);
-winston.add(winston.transports.Console, {'timestamp':true});
+winston.add(winston.transports.Console, {'timestamp': true});
 var logger = require('./utility/logger');
 logger.setT(winston);
 var raven = require('raven');
@@ -142,7 +142,7 @@ i18next.use(Backend).init({
                 serverModel.findOne({id: message.guild.id}, function (err, Server) {
                     if (err) return winston.error(err);
                     message.dbServer = {};
-                    message.dbServer.volume = "0.10";
+                    message.dbServer.volume = 0.25;
                     if (Server) {
                         message.dbServer = Server;
                     }
@@ -215,11 +215,28 @@ i18next.use(Backend).init({
         }
 
     });
-    // bot.on('guildMemberAdd', (Guild, member) => {
-    //     if (Guild.id !== '110373943822540800') {
-    //         Guild.defaultChannel.sendMessage(`Welcome ${member.user} on **${Guild.name}**`);
-    //     }
-    // });
+    bot.on('guildCreate', (Guild, member) => {
+        serverModel.findOne({id: Guild.id}, (err, server) => {
+            if (err) return winston.error(err);
+            if (server) {
+
+            } else {
+                let server = new serverModel({
+                    id: Guild.id,
+                    nsfwChannels: [],
+                    cmdChannels: [],
+                    lastVoiceChannel: "",
+                    levelEnabled: true,
+                    pmNotifications: true,
+                    chNotifications: false,
+                    prefix: "!w."
+                });
+                server.save((err) => {
+                    if (err) return winston.info(err);
+                });
+            }
+        });
+    });
     // bot.on('guildMemberRemove', (Guild, member) => {
     //     if (Guild.id !== '110373943822540800') {
     //         Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
@@ -256,22 +273,24 @@ i18next.use(Backend).init({
             winston.info('Stats Updated!');
             winston.info(body);
         });
-        let requestOptionsCarbon = {
-            url: `https://www.carbonitex.net/discord/data/botdata.php`,
-            method: 'POST',
-            json: {
-                "server_count": bot.guilds.size,
-                "key":config.carbon_token
-            }
-        };
-        request(requestOptionsCarbon, function (err, response, body) {
-            if (err) {
-                client.captureMessage(err);
-                return winston.error(err);
-            }
-            winston.info('Stats Updated Carbon!');
-            winston.info(body);
-        });
+        if (!config.beta) {
+            let requestOptionsCarbon = {
+                url: `https://www.carbonitex.net/discord/data/botdata.php`,
+                method: 'POST',
+                json: {
+                    "server_count": bot.guilds.size,
+                    "key": config.carbon_token
+                }
+            };
+            request(requestOptionsCarbon, function (err, response, body) {
+                if (err) {
+                    client.captureMessage(err);
+                    return winston.error(err);
+                }
+                winston.info('Stats Updated Carbon!');
+                winston.info(body);
+            });
+        }
     };
     var users = function () {
         let users = 0;
