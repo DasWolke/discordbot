@@ -23,9 +23,9 @@ var execute = function (message) {
     if (messageSplit.length > 0) {
         songModel.find({
             $text: {
-                $search: messageFormat,
-                type: "radio"
-            }
+                $search: messageFormat
+            },
+            type: "radio"
         }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(10).exec(function (err, Radios) {
             if (err) return message.reply(err);
             let table = new AsciiTable();
