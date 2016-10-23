@@ -6,6 +6,8 @@ var t = i18nBean.getT();
 var cmd = 'noPm';
 var userModel = require('../DB/user');
 var messageHelper = require('../utility/message');
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var execute = function (message) {
     if (message.guild) {
         userModel.findOne({id: message.author.id}, function (err, User) {
@@ -13,18 +15,18 @@ var execute = function (message) {
             if (User) {
                 if (messageHelper.pmNotifications(message, User)) {
                     User.disablePm(message.guild.id, function (err) {
-                        if (err) return console.log(err);
+                        if (err) return winston.info(err);
                         message.reply(t('no-pm.success-disable', {lngs:message.lang}));
                     });
                 } else {
                     User.enablePm(message.guild.id, function (err) {
-                        if (err) return console.log(err);
+                        if (err) return winston.info(err);
                         message.reply(t('no-pm.success-enable', {lngs:message.lang}));
                     });
                 }
             } else {
                 messageHelper.createUser(message, true, false, function (err) {
-                    if (err) return console.log(err);
+                    if (err) return winston.info(err);
                     message.reply(t('no-pm.success-disable', {lngs:message.lang}));
                 });
             }

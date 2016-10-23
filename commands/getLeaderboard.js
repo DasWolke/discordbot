@@ -4,6 +4,8 @@
 var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var cmd = 'rank';
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var execute = function (message) {
     if (message.guild) {
         message.reply(t('rank', {lngs:message.lang, interpolation: {escape: false}, link:`https://bot.ram.moe/l/${message.guild.id}`}));

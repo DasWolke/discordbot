@@ -5,14 +5,16 @@ var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var cmd = 'level';
 var serverModel = require('../DB/server');
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var messageHelper = require('../utility/message');
 var execute = function (message) {
     if (message.guild) {
         serverModel.findOne({id: message.guild.id}, function (err, Server) {
-            if (err) return console.log(err);
+            if (err) return winston.info(err);
             if (Server && typeof (Server.levelEnabled) === 'undefined' || Server && Server.levelEnabled || !Server) {
                 messageHelper.getLevel(message, (err, result) => {
-                    if (err) return console.log(err);
+                    if (err) return winston.info(err);
                     message.reply(t('level.result', {lngs:message.lang, level:result.level, current:parseInt(result.xp), needed:parseInt(messageHelper.calcXpNeeded(result)), total:result.totalXp}));
                 });
             } else {

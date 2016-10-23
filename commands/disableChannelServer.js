@@ -3,7 +3,7 @@
  */
 var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
-var cmd = 'noPmServer';
+var cmd = 'noChServer';
 var serverModel = require('../DB/server');
 var messageHelper = require('../utility/message');
 var logger = require('../utility/logger');
@@ -17,12 +17,18 @@ var execute = function (message) {
                     if (typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
                         Server.updatePms(false, err => {
                             if (err) return winston.info(err);
-                            message.reply(t('no-pm-server.success-disable', {lngs:message.lang}));
+                            Server.updateChannel(true, err=> {
+                                if (err) return winston.info(err);
+                                message.reply(t('no-channel-server.success-disable', {lngs: message.lang}));
+                            });
                         });
                     } else {
                         Server.updatePms(true, err => {
                             if (err) return winston.info(err);
-                            message.reply(t('no-pm-server.success-enable', {lngs:message.lang}));
+                            Server.updateChannel(false, err=> {
+                                if (err) return winston.info(err);
+                                message.reply(t('no-channel-server.success-enable', {lngs: message.lang}));
+                            });
                         });
                     }
                 } else {
@@ -32,19 +38,20 @@ var execute = function (message) {
                         lastVoiceChannel: "",
                         levelEnabled: true,
                         pmNotifications: false,
-                        prefix:"!w."
+                        chNotifications: true,
+                        prefix: "!w."
                     });
                     server.save(err => {
                         if (err) return winston.info(err);
-                        message.reply(t('no-pm-server.success-disable', {lngs:message.lang}));
+                        message.reply(t('no-pm-server.success-disable', {lngs: message.lang}));
                     });
                 }
             });
         } else {
-            message.reply(t('generic.no-permission', {lngs:message.lang}));
+            message.reply(t('generic.no-permission', {lngs: message.lang}));
         }
     } else {
-        message.reply(t('generic.no-pm', {lngs:message.lang}));
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

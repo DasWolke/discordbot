@@ -13,6 +13,7 @@ var cmd = 'stream';
 var config = require('../config/main.json');
 var icy = require("icy");
 var fs = require('fs');
+var shortid = require("shortid");
 var MessageCollector = require('discord.js').MessageCollector;
 var pre = function (message) {
     if (message.guild) {
@@ -36,20 +37,43 @@ var execute = function (message) {
             }
         }
         if (messageSplit.length > 0) {
-            songModel.find({
-                $text: {$search: messageFormat},
-                type: "radio"
-            }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(5).exec(function (err, Radios) {
-                if (err) return message.reply(err);
-                let titles = [];
-                for (var i = 0; i < Radios.length; i++) {
-                    titles.push(`${i + 1}:${Radios[i].title}\n`);
+            if (messageSplit[0] === '-u') {
+                if (messageSplit[1] !== 'undefined') {
+                    icy.get(messageSplit[1], (res) => {
+                        let song = {
+                            "title": `<${messageSplit[1]}>`,
+                            "id": shortid.generate(),
+                            "addedBy": message.author.id,
+                            "addedAt": new Date(),
+                            "duration": "",
+                            "type": "radio",
+                            "url": messageSplit[1]
+                        };
+                        voice.addSongFirst(message, song, false).then(() => {
+                            voice.streamSong(message, res);
+                            message.channel.sendMessage(t('play.playing', {
+                                song: song.title,
+                                interpolation: {escape: false}
+                            }));
+                        }).catch(message.reply);
+                    });
                 }
-                titles.push('c:cancel');
-                message.channel.sendMessage(`${messageHelper.buildPrologMessage(titles)}`).then(() => {
-                    input(message, Radios);
+            } else {
+                songModel.find({
+                    $text: {$search: messageFormat},
+                    type: "radio"
+                }, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).limit(5).exec(function (err, Radios) {
+                    if (err) return message.reply(err);
+                    let titles = [];
+                    for (var i = 0; i < Radios.length; i++) {
+                        titles.push(`${i + 1}:${Radios[i].title}\n`);
+                    }
+                    titles.push(t('generic.cancel', {lngs: message.lang}));
+                    message.channel.sendMessage(`${messageHelper.buildPrologMessage(titles)}`).then(() => {
+                        input(message, Radios);
+                    });
                 });
-            });
+            }
         } else {
             songModel.find({type: "radio"}).limit(5).exec(function (err, Radios) {
                 if (err) return message.reply(err);
@@ -57,7 +81,7 @@ var execute = function (message) {
                 for (var i = 0; i < Radios.length; i++) {
                     titles.push(`${i + 1}:${Radios[i].title}\n`);
                 }
-                titles.push('c:cancel');
+                titles.push(t('generic.cancel', {lngs: message.lang}));
                 message.channel.sendMessage(`${messageHelper.buildPrologMessage(titles)}`).then(() => {
                     input(message, Radios);
                 });
@@ -73,15 +97,21 @@ var input = function (message, Radios) {
         let msg = collection.first();
         let number = 10;
         try {
-            number = parseInt(msg.content)
+            number = parseInt(msg.content);
         } catch (e) {
 
         }
         if (!isNaN(number) && number <= Radios.length) {
             icy.get(Radios[number - 1].url, (res) => {
+                // res.on('metadata', function (metadata) {
+                //     var parsed = icy.parse(metadata);
+                //     console.log(parsed);
+                // });
+                // console.error(res.headers);
                 voice.addSongFirst(message, Radios[number - 1], false).then(() => {
                     voice.streamSong(message, res);
                     message.channel.sendMessage(t('play.playing', {
+                        lngs: message.lang,
                         song: Radios[number - 1].title,
                         interpolation: {escape: false}
                     }));

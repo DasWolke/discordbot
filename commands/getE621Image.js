@@ -43,14 +43,14 @@ var e621 = function (message,messageSplit) {
                 try {
                     body = JSON.parse(body);
                 } catch (e) {
-                    console.log(e.message);
+                    winston.info(e.message);
                 }
                 if (typeof (body) !== 'undefined' && body.length > 0) {
                     var random = general.random(0, body.length);
                     random = Math.floor(random);
                     if (typeof(body[random]) !== 'undefined' && typeof (body[random].file_url) !== 'undefined') {
                         message.channel.sendMessage(body[random].file_url, function (err, message) {
-                            if (err) return console.log(err);
+                            if (err) return winston.info(err);
                         });
                     } else {
 

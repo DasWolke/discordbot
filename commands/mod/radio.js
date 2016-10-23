@@ -8,10 +8,12 @@ var cmd = 'radio';
 // var config = require('../../config/main.json');
 var add = require('./radio/add');
 var list = require('./radio/list');
+var logger = require('../../utility/logger');
+var winston = logger.getT();
 var remove = require('./radio/remove');
 var execute = function (message) {
     let messageSplit = message.content.split(' ').slice(2);
-    // console.log(messageSplit);
+    // winston.info(messageSplit);
     if (messageSplit.length > 0) {
         switch (messageSplit[0]) {
             case "add":

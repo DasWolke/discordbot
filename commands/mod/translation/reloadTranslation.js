@@ -4,6 +4,8 @@
 var i18nBean = require('../../../utility/i18nManager');
 var cmd = 'reload';
 var config = require('../../../config/main.json');
+var logger = require('../../../utility/logger');
+var winston = logger.getT();
 var execute = function (message) {
     if (message.author.id === config.owner_id) {
         try {

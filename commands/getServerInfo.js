@@ -4,6 +4,8 @@
 var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var cmd = 'info';
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var AsciiTable = require('ascii-table');
 var execute = function (message) {
     if (message.guild) {

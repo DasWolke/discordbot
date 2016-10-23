@@ -17,7 +17,7 @@ var execute = function (message) {
             message.reply(response);
         });
     } else {
-        message.reply(t('generic.no-pm', {lngs:message.lang}));
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
 var voteSkip = function voteSkip(message, cb) {
@@ -33,13 +33,13 @@ var voteSkip = function voteSkip(message, cb) {
                                 Queue.checkVote(message.author.id, function (err, found) {
                                     if (err) {
                                         winston.info(err);
-                                        return cb(t('generic.error', {lngs:message.lang}));
+                                        return cb(t('generic.error', {lngs: message.lang}));
                                     }
                                     if (!found) {
                                         Queue.updateVotes(message.author.id, function (err) {
                                             if (err) {
                                                 winston.info(err);
-                                                return cb(t('generic.error', {lngs:message.lang}));
+                                                return cb(t('generic.error', {lngs: message.lang}));
                                             }
                                             Queue.reload(function (err, Queue) {
                                                 if (err) return winston.info(err);
@@ -83,20 +83,20 @@ var voteSkip = function voteSkip(message, cb) {
                                 });
                             }
                         } else {
-                            return cb(t('vskip.same-voice', {lngs:message.lang}));
+                            return cb(t('vskip.same-voice', {lngs: message.lang}));
                         }
                     } else {
-                        return cb(t('generic.no-voice', {lngs:message.lang}));
+                        return cb(t('generic.no-voice', {lngs: message.lang}));
                     }
                 } else {
-                    return cb(t('generic.no-song-in-queue', {lngs:message.lang}));
+                    return cb(t('generic.no-song-in-queue', {lngs: message.lang}));
                 }
             } else {
-                return cb(t('generic.no-song-in-queue', {lngs:message.lang}));
+                return cb(t('generic.no-song-in-queue', {lngs: message.lang}));
             }
         });
     } else {
-        return cb(t('vskip.user-no-voice', {lngs:message.lang}));
+        return cb(t('vskip.user-no-voice', {lngs: message.lang}));
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute};

@@ -11,7 +11,7 @@ var winston = logger.getT();
 var cmd = 'eatCookie';
 var execute = function (message) {
     userModel.findOne({id: message.author.id, 'servers.serverId': message.guild.id}, function (err, User) {
-        if (err) return console.log(err);
+        if (err) return winston.info(err);
         if (User) {
             if (messageHelper.hasGuild(message, User)) {
                 var clientServer = messageHelper.loadServerFromUser(message, User);
@@ -20,7 +20,7 @@ var execute = function (message) {
                         id: User.id,
                         'servers.serverId': message.guild.id
                     }, {$inc: {'servers.$.cookies': -1}}, function (err) {
-                        if (err) return console.log(err);
+                        if (err) return winston.info(err);
                         message.reply(`${t('eat-cookie.success', {lngs:message.lang, number:1})} \n http://i.giphy.com/L0nV2FkR5RpkY.gif`);
                     });
                 } else {
@@ -28,13 +28,13 @@ var execute = function (message) {
                 }
             } else {
                 User.addServer(message.getServerObj(message, true, true), function (err) {
-                    if (err) return console.log(err);
+                    if (err) return winston.info(err);
                 });
                 message.channel.sendMessage(t('eat-cookie.failure', {lngs:message.lang}) + '\n http://i.giphy.com/Kf2ndcv58AepW.gif');
             }
         } else {
             messageHelper.createUser(message, true, true, function (err) {
-                if (err) return console.log(err);
+                if (err) return winston.info(err);
                 message.channel.sendMessage(t('eat-cookie.failure', {lngs:message.lang}) + '\n http://i.giphy.com/Kf2ndcv58AepW.gif');
             });
         }

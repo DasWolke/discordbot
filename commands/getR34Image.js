@@ -42,7 +42,7 @@ var r34 = function (message, messageSplit) {
                 random = Math.floor(random);
                 if (typeof(jsonObj.posts.post[random]) !== 'undefined' && typeof (jsonObj.posts.post[random]._file_url) !== 'undefined') {
                     message.channel.sendMessage('http:' + jsonObj.posts.post[random]._file_url, function (err, message) {
-                        if (err) return console.log(err);
+                        if (err) return winston.info(err);
                     });
                 } else {
 

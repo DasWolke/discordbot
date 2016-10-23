@@ -4,6 +4,8 @@
 var i18nBean = require('../utility/i18nManager');
 var t = i18nBean.getT();
 var cmd = 'roll';
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var generalHelper = require('../utility/general');
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
