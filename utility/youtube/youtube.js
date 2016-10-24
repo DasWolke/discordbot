@@ -44,10 +44,6 @@ var download = function (url, message, cb) {
     // }
 };
 var downloadSingle = function (url, message, cb, fb) {
-    let useFB = false;
-    if (typeof fb !== 'undefined') {
-        useFB = true;
-    }
     let dl;
     if (music.ytRegex.test(url)) {
         dl = ytdl;
@@ -55,7 +51,6 @@ var downloadSingle = function (url, message, cb, fb) {
         dl = youtubedl;
     }
     dl.getInfo(url, function (err, info) {
-
         if (err) {
             message.channel.sendMessage(t('voice.use-proxy', {lngs: message.lang}));
             downloadProxy(message, url, config.default_proxy, function (err, info) {
@@ -65,7 +60,7 @@ var downloadSingle = function (url, message, cb, fb) {
                 cb(err, info);
             });
         } else if (checkTime(info)) {
-            winston.info(checkTime(info));
+            // winston.info(checkTime(info));
             let id;
             if (music.ytRegex.test(url)) {
                 id = info.video_id;
@@ -76,8 +71,14 @@ var downloadSingle = function (url, message, cb, fb) {
             songModel.findOne({id: id}, function (err, Song) {
                 if (err) return cb(err);
                 if (!Song) {
+                    // downloadProxy(message, url, 0, (err, info) => {
+                    //     if (err) {
+                    //         return cb(err);
+                    //     }
+                    //     cb(null, info);
+                    // });
                     var video;
-                    if (music.ytRegex.test(url) && !useFB) {
+                    if (music.ytRegex.test(url)) {
                         video = youtubedl(url, ["--restrict-filenames", "-4", "--prefer-free-formats"], {
                             cwd: __dirname,
                             maxBuffer: Infinity
@@ -228,7 +229,9 @@ var search = function (message, cb) {
 };
 var downloadProxy = function (message, url, proxy, cb) {
     let proxy_url;
-    if (proxy === 1) {
+    if (proxy === 0) {
+        proxy_url = "http://localhost:7005";
+    } else if (proxy === 1) {
         proxy_url = config.dl_url_1;
     } else {
         proxy_url = config.dl_url_2;
@@ -255,12 +258,13 @@ var downloadProxy = function (message, url, proxy, cb) {
         } catch (e) {
             client.captureMessage(e, {extra: {'url': url, 'proxy': proxy, 'json': body}});
         }
+        console.log(parsedBody);
         if (parsedBody.error === 0) {
             winston.info(parsedBody.path);
             winston.info(`${proxy_url}${parsedBody.path}`);
-            var stream = request(`${proxy_url}${parsedBody.path}`).on('error', (err) => {
+            var stream = request(`${proxy_url}/${parsedBody.path}`).on('error', (err) => {
                 return cb(err);
-            }).pipe(fs.createWriteStream(`audio/${parsedBody.info.id}.mp3`));
+            }).pipe(fs.createWriteStream(`audio/${parsedBody.info.id}.mka`));
             stream.on('finish', () => {
                 var song = new songModel({
                     title: parsedBody.info.title,
@@ -269,13 +273,13 @@ var downloadProxy = function (message, url, proxy, cb) {
                     addedBy: message.author.id,
                     addedAt: Date.now(),
                     duration: convertDuration(parsedBody.info),
-                    type: "audio/mp3",
+                    type: "audio/mka",
                     url: url,
                     dl: "stream",
                     dlBy: `proxy_${proxy}`,
                     cached: true,
                     cachedAt: new Date(),
-                    path: `audio/${parsedBody.info.id}.mp3`
+                    path: `audio/${parsedBody.info.id}.mka`
                 });
                 song.save((err) => {
                     if (err) return cb(err);
@@ -293,7 +297,7 @@ var downloadProxy = function (message, url, proxy, cb) {
                 });
                 return cb('The Proxy did not work.');
             } else {
-                downloadProxy(message, url, 2, cb);
+                downloadProxy(message, url, proxy + 1, cb);
             }
         }
     });

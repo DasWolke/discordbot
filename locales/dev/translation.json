@@ -5,10 +5,10 @@
     "whole-num": "Please add a whole number!",
     "nan": "Whatever you just send, please just add a whole number. :) ",
     "no-song-in-queue": "There is no song in the queue, maybe add one :musical_note: ?",
-    "no-song-playing":"There is no song playing at the moment!",
+    "no-song-playing": "There is no song playing at the moment!",
     "no-permission": "You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
     "no-voice": "I am not connected to any voice channel on this Server!",
-    "level-update":":tada: You just reached **Level  {{level}}** on **{{server}}**",
+    "level-update": ":tada: You just reached **Level  {{level}}** on **{{server}}**",
     "empty-search": "You did not enter a search Term!",
     "negative": "Please dont use a negative number!",
     "cancel": "c:cancel"
@@ -68,11 +68,11 @@
     "roll": "Roles a a number between zero and number, if there is no number it will be out of 10",
     "8ball": "Gives you the Opinion of the magic 8ball to a question",
     "garfield": "Gives you a random garfield command",
-    "cat":"Sends you a random cat image",
+    "cat": "Sends you a random cat image",
     "hug": "Gives you an anime hug gif",
     "slap": "Gives you an anime slap gif",
-    "setLang": "sets the language, (currently supported are de (german), en (english), ru (russian), sv (swedish) and tr (turkish)",
-    "report":"If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
+    "setLang": "sets the language, (currently supported are de (german), en (english) and ru (russian)",
+    "report": "If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
     "feedback": "For feedback use the support discord please ^^",
     "talk": "If you want to talk with me @mention me with a message :D",
     "helpReply": "OK, I sent you a list of commands over PM."
@@ -89,14 +89,14 @@
     "error": "An error has occured while trying to join your voicechannel!",
     "permission": "No permission! You need to give yourself the WolkeBot role to use this.",
     "no-voice": "You are not in a voice channel!",
-    "already-voice":"I am already in a voice channel, move me to change it!"
+    "already-voice": "I am already in a voice channel, move me to change it!"
   },
   "nsfw-images": {
     "nothing-found": "No images found with tags: `{{tags}}`",
     "no-nsfw-channel": "Please set/add a NSFW channel with !w.setLewd (in one of the NSFW Channels) to use NSFW Commands"
   },
   "8ball": {
-    "answers":[
+    "answers": [
       "No.",
       "Yes.",
       "Maybe.",
@@ -106,7 +106,7 @@
       "That is a great idea.",
       "Are you sure about that ?"
     ],
-    "no-message":"You did not enter a question."
+    "no-message": "You did not enter a question."
   },
   "ban": {
     "success": "Banned User {{user}}",
@@ -116,8 +116,8 @@
     "self": "You can not ban me with my own command.",
     "no-mention": "Please mention a user you want to ban."
   },
-  "kick":{
-    "success":"Kicked User {{user}}",
+  "kick": {
+    "success": "Kicked User {{user}}",
     "privilege": "My role does not have the right to kick {{user}} !",
     "err": "An error occurred while trying to kick {{user}} !",
     "perms": "You can not kick the Owner or anyone with the WolkeBot Role.",
@@ -158,9 +158,9 @@
     "magic": "xX_Cats_Xx was here -10.10.2016"
   },
   "set-lang": {
-    "no-lang": "You did not specify a language! Currently there are {{languages}} available.",
+    "no-lang": "You did not specify a language! Currently there are de (german), en (english) and ru (russian) available.",
     "success": "Ok i just set the language for this server to {{- language}}.",
-    "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. Currently there are {{languages}} available."
+    "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. Currently there are de (german), en (english) and ru (russian) available."
   },
   "np": {
     "song-duration": "Currently playing:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
@@ -228,51 +228,51 @@
     "region": "Region",
     "owner": "Owner"
   },
-  "leave":"Ok i left the voice channel.",
-  "play":{
-    "no-result":"No song found!",
+  "leave": "Ok i left the voice channel.",
+  "play": {
+    "no-result": "No song found!",
     "playing": ":musical_note: Now playing **{{- song}}**"
   },
-  "prefix":{
+  "prefix": {
     "success": "Ok i just set the prefix to {{- prefix}}",
-    "no-prefix":"Please add a prefix!"
+    "no-prefix": "Please add a prefix!"
   },
-  "voice":{
+  "voice": {
     "in-queue": "**{{- song}}** is already in the queue.",
-    "error-volume":"Error while setting volume!",
+    "error-volume": "Error while setting volume!",
     "success-volume": "Set volume to {{- volume}}",
-    "no-volume":"No volume set!",
+    "no-volume": "No volume set!",
     "repeat-start": "Started repeat for **{{- song}}**",
-    "already-playing":"This Song is already playing!",
+    "already-playing": "This Song is already playing!",
     "blocked": "This Video is not available to download. Maybe it is too long or blocked/removed",
     "dl-start": ":hourglass: loading song!",
-    "use-proxy":"Trying to download over the proxy, this could take a bit."
+    "use-proxy": "Trying to download over the proxy, this could take a bit."
   },
-  "yts":{
+  "yts": {
     "success": "Found the following song: {{- link}}"
   },
-  "skip":{
+  "skip": {
     "success": ":track_next: Skipped song {{- title}}",
-    "stop":":stop_button: Stopped current song"
+    "stop": ":stop_button: Stopped current song"
   },
-  "vskip":{
-    "user-no-voice":"You can not voteskip, if you are not in the same voicechannel!",
-    "same-voice":"You are not in the same voicechannel as I am!",
-    "dup":"You already voted!",
-    "success-add":"Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
+  "vskip": {
+    "user-no-voice": "You can not voteskip, if you are not in the same voicechannel!",
+    "same-voice": "You are not in the same voicechannel as I am!",
+    "dup": "You already voted!",
+    "success-add": "Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
     "success-skip": "Voteskipped Song: **{{- title}}**"
   },
-  "rm":{
-    "less-2":"You can not delete less than 2 messages!",
-    "over-100":"You can not delete more than 100 Messages at once!",
-    "success": "Successfully deleted {{number}} messages.",
-    "error":"Error while trying to delete Messages!"
+  "rm": {
+    "less-2": "You can not delete less than 2 messages!",
+    "over-100": "You can not delete more than 100 Messages at once!",
+    "success": "Successfully deleted {{number}} message.",
+    "error": "Error while trying to delete Messages!"
   },
-  "search":{
-    "success":"Found the following Songs:"
+  "search": {
+    "success": "Found the following Songs:"
   },
-  "set-lewd":{
+  "set-lewd": {
     "success": "Successfully added {{- channel}} to the NSFW Channels!"
   },
-  "report":"OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!"
+  "report": "OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!"
 }
