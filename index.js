@@ -35,11 +35,11 @@ var backendOptions = {
     jsonIndent: 2
 };
 i18next.use(Backend).init({
-    whitelist: ['en', 'de', 'ru'],
     backend: backendOptions,
     lng: 'en',
     fallbacklngs: false,
-    preload: ['de', 'en', 'ru']
+    preload: ['de', 'en', 'ru', 'sv', 'tr'],
+    load: 'all'
 }, (err, t) => {
     if (err) {
         client.captureMessage(err);
@@ -302,6 +302,5 @@ i18next.use(Backend).init({
         return users;
     };
 });
-
 // "shard_id":process.argv[2],
 // "shard_count":config.shards

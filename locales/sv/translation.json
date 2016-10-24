@@ -158,7 +158,7 @@
     "magic": "xX_Cats_Xx var här -10.10.2016"
   },
   "set-lang": {
-    "no-lang": "Du specifierade inte ett språk! För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.,
+    "no-lang": "Du specifierade inte ett språk! För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.,",
     "success": "Okej, jag satte precis språket för denna server till: {{- language}}.",
     "unsupported": "Det här språket är inte implementerat än, men du kan hjälpa till med det genom att lägga till en pull-request med din översättning på github. För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga."
   },
