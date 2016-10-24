@@ -125,9 +125,11 @@ i18next.use(Backend).init({
                 dogstatsd.gauge('musicbot.users', users());
             }, 1000 * 30);
         }
-        setInterval(() => {
-            updateStats();
-        }, 1000 * 60 * 30);
+        if (!config.beta) {
+            setInterval(() => {
+                updateStats();
+            }, 1000 * 60 * 30);
+        }
     });
     bot.on('reconnecting', () => {
         // winston.info('Reconnecting to Discord!');
