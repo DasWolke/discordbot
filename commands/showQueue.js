@@ -25,7 +25,7 @@ var execute = function (message) {
                     for (var q = 0; q < iteration; q++) {
                         if (q === 0) {
                             let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
-                            let repeat = Queue.repeat ? t('np.repeat-on') : "";
+                            let repeat = Queue.repeat ? t('np.repeat-on', {lngs: message.lang}) : "";
                             if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '' && dispatcher) {
                                 let time = Math.floor(dispatcher.time / 1000);
                                 reply = reply + `${t('np.song-duration', {lngs: message.lang, title:Queue.songs[0].title, repeat:repeat, duration:Queue.songs[0].duration, current:general.convertSeconds(time), interpolation: {escape: false}})} \n`;
