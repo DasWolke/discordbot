@@ -22,7 +22,7 @@ var execute = function (message) {
             messageFormat = messageFormat + " " + messageSplit[i];
         }
     }
-    songModel.find({$text: {$search: messageFormat}}).limit(5).exec((err, Radios) => {
+    songModel.find({$text: {$search: messageFormat}, type: "radio"}).limit(5).exec((err, Radios) => {
         if (err) return message.reply(err);
         if (Radios.length > 0) {
             let table = new AsciiTable();
