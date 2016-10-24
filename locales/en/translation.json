@@ -71,7 +71,7 @@
     "cat":"Sends you a random cat image",
     "hug": "Gives you an anime hug gif",
     "slap": "Gives you an anime slap gif",
-    "setLang": "sets the language, (currently supported are de (german), en (english) and ru (russian)",
+    "setLang": "sets the language, (currently supported are de (german), en (english), ru (russian), sv (swedish) and tr (turkish)",
     "report":"If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
     "feedback": "For feedback use the support discord please ^^",
     "talk": "If you want to talk with me @mention me with a message :D",
@@ -265,7 +265,7 @@
   "rm":{
     "less-2":"You can not delete less than 2 messages!",
     "over-100":"You can not delete more than 100 Messages at once!",
-    "success":"Successfully deleted {{number}} message.",
+    "success": "Successfully deleted {{number}} messages.",
     "error":"Error while trying to delete Messages!"
   },
   "search":{
