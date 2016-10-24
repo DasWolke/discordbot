@@ -9,7 +9,7 @@ var winston = logger.getT();
 var execute = function (message) {
     let pre = message.prefix;
     var reply = `${t('help.intro_2', {lngs: message.lang})} ${message.botUser.user.username}, ${t('help.intro',{lngs: message.lang})} 
-                 \`\`\`\css
+                 \`\`\`
 ${pre}help : ${t('help.help', {lngs: message.lang})} 
 ${t('help.support', {lngs: message.lang})}
 ${pre}bug : ${t('help.bug', {lngs: message.lang})}
@@ -33,7 +33,7 @@ ${pre}queue : ${t('help.queue', {lngs: message.lang})}
 ${pre}np : ${t('help.np', {lngs: message.lang})}
 ${pre}rq number: ${t('help.rq', {lngs: message.lang})}
 --------------------------------\`\`\``;
-    var reply2 = `\`\`\`\css
+    var reply2 = `\`\`\`
 ${t('help.youtube', {lngs: message.lang})}
 ${pre}yts query : ${t('help.yts', {lngs: message.lang})}
 ${pre}ytq query : ${t('help.ytq', {lngs: message.lang})}
@@ -52,7 +52,7 @@ ${pre}remLewd : ${t('help.remLewd', {lngs: message.lang})}
 ${pre}setPrefix : ${t('help.setPrefix', {lngs: message.lang})}
 --------------------------------\`\`\``;
     var reply3 =
-        `\`\`\`\css
+        `\`\`\`
 ${t('help.other', {lngs: message.lang})}
 ${pre}r34 tags : ${t('help.r34', {lngs: message.lang})}
 ${pre}kona tags : ${t('help.kona', {lngs: message.lang})} 
