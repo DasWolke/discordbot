@@ -60,7 +60,7 @@ var downloadSingle = function (url, message, cb, fb) {
                 cb(err, info);
             });
         } else if (checkTime(info)) {
-            winston.info(checkTime(info));
+            // winston.info(checkTime(info));
             let id;
             if (music.ytRegex.test(url)) {
                 id = info.video_id;
@@ -71,72 +71,72 @@ var downloadSingle = function (url, message, cb, fb) {
             songModel.findOne({id: id}, function (err, Song) {
                 if (err) return cb(err);
                 if (!Song) {
-                    downloadProxy(message, url, 0, (err, info) => {
-                        if (err) {
-                            return cb(err);
-                        }
-                        cb(null, info);
-                    });
-                    // var video;
-                    // if (music.ytRegex.test(url)) {
-                    //     video = youtubedl(url, ["--restrict-filenames", "-4", "--prefer-free-formats"], {
-                    //         cwd: __dirname,
-                    //         maxBuffer: Infinity
-                    //     });
-                    // } else {
-                    //     video = youtubedl(url, ["--restrict-filenames", "-4"], {
-                    //         cwd: __dirname,
-                    //         maxBuffer: Infinity
-                    //     });
-                    // }
-                    // video.on('error', function (err) {
-                    //     // console.log(err);
-                    // });
-                    // var filename = info.id + ".temp";
-                    // var stream = video.pipe(fs.createWriteStream('temp/' + filename));
-                    // video.on('info', function (info) {
-                    //     winston.info('Download started');
-                    //     winston.info('filename: ' + info._filename);
-                    //     winston.info('size: ' + info.size);
-                    //     winston.info('duration: ' + info.duration);
-                    // });
-                    // video.on('complete', function complete(info) {
-                    //     winston.info('filename: ' + info._filename + ' finished');
+                    // downloadProxy(message, url, 0, (err, info) => {
+                    //     if (err) {
+                    //         return cb(err);
+                    //     }
                     //     cb(null, info);
                     // });
-                    // video.on('end', function () {
-                    //     ffmpeg(fs.createReadStream('temp/' + filename)).output('./audio/' + id + '.mka').outputOptions(['-vn', '-acodec copy'])
-                    //         .on('stderr', err => {
-                    //
-                    //         }).on('error', err => {
-                    //         winston.info(err);
-                    //         return cb(err);
-                    //     }).on('end', (stdout, stderr) => {
-                    //         winston.info('Finished Converting');
-                    //         fs.unlink('temp/' + filename, function (err) {
-                    //             if (err) return cb(err);
-                    //             var song = new songModel({
-                    //                 title: info.title,
-                    //                 alt_title: info.alt_title,
-                    //                 id: id,
-                    //                 addedBy: message.author.id,
-                    //                 addedAt: Date.now(),
-                    //                 duration: convertDuration(info),
-                    //                 type: "audio/mka",
-                    //                 url: url,
-                    //                 dl: "stream",
-                    //                 dlBy: "main",
-                    //                 cached: true,
-                    //                 cachedAt: new Date(),
-                    //                 path: `audio/${id}.mka`
-                    //             });
-                    //             song.save(function (err) {
-                    //                 if (err) return cb(err);
-                    //                 cb(null, info);
-                    //             });
-                    //         });
-                    //     }).run();
-                    // });
+                    var video;
+                    if (music.ytRegex.test(url)) {
+                        video = youtubedl(url, ["--restrict-filenames", "-4", "--prefer-free-formats"], {
+                            cwd: __dirname,
+                            maxBuffer: Infinity
+                        });
+                    } else {
+                        video = youtubedl(url, ["--restrict-filenames", "-4"], {
+                            cwd: __dirname,
+                            maxBuffer: Infinity
+                        });
+                    }
+                    video.on('error', function (err) {
+                        // console.log(err);
+                    });
+                    var filename = info.id + ".temp";
+                    var stream = video.pipe(fs.createWriteStream('temp/' + filename));
+                    video.on('info', function (info) {
+                        winston.info('Download started');
+                        winston.info('filename: ' + info._filename);
+                        winston.info('size: ' + info.size);
+                        winston.info('duration: ' + info.duration);
+                    });
+                    video.on('complete', function complete(info) {
+                        winston.info('filename: ' + info._filename + ' finished');
+                        cb(null, info);
+                    });
+                    video.on('end', function () {
+                        ffmpeg(fs.createReadStream('temp/' + filename)).output('./audio/' + id + '.mka').outputOptions(['-vn', '-acodec copy'])
+                            .on('stderr', err => {
+
+                            }).on('error', err => {
+                            winston.info(err);
+                            return cb(err);
+                        }).on('end', (stdout, stderr) => {
+                            winston.info('Finished Converting');
+                            fs.unlink('temp/' + filename, function (err) {
+                                if (err) return cb(err);
+                                var song = new songModel({
+                                    title: info.title,
+                                    alt_title: info.alt_title,
+                                    id: id,
+                                    addedBy: message.author.id,
+                                    addedAt: Date.now(),
+                                    duration: convertDuration(info),
+                                    type: "audio/mka",
+                                    url: url,
+                                    dl: "stream",
+                                    dlBy: "main",
+                                    cached: true,
+                                    cachedAt: new Date(),
+                                    path: `audio/${id}.mka`
+                                });
+                                song.save(function (err) {
+                                    if (err) return cb(err);
+                                    cb(null, info);
+                                });
+                            });
+                        }).run();
+                    });
                 } else {
                     cb(null, info);
                 }
