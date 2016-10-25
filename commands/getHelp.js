@@ -49,7 +49,10 @@ var execute = function (message) {
             let reply = `${t(`help.${temp[number - 1].name}`, {lngs: message.lang})}\n`;
             reply = reply + `\`\`\``;
             for (let i = 0; i < data.length; ++i) {
-                reply = reply + `${pre}${data[i].cmd} : ${t(`help.${data[i].cmd}`, {lngs: message.lang})}\n`;
+                reply = reply + `${pre}${data[i].cmd} : ${t(`help.${data[i].cmd}`, {
+                        lngs: message.lang,
+                        languages: buildLang(message.langList)
+                    })}\n`;
             }
             reply = reply + (`\`\`\``);
             message.channel.sendMessage(reply).then(msg => {
@@ -74,6 +77,7 @@ var execute = function (message) {
             msg.prefix = message.prefix;
             msg.lang = message.lang;
             msg.dbServer = message.dbServer;
+            msg.langList = message.langList;
             input(msg, temp)
         });
     }
@@ -327,7 +331,10 @@ var input = function (message, Categories) {
             let reply = `${t(`help.${Categories[number - 1].name}`, {lngs: message.lang})}\n`;
             reply = reply + `\`\`\``;
             for (let i = 0; i < data.length; ++i) {
-                reply = reply + `${message.prefix}${data[i].cmd} : ${t(`help.${data[i].cmd}`, {lngs: message.lang})}\n`;
+                reply = reply + `${message.prefix}${data[i].cmd} : ${t(`help.${data[i].cmd}`, {
+                        lngs: message.lang,
+                        languages: buildLang(message.langList)
+                    })}\n`;
             }
             reply = reply + (`\`\`\``);
             message.channel.sendMessage(reply).then(msg => {
