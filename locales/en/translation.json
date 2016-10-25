@@ -2,7 +2,7 @@
   "generic": {
     "error": "An error occured!",
     "no-pm": ":no_entry: This Command does not work in private channels!",
-    "whole-num": "Please add a whole number!",
+    "whole-num": "Please use a whole number!",
     "nan": "Whatever you just send, please just add a whole number. :) ",
     "no-song-in-queue": "There is no song in the queue, maybe add one :musical_note: ?",
     "no-song-playing":"There is no song playing at the moment!",
