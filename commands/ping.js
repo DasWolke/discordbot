@@ -10,4 +10,4 @@ var execute = function (message) {
         sendedMessage.edit(`pong \`${diff}ms\``);
     });
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'misc'};

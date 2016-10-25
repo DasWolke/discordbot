@@ -57,4 +57,4 @@ var konachan = function (message, messageSplit) {
         }
     });
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'nsfw'};

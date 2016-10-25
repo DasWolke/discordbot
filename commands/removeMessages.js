@@ -42,4 +42,4 @@ var execute = function (message) {
         message.reply(t('generic.no-permission', {lngs: message.lang}));
     }
 };
-module.exports = {cmd: cmd, accessLevel: 1, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 1, exec: execute, cat: 'moderation'};

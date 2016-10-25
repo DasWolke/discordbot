@@ -35,4 +35,4 @@ var execute = function (message) {
         message.reply(`\n\`\`\`${table.toString()}\`\`\``);
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'stats'};

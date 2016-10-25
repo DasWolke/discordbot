@@ -10,4 +10,4 @@ var execute = function (message) {
         winston.info(body);
     });
 };
-module.exports = {cmd: cmd, accessLevel: 3, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 3, exec: execute, cat: 'wip'};
