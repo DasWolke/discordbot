@@ -6,7 +6,6 @@ var winston = require('winston');
 var prefix = "!w.";
 var shard_id = process.env.SHARD_ID;
 var shard_count = process.env.SHARD_COUNT;
-winston.info(process.env);
 winston.info(`Starting Init of Bot!`);
 winston.add(winston.transports.File, {filename: `logs/rem-main.log`});
 winston.remove(winston.transports.Console);
