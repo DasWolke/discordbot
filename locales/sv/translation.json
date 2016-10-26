@@ -75,7 +75,16 @@
         "report": "Om du inte vill gå med i support-servern, så kan du använda report-kommandot för att ge stöd till Utvecklaren Wolke, men använd det sparsamt.",
         "feedback": "För att ge feedback så får du gärna använda servern för support på discord ^^",
         "talk": "Om du vill prata med mig så du @nämna mig med ett meddelande :D",
-        "helpReply": "OK, jag skickade dig en lista med kommandon över PM."
+        "helpReply": "OK, jag skickade dig en lista med kommandon över PM.",
+        "moderation": "",
+        "misc": "",
+        "stats": "",
+        "user": "",
+        "admin": "",
+        "nsfw": "",
+        "eastereggs": "",
+        "proxer": "",
+        "no-cat": ""
     },
     "version": "För tillfället så kör jag version {{version}}",
     "add": "Använd denna länk för att lägga till mig på din server: {{- link}}",
@@ -205,7 +214,8 @@
         "guilds": "Guild",
         "avg-channels": "Genomsnitt i kanaler per Guild.",
         "avg-users": "Genomsnitt i Användare per Guild.",
-        "voice": "Röstanslutningar"
+        "voice": "Röstanslutningar",
+        "shard": ""
     },
     "rank": "Du kan hitta topplistan för servern här: {{- link}}",
     "pp": {
