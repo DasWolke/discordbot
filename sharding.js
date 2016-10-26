@@ -17,7 +17,7 @@ function timerFetchGuilds() {
         fetchGuilds();
         setInterval(() => {
             fetchGuilds();
-        }, 1000 * 60);
+        }, 1000 * 60 * 5);
     }, 1000 * 10);
 }
 function fetchGuilds() {
