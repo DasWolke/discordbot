@@ -13,13 +13,13 @@ var execute = function (message) {
         let users = 0;
         let channels = 0;
         let voice = 0;
-        message.botUser.guilds.map((guild => {
+        message.botUser.guilds.map(guild => {
             users = users + guild.members.size;
             channels = channels + guild.channels.size;
             if (guild.voiceConnection) {
                 voice++;
             }
-        }));
+        });
         let averageUsers = users / message.botUser.guilds.size;
         let averageChannels = channels / message.botUser.guilds.size;
         table
