@@ -28,4 +28,4 @@ var execute = function (message) {
         message.reply("This Commands Only Works in Server Channels!");
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'music'};

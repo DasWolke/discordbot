@@ -47,4 +47,4 @@ var execute = function (message) {
         message.channel.sendMessage(t('generic.no-permission', {lngs: message.lang}));
     }
 };
-module.exports = {cmd:cmd, accessLevel:1, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 1, exec: execute, cat: 'moderation'};

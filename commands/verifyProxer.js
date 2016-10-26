@@ -60,4 +60,4 @@ var execute = function (message) {
         message.reply('You have to add a Link to your Proxer Account for me to verify you!');
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'proxer'};

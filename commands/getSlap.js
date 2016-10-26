@@ -12,4 +12,4 @@ var execute = function (message) {
 
     }).catch(winston.info);
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'misc'};

@@ -278,22 +278,7 @@ var checkCmdChannel = function (message, cb) {
     });
 };
 var filterSelection = (message, collector) => {
-    switch (message.content) {
-        case "1":
-            return true;
-        case "2":
-            return true;
-        case "3":
-            return true;
-        case "4":
-            return true;
-        case "5":
-            return true;
-        case "c":
-            return true;
-        default:
-            return false;
-    }
+    return true;
 };
 var buildPrologMessage = (content) => {
     let msg = "\`\`\`css\n";

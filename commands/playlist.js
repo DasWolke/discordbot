@@ -26,4 +26,4 @@ var execute = function (message) {
         message.reply('What do you want to do ?');
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'wip'};

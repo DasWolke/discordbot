@@ -11,4 +11,4 @@ var execute = function (message) {
     }
     message.author.sendMessage(t('add', {link:`\<https://discordapp.com/oauth2/authorize?client_id=${config.client_id}&scope=bot&permissions=66321471\>`, lngs:message.lang, interpolation: {escape: false}}));
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'support'};

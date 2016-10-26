@@ -19,6 +19,7 @@
     "i18next": "^3.4.2",
     "i18next-node-fs-backend": "^0.1.2",
     "icy": "^2.1.0",
+    "le-table": "^6.1.4",
     "lodash": "^4.16.4",
     "moment": "^2.15.1",
     "mongoose": "^4.6.3",

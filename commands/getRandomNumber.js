@@ -14,15 +14,15 @@ var execute = function (message) {
         try {
             number = parseInt(messageSplit[1]);
         } catch (e) {
-            return message.reply(t('generic.whole-num'));
+            return message.reply(t('generic.whole-num', {lngs: message.lang}));
         }
         if (isNaN(number)) {
-            return message.reply(t('generic.nan'));
+            return message.reply(t('generic.nan', {lngs: message.lang}));
         }
         if (number < 1) {
-            return message.reply(t('roll.negative', {number:number}));
+            return message.reply(t('roll.negative', {number: number, lngs: message.lang}));
         }
     }
-    message.reply(t('roll.success', {first:generalHelper.random(1, number), second:number}));
+    message.reply(t('roll.success', {first: generalHelper.random(1, number), second: number, lngs: message.lang}));
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'misc'};
