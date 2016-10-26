@@ -6,6 +6,10 @@ const config = require('./config/main.json');
 var winston = require('winston');
 var request = require("request");
 let guilds = 0;
+if (!config.beta) {
+    var StatsD = require('node-dogstatsd').StatsD;
+    var dogstatsd = new StatsD();
+}
 let ShardManager = new Discord.ShardingManager('./index.js', config.shards, true);
 ShardManager.spawn(config.shards, 5000).then(shards => {
     winston.info('Spawned Shards!');
@@ -32,6 +36,9 @@ function fetchGuilds() {
     });
 }
 function updateStats() {
+    if (!config.beta) {
+        dogstatsd.gauge('musicbot.guilds', guilds);
+    }
     let requestOptions = {
         headers: {
             Authorization: config.discord_bots_token
