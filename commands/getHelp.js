@@ -319,10 +319,10 @@ var input = function (message, Categories) {
         } catch (e) {
 
         }
-        if (message.content.startsWith(message.prefix)) {
+        if (msg.content.startsWith(message.prefix)) {
             collector.stop();
         }
-        if (message.content === 'c') {
+        if (msg.content === 'c') {
             collector.stop();
         }
         if (!isNaN(number) && number <= Categories.length) {

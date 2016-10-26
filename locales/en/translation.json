@@ -213,7 +213,8 @@
     "guilds": "Guilds",
     "avg-channels": "Avg. Channels per guild",
     "avg-users": "Avg. Users per guild",
-    "voice": "Voiceconnections"
+    "voice": "Voiceconnections",
+    "shard": "Shard"
   },
   "rank": "You can find the Leaderboard for this Server here: {{- link}}",
   "pp": {

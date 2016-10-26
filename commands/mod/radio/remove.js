@@ -30,7 +30,7 @@ var execute = function (message) {
                 table.addRow(i + 1, Radios[i].title);
             }
             table.addRow('c', 'use c to cancel the delete!');
-            message.channel.sendMessage(table.toString());
+            message.channel.sendMessage(`\`\`\`${table.toString()}\`\`\``);
             let collector = new MessageCollector(message.channel, messageHelper.filterSelection, {max: 1});
             collector.on('end', (collection, reason) => {
                 let msg = collection.first();

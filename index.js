@@ -4,6 +4,8 @@
 var config = require('./config/main.json');
 var winston = require('winston');
 var prefix = "!w.";
+var shard_id = process.env.SHARD_ID;
+var shard_count = process.env.SHARD_COUNT;
 winston.info(`Starting Init of Bot!`);
 winston.add(winston.transports.File, {filename: `logs/rem-main.log`});
 winston.remove(winston.transports.Console);
@@ -83,7 +85,7 @@ getDirs('locales/', (list) => {
         socketManager.init(socket);
         winston.info('Bot finished Init');
         bot.on('ready', () => {
-            bot.user.setStatus('online', `!w.help | bot.ram.moe`).then().catch(winston.info);
+            bot.user.setStatus('online', `!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`).then().catch(winston.info);
             CMD.init();
             // setTimeout(() => {
             //     winston.info('start loading Voice!');
@@ -116,22 +118,22 @@ getDirs('locales/', (list) => {
             //         winston.info('Finished Loading Voice!');
             //     });
             // }, 10000);
-            if (!config.beta) {
-                updateStats();
-                dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
-                dogstatsd.gauge('musicbot.users', users());
-            }
-            if (!config.beta) {
-                setInterval(() => {
-                    dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
-                    dogstatsd.gauge('musicbot.users', users());
-                }, 1000 * 30);
-            }
-            if (!config.beta) {
-                setInterval(() => {
-                    updateStats();
-                }, 1000 * 60 * 30);
-            }
+            // if (!config.beta) {
+            //     updateStats();
+            //     dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
+            //     dogstatsd.gauge('musicbot.users', users());
+            // }
+            // if (!config.beta) {
+            //     setInterval(() => {
+            //         dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
+            //         dogstatsd.gauge('musicbot.users', users());
+            //     }, 1000 * 30);
+            // }
+            // if (!config.beta) {
+            //     setInterval(() => {
+            //         updateStats();
+            //     }, 1000 * 60 * 30);
+            // }
         });
         bot.on('reconnecting', () => {
             // winston.info('Reconnecting to Discord!');
@@ -140,6 +142,8 @@ getDirs('locales/', (list) => {
             if (!message.guild || config.beta && message.guild.id !== '110373943822540800' || !config.beta) {
                 message.lang = ['en', 'en'];
                 message.langList = list;
+                message.shard_id = shard_id;
+                message.shard_count = shard_count;
                 if (!config.beta) {
                     dogstatsd.increment('musicbot.messages');
                 }
@@ -253,59 +257,6 @@ getDirs('locales/', (list) => {
             client.captureMessage(error);
             winston.error(error);
         });
-        var updateStats = function () {
-            let id;
-            if (config.beta) {
-                id = config.client_id
-            } else {
-                id = config.bot_id
-            }
-            let requestOptions = {
-                headers: {
-                    Authorization: config.discord_bots_token
-                },
-                url: `https://bots.discord.pw/api/bots/${id}/stats`,
-                method: 'POST',
-                json: {
-                    "server_count": bot.guilds.size
-                }
-            };
-            request(requestOptions, function (err, response, body) {
-                if (err) {
-                    client.captureMessage(err);
-                    return winston.error(err);
-                }
-                winston.info('Stats Updated!');
-                winston.info(body);
-            });
-            if (!config.beta) {
-                let requestOptionsCarbon = {
-                    url: `https://www.carbonitex.net/discord/data/botdata.php`,
-                    method: 'POST',
-                    json: {
-                        "server_count": bot.guilds.size,
-                        "key": config.carbon_token
-                    }
-                };
-                request(requestOptionsCarbon, function (err, response, body) {
-                    if (err) {
-                        client.captureMessage(err);
-                        return winston.error(err);
-                    }
-                    winston.info('Stats Updated Carbon!');
-                    winston.info(body);
-                });
-            }
-        };
-        var users = function () {
-            let users = 0;
-            bot.guilds.map((guild => {
-                if (guild.id !== '110373943822540800') {
-                    users = users + guild.members.size;
-                }
-            }));
-            return users;
-        };
     });
 });
 function getDirs(rootDir, cb) {
