@@ -6,6 +6,7 @@ const config = require('./config/main.json');
 var winston = require('winston');
 var request = require("request");
 let guilds = 0;
+let users = 0;
 if (!config.beta) {
     var StatsD = require('node-dogstatsd').StatsD;
     var dogstatsd = new StatsD();
@@ -27,10 +28,17 @@ function timerFetchGuilds() {
 function fetchGuilds() {
     winston.info('Fetching Guilds!');
     ShardManager.fetchClientValues('guilds.size').then(results => {
-        winston.info('loaded guilds!');
-        guilds = results.reduce((prev, val) => prev + val, 0);
-        winston.info(`${results.reduce((prev, val) => prev + val, 0)} total guilds`);
-        updateStats();
+        ShardManager.broadcastEval('var x=0;this.guilds.map(g => {x += g.memberCount});x;').then(res => {
+            winston.info(res);
+            res = res.reduce((a, b) => a + b);
+            users = res;
+            winston.info('loaded guilds!');
+            guilds = results.reduce((prev, val) => prev + val, 0);
+            winston.info(`${results.reduce((prev, val) => prev + val, 0)} total guilds`);
+            updateStats();
+        }).catch(err => {
+            winston.error(err);
+        });
     }).catch(err => {
         winston.error(err);
     });
@@ -38,6 +46,7 @@ function fetchGuilds() {
 function updateStats() {
     if (!config.beta) {
         dogstatsd.gauge('musicbot.guilds', guilds);
+        dogstatsd.gauge('musicbot.users', users);
     }
     let requestOptions = {
         headers: {
