@@ -252,7 +252,7 @@ getDirs('locales/', (list) => {
         //         Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
         //     }
         // });
-        bot.on("debug", winston.info);
+        // bot.on("debug", winston.info);
         bot.on("warn", winston.info);
         bot.on('error', (error) => {
             client.captureMessage(error);
