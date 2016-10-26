@@ -26,7 +26,7 @@
     "eastereggs": "[EASTEREGGS]",
     "proxer": "[PROXER]",
     "no-cat": "No category exists with that number",
-    "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with the number of it to know more:",
+    "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
     "intro_2": "Hey im",
     "bug": "get the Link of the support discord",
     "help": "the help command",

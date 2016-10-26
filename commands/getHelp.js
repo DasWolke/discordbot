@@ -27,9 +27,9 @@ var execute = function (message) {
     }
     if (messageSplit.length > 0) {
         let temp = categories;
-        // if (!message.author.id === config.owner_id) {
+        if (!message.author.id === config.owner_id) {
         temp = temp.slice(1, 8);
-        // }
+        }
         let number = 0;
         try {
             number = parseInt(messageSplit[0]);
@@ -63,16 +63,16 @@ var execute = function (message) {
         let reply = `${t('help.intro_2', {lngs: message.lang})} ${message.botUser.user.username}, ${t('help.intro', {lngs: message.lang})}
 \`\`\``;
         let temp = categories;
-        // if (!message.author.id === config.owner_id) {
+        if (!message.author.id === config.owner_id) {
         temp = temp.slice(1, 8);
-        // }
+        }
         for (let i = 0; i < temp.length; i++) {
             reply = reply + `${i + 1} ${t(`help.${temp[i].name}`, {lngs: message.lang})}\n`
         }
         reply = reply + `${t('generic.cancel', {lngs: message.lang})}`;
         reply = reply + `\`\`\``;
         message.author.sendMessage(reply).then(msg => {
-            message.reply(t('help.helpReply', {lngs: message.lang}));
+            message.reply(t('help.helpReply', {lngs: message.lang, pre: '!w.'}));
             msg.prefix = message.prefix;
             msg.lang = message.lang;
             msg.dbServer = message.dbServer;
