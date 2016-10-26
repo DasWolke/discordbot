@@ -30,8 +30,8 @@ var execute = function (message) {
                     winston.info(res);
                     res = res.reduce((a, b) => a + b);
                     channels = res;
-                    let averageUsers = users / message.botUser.guilds.size;
-                    let averageChannels = channels / message.botUser.guilds.size;
+                    let averageUsers = users / guilds;
+                    let averageChannels = channels / guilds;
                     message.botUser.guilds.map(g => {
                         g.voiceConnection ? voice += 1 : voice
                     });
