@@ -31,7 +31,7 @@ var execute = function (message) {
             .addRow(t('bot-info.avg-channels', {lngs: message.lang}), averageChannels.toFixed(2))
             .addRow(t('bot-info.voice', {lngs: message.lang}), voice)
             .addRow(t('bot-info.shard', {lngs: message.lang}), `${parseInt(message.shard_id) + 1}/${message.shard_count}`);
-        message.reply(`\n\`\`\`${table.toString()}\`\`\``);
+        message.channel.sendMessage(`\n\`\`\`${table.toString()}\`\`\``);
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'stats'};
