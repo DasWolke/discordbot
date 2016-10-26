@@ -86,7 +86,8 @@ getDirs('locales/', (list) => {
         socketManager.init(socket);
         winston.info('Bot finished Init');
         bot.on('ready', () => {
-            bot.user.setStatus('online', `!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`).then().catch(winston.info);
+            bot.user.setStatus('online').then().catch(winston.info);
+            bot.user.setGame(`!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`, 'https://www.twitch.tv/daswolke_').then().catch(winston.info);
             CMD.init();
             // setTimeout(() => {
             //     winston.info('start loading Voice!');

@@ -10,7 +10,7 @@ if (!config.beta) {
     var StatsD = require('node-dogstatsd').StatsD;
     var dogstatsd = new StatsD();
 }
-let ShardManager = new Discord.ShardingManager('./index.js', config.shards, true);
+let ShardManager = new Discord.ShardingManager('./index.js', {}, config.shards, true);
 ShardManager.spawn(config.shards, 5000).then(shards => {
     winston.info('Spawned Shards!');
     timerFetchGuilds();
