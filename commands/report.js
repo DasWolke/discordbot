@@ -9,10 +9,10 @@ var execute = function (message) {
     message.botUser.fetchUser(config.owner_id).then(owner => {
         if (message.guild) {
             let content = message.content.substr(message.prefix.length + cmd.length).trim();
-            owner.sendMessage(`Bugreport received! From: ${message.guild.name} (${message.guild.id}), By:${message.author.username}#${message.author.discriminator} (${message.author.id}) Content:\`\`\` ${content}\`\`\``);
+            owner.sendMessage(`Shard: ${message.shard_id} Bugreport received! From: ${message.guild.name} (${message.guild.id}), By:${message.author.username}#${message.author.discriminator} (${message.author.id}) Content:\`\`\` ${content}\`\`\``);
         } else {
             let content = message.content.substr(message.prefix.length + cmd.length).trim();
-            owner.sendMessage(`Bugreport received! From: PM, By:${message.author.username}#${message.author.discriminator} (${message.author.id}) Content:\`\`\` ${content}\`\`\``);
+            owner.sendMessage(`Shard: ${message.shard_id} Bugreport received! From: PM, By:${message.author.username}#${message.author.discriminator} (${message.author.id}) Content:\`\`\` ${content}\`\`\``);
         }
         message.reply(t('report', {lngs:message.lang}));
     });
