@@ -85,7 +85,8 @@ getDirs('locales/', (list) => {
         socketManager.init(socket);
         winston.info('Bot finished Init');
         bot.on('ready', () => {
-            bot.user.setStatus('online', `!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`).then().catch(winston.info);
+            bot.user.setStatus('online').then().catch(winston.info);
+            bot.user.setGame(`!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`, 'https://www.twitch.tv/daswolke_').then().catch(winston.info);
             CMD.init();
             // setTimeout(() => {
             //     winston.info('start loading Voice!');
@@ -251,7 +252,7 @@ getDirs('locales/', (list) => {
         //         Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
         //     }
         // });
-        bot.on("debug", winston.info);
+        // bot.on("debug", winston.info);
         bot.on("warn", winston.info);
         bot.on('error', (error) => {
             client.captureMessage(error);
