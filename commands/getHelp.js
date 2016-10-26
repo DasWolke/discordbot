@@ -7,9 +7,7 @@ var t = i18nBean.getT();
 var cmd = 'help';
 var logger = require('../utility/logger');
 var winston = logger.getT();
-const Table = require("le-table");
 var messageHelper = require("../utility/message.js");
-var categorieCmd = [];
 var cmdManager = require('../utility/cmdManager');
 var commands = cmdManager.getCommands();
 var config = require('../config/main.json');
@@ -73,7 +71,8 @@ var execute = function (message) {
         }
         reply = reply + `${t('generic.cancel', {lngs: message.lang})}`;
         reply = reply + `\`\`\``;
-        message.channel.sendMessage(reply).then(msg => {
+        message.author.sendMessage(reply).then(msg => {
+            message.reply(t('help.helpReply', {lngs: message.lang}));
             msg.prefix = message.prefix;
             msg.lang = message.lang;
             msg.dbServer = message.dbServer;
