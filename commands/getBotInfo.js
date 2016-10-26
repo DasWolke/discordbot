@@ -26,7 +26,7 @@ var execute = function (message) {
         let averageChannels = channels/message.botUser.guilds.size-1;
         table
             .addRow(t('bot-info.uptime', {lngs:message.lang}), duration.humanize())
-            .addRow(t('bot-info.guilds', {lngs:message.lang}), message.botUser.guilds.size-1)
+            .addRow(t('bot-info.guilds', {lngs: message.lang}), message.botUser.guilds.size)
             .addRow(t('bot-info.channels', {lngs:message.lang}), channels)
             .addRow(t('bot-info.users', {lngs:message.lang}), users)
             .addRow(t('bot-info.avg-users', {lngs:message.lang}), averageUsers.toFixed(2))

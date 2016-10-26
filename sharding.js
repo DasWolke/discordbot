@@ -24,8 +24,9 @@ function fetchGuilds() {
     winston.info('Fetching Guilds!');
     ShardManager.fetchClientValues('guilds.size').then(results => {
         winston.info('loaded guilds!');
-        let guilds = results.reduce((prev, val) => prev + val, 0);
+        guilds = results.reduce((prev, val) => prev + val, 0);
         winston.info(`${results.reduce((prev, val) => prev + val, 0)} total guilds`);
+        updateStats();
     }).catch(err => {
         winston.error(err);
     });
