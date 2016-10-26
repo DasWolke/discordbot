@@ -32,17 +32,11 @@ function fetchGuilds() {
     });
 }
 function updateStats() {
-    let id;
-    if (config.beta) {
-        id = config.client_id
-    } else {
-        id = config.bot_id
-    }
     let requestOptions = {
         headers: {
             Authorization: config.discord_bots_token
         },
-        url: `https://bots.discord.pw/api/bots/${id}/stats`,
+        url: `https://bots.discord.pw/api/bots/${config.bot_id}/stats`,
         method: 'POST',
         json: {
             "server_count": guilds
@@ -50,7 +44,6 @@ function updateStats() {
     };
     request(requestOptions, function (err, response, body) {
         if (err) {
-            client.captureMessage(err);
             return winston.error(err);
         }
         winston.info('Stats Updated!');
@@ -67,7 +60,6 @@ function updateStats() {
         };
         request(requestOptionsCarbon, function (err, response, body) {
             if (err) {
-                client.captureMessage(err);
                 return winston.error(err);
             }
             winston.info('Stats Updated Carbon!');
