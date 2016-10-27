@@ -247,12 +247,38 @@ getDirs('locales/', (list) => {
                 }
             });
         });
-        // bot.on('guildMemberRemove', (Guild, member) => {
-        //     if (Guild.id !== '110373943822540800') {
-        //         Guild.defaultChannel.sendMessage(`**${member.user.username}** just left us`);
-        //     }
-        // });
-        // bot.on("debug", winston.info);
+        bot.on('guildMemberAdd', (member) => {
+            serverModel.findOne({id: member.guild.id}, (err, Server) => {
+                if (err) return winston.error(err);
+                if (Server) {
+                    if (typeof (Server.joinText) !== 'undefined' && Server.joinText !== '' && Server.joinText) {
+                        let channels = member.guild.channels.filter(c => {
+                            return (c.id === Server.joinChannel)
+                        });
+                        let channel = channels.first();
+                        let content = Server.joinText.replace('{{user}}', member.user);
+                        content = content.replace('{{guild}}', member.guild.name);
+                        channel.sendMessage(content);
+                    }
+                }
+            })
+        });
+        bot.on('guildMemberRemove', (member) => {
+            serverModel.findOne({id: member.guild.id}, (err, Server) => {
+                if (err) return winston.error(err);
+                if (Server) {
+                    if (typeof (Server.leaveText) !== 'undefined' && Server.leaveText !== '' && Server.leaveText) {
+                        let channels = member.guild.channels.filter(c => {
+                            return (c.id === Server.leaveChannel)
+                        });
+                        let channel = channels.first();
+                        let content = Server.leaveText.replace('{{user}}', member.user.username);
+                        content = content.replace('{{guild}}', member.guild.name);
+                        channel.sendMessage(content);
+                    }
+                }
+            })
+        });
         bot.on("warn", winston.info);
         bot.on('error', (error) => {
             client.captureMessage(error);

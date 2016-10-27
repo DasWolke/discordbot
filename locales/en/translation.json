@@ -79,6 +79,9 @@
         "feedback": "For feedback use the support discord please ^^",
         "talk": "If you want to talk with me @mention me with a message :D",
         "helpReply": "OK, I sent you a list of commands over PM.",
+        "gr": "Set a greeting with set greetingMessage,{{user}} will be replaced with the user that just joined and {{guild}} with the name of the server.\nThe greeting will be in the Channel, where the cmd was executed",
+        "fw": "Set a farewell with set farewellMessage,{{user}} will be replaced with the user that just joined and {{guild}} with the name of the server\nThe farewell will be in the channel, where the cmd was executed",
+        "s": "The server command, sets stuff like greetings and farewells",
         "moderation": "[MODERATION]",
         "misc": "[MISCELLANEOUS]",
         "stats": "[STATS]",
@@ -288,5 +291,13 @@
     "set-lewd": {
         "success": "Successfully added {{- channel}} to the NSFW Channels!"
     },
-    "report": "OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!"
+    "report": "OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!",
+    "greeting": {
+        "no-greeting": "You did not add the greeting I should use!",
+        "no-add": "You can either set or reset the greeting."
+    },
+    "farewell": {
+        "no-farewell": "You did not add the farewell I should use!",
+        "no-add": "You can either set or reset the farewell."
+    }
 }
