@@ -88,7 +88,13 @@
         "ping": "Sendet dir den Ping des Bots, bitte beachte, dass dies nicht der sprach-ping ist!",
         "lewd": "So unanständig uwu",
         "rem": "Sendet dir ein zufälliges Bild von Rem",
-        "wip": "[IN ARBEIT]"
+        "wip": "[IN ARBEIT]",
+        "gr": "Stellt eine Begrüßung mit befehl set Begrüßung ein, {{user}} wird durch den beitrenden User ersetzt und {{guild}} durch den Servernamen, die Begrüßung erfolgt im Channel in dem der Befehl ausgeführt wird.",
+        "fw": "Stellt eine Verabschiedung mit befehl set Verabschiedung ein, {{user}} wird durch den beitrenden User ersetzt und {{guild}} durch den Servernamen, die Verabschiedung erfolgt im Channel in dem der Befehl ausgeführt wird.",
+        "s": "Der Server Befehl, hiermit kannst du bspw Begrüßungen oder Verabschiedungen einstellen ",
+        "shrug": "¯\\_(ツ)_/¯ ",
+        "flip": "(╯°□°）╯︵ ┻━┻ ",
+        "eggplant": "Einfach nur eine Aubergine"
     },
     "version": "Momentan verwende ich Version{{- version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -288,5 +294,13 @@
     "set-lewd": {
         "success": "{{- channel}} wurde erfolgreich zu den NSFW-Channeln hinzugefügt!"
     },
-    "report": "OK, Ich habe deinen Bug Report an Wolke gesendet. Bitte missbrauche diese Funktion nicht, da du gesperrt werden könntest!"
+    "report": "OK, Ich habe deinen Bug Report an Wolke gesendet. Bitte missbrauche diese Funktion nicht, da du gesperrt werden könntest!",
+    "greeting": {
+        "no-greeting": "Du hast keine Begrüßung angegeben!",
+        "no-add": "Du kannst entweder eine Begrüßung setzen oder diese resetten."
+    },
+    "farewell": {
+        "no-farewell": "Du hast keine Verabschiedung angegeben!",
+        "no-add": "Du kannst entweder eine Verabschiedung setzen oder diese resetten."
+    }
 }
