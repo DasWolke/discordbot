@@ -52,6 +52,10 @@ var execute = function (message) {
                         languages: buildLang(message.langList)
                     })}\n`;
             }
+            if (temp[number - 1].name === 'moderation') {
+                reply = reply + `${message.prefix}s gr : ${t(`help.gr`)}\n`;
+                reply = reply + `${message.prefix}s fw : ${t(`help.fw`)}`;
+            }
             reply = reply + (`\`\`\``);
             message.author.sendMessage(reply).then(msg => {
 
@@ -339,6 +343,10 @@ var input = function (message, Categories) {
                         lngs: message.lang,
                         languages: buildLang(message.langList)
                     })}\n`;
+            }
+            if (Categories[number - 1].name === 'moderation') {
+                reply = reply + `${message.prefix}s gr : ${t(`help.gr`)}\n`;
+                reply = reply + `${message.prefix}s fw : ${t(`help.fw`)}`;
             }
             reply = reply + (`\`\`\``);
             message.channel.sendMessage(reply).then(msg => {
