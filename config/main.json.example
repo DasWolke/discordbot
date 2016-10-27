@@ -1,15 +1,25 @@
 {
-  "owner":"",//The Name of the Owner of the Bot
-  "id":1,//The Client ID of the Owner of the Bot
-  "token":"", //The Discord Bot Token
-  "client_id":"", //The id of the Discord Application
-  "version": "5.0", //Current Version
-  "osu_token":"", //The Osu Api Token
-  "osu_path":"./audio/osu/",
-  "osu_username":"", //Your Osu Username
-  "osu_password":"", //Your Osu Password
-  "youtube_api":"", //Youtube Data Api Key
-  "proxer_api":"", //Api Key for the Proxer.me Api
-  "proxer_user":"", //Username on proxer.me
-  "proxer_pass":""  //password on  proxer.me
+   "owner":"",
+    "owner_id":"",
+    "token":"",
+    "client_id":"",
+    "bot_id":"",
+    "version": "9.5-alpha",
+    "beta":true,
+    "osu_token":"",
+    "osu_path":"./audio/osu/",
+    "osu_username":"",
+    "osu_password":"",
+    "youtube_api":"",
+    "proxer_api":"",
+    "proxer_user":"",
+    "proxer_pass":"",
+    "discord_bots_token":"",
+    "sentry_token":"",
+    "shards":2,
+    "yahoo_app_id":"",
+    "admins":[
+      ""
+    ],
+    "linux":false
 }
