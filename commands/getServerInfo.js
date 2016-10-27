@@ -19,7 +19,7 @@ var execute = function (message) {
             .addRow(t('server-info.text', {lngs:message.lang}), textChannels)
             .addRow(t('server-info.voice', {lngs:message.lang}), voiceChannels)
             .addRow(t('server-info.roles', {lngs:message.lang}), message.guild.roles.size)
-            .addRow(t('server-info.creation', {lngs:message.lang}), message.guild.creationDate.toDateString())
+            .addRow(t('server-info.creation', {lngs:message.lang}), message.guild.createdAt.toDateString())
             .addRow(t('server-info.region', {lngs:message.lang}), message.guild.region)
             .addRow(t('server-info.owner', {lngs:message.lang}), `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`);
         message.reply(`\n\`\`\`${table.toString()}\`\`\``);

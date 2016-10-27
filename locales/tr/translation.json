@@ -75,7 +75,16 @@
         "report": "Eger destek Discord gelmek için çok utangaç iseniz, bu vesile ile bulut mesaj gönderebilir.",
         "feedback": "Geri Bildirim için Discord supportu kullanin lütfen ^^",
         "talk": "Benimle konusmak istiyorsaniz, bana sadece bir mention at  :D",
-        "helpReply": "tamam sana bir list atim PM`ine bak!"
+        "helpReply": "tamam sana bir list atim PM`ine bak!",
+        "moderation": "",
+        "misc": "",
+        "stats": "",
+        "user": "",
+        "admin": "",
+        "nsfw": "",
+        "eastereggs": "",
+        "proxer": "",
+        "no-cat": ""
     },
     "version": "Su anda Sürüm kullaniyorum{{version}}",
     "add": "Bu linki kulan beni diger servere eklemek için: {{- link}}",
@@ -205,7 +214,8 @@
         "guilds": "Server",
         "avg-channels": "Aramak. Channel per Server",
         "avg-users": "Aramak. User per Server",
-        "voice": "sesli aramalari"
+        "voice": "sesli aramalari",
+        "shard": ""
     },
     "rank": "Burada sunucu için siralamalarini görebilirsiniz: {{link}}",
     "pp": {
