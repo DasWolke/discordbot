@@ -47,7 +47,7 @@ var execute = function (message) {
             let reply = `${t(`help.${temp[number - 1].name}`, {lngs: message.lang})}\n`;
             reply = reply + `\`\`\``;
             for (let i = 0; i < data.length; ++i) {
-                reply = reply + `${pre}${data[i].cmd} : ${t(`help.${data[i].cmd}`, {
+                reply = reply + `${'!w.'}${data[i].cmd} : ${t(`help.${data[i].cmd}`, {
                         lngs: message.lang,
                         languages: buildLang(message.langList)
                     })}\n`;
@@ -62,7 +62,7 @@ var execute = function (message) {
     } else {
         let reply = `${t('help.intro_2', {lngs: message.lang})} ${message.botUser.user.username}, ${t('help.intro', {
             lngs: message.lang,
-            pre: message.prefix
+            pre: "!w."
         })}
 \`\`\``;
         let temp = categories;
