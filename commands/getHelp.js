@@ -60,7 +60,10 @@ var execute = function (message) {
             return message.reply(t('help.no-cat', {lngs: message.lang}));
         }
     } else {
-        let reply = `${t('help.intro_2', {lngs: message.lang})} ${message.botUser.user.username}, ${t('help.intro', {lngs: message.lang})}
+        let reply = `${t('help.intro_2', {lngs: message.lang})} ${message.botUser.user.username}, ${t('help.intro', {
+            lngs: message.lang,
+            pre: message.prefix
+        })}
 \`\`\``;
         let temp = categories;
         if (message.author.id !== config.owner_id) {
@@ -73,7 +76,7 @@ var execute = function (message) {
         reply = reply + `\`\`\``;
         message.author.sendMessage(reply).then(msg => {
             if (message.guild) {
-                message.reply(t('help.helpReply', {lngs: message.lang}));
+                message.reply(t('help.helpReply', {lngs: message.lang, pre: message.prefix}));
             }
             msg.prefix = message.prefix;
             msg.lang = message.lang;
