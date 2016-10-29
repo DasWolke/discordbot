@@ -3,7 +3,8 @@ var createPic = ((cb) => {
     try {
         console.log('owo');
         let gd = require('node-gd');
-        let f = '../fonts/RegencieLight.ttf';
+        let f = path.join(__dirname, '../fonts/RegencieLight.ttf')
+        console.log(path.join(__dirname, '../fonts/RegencieLight.ttf'));
         let c = {
             black: 0x000000, white: 0xffffff, red: 0xff0000, green: 0x00ff00,
             blue: 0x0000ff, gray: 0xc6c6c6, dgray: 0x555555, lgray: 0xdcdcdc
