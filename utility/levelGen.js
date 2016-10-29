@@ -7,7 +7,7 @@ var createPic = ((cb) => {
             black: 0x000000, white: 0xffffff, red: 0xff0000, green: 0x00ff00,
             blue: 0x0000ff, gray: 0xc6c6c6, dgray: 0x555555, lgray: 0xdcdcdc
         };
-
+        console.log('OwO');
         let t = gd.createFromPng('./assets/template.png');
         let a = gd.createFromJpeg('./assets/hide.jpg');
         console.log('uwu!');
