@@ -10,7 +10,7 @@ var createPic = ((info, cb) => {
         };
         console.log(path.join(__dirname, './assets/template.png'));
         let t = gd.createFromPng(path.join(__dirname, './assets/template.png'));
-        let a = gd.createFromJpegPtr(request.get(info.user.avatarURL));
+        let a = gd.createFromJpegPtr(info.user.avatarURL);
         a.copyResampled(t, 21, 22, 0, 0, 76, 76, a.width, a.height).destroy();
 // Name
         t.stringFT(c.dgray, f, 14, 0, 122, 33, info.user.username);
