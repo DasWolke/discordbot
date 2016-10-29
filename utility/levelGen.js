@@ -1,4 +1,5 @@
 var path = require("path");
+var request = require('request');
 var createPic = ((info, cb) => {
     try {
         let gd = require('node-gd');
@@ -9,7 +10,7 @@ var createPic = ((info, cb) => {
         };
         console.log(path.join(__dirname, './assets/template.png'));
         let t = gd.createFromPng(path.join(__dirname, './assets/template.png'));
-        let a = gd.createFromJpeg(path.join(__dirname, './assets/hide.jpg'));
+        let a = gd.createFromJpegPtr(request.get(info.user.avatarURL));
         a.copyResampled(t, 21, 22, 0, 0, 76, 76, a.width, a.height).destroy();
 // Name
         t.stringFT(c.dgray, f, 14, 0, 122, 33, info.user.username);
@@ -27,7 +28,7 @@ var createPic = ((info, cb) => {
 
 // Rank
         let rn = info.totalXp.toString();
-        t.stringFT(c.dgray, f, 14, 0, 230, 80, `RANK`);
+        t.stringFT(c.dgray, f, 14, 0, 230, 80, `XP`);
         t.stringFT(c.dgray, f, 14, 0, 252 - (rn.length * rn.length), 100, `${rn}`);
         t.savePng(path.join(__dirname, '../temp/output.png'), 0, function (err) {
             if (err) return cb(err);
