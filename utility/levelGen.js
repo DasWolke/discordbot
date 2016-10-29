@@ -29,9 +29,9 @@ var createPic = ((cb) => {
     t.stringFT(c.dgray, f, 14, 0, 230, 80, `RANK`);
     t.stringFT(c.dgray, f, 14, 0, 252 - (rn.length * rn.length), 100, `${rn}`);
 
-    t.savePng('./temp/output.png', 0, function (err) {
+    t.savePng('../temp/output.png', 0, function (err) {
         if (err) return cb(err);
-        cb(null, './temp/output.png');
+        cb(null, '../temp/output.png');
     });
     t.destroy()
 });

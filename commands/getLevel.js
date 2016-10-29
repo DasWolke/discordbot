@@ -13,6 +13,8 @@ var path = require('path');
 var execute = function (message) {
     levelGen((err, res) => {
         if (err) return winston.error(err);
+        winston.info('CB Called!');
+        winston.info(path.join(__dirname, res));
         message.channel.sendFile(path.join(__dirname, res), '', '\u200B').then(() => {
 
         }).catch(winston.error);
