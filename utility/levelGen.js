@@ -1,5 +1,4 @@
 var path = require("path");
-var streamTo = require('stream-to');
 var request = require('request');
 var Stream = require("stream");
 var createPic = ((info, cb) => {
