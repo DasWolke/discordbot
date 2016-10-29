@@ -11,6 +11,7 @@ var messageHelper = require('../utility/message');
 var levelGen = require('../utility/levelGen');
 var path = require('path');
 var execute = function (message) {
+    winston.info('Command called!');
     levelGen((err, res) => {
         if (err) return winston.error(err);
         winston.info('CB Called!');
