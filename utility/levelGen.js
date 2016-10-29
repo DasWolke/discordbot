@@ -6,8 +6,8 @@ var createPic = ((cb) => {
         blue: 0x0000ff, gray: 0xc6c6c6, dgray: 0x555555, lgray: 0xdcdcdc
     };
 
-    let t = gd.createFromPng('./template.png');
-    let a = gd.createFromJpeg('./hide.jpg');
+    let t = gd.createFromPng('./assets/template.png');
+    let a = gd.createFromJpeg('./assets/hide.jpg');
 
     a.copyResampled(t, 21, 22, 0, 0, 76, 76, a.width, a.height).destroy();
 // Name
