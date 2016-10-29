@@ -14,19 +14,19 @@ var createPic = ((info, cb) => {
 // Name
         t.stringFT(c.dgray, f, 14, 0, 122, 33, info.user.username);
 // EXP
-        let cexp = 1000;
-        let tnexp = 1695;
+        let cexp = info.xp;
+        let tnexp = info.needed;
         let exp = Math.floor(cexp / tnexp * 159) + 126;
         t.filledRectangle(126, 43, exp, 55, c.gray);
-        t.stringFT(c.dgray, f, 8, 0, 189, 54, `${info.xp}/${info.needed}`);
+        t.stringFT(c.dgray, f, 8, 0, 189, 54, `${cexp}/${tnexp}`);
 
 // Level
-        let lv = parseInt(info.level);
+        let lv = info.level.toString();
         t.stringFT(c.dgray, f, 14, 0, 130, 80, `LEVEL`);
         t.stringFT(c.dgray, f, 14, 0, 155 - (lv.length * lv.length), 100, `${lv}`);
 
 // Rank
-        let rn = info.totalXp;
+        let rn = info.totalXp.toString();
         t.stringFT(c.dgray, f, 14, 0, 230, 80, `RANK`);
         t.stringFT(c.dgray, f, 14, 0, 252 - (rn.length * rn.length), 100, `${rn}`);
         t.savePng(path.join(__dirname, '../temp/output.png'), 0, function (err) {
