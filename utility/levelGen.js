@@ -11,6 +11,7 @@ var createPic = ((cb) => {
         console.log('OwO');
         console.log(path.join(__dirname, './assets/template.png'));
         let t = gd.createFromPng('./assets/template.png');
+        console.log('hide');
         let a = gd.createFromJpeg('./assets/hide.jpg');
         console.log('uwu!');
         a.copyResampled(t, 21, 22, 0, 0, 76, 76, a.width, a.height).destroy();
