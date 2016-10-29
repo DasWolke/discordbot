@@ -28,3 +28,4 @@ var execute = function (message) {
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'stats'};
+//uwu
