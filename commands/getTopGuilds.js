@@ -15,14 +15,14 @@ var execute = function (message) {
             name: guild.name,
             size: users.size,
             memberCount: guild.memberCount,
-            withBots: guild.members.size
+            withBots: guild.memberCount
         });
     });
     let guilds = _.sortBy(easyGuild, 'size');
     guilds = _.reverse(guilds);
     guilds = guilds.slice(0, 10);
     for (var i = 0; i < guilds.length; i++) {
-        table.addRow(i + 1, guilds[i].name, guilds[i].size, `Bots:${guilds[i].withBots - guilds[i].size}`);
+        table.addRow(i + 1, guilds[i].name, guilds[i].size, `Bots:${guilds[i].withBots - guilds[i].size}`, `C:${guilds[i].memberCount}`);
     }
     message.reply(`\n\`\`\`${table.toString()}\`\`\``);
 };
