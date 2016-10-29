@@ -53,8 +53,14 @@ var execute = function (message) {
                     })}\n`;
             }
             if (temp[number - 1].name === 'moderation') {
-                reply = reply + `${message.prefix}s gr : ${t(`help.gr`)}\n`;
-                reply = reply + `${message.prefix}s fw : ${t(`help.fw`)}`;
+                reply = reply + `${message.prefix}s gr : ${t(`help.gr`, {
+                        lngs: message.lang,
+                        interpolation: {prefix: '45a45sd'}
+                    })}\n`;
+                reply = reply + `${message.prefix}s fw : ${t(`help.fw`, {
+                        lngs: message.lang,
+                        interpolation: {prefix: '45a45sd'}
+                    })}`;
             }
             reply = reply + (`\`\`\``);
             message.author.sendMessage(reply).then(msg => {
@@ -345,8 +351,14 @@ var input = function (message, Categories) {
                     })}\n`;
             }
             if (Categories[number - 1].name === 'moderation') {
-                reply = reply + `${message.prefix}s gr : ${t(`help.gr`)}\n`;
-                reply = reply + `${message.prefix}s fw : ${t(`help.fw`)}`;
+                reply = reply + `${message.prefix}s gr : ${t(`help.gr`, {
+                        lngs: message.lang,
+                        interpolation: {prefix: '45a45sd'}
+                    })}\n`;
+                reply = reply + `${message.prefix}s fw : ${t(`help.fw`, {
+                        lngs: message.lang,
+                        interpolation: {prefix: '45a45sd'}
+                    })}`;
             }
             reply = reply + (`\`\`\``);
             message.channel.sendMessage(reply).then(msg => {
