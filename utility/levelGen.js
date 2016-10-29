@@ -10,7 +10,7 @@ var createPic = ((cb) => {
 
         let t = gd.createFromPng('./assets/template.png');
         let a = gd.createFromJpeg('./assets/hide.jpg');
-
+        console.log('uwu!');
         a.copyResampled(t, 21, 22, 0, 0, 76, 76, a.width, a.height).destroy();
 // Name
         t.stringFT(c.dgray, f, 14, 0, 122, 33, '[Hidekazu]');
