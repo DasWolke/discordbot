@@ -30,8 +30,9 @@ var createPic = ((cb) => {
         let rn = '1';
         t.stringFT(c.dgray, f, 14, 0, 230, 80, `RANK`);
         t.stringFT(c.dgray, f, 14, 0, 252 - (rn.length * rn.length), 100, `${rn}`);
-
+        console.log('saved file');
         t.savePng('../temp/output.png', 0, function (err) {
+            console.log('cb called!');
             if (err) return cb(err);
             cb(null, '../temp/output.png');
         });
