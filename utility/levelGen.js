@@ -21,7 +21,7 @@ var createPic = ((info, cb) => {
         t.stringFT(c.dgray, f, 8, 0, 189, 54, `${info.xp}/${info.needed}`);
 
 // Level
-        let lv = info.level;
+        let lv = parseInt(info.level);
         t.stringFT(c.dgray, f, 14, 0, 130, 80, `LEVEL`);
         t.stringFT(c.dgray, f, 14, 0, 155 - (lv.length * lv.length), 100, `${lv}`);
 
