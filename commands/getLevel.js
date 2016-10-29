@@ -8,22 +8,30 @@ var serverModel = require('../DB/server');
 var logger = require('../utility/logger');
 var winston = logger.getT();
 var messageHelper = require('../utility/message');
+var levelGen = require('../utility/levelGen');
+var path = require('path');
 var execute = function (message) {
-    if (message.guild) {
-        serverModel.findOne({id: message.guild.id}, function (err, Server) {
-            if (err) return winston.info(err);
-            if (Server && typeof (Server.levelEnabled) === 'undefined' || Server && Server.levelEnabled || !Server) {
-                messageHelper.getLevel(message, (err, result) => {
-                    if (err) return winston.info(err);
-                    message.reply(t('level.result', {lngs:message.lang, level:result.level, current:parseInt(result.xp), needed:parseInt(messageHelper.calcXpNeeded(result)), total:result.totalXp}));
-                });
-            } else {
-                message.reply(t('level.disabled',{lngs:message.lang}));
-            }
-        });
-    } else {
-        message.reply(t('generic.no-pm',{lngs:message.lang}));
-    }
+    levelGen((err, res) => {
+        if (err) return winston.error(err);
+        message.channel.sendFile(path.join(__dirname, res), '', '\u200B').then(() => {
+
+        }).catch(winston.error);
+    });
+    // if (message.guild) {
+    //     serverModel.findOne({id: message.guild.id}, function (err, Server) {
+    //         if (err) return winston.info(err);
+    //         if (Server && typeof (Server.levelEnabled) === 'undefined' || Server && Server.levelEnabled || !Server) {
+    //             messageHelper.getLevel(message, (err, result) => {
+    //                 if (err) return winston.info(err);
+    //                 message.reply(t('level.result', {lngs:message.lang, level:result.level, current:parseInt(result.xp), needed:parseInt(messageHelper.calcXpNeeded(result)), total:result.totalXp}));
+    //             });
+    //         } else {
+    //             message.reply(t('level.disabled',{lngs:message.lang}));
+    //         }
+    //     });
+    // } else {
+    //     message.reply(t('generic.no-pm',{lngs:message.lang}));
+    // }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'user'};
 //uwu
