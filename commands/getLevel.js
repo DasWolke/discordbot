@@ -12,13 +12,16 @@ var levelGen = require('../utility/levelGen');
 var path = require('path');
 var execute = function (message) {
     winston.info('Command called!');
-    levelGen((err, res) => {
+    messageHelper.getLevel(message, (err, result) => {
         if (err) return winston.error(err);
-        winston.info('CB Called!');
-        winston.info(path.join(__dirname, res));
-        message.channel.sendFile(path.join(__dirname, res), '', '\u200B').then(() => {
+        result.user = message.author;
+        result.needed = messageHelper.calcXpNeeded(result);
+        levelGen(result, (err, res) => {
+            if (err) return winston.error(err);
+            message.channel.sendFile(path.join(__dirname, res), '', '\u200B').then(() => {
 
-        }).catch(winston.error);
+            }).catch(winston.error);
+        });
     });
     // if (message.guild) {
     //     serverModel.findOne({id: message.guild.id}, function (err, Server) {
