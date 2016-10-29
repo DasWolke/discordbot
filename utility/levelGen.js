@@ -1,6 +1,7 @@
 var path = require("path");
 var request = require('request');
 var Stream = require("stream");
+var fs = require("fs");
 var createPic = ((info, cb) => {
     try {
         let gd = require('node-gd');
@@ -10,10 +11,10 @@ var createPic = ((info, cb) => {
             blue: 0x0000ff, gray: 0xc6c6c6, dgray: 0x555555, lgray: 0xdcdcdc
         };
         let stream = new Stream();
-        request.get(info.user.avatarURL).pipe(stream);
+        request.get(info.user.avatarURL).pipe(fs.createWriteStream('../temp/asd.jpg'));
         console.log(path.join(__dirname, './assets/template.png'));
         let t = gd.createFromPng(path.join(__dirname, './assets/template.png'));
-        let a = gd.createFromJpegPtr(stream);
+        let a = gd.createFromJpeg(path.join(__dirname, '../temp/asd.jpg'));
         a.copyResampled(t, 21, 22, 0, 0, 76, 76, a.width, a.height).destroy();
 // Name
         t.stringFT(c.dgray, f, 14, 0, 122, 33, info.user.username);
