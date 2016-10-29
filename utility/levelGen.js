@@ -1,3 +1,4 @@
+var path = require("path");
 var createPic = ((cb) => {
     try {
         console.log('owo');
@@ -8,6 +9,7 @@ var createPic = ((cb) => {
             blue: 0x0000ff, gray: 0xc6c6c6, dgray: 0x555555, lgray: 0xdcdcdc
         };
         console.log('OwO');
+        console.log(path.join(__dirname, './assets/template.png'));
         let t = gd.createFromPng('./assets/template.png');
         let a = gd.createFromJpeg('./assets/hide.jpg');
         console.log('uwu!');
