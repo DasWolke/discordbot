@@ -7,7 +7,7 @@ var prefix = "!w.";
 var shard_id = process.env.SHARD_ID;
 var shard_count = process.env.SHARD_COUNT;
 winston.info(`Starting Init of Bot!`);
-winston.add(winston.transports.File, {filename: `logs/rem-main.log`});
+winston.add(winston.transports.File, {filename: `logs/rem-${shard_id}.log`});
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {'timestamp': true});
 var logger = require('./utility/logger');
@@ -63,6 +63,7 @@ getDirs('locales/', (list) => {
         var CMD = require('./utility/cmdManager');
         var request = require('request');
         var mongoose = require('mongoose');
+        mongoose.Promise = require('bluebird');
         var socket = require('socket.io-client')('http://127.0.0.1:7004/bot');
         var socketManager = require('./utility/socket/basic');
         var messageHelper = require('./utility/message');
@@ -259,14 +260,6 @@ function getDirs(rootDir, cb) {
             }
         }
     });
-}
-function buildLang(list) {
-    let i = list.length;
-    let answer = "";
-    while (i--) {
-        answer = answer + `${list[i]}|`;
-    }
-    return answer;
 }
 // "shard_id":process.argv[2],
 // "shard_count":config.shards

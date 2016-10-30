@@ -49,6 +49,7 @@ var execute = function (message) {
                             "type": "radio",
                             "url": messageSplit[1]
                         };
+                        message.songTitle = messageSplit[1];
                         voice.addSongFirst(message, song, false).then(() => {
                             voice.streamSong(message, res);
                             message.channel.sendMessage(t('play.playing', {
@@ -108,6 +109,7 @@ var input = function (message, Radios) {
         }
         if (!isNaN(number) && number <= Radios.length) {
             collector.stop();
+            message.songTitle = Radios[number - 1].title;
             icy.get(Radios[number - 1].url, (res) => {
                 // res.on('metadata', function (metadata) {
                 //     var parsed = icy.parse(metadata);

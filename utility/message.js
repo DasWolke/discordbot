@@ -154,7 +154,17 @@ var hasWolkeBot = function (message, member) {
         return true;
     }
     if (typeof (member) === 'undefined') {
-        return message.member.roles.exists('name', 'WolkeBot');
+        if (message.guild.ownerID === message.author.id) {
+            return true;
+        }
+        message.member.roles.map(r => {
+            if (r.hasPermission('ADMINISTRATOR')) {
+                return true;
+            }
+            if (message.member.roles.exists('name', 'WolkeBot')) {
+                return true;
+            }
+        });
     } else {
         return member.roles.exists('name', 'WolkeBot');
     }
@@ -222,13 +232,10 @@ var getServerObj = function (message, level, pms) {
         banned: []
     };
 };
-var noSpam = function (message) {
-    // if(message.mentions.users.length > 25) {
-    //     winston.info('good.');
-    // }
-    winston.info(message.mentions.length);
-};
 var checkNsfwChannel = function (message, cb) {
+    if (hasWolkeBot(message)) {
+        return cb();
+    }
     serverModel.findOne({id: message.guild.id}, function (err, Server) {
         if (err) return winston.info(err);
         if (Server) {
@@ -261,6 +268,9 @@ var checkCmdChannel = function (message, cb) {
     serverModel.findOne({id: message.guild.id}, function (err, Server) {
         if (err) return winston.info(err);
         if (Server) {
+            if (hasWolkeBot(message)) {
+                return cb();
+            }
             if (typeof (Server.cmdChannels) !== 'undefined' && Server.cmdChannels.length > 0) {
                 for (var i = 0; i < Server.cmdChannels.length; i++) {
                     if (Server.cmdChannels[i] === message.channel.id) {
@@ -299,7 +309,6 @@ module.exports = {
     loadServerFromUser: loadServerFromUser,
     hasGuild: hasGuild,
     getServerObj: getServerObj,
-    noSpam: noSpam,
     checkNsfw: checkNsfwChannel,
     pmNotifications: pmNotifications,
     calcXpNeeded: calcXpNeeded,
