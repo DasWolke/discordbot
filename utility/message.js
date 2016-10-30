@@ -161,10 +161,10 @@ var hasWolkeBot = function (message, member) {
             if (r.hasPermission('ADMINISTRATOR')) {
                 return true;
             }
-            if (message.member.roles.exists('name', 'WolkeBot')) {
-                return true;
-            }
         });
+        if (message.member.roles.exists('name', 'WolkeBot')) {
+            return true;
+        }
     } else {
         return member.roles.exists('name', 'WolkeBot');
     }
