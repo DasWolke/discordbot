@@ -90,53 +90,6 @@ getDirs('locales/', (list) => {
             bot.user.setStatus('online').then().catch(winston.info);
             bot.user.setGame(`!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`, 'https://www.twitch.tv/daswolke_').then().catch(winston.info);
             CMD.init();
-            // setTimeout(() => {
-            //     winston.info('start loading Voice!');
-            //     async.eachLimit(bot.guilds.array(), 8, (guild, cb) => {
-            //         voice.loadVoice(guild).then(id => {
-            //             if (err) return cb(err);
-            //             if (typeof (id) !== 'undefined' && id !== '') {
-            //                 winston.info('started joining guild:' + guild.name);
-            //                 var channel = voice.getChannelById(guild, id);
-            //                 if (typeof (channel) !== 'undefined' && channel) {
-            //                     channel.join().then(connection => {
-            //                         var message = {guild: guild};
-            //                         voice.autoStartQueue(message);
-            //                         return cb();
-            //                     }).catch((err) => {
-            //                         winston.error(err);
-            //                         return cb();
-            //                     });
-            //                 }
-            //             } else {
-            //                 setTimeout(() => {
-            //                     return cb();
-            //                 }, 1000)
-            //             }
-            //         }).catch(winston.error);
-            //     }, (err) => {
-            //         if (err) {
-            //             return winston.error(err);
-            //         }
-            //         winston.info('Finished Loading Voice!');
-            //     });
-            // }, 10000);
-            // if (!config.beta) {
-            //     updateStats();
-            //     dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
-            //     dogstatsd.gauge('musicbot.users', users());
-            // }
-            // if (!config.beta) {
-            //     setInterval(() => {
-            //         dogstatsd.gauge('musicbot.guilds', bot.guilds.size);
-            //         dogstatsd.gauge('musicbot.users', users());
-            //     }, 1000 * 30);
-            // }
-            // if (!config.beta) {
-            //     setInterval(() => {
-            //         updateStats();
-            //     }, 1000 * 60 * 30);
-            // }
         });
         bot.on('reconnecting', () => {
             // winston.info('Reconnecting to Discord!');
