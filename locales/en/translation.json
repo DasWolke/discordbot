@@ -11,7 +11,10 @@
         "level-update": ":tada: You just reached **Level  {{level}}** on **{{server}}**",
         "empty-search": "You did not enter a search Term!",
         "negative": "Please dont use a negative number!",
-        "cancel": "c:cancel"
+      "cancel": "c:cancel",
+      "version": "version",
+      "author": "author",
+      "lib": "library used"
     },
     "help": {
         "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
@@ -60,6 +63,7 @@
         "kona": "Searches Konachan for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
         "e621": "Searches E621 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
         "yandere": "Searches Yande.re for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
+      "gtn": "Gives you a random green tea neko comic, only usable with WolkeBot Role or a configured NSFW Channel.",
         "level": "Your Level and XP needed for next Level",
         "rank": "Leaderboard for this Server",
         "noLevel": "disables the level system for you. Use again to enable it again for you.",
@@ -74,6 +78,8 @@
         "cat": "Sends you a random cat image",
         "hug": "Gives you an anime hug gif",
         "slap": "Gives you an anime slap gif",
+      "cuddle": "Gives you an anime cuddle gif",
+      "trig": "TRIGGERED",
         "setLang": "sets the language, currently supported are {{languages}}",
         "report": "If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
         "feedback": "For feedback use the support discord please ^^",
@@ -82,6 +88,9 @@
         "gr": "Set a greeting with set greetingMessage,{{user}} will be replaced with the user that just joined and {{guild}} with the name of the server.\nThe greeting will be in the Channel, where the cmd was executed",
         "fw": "Set a farewell with set farewellMessage,{{user}} will be replaced with the user that just joined and {{guild}} with the name of the server\nThe farewell will be in the channel, where the cmd was executed",
         "s": "The server command, sets stuff like greetings and farewells",
+      "bot": "Gives you information about the current uptime of Rem, voice connections, usercount and guildcount",
+      "top": "Shows the top 10 guilds (sorted by users) that this shard is connected to",
+      "about": "Shows you basic information about me, like the library and who made me.",
       "shrug": "¯\\_(ツ)_/¯",
       "flip": "(╯°□°）╯︵ ┻━┻",
       "eggplant": "just an eggplant",

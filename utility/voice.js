@@ -17,6 +17,7 @@ var client = errorReporter.getT();
 var shortid = require('shortid');
 var async = require('async');
 var logger = require('./logger');
+var icy = require("icy");
 var winston = logger.getT();
 var saveVoiceChannel = function saveVoiceChannel(channel) {
     return new Promise((resolve, reject) => {
@@ -348,6 +349,13 @@ var playSong = function (message, Song, Queueused) {
 var streamSong = function (message, stream) {
     var connection = getVoiceConnection(message);
     if (connection) {
+        stream.on('metadata', function (metadata) {
+            var parsed = icy.parse(metadata);
+            winston.info(parsed);
+            if (typeof(parsed.StreamTitle) !== 'undefined' && parsed.StreamTitle) {
+                setTitle(message, `${parsed.StreamTitle} (${message.songTitle})`);
+            }
+        });
         let dispatcher = connection.playStream(stream, {volume: message.dbServer.volume});
         updateDispatcherArray(message.guild.id, dispatcher);
         dispatcher.on("end", function () {
@@ -611,6 +619,20 @@ var getInVoice = function (message, cb) {
             cb(null, message);
         }
     }
+};
+var setTitle = (msg, title) => {
+    queueModel.findOne({server: msg.guild.id}, (err, Queue) => {
+        if (err) return winston.error(err);
+        if (Queue) {
+            if (Queue.songs.length > 0 && Queue.songs[0].type === 'radio') {
+                winston.info('Updated Title!');
+                Queue.updateTitle(Queue.songs[0].id, title, (err) => {
+                    if (err) return winston.error;
+                    winston.info('Updated Title to !' + title + ' ');
+                });
+            }
+        }
+    });
 };
 module.exports = {
     inVoice: inVoiceChannel,
