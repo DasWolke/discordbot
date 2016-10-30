@@ -1,7 +1,7 @@
 {
     "generic": {
         "error": "Ein Fehler ist aufgetreten!",
-        "no-pm": "Dieser Befehl funktioniert nicht in privaten Nachrichten!",
+        "no-pm": ":no_entry: Dieser Befehl funktioniert nicht in privaten Nachrichten!",
         "whole-num": "Bitte füge eine ganze Zahl an!",
         "nan": "Was auch immer du gerade gesendet hast, verwende bitte eine ganze Zahl. :)",
         "no-song-in-queue": "Momentan ist kein Lied in der Warteschlange, füge doch eins hinzu :musical_note: ?",
@@ -11,7 +11,10 @@
         "level-update": ":tada: Du hast gerade **Level {{level}}** auf **{{- server}}** erreicht.",
         "empty-search": "Du hast keinen Suchbegriff eingegeben!",
         "negative": "Bitte benutze keine negative Zahl >_<",
-        "cancel": "c:abbrechen"
+        "cancel": "c:abbrechen",
+        "version": "Momentan verwende ich Version{{- version}}",
+        "author": "Author",
+        "lib": "Bibliothek benutzt"
     },
     "help": {
         "intro": "lass uns zusammen viel Spass haben hier auf Discord (/^▽^)/ Hier ist eine Auflistung meiner Befehlskategorien, wähle eine von ihnen mit {{- pre}}help zahl aus.",
@@ -94,7 +97,15 @@
         "s": "Der Server Befehl, hiermit kannst du bspw Begrüßungen oder Verabschiedungen einstellen ",
         "shrug": "¯\\_(ツ)_/¯ ",
         "flip": "(╯°□°）╯︵ ┻━┻ ",
-        "eggplant": "Einfach nur eine Aubergine"
+        "eggplant": "Einfach nur eine Aubergine",
+        "gtn": "Schickt dir ein zufälliges Green Tea Neko Comic, nur benutzbar mit der WolkeBot Rolle oder mit einem NSFW Kanal",
+        "cuddle": "Sendet dir ein Anime Knuddel gif",
+        "trig": "TRIGGERED",
+        "bot": "Gibt dir Informationen über die aktuelle Laufzeit von Rem, Sprachverbindungen, Benutzeranzahl und Serveranzahl",
+        "top": "Zeigt dir die Top 10 Server (nach Benutzern sortiert) an die diesen Bot benutzen",
+        "about": "Zeigt dir grundlegende Informationen über mich, wie die Bibliotheken und wer mich erschaffen hat",
+        "lenny": "( ͡° ͜ʖ ͡°)",
+        "lmg": "Lass mich das für dich googlen"
     },
     "version": "Momentan verwende ich Version{{- version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
