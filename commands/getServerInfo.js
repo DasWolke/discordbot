@@ -12,7 +12,6 @@ var execute = function (message) {
         let table = new AsciiTable();
         let textChannels = message.guild.channels.findAll('type', 'text').length;
         let voiceChannels = message.guild.channels.findAll('type', 'voice').length;
-        let roles = message.guild.roles.map(r => r.name);
         table
             .addRow(t('server-info.id', {lngs:message.lang}), message.guild.id)
             .addRow(t('server-info.name', {lngs:message.lang}), message.guild.name)
@@ -22,8 +21,7 @@ var execute = function (message) {
             .addRow(t('server-info.creation', {lngs:message.lang}), message.guild.createdAt.toDateString())
             .addRow(t('server-info.region', {lngs:message.lang}), message.guild.region)
             .addRow(t('server-info.owner', {lngs: message.lang}), `${message.guild.owner.user.username}#${message.guild.owner.user.discriminator}`)
-            .addRow(t('server-info.roles', {lngs: message.lang}), message.guild.roles.size)
-            .addRow(t('server-info.roles', {lngs: message.lang}), roles);
+            .addRow(t('server-info.roles', {lngs: message.lang}), message.guild.roles.size);
         message.reply(`\n\`\`\`${table.toString()}\`\`\``);
     } else {
         message.reply(t('generic.no-pm', {lngs:message.lang}));
