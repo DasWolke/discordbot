@@ -298,6 +298,25 @@ var buildPrologMessage = (content) => {
     msg = msg + "\`\`\`";
     return msg;
 };
+var checkRoleExist = (roleName, roles) => {
+    for (var i = 0; i < roles.length; i++) {
+        if (roles[i].name === roleName) {
+            return roles[i];
+        }
+    }
+    return null;
+};
+var addRoleMember = (message, user, role, cb) => {
+    message.guild.fetchMember(user).then(member => {
+        if (member && role) {
+            member.addRole(role).then(member => {
+                return cb();
+            }).catch(err => cb(err));
+        } else {
+            cb('No Role/Member!');
+        }
+    }).catch(cb);
+};
 module.exports = {
     cleanMessage: cleanMessage,
     createUser: createUser,
@@ -313,5 +332,7 @@ module.exports = {
     pmNotifications: pmNotifications,
     calcXpNeeded: calcXpNeeded,
     filterSelection: filterSelection,
-    buildPrologMessage: buildPrologMessage
+    buildPrologMessage: buildPrologMessage,
+    checkRoleExist: checkRoleExist,
+    addRoleMember: addRoleMember
 };
