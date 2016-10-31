@@ -607,6 +607,15 @@ var queueAddRepeat = function (message, Song) {
             }));
         } else {
             addSongFirst(message, Song, true).then(() => {
+                let dispatcher;
+                if (message.guild.voiceConnection) {
+                    dispatcher = getDispatcher(message.guild.voiceConnection);
+                }
+                try {
+                    dispatcher.setVolume(0);
+                } catch (e) {
+
+                }
                 playSong(message, Song);
             }).catch(winston.info);
         }
