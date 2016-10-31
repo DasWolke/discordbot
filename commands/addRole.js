@@ -75,4 +75,4 @@ function addRole(message, user, role, wolkebot) {
         //no permission
     }
 }
-module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'role'};
+module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'admin'};
