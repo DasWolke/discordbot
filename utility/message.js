@@ -317,6 +317,12 @@ var addRoleMember = (message, user, role, cb) => {
         }
     }).catch(cb);
 };
+var filterEmojis = (message) => {
+    let reg = /[\x00-\x7F]/gi;
+    let unreadable = ((message.content.match(reg) || [].length).length);
+    console.log(message.content.length);
+    console.log(message.content);
+};
 module.exports = {
     cleanMessage: cleanMessage,
     createUser: createUser,
@@ -334,5 +340,6 @@ module.exports = {
     filterSelection: filterSelection,
     buildPrologMessage: buildPrologMessage,
     checkRoleExist: checkRoleExist,
-    addRoleMember: addRoleMember
+    addRoleMember: addRoleMember,
+    filterEmojis: filterEmojis
 };
