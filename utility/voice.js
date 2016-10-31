@@ -360,13 +360,13 @@ var playSong = function (message, Song, Queueused) {
 var streamSong = function (message, stream) {
     var connection = getVoiceConnection(message);
     if (connection) {
-        stream.on('metadata', function (metadata) {
-            var parsed = icy.parse(metadata);
-            winston.info(parsed);
-            if (typeof(parsed.StreamTitle) !== 'undefined' && parsed.StreamTitle) {
-                setTitle(message, `${parsed.StreamTitle} (${message.songTitle})`);
-            }
-        });
+        // stream.on('metadata', function (metadata) {
+        //     var parsed = icy.parse(metadata);
+        //     winston.info(parsed);
+        //     if (typeof(parsed.StreamTitle) !== 'undefined' && parsed.StreamTitle) {
+        //         setTitle(message, `${parsed.StreamTitle} (${message.songTitle})`);
+        //     }
+        // });
         let dispatcher = connection.playStream(stream, {volume: message.dbServer.volume});
         updateDispatcherArray(message.guild.id, dispatcher);
         dispatcher.on("end", function () {
