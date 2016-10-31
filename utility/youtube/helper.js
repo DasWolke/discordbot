@@ -3,7 +3,7 @@
  */
 var i18nBean = require('../i18nManager');
 var t = i18nBean.getT();
-var yt = require('./youtube');
+var yt = require('./youtube-child');
 var voice = require('../voice');
 var songModel = require('../../DB/song');
 var queueModel = require('../../DB/queue');

@@ -25,7 +25,7 @@
     "add": "Get a link to add me to your server",
     "music": "[MUSIC]",
     "voice": "i join the Voice Channel you are currently in (normal music commands make the bot join the voice channel too)",
-    "silent": "i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role)",
+    "leave": "i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role)",
     "play": "Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)",
     "pause": "Pause the Current Song (only usable with WolkeBot Role)",
     "resume": "Resume the pause Song (only usable with WolkeBot Role)",

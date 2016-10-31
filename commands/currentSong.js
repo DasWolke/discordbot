@@ -28,10 +28,10 @@ var execute = function (message) {
                     }));
                 }
             } else {
-                message.reply(t('generic.no-song-in-queue', {lngs: message.lang}));
+                message.channel.sendMessage(t('generic.no-song-in-queue', {lngs: message.lang}));
             }
         }).catch(err => {
-                message.reply(t('generic.no-song-in-queue', {lngs: message.lang}));
+            message.channel.sendMessage(t('generic.no-song-in-queue', {lngs: message.lang}));
             });
     }
 };

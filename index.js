@@ -101,6 +101,7 @@ getDirs('locales/', (list) => {
                 message.langList = list;
                 message.shard_id = shard_id;
                 message.shard_count = shard_count;
+                // messageHelper.filterEmojis(message);
                 if (!config.beta) {
                     dogstatsd.increment('musicbot.messages');
                 }

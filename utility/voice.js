@@ -18,6 +18,7 @@ var shortid = require('shortid');
 var async = require('async');
 var logger = require('./logger');
 var icy = require("icy");
+var child_process = require("child_process");
 var winston = logger.getT();
 var saveVoiceChannel = function saveVoiceChannel(channel) {
     return new Promise((resolve, reject) => {
@@ -173,6 +174,11 @@ var nextSong = function nextSong(message, Song) {
                                                 Queue.resetVotes(function (err) {
                                                     if (err) return winston.info(err);
                                                     if (Queue.songs[0].type !== 'radio') {
+                                                        try {
+                                                            dispatcher.setVolume(0);
+                                                        } catch (e) {
+                                                            winston.info(e);
+                                                        }
                                                         playSong(message, Queue.songs[0], true);
                                                     } else {
                                                         nextSong(message, Queue.songs[0]);
@@ -314,7 +320,10 @@ var updateDispatcherArray = function (guild_id, dispatcher) {
 var playSong = function (message, Song, Queueused) {
     var connection = message.guild.voiceConnection;
     if (connection) {
-        let dispatcher = connection.playFile(path.resolve(Song.path), {volume: message.dbServer.volume});
+        let opts = {stdio: [process.stdin, process.stdout, process.stderr, 'pipe', 'ipc']};
+        let child = child_process.fork('./utility/voice/open.js', opts);
+        child.send({path: Song.path});
+        let dispatcher = connection.playStream(child.stdio[3], {volume: message.dbServer.volume, passes: 2});
         updateDispatcherArray(message.guild.id, dispatcher);
         winston.info(path.resolve(Song.path));
         updatePlays(Song.id).then(() => {
@@ -330,7 +339,9 @@ var playSong = function (message, Song, Queueused) {
             }));
         }
         dispatcher.on("end", function () {
+            dispatcher.setVolume(0);
             winston.info("File ended!");
+            child.kill();
             nextSong(message, Song);
         });
         dispatcher.on("debug", information => {
