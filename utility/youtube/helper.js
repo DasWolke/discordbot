@@ -12,6 +12,10 @@ var logger = require('../logger');
 var winston = logger.getT();
 var ytDlAndPlayFirst = function (message, messageSearch) {
     songModel.findOne({url: messageSearch.trim()}, function (err, Song) {
+        let dispatcher;
+        if (message.guild.voiceConnection) {
+            dispatcher = voice.getDispatcher(message.guild.voiceConnection);
+        }
         if (err) {
             winston.info(err);
             return message.channel.sendMessage(t('generic.error', {lngs: message.lang}));
@@ -24,6 +28,11 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
                         message.channel.sendMessage(t('voice.already-playing'));
                     } else {
                         voice.addSongFirst(message, Song, false).then(() => {
+                            try {
+                                dispatcher.setVolume(0);
+                            } catch (e) {
+
+                            }
                             voice.playSong(message, Song);
                         }).catch(err => {
                             message.channel.sendMessage(err)
@@ -45,6 +54,11 @@ var ytDlAndPlayFirst = function (message, messageSearch) {
                     if (Song) {
                         if (voice.inVoice(message)) {
                             voice.addSongFirst(message, Song, false).then(() => {
+                                try {
+                                    dispatcher.setVolume(0);
+                                } catch (e) {
+
+                                }
                                 voice.playSong(message, Song);
                             }).catch(err => {
                                 message.channel.sendMessage(err)
