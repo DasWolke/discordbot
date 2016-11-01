@@ -5,16 +5,19 @@
     "whole-num": "Please use a whole number!",
     "nan": "Whatever you just send, please just add a whole number. :) ",
     "no-song-in-queue": "There is no song in the queue, maybe add one :musical_note: ?",
-    "no-song-playing":"There is no song playing at the moment!",
+    "no-song-playing": "There is no song playing at the moment!",
     "no-permission": "You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
     "no-voice": "I am not connected to any voice channel on this Server!",
-    "level-update":":tada: You just reached **Level  {{level}}** on **{{server}}**",
+    "level-update": ":tada: You just reached **Level  {{level}}** on **{{- server}}**",
     "empty-search": "You did not enter a search Term!",
     "negative": "Please dont use a negative number!",
-    "cancel": "c:cancel"
+    "cancel": "c:cancel",
+    "version": "version",
+    "author": "author",
+    "lib": "library used"
   },
   "help": {
-    "intro": "lets have fun together here on Discord (/^▽^)/ Commands you can write:",
+    "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
     "intro_2": "Hey im",
     "support": "[SUPPORT]",
     "bug": "get the Link of the support discord",
@@ -22,25 +25,28 @@
     "add": "Get a link to add me to your server",
     "music": "[MUSIC]",
     "voice": "i join the Voice Channel you are currently in (normal music commands make the bot join the voice channel too)",
-    "silent": "i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role)",
+    "leave": "i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role)",
     "play": "Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)",
     "pause": "Pause the Current Song (only usable with WolkeBot Role)",
     "resume": "Resume the pause Song (only usable with WolkeBot Role)",
     "volume": "Sets the Volume of the Bot, Values between 1-200 (only usable with WolkeBot Role)",
-    "forever": "Temporarely disabled until i fixed it",
+    "ping": "Gives you the ping of the bot, be aware that this is not the voice ping.",
+    "lewd": "So lewd uwu",
+    "rem": "Gives you a random pic of rem",
+    "forever": "Plays a song on Repeat until new ones are added to the queue, only usable with the WolkeBot Role",
     "search": "Searches for a Song in the Bot Database and shows the 5 best Results",
-    "skip": "Skips the Current Song (only usable with WolkeBot Role)",
-    "voteskip": "Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped.",
+    "fskip": "Skips the Current Song (only usable with WolkeBot Role)",
+    "skip": "Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped.",
     "qa": "Adds a Song/Youtube Video to the Queue max Length: 1H30M",
     "qra": "removes either all Songs except the one that is playing right now or a certain number of songs (requires WolkeBot Role)",
     "queue": "Shows the current Queue",
     "np": "Shows the currently playing Song",
     "rq": "Adds a random Song/a number of songs to the Queue",
     "stream": "Streams the selected Internet radio, you can search for radios or directly add them by appending -u url to the command",
-    "youtube": "[Youtube]",
+    "youtube": "[YOUTUBE]",
     "yts": "Searches Youtube and gives you the First Result",
     "ytq": "Searches Youtube and adds the First Result to the Queue",
-    "mod": "Moderation",
+    "mod": "The Mod cp",
     "mod-info": "These Commands all require that the user has a Discord Role named WolkeBot",
     "info": "gives you some information about the current server",
     "ban": "Bans a User and deletes 7 Days of his/her messages",
@@ -57,25 +63,49 @@
     "kona": "Searches Konachan for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
     "e621": "Searches E621 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
     "yandere": "Searches Yande.re for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
+    "gtn": "Gives you a random green tea neko comic, only usable with WolkeBot Role or a configured NSFW Channel.",
     "level": "Your Level and XP needed for next Level",
     "rank": "Leaderboard for this Server",
     "noLevel": "disables the level system for you. Use again to enable it again for you.",
     "noPm": "disables the PM notifications for you. Use again to enable it again for you.",
     "pp": "Calculates PP for the beatmap with optional accuracy and mods",
-    "cookie": "Gives a cookie to the mentioned user or shows your cookies if no one is mentioned. (giving cookies is only usable with WolkeBot role)",
+    "cookie": "Gives a cookie to the mentioned user or shows your cookies if no one is mentioned.",
     "eatCookie": "Eats a Cookie.",
     "git": "Gives you the github link of the bot",
-    "roll": "Roles a a number between zero and number, if there is no number it will be out of 10",
+    "roll": "Rolls a number between zero and number, if there is no number it will be out of 10",
     "8ball": "Gives you the Opinion of the magic 8ball to a question",
     "garfield": "Gives you a random garfield command",
-    "cat":"Sends you a random cat image",
+    "cat": "Sends you a random cat image",
     "hug": "Gives you an anime hug gif",
     "slap": "Gives you an anime slap gif",
-    "setLang": "sets the language, (currently supported are de (german), en (english), ru (russian), sv (swedish) and tr (turkish)",
-    "report":"If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
+    "cuddle": "Gives you an anime cuddle gif",
+    "trig": "TRIGGERED",
+    "setLang": "sets the language, currently supported are {{languages}}",
+    "report": "If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
     "feedback": "For feedback use the support discord please ^^",
     "talk": "If you want to talk with me @mention me with a message :D",
-    "helpReply": "OK, I sent you a list of commands over PM."
+    "helpReply": "OK, I sent you a list of commands over PM.",
+    "gr": "Set a greeting with set greetingMessage,{{user}} will be replaced with the user that just joined and {{guild}} with the name of the server.\nThe greeting will be in the Channel, where the cmd was executed",
+    "fw": "Set a farewell with set farewellMessage,{{user}} will be replaced with the user that just joined and {{guild}} with the name of the server\nThe farewell will be in the channel, where the cmd was executed",
+    "s": "The server command, sets stuff like greetings and farewells",
+    "bot": "Gives you information about the current uptime of Rem, voice connections, usercount and guildcount",
+    "top": "Shows the top 10 guilds (sorted by users) that this shard is connected to",
+    "about": "Shows you basic information about me, like the library and who made me.",
+    "shrug": "¯\\_(ツ)_/¯",
+    "flip": "(╯°□°）╯︵ ┻━┻",
+    "lenny": "( ͡° ͜ʖ ͡°)",
+    "eggplant": "just an eggplant",
+    "moderation": "[MODERATION]",
+    "misc": "[MISCELLANEOUS]",
+    "stats": "[STATS]",
+    "user": "[USER]",
+    "admin": "[ADMIN]",
+    "nsfw": "[NSFW]",
+    "eastereggs": "[EASTEREGGS]",
+    "proxer": "[PROXER]",
+    "no-cat": "[UNCATEGORIZED]",
+    "wip": "[WORK IN PROGRESS]",
+    "lmg": "Let me google that for you"
   },
   "version": "Currently i am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",
@@ -89,14 +119,14 @@
     "error": "An error has occured while trying to join your voicechannel!",
     "permission": "No permission! You need to give yourself the WolkeBot role to use this.",
     "no-voice": "You are not in a voice channel!",
-    "already-voice":"I am already in a voice channel, move me to change it!"
+    "already-voice": "I am already in a voice channel, move me to change it!"
   },
   "nsfw-images": {
     "nothing-found": "No images found with tags: `{{tags}}`",
-    "no-nsfw-channel": "Please set/add a NSFW channel with !w.setLewd (in one of the NSFW Channels) to use NSFW Commands"
+    "no-nsfw-channel": "Please set/add a NSFW channel with {{- prefix}}setLewd (in one of the NSFW Channels) to use NSFW Commands"
   },
   "8ball": {
-    "answers":[
+    "answers": [
       "No.",
       "Yes.",
       "Maybe.",
@@ -106,7 +136,7 @@
       "That is a great idea.",
       "Are you sure about that ?"
     ],
-    "no-message":"You did not enter a question."
+    "no-message": "You did not enter a question."
   },
   "ban": {
     "success": "Banned User {{user}}",
@@ -116,8 +146,8 @@
     "self": "You can not ban me with my own command.",
     "no-mention": "Please mention a user you want to ban."
   },
-  "kick":{
-    "success":"Kicked User {{user}}",
+  "kick": {
+    "success": "Kicked User {{user}}",
     "privilege": "My role does not have the right to kick {{user}} !",
     "err": "An error occurred while trying to kick {{user}} !",
     "perms": "You can not kick the Owner or anyone with the WolkeBot Role.",
@@ -205,7 +235,8 @@
     "guilds": "Guilds",
     "avg-channels": "Avg. Channels per guild",
     "avg-users": "Avg. Users per guild",
-    "voice": "Voiceconnections"
+    "voice": "Voiceconnections",
+    "shard": "shard"
   },
   "rank": "You can find the Leaderboard for this Server here: {{- link}}",
   "pp": {
@@ -228,51 +259,59 @@
     "region": "Region",
     "owner": "Owner"
   },
-  "leave":"Ok i left the voice channel.",
-  "play":{
-    "no-result":"No song found!",
+  "leave": "Ok i left the voice channel.",
+  "play": {
+    "no-result": "No song found!",
     "playing": ":musical_note: Now playing **{{- song}}**"
   },
-  "prefix":{
-    "success": "Ok i just set the prefix to {{- prefix}}",
-    "no-prefix":"Please add a prefix!"
+  "prefix": {
+    "success": "Ok i just set the prefix to {{- prefix}}, try `{{- prefix}}ping` to check it",
+    "no-prefix": "Please add a prefix!"
   },
-  "voice":{
+  "voice": {
     "in-queue": "**{{- song}}** is already in the queue.",
-    "error-volume":"Error while setting volume!",
+    "error-volume": "Error while setting volume!",
     "success-volume": "Set volume to {{- volume}}",
-    "no-volume":"No volume set!",
+    "no-volume": "No volume set!",
     "repeat-start": "Started repeat for **{{- song}}**",
-    "already-playing":"This Song is already playing!",
+    "already-playing": "This Song is already playing!",
     "blocked": "This Video is not available to download. Maybe it is too long or blocked/removed",
     "dl-start": ":hourglass: loading song!",
-    "use-proxy":"Trying to download over the proxy, this could take a bit."
+    "use-proxy": "Trying to download over the proxy, this could take a bit."
   },
-  "yts":{
+  "yts": {
     "success": "Found the following song: {{- link}}"
   },
-  "skip":{
+  "skip": {
     "success": ":track_next: Skipped song {{- title}}",
-    "stop":":stop_button: Stopped current song"
+    "stop": ":stop_button: Stopped current song"
   },
-  "vskip":{
-    "user-no-voice":"You can not voteskip, if you are not in the same voicechannel!",
-    "same-voice":"You are not in the same voicechannel as I am!",
-    "dup":"You already voted!",
-    "success-add":"Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
+  "vskip": {
+    "user-no-voice": "You can not voteskip, if you are not in the same voicechannel!",
+    "same-voice": "You are not in the same voicechannel as I am!",
+    "dup": "You already voted!",
+    "success-add": "Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
     "success-skip": "Voteskipped Song: **{{- title}}**"
   },
-  "rm":{
-    "less-2":"You can not delete less than 2 messages!",
-    "over-100":"You can not delete more than 100 Messages at once!",
+  "rm": {
+    "less-2": "You can not delete less than 2 messages!",
+    "over-100": "You can not delete more than 100 Messages at once!",
     "success": "Successfully deleted {{number}} messages.",
-    "error":"Error while trying to delete Messages!"
+    "error": "Error while trying to delete Messages!"
   },
-  "search":{
-    "success":"Found the following Songs:"
+  "search": {
+    "success": "Found the following Songs:"
   },
-  "set-lewd":{
+  "set-lewd": {
     "success": "Successfully added {{- channel}} to the NSFW Channels!"
   },
-  "report":"OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!"
+  "report": "OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!",
+  "greeting": {
+    "no-greeting": "You did not add the greeting I should use!",
+    "no-add": "You can either set or reset the greeting."
+  },
+  "farewell": {
+    "no-farewell": "You did not add the farewell I should use!",
+    "no-add": "You can either set or reset the farewell."
+  }
 }
