@@ -16,6 +16,8 @@ var execute = function (message) {
                 case "lang":
                     lang.exec(message);
                     return;
+                case "rra":
+                    return;
                 // case "resolve":
                 //     message.reply(encodeURIComponent('麻枝 准×やなぎなぎ終わりの世界から'));
                 //     return;
@@ -27,4 +29,4 @@ var execute = function (message) {
         }
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'admin'};

@@ -98,4 +98,4 @@ var execute = function (message) {
         message.channel.sendMessage(t('generic.no-pm', {lngs: message.lang}));
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: pre};
+module.exports = {cmd: cmd, accessLevel: 0, exec: pre, cat: 'music'};

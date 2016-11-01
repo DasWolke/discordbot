@@ -7,6 +7,8 @@ var cmd = 'pause';
 var voice = require('../utility/voice');
 var messageHelper = require('../utility/message');
 var config = require('../config/main.json');
+var logger = require('../utility/logger');
+var winston = logger.getT();
 var execute = function (message) {
     if (message.guild) {
         if (messageHelper.hasWolkeBot(message) || config.beta) {
@@ -30,4 +32,4 @@ var execute = function (message) {
         message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'music'};

@@ -11,7 +11,7 @@
         "level-update": ":tada: Acabas de conseguir **Nivel {{level}}** en **{{server}}**",
         "empty-search": "No has introducido un término de búsqueda!",
         "negative": "Por favor no uses un número negativo!",
-        "cancel": "c:cancelado"
+        "cancel": "c:cancelar"
     },
     "help": {
         "intro": "Vamos a pasarlo bien juntos en Discord (/^▽^)/ Comandos que puedes escribir:",
@@ -75,7 +75,16 @@
         "report": "Si eres muy vergonzoso/a para pasar por el Discord de Soporte, utiliza el comando report para mandar un reporte al Desarrollador Wolke, pero no abuses de él!",
         "feedback": "Para dar feedback utiliza el Discord de Soporte por favor ^^",
         "talk": "Si quieres hablar conmigo @mencioname con un mensaje :D",
-        "helpReply": "Vale, te he mandado una lista de comandos por mensaje privado."
+        "helpReply": "Vale, te he mandado una lista de comandos por mensaje privado.",
+        "moderation": "",
+        "misc": "",
+        "stats": "",
+        "user": "",
+        "admin": "",
+        "nsfw": "",
+        "eastereggs": "",
+        "proxer": "",
+        "no-cat": ""
     },
     "version": "Actualmente me encuentro en la versión {{version}}",
     "add": "Utiliza este enlace para añadirme a tu servidor: {{- link}}",
@@ -205,7 +214,8 @@
         "guilds": "Gremios.",
         "avg-channels": "Promedio de canales por gremio.",
         "avg-users": "Promedio de usuarios por gremio.",
-        "voice": "Conexiones de voz"
+        "voice": "Conexiones de voz",
+        "shard": ""
     },
     "rank": "Puedes encontrar la clasificación de este servidor aquí: {{- link}}",
     "pp": {

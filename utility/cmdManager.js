@@ -8,6 +8,8 @@ var logger = require('./logger');
 var winston = logger.getT();
 var config = require('../config/main.json');
 commands.load = {};
+commands.load.cat = 'admin';
+commands.load.cmd = "load";
 commands.load.accessLevel = 2;
 commands.load.exec = function(msg) {
     if (msg.author.id == config.owner_id){
@@ -25,6 +27,8 @@ commands.load.exec = function(msg) {
 };
 
 commands.unload = {};
+commands.unload.cat = 'admin';
+commands.unload.cmd = "unload";
 commands.unload.accessLevel = 2;
 commands.unload.exec = function(msg) {
     if (msg.author.id == config.owner_id){
@@ -41,7 +45,9 @@ commands.unload.exec = function(msg) {
 };
 
 commands.reload = {};
+commands.reload.cat = 'admin';
 commands.reload.accessLevel = 2;
+commands.reload.cmd = "reload";
 commands.reload.exec = function(msg) {
     if (msg.author.id == config.owner_id){
         var args = msg.content.split(' ')[1];
@@ -92,6 +98,7 @@ var checkCommand = function (msg) {
     }
     catch (err) {
         winston.error(err.message);
+        winston.error(err.stack);
     }
 };
 module.exports = {

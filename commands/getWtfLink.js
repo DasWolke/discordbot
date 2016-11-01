@@ -5,4 +5,4 @@ var cmd = 'wtf';
 var execute = function (message) {
     message.reply("http://wtf.watchon.io");
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'eastereggs'};

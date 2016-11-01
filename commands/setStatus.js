@@ -8,19 +8,19 @@ var winston = logger.getT();
 var execute = function (message) {
     if (message.author.id === config.owner_id) {
         let content = message.content.substr(message.prefix.length + cmd.length).trim();
+        let contentSplit = content.split(']');
+        let streamUrl = contentSplit.length > 1 ? contentSplit[1] : 'https://www.twitch.tv/daswolke_';
         if (content !== '') {
-            message.botUser.user.setStatus('online', content).then(() => {
-                message.reply(`Changed status to \`${content}\``);
-            }).catch(err => {
-                winston.error(err)
-            });
+            message.botUser.user.setGame(contentSplit[0], streamUrl).then(()=> {
+                message.reply(`Set status to \`${contentSplit[0]}\` with url \`${streamUrl}\``);
+            }).catch(winston.info);
         } else {
-            message.botUser.user.setStatus('online', `!w.help | bot.ram.moe`).then(() => {
-                message.reply(`Reset status back to \`!w.help | bot.ram.moe\``);
+            message.botUser.user.setGame(`!w.help | shard ${parseInt(message.shard_id) + 1}/${message.shard_count}`, 'https://www.twitch.tv/daswolke_').then().catch(winston.info).then(() => {
+                message.reply(`Reset status back to \`!w.help | | shard ${parseInt(message.shard_id) + 1}/${message.shard_count}\``);
             }).catch(err => {
                 winston.error(err)
             });
         }
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'admin'};

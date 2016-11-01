@@ -6,10 +6,12 @@ var lewd = require('../config/lewd.json');
 var path = require('path');
 var logger = require('../utility/logger');
 var winston = logger.getT();
+var request = require("request");
 var execute = function (message) {
-    //TODO remove when fixed
-    message.channel.sendFile(path.join(__dirname, '../Resources/hug.gif'), '', '\u200B').then(message => {
-
-    }).catch(winston.info);
+    request.get('https://rra.ram.moe/i/r?type=hug', (err, result, body) => {
+        if (err) return winston.error(err);
+        let parsedBody = JSON.parse(body);
+        message.channel.sendMessage(`https://rra.ram.moe${parsedBody.path}`);
+    });
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'misc'};

@@ -8,4 +8,4 @@ var cmd = 'jay';
 var execute = function (message) {
     message.reply(t('eastereggs.jay', {lngs:message.lang}));
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'eastereggs'};

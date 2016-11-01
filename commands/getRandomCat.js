@@ -13,4 +13,4 @@ var execute = function (message) {
         message.channel.sendMessage(url);
     });
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'misc'};

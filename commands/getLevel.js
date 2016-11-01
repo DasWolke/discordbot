@@ -15,14 +15,21 @@ var execute = function (message) {
             if (Server && typeof (Server.levelEnabled) === 'undefined' || Server && Server.levelEnabled || !Server) {
                 messageHelper.getLevel(message, (err, result) => {
                     if (err) return winston.info(err);
-                    message.reply(t('level.result', {lngs:message.lang, level:result.level, current:parseInt(result.xp), needed:parseInt(messageHelper.calcXpNeeded(result)), total:result.totalXp}));
+                    message.reply(t('level.result', {
+                        lngs: message.lang,
+                        level: result.level,
+                        current: parseInt(result.xp),
+                        needed: parseInt(messageHelper.calcXpNeeded(result)),
+                        total: result.totalXp
+                    }));
                 });
             } else {
-                message.reply(t('level.disabled',{lngs:message.lang}));
+                message.reply(t('level.disabled', {lngs: message.lang}));
             }
         });
     } else {
-        message.reply(t('generic.no-pm',{lngs:message.lang}));
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'user'};
+//uwu

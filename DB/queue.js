@@ -47,5 +47,9 @@ queueSchema.methods.checkVote = function checkVote(Id,cb) {
         }
     });
 };
+
+queueSchema.methods.updateTitle = function (id, title, cb) {
+    this.model('Queues').update({server: this.server, 'songs.id': id}, {$set: {'songs.$.title': title}}, cb);
+};
 var queueModel = mongoose.model('Queues', queueSchema);
 module.exports = queueModel;

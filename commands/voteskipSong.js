@@ -99,4 +99,4 @@ var voteSkip = function voteSkip(message, cb) {
         return cb(t('vskip.user-no-voice', {lngs: message.lang}));
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'music'};

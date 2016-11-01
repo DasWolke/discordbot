@@ -49,6 +49,7 @@ var execute = function (message) {
                             "type": "radio",
                             "url": messageSplit[1]
                         };
+                        message.songTitle = messageSplit[1];
                         voice.addSongFirst(message, song, false).then(() => {
                             voice.streamSong(message, res);
                             message.channel.sendMessage(t('play.playing', {
@@ -92,16 +93,23 @@ var execute = function (message) {
     }
 };
 var input = function (message, Radios) {
-    let collector = new MessageCollector(message.channel, messageHelper.filterSelection, {max: 1});
-    collector.on('end', (collection, reason) => {
-        let msg = collection.first();
+    let collector = new MessageCollector(message.channel, messageHelper.filterSelection, {time: 1000 * 30});
+    collector.on('message', (msg) => {
         let number = 10;
         try {
             number = parseInt(msg.content);
         } catch (e) {
 
         }
+        if (message.content.startsWith(message.prefix)) {
+            collector.stop();
+        }
+        if (message.content === 'c') {
+            collector.stop();
+        }
         if (!isNaN(number) && number <= Radios.length) {
+            collector.stop();
+            message.songTitle = Radios[number - 1].title;
             icy.get(Radios[number - 1].url, (res) => {
                 // res.on('metadata', function (metadata) {
                 //     var parsed = icy.parse(metadata);
@@ -120,4 +128,4 @@ var input = function (message, Radios) {
         }
     });
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: pre};
+module.exports = {cmd: cmd, accessLevel: 0, exec: pre, cat: 'music'};

@@ -11,4 +11,4 @@ var execute = function (message) {
     }
     message.author.sendMessage(t('bug', {lngs:message.lang,link:'https://discord.gg/vX96Zz8', interpolation: {escape: false}}));
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'support'};

@@ -102,4 +102,4 @@ var buildReply = function (songs) {
     }
     return `\`\`\`${table.toString()}\`\`\``;
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'music'};

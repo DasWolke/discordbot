@@ -28,11 +28,11 @@ var execute = function (message) {
                     }));
                 }
             } else {
-                message.reply(t('generic.no-song-in-queue', {lngs: message.lang}));
+                message.channel.sendMessage(t('generic.no-song-in-queue', {lngs: message.lang}));
             }
         }).catch(err => {
-                message.reply(t('generic.no-song-in-queue', {lngs: message.lang}));
+            message.channel.sendMessage(t('generic.no-song-in-queue', {lngs: message.lang}));
             });
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'music'};

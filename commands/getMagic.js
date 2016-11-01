@@ -8,4 +8,4 @@ var cmd = 'imMagic';
 var execute = function (message) {
     message.reply(t('eastereggs.magic', {lngs:message.lang}));
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'eastereggs'};

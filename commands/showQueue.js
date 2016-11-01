@@ -24,7 +24,7 @@ var execute = function (message) {
                     }
                     for (var q = 0; q < iteration; q++) {
                         if (q === 0) {
-                            let dispatcher = voice.getDispatcher(message.guild.voiceConnection);
+                            const dispatcher = voice.getDispatcher(message.guild.voiceConnection);
                             let repeat = Queue.repeat ? t('np.repeat-on', {lngs: message.lang}) : "";
                             if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '' && dispatcher) {
                                 let time = Math.floor(dispatcher.time / 1000);
@@ -54,7 +54,7 @@ var execute = function (message) {
 
                     }
                     if (Queue.songs.length > 20) {
-                        reply = reply + `${parseInt(21)} **...**`;
+                        reply = reply + `${parseInt(21)} **...**\`\`\``;
                     }
                     message.channel.sendMessage(reply).then(msg => {
                         msg.delete(60 * 1000);
@@ -70,4 +70,4 @@ var execute = function (message) {
         message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'music'};

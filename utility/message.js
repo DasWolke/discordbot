@@ -154,7 +154,17 @@ var hasWolkeBot = function (message, member) {
         return true;
     }
     if (typeof (member) === 'undefined') {
-        return message.member.roles.exists('name', 'WolkeBot');
+        if (message.guild.ownerID === message.author.id) {
+            return true;
+        }
+        message.member.roles.map(r => {
+            if (r.hasPermission('ADMINISTRATOR')) {
+                return true;
+            }
+        });
+        if (message.member.roles.exists('name', 'WolkeBot')) {
+            return true;
+        }
     } else {
         return member.roles.exists('name', 'WolkeBot');
     }
@@ -222,13 +232,10 @@ var getServerObj = function (message, level, pms) {
         banned: []
     };
 };
-var noSpam = function (message) {
-    // if(message.mentions.users.length > 25) {
-    //     winston.info('good.');
-    // }
-    winston.info(message.mentions.length);
-};
 var checkNsfwChannel = function (message, cb) {
+    if (hasWolkeBot(message)) {
+        return cb();
+    }
     serverModel.findOne({id: message.guild.id}, function (err, Server) {
         if (err) return winston.info(err);
         if (Server) {
@@ -261,6 +268,9 @@ var checkCmdChannel = function (message, cb) {
     serverModel.findOne({id: message.guild.id}, function (err, Server) {
         if (err) return winston.info(err);
         if (Server) {
+            if (hasWolkeBot(message)) {
+                return cb();
+            }
             if (typeof (Server.cmdChannels) !== 'undefined' && Server.cmdChannels.length > 0) {
                 for (var i = 0; i < Server.cmdChannels.length; i++) {
                     if (Server.cmdChannels[i] === message.channel.id) {
@@ -278,22 +288,7 @@ var checkCmdChannel = function (message, cb) {
     });
 };
 var filterSelection = (message, collector) => {
-    switch (message.content) {
-        case "1":
-            return true;
-        case "2":
-            return true;
-        case "3":
-            return true;
-        case "4":
-            return true;
-        case "5":
-            return true;
-        case "c":
-            return true;
-        default:
-            return false;
-    }
+    return true;
 };
 var buildPrologMessage = (content) => {
     let msg = "\`\`\`css\n";
@@ -302,6 +297,31 @@ var buildPrologMessage = (content) => {
     }
     msg = msg + "\`\`\`";
     return msg;
+};
+var checkRoleExist = (roleName, roles) => {
+    for (var i = 0; i < roles.length; i++) {
+        if (roles[i].name === roleName) {
+            return roles[i];
+        }
+    }
+    return null;
+};
+var addRoleMember = (message, user, role, cb) => {
+    message.guild.fetchMember(user).then(member => {
+        if (member && role) {
+            member.addRole(role).then(member => {
+                return cb();
+            }).catch(err => cb(err));
+        } else {
+            cb('No Role/Member!');
+        }
+    }).catch(cb);
+};
+var filterEmojis = (message) => {
+    let reg = /[\x00-\x7F]/gi;
+    let unreadable = ((message.content.match(reg) || [].length).length);
+    console.log(message.content.length);
+    console.log(message.content);
 };
 module.exports = {
     cleanMessage: cleanMessage,
@@ -314,10 +334,12 @@ module.exports = {
     loadServerFromUser: loadServerFromUser,
     hasGuild: hasGuild,
     getServerObj: getServerObj,
-    noSpam: noSpam,
     checkNsfw: checkNsfwChannel,
     pmNotifications: pmNotifications,
     calcXpNeeded: calcXpNeeded,
     filterSelection: filterSelection,
-    buildPrologMessage: buildPrologMessage
+    buildPrologMessage: buildPrologMessage,
+    checkRoleExist: checkRoleExist,
+    addRoleMember: addRoleMember,
+    filterEmojis: filterEmojis
 };

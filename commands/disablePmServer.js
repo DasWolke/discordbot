@@ -47,4 +47,4 @@ var execute = function (message) {
         message.reply(t('generic.no-pm', {lngs:message.lang}));
     }
 };
-module.exports = {cmd:cmd, accessLevel:0, exec:execute};
+module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'moderation'};
