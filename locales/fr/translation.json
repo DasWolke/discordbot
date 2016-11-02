@@ -1,36 +1,39 @@
 {
     "generic": {
         "error": "Une erreur est survenue!",
-        "no-pm": ":no_entry: Cette commande n'est pas disponible dans les salons privés!",
+        "no-pm": ":no_entry: Cette commande ne fonctionne pas dans les salons privés!",
         "whole-num": "S'il te plaît utilise un nombre entier",
-        "nan": "Peu importe ce que tu viens d'envoyer, s'il te plaît ajoute un nombre entier. :)",
+        "nan": "Peut importe ce que tu viens d'envoyer, s'il te plaît utilise un nombre entier. :) ",
         "no-song-in-queue": "Il n'y a pas de chansons dans la file d'attente, ajoutes en peut-être une :musical_note: ?",
         "no-song-playing": "Il n'y a aucune chanson de jouée pour le moment!",
         "no-permission": "Tu n'as pas la permissions d'utiliser cette commande, s'il te plaît ajoute un rôle Discord nommé WolkeBot à toi-même pour l'utiliser.",
-        "no-voice": "Je ne suis pas connecté à un salon vocal sur ce serveur!",
+        "no-voice": "Je suis connecté à aucun salon vocal sur ce serveur!",
         "level-update": ":tada: Tu viens d'atteindre le **Niveau {{level}}** sur **{{server}}**",
         "empty-search": "Tu n'as pas entré de terme de recherche!",
         "negative": "S'il te plaît n'utilise pas de nombre négatif!",
-        "cancel": "c:annuler"
+        "cancel": "c:annuler",
+        "version": "version",
+        "author": "auteur",
+        "lib": "bibliothèque utilisée"
     },
     "help": {
-        "intro": "Ayons du plaisir tous ensemble sur Discord (/^▽^)/  sélectionne une catégorie de commandes en répondant avec {{pre}}help \"numéro de la commande\" pour en apprendre plus:",
+        "intro": "ayons du plaisir tous ensemble sur Discord (/^▽^)/  sélectionne une catégorie de commandes en répondant avec {{pre}}help \"numéro de la commande\" pour en apprendre plus:",
         "intro_2": "Salut je suis",
         "support": "[SUPPORT]",
-        "bug": "Reçois le lien pour le Discord du Support",
-        "help": "La commande d'aide",
+        "bug": "reçois le lien pour le Discord du Support",
+        "help": "la commande d'aide",
         "add": "Reçois un lien pour m'ajouter sur ton serveur",
         "music": "[MUSIQUE]",
-        "voice": "Je rejoins le salon vocal dans lequel tu es actuellement (les commandes normales de musique font que le bot rejoins le salon vocal aussi)",
-        "silent": "Je quitte le salon vocal dans lequel je suis actuellement connecté. (utilisable seulement avec le rôle WolkeBot)",
+        "voice": "je rejoins le salon vocal dans lequel tu es actuellement (les commandes normales de musique font que le bot rejoins le salon vocal également)",
+        "silent": "je quitte le salon vocal dans lequel je suis actuellement connecté. (utilisable uniquement avec le rôle WolkeBot)",
         "play": "Joue une Chanson/Vidéo Youtube ayant une longueur maximale de 1H30M (utilisable uniquement avec le rôle WolkeBot)",
-        "pause": "Pause la chanson actuelle (utilisable uniquement avec le rôle WolkeBot)",
+        "pause": "Met pause à la chanson actuelle (utilisable uniquement avec le rôle WolkeBot)",
         "resume": "Reprend la chanson (utilisable uniquement avec le rôle WolkeBot)",
         "volume": "Définit le volume actuel du Bot, valeurs entre 1-200 (utilisable uniquement avec le rôle WolkeBot)",
-        "forever": "Temporaire désactivé le temps que je répare ça",
+        "forever": "Joue une chanson de façon répétée jusqu'à ce que une nouvelle est ajoutée dans la file d'attente, uniquement utilisable avec le rôle WolkeBot",
         "search": "Cherche pour une chanson dans la base de données du Bot et affiche les 5 meilleurs résultats",
-        "skip": "Passe la chanson actuelle (utilisable uniquement avec le rôle WolkeBot)",
-        "voteskip": "Commence un vote pour passer la musique actuelle, plus de 50% du salon dois voter, après quoi elle est passée.",
+        "skip": "Commence un vote pour passer la chanson actuelle, plus de 50% du salon dois voter, après quoi elle est passée.",
+        "voteskip": "Commence un vote pour passer la chanson actuelle, plus de 50% du salon dois voter, après quoi elle est passée.",
         "qa": "Ajoute une Chanson/Vidéo Youtube ayant une longueur maximale de 1H30M",
         "qra": "Retire soit toutes les chansons mise à part celle en cours d'écoute soit un certain nombre de chansons (requière le rôle WolkeBot)",
         "queue": "Affiche la file d'attente actuelle",
@@ -40,7 +43,7 @@
         "youtube": "[YOUTUBE]",
         "yts": "Cherche sur Youtube et renvoie le premier resultat",
         "ytq": "Cherche sur Youtube et ajoute le premier résultat à la file d'attente",
-        "mod": "The Mod cp ",
+        "mod": "The Mod cp",
         "mod-info": "Toutes ces commandes requièrent que l'utilisateur ait le rôle Discord nommé WolkeBot",
         "info": "te donnes quelques informations à propos du serveur actuel",
         "ban": "Bannit un utilisateur et supprime 7 jours de ses messages",
@@ -52,7 +55,7 @@
         "setLewd": "Ajoute le salon actuel comme un salon NSFW",
         "remLewd": "Supprime le salon actuel de la liste des salons NSFW",
         "setPrefix": "Change le préfixe du bot, ni espaces ni mentions permis!",
-        "other": "[Autre Chose]",
+        "other": "[Autres]",
         "r34": "Recherche Rule34 pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
         "kona": "Recherche Konachn pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
         "e621": "Recherche E621 pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
@@ -75,16 +78,35 @@
         "report": "Si tu es trop timide pour venir sur le Discord du support, utilise \"report\" pour envoyer un rapport au développeur Wolke, mais n'en abuses pas!",
         "feedback": "Pour les retours utilises le discord du support s'il te plaît ^^",
         "talk": "Si tu veux parler avec moi mentionne moi (@Rem#5307) avec un message :D",
-        "helpReply": "OK, je t'envoie une liste de commandes par MP.",
-        "moderation": "modération",
-        "misc": "Divers",
-        "stats": "stats",
-        "user": "utilisateur",
-        "admin": "admin",
-        "nsfw": "nsfw",
-        "eastereggs": "eastereggs",
-        "proxer": "proxer",
-        "no-cat": "pas de catégories"
+        "helpReply": "OK, je t'ai envoyé une liste de commandes par MP.",
+        "moderation": "[MODÉRATION]",
+        "misc": "[DIVERS]",
+        "stats": "[STATS]",
+        "user": "[UTILISATEUR]",
+        "admin": "[ADMIN]",
+        "nsfw": "[NSFW]",
+        "eastereggs": "[EASTEREGGS]",
+        "proxer": "[PROXER]",
+        "no-cat": "[SANS CATEGORIES]",
+        "ping": "Te donnes le ping du bot (attention ce n'est pas le ping du vocale)",
+        "lewd": "tellement obscène uwu",
+        "rem": "Te donnes une images aléatoire de Rem",
+        "wip": "[TRAVAIL EN COURS]",
+        "gr": "Définis un message de bienvenue avec set greetingMessage,  {{user}} va être remplacé par l'utilisateur qui vient de rejoindre et {{guild}} avec le nom du serveur.\nLe message de bienvenue va être dans le salon, où la commande a été exécuté.",
+        "fw": "Définis un message d'adieu avec set farewellMessage,  {{user}} va être remplacé par l'utilisateur qui vient de quitter et {{guild}} avec le nom du serveur.\nLe message d'adieu va être dans le salon, où la commande a été exécuté.",
+        "s": "Les commandes serveurs, définissent les bienvenues et les adieux",
+        "shrug": "¯\\_(ツ)_/¯",
+        "flip": "(╯°□°）╯︵ ┻━┻",
+        "eggplant": "Juste une aubergine",
+        "gtn": "Te donnes un comic \"Green Tea Neko\" aléatoirement, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
+        "cuddle": "Te donnes un câlin d'anime en gif",
+        "trig": "TRIGGERED",
+        "bot": "Te donnes les informations comme la durée de fonctionnement actuelle de Rem, le nombre de connections vocales, le nombre d'utilisateurs et le nombre de guildes",
+        "top": "Montre le top 10 des guildes (triée par utilisateurs) auxquelles cette instance est connectée",
+        "about": "Te montre des informations basiques à propos de moi, comme la bibliothèque et qui est la personne qui m'a faite.",
+        "lenny": "( ͡° ͜ʖ ͡°)",
+        "lmg": "Laisse moi googler ça pour toi",
+        "fskip": "Passe la chanson actuelle (uniquement utilisable avec le rôle WolkeBot)"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -152,7 +174,7 @@
         "to-small": "Tu ne pas supprimer {{numbers}} chansons!",
         "success": "Les chansons suivantes ont été supprimé:\n{{- table}}",
         "too-big": "{{number}} chansons supprimées",
-        "one-song": "Utilise{{- prefix}}fskip pour passer la musique actuelle!"
+        "one-song": "Utilise{{- prefix}}fskip pour passer la chanson actuelle!"
     },
     "cookie": {
         "give": "a donné **1** cookie à l'utilisateur **{{-user}}**",
@@ -164,7 +186,7 @@
     },
     "eastereggs": {
         "jay": "Jay t'aime~ :heart: ",
-        "magic": "xX_Cats_Xx was here -10.10.2016"
+        "magic": "xX_Cats_Xx était ici -10.10.2016"
     },
     "set-lang": {
         "no-lang": "Tu n'as pas spécifié de langue! Actuellement il y a {{languages}} disponibles.",
@@ -215,7 +237,7 @@
         "avg-channels": "Moy. Salons par guilde",
         "avg-users": "Moy. Utilisateurs par guilde",
         "voice": "Connections vocales",
-        "shard": "instance"
+        "shard": "shard"
     },
     "rank": "Tu peux trouver le classement de ce serveur ici: {{- link}}",
     "pp": {
@@ -225,7 +247,7 @@
             "no-link": "Ce n'est pas un lien osu valide!",
             "unvalid-link": "Pas de lien de map fournie!"
         },
-        "success": "PP pour la map {{- artist}} - {{- title}} [{{- version}}] avec comme précision {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}` "
+        "success": "PP pour la map {{- artist}} - {{- title}} [{{- version}}] avec comme précision {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}`"
     },
     "server-info": {
         "id": "ID",
@@ -255,7 +277,7 @@
         "repeat-start": "Répétition en cours pour **{{- song}}**",
         "already-playing": "Cette chanson est déjà en lecture!",
         "blocked": "Cette vidéo n'est pas disponible au téléchargement. Peut-être qu'elle est trop longue ou bloquée/retirée",
-        "dl-start": ":hourglass: chargement de la chason!",
+        "dl-start": ":hourglass: chargement de la chanson!",
         "use-proxy": "Essai de téléchargement via le proxy, cela pourrait prendre du temps."
     },
     "yts": {
@@ -284,5 +306,13 @@
     "set-lewd": {
         "success": "{{- channel}} ajouté avec succès aux salons NSFW!"
     },
-    "report": "OK, j'envoie le rapport à Wolke, merci de ne pas en abuser, puisque cela pourrait te bannir d'utiliser ce bot!"
+    "report": "OK, j'ai envoyé le rapport à Wolke, merci de ne pas en abuser, puisque cela pourrait te bannir d'utiliser ce bot!",
+    "greeting": {
+        "no-greeting": "Tu n'as pas ajouté le message de bienvenue que je devrais utiliser!",
+        "no-add": "Tu peux définir ou réinitialiser le message d'accueil."
+    },
+    "farewell": {
+        "no-farewell": "Tu n'as pas ajouté le message d'adieu que je devrais utiliser!",
+        "no-add": "Tu peux définir ou réinitialiser le message d'adieu."
+    }
 }
