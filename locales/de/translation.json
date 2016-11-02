@@ -32,7 +32,7 @@
         "volume": "Stellt die Lautstärke der Musik ein (Nur nutzbar mit der WolkeBot Rolle)",
         "forever": "Spielt ein Lied in Dauerschleife, bis neue Lieder in die Warteschlange hinzugefügt werden (Nur nutzbar mit der WolkeBot Rolle)",
         "search": "Sucht nach einem Lied in der internen Datenbank ",
-        "skip": "Überspringt das Lied (Nur nutzbar mit der WolkeBot Rolle)",
+        "skip": "Startet eine Abstimmung zur Überspringen des Liedes. Abgestimmt wird über den Chat und ab 50% wird übersprungen.",
         "voteskip": "Started eine Abstimmung zum Überspringen des Liedes",
         "qa": "Fügt einen YT-Link/SC-Link/osu-link zur Warteschlange hinzu, maximale Länge: 1H30M",
         "qra": "Entfernt entweder alle Lieder aus der Warteschlange oder die angegebene Zahl von Liedern (Nur nutzbar mit der WolkeBot Rolle)",
@@ -105,7 +105,8 @@
         "top": "Zeigt dir die Top 10 Server (nach Benutzern sortiert) an die diesen Bot benutzen",
         "about": "Zeigt dir grundlegende Informationen über mich, wie die Bibliotheken und wer mich erschaffen hat",
         "lenny": "( ͡° ͜ʖ ͡°)",
-        "lmg": "Lass mich das für dich googlen"
+        "lmg": "Lass mich das für dich googlen",
+        "fskip": "Überspringt den aktuellen Song (nur benutzbar mit der WolkeBot Rolle)"
     },
     "version": "Momentan verwende ich Version{{- version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
