@@ -54,6 +54,7 @@ var execute = function (message) {
                         message.channel.sendMessage(t('generic.error', {lngs: message.lang}));
                     }
                 } else if (iteration < 101) {
+                    winston.info(`rq ${iteration}`);
                     if (voice.inVoice(message)) {
                         var randoms = [];
                         for (var i = 0; i < iteration; i++) {
@@ -63,14 +64,9 @@ var execute = function (message) {
                             randoms.push(Song);
                         }
                         let addedSongs = 0;
-                        async.eachSeries(randoms, ((randomSong, cb) => {
-                            voice.addToQueue(message, randomSong, false, (err, result) => {
-                                if (err) return cb(err);
-                                addedSongs = addedSongs+ 1;
-                                return cb();
-                            });
-                        }), (err) => {
+                        voice.addToQueueBatch(message, randoms, false, (err, addedS) => {
                             if (err) message.channel.sendMessage(err);
+                            addedSongs = addedS;
                             if (addedSongs > 0) {
                                 let table = new AsciiTable();
                                 for (var i = 0; i < addedSongs; i++) {
