@@ -53,7 +53,7 @@ var execute = function (message) {
                     } else {
                         message.channel.sendMessage(t('generic.error', {lngs: message.lang}));
                     }
-                } else if (iteration < 101) {
+                } else if (iteration < 51) {
                     winston.info(`rq ${iteration}`);
                     if (voice.inVoice(message)) {
                         var randoms = [];
@@ -86,7 +86,7 @@ var execute = function (message) {
                         message.channel.sendMessage(t('generic.no-voice', {lngs: message.lang}));
                     }
                 } else {
-                    message.channel.sendMessage(':x: :keycap_ten: :zero: :musical_note: ');
+                    message.channel.sendMessage(':x: :five: :zero: :musical_note: ');
                 }
             });
         });

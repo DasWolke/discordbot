@@ -508,8 +508,9 @@ var addToQueueBatch = function (message, Songs, reply, cb) {
                     }
                 });
                 let addedSongs = Songs.length;
-                queueModel.update({_id: Queue._id}, {$addToSet: {songs: {$each: Songs}}}, (err) => {
+                queueModel.update({_id: Queue._id}, {$addToSet: {songs: {$each: Songs}}}, (err, res) => {
                     if (err) return cb(t('generic.error', {lngs: message.lang}), addedSongs);
+                    winston.info(res);
                     return cb(null, addedSongs);
                 });
             } else {
