@@ -321,10 +321,10 @@ var updateDispatcherArray = function (guild_id, dispatcher) {
 var playSong = function (message, Song, Queueused) {
     var connection = message.guild.voiceConnection;
     if (connection) {
-        // let opts = {stdio: [process.stdin, process.stdout, process.stderr, 'pipe', 'ipc']};
-        // let child = child_process.fork('./utility/voice/open.js', opts);
-        // child.send({path: Song.path});
-        let dispatcher = connection.playFile(Song.path, {volume: message.dbServer.volume, passes: 2});
+        let opts = {stdio: [process.stdin, process.stdout, process.stderr, 'pipe', 'ipc']};
+        let child = child_process.fork('./utility/voice/open.js', opts);
+        child.send({path: Song.path});
+        let dispatcher = connection.playStream(child.stdio[3], {volume: message.dbServer.volume, passes: 2});
         updateDispatcherArray(message.guild.id, dispatcher);
         winston.info(path.resolve(Song.path));
         updatePlays(Song.id).then(() => {

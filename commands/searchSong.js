@@ -7,6 +7,7 @@ var songModel = require('../DB/song');
 var cmd = 'search';
 var logger = require('../utility/logger');
 var winston = logger.getT();
+var AsciiTable = require('ascii-table');
 var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (typeof (messageSplit[1]) !== 'undefined') {
@@ -18,9 +19,11 @@ var execute = function (message) {
             if (err) return winston.info(err);
             if (Songs !== null && Songs.length > 0) {
                 var reply = t('search.success', {lngs: message.lang}) + "\n\n";
-                for (var x = 0; x < Songs.length; x++) {
-                    reply = reply + parseInt(x + 1) + ": ```" + Songs[x].title + "```\n\n";
+                let table = new AsciiTable();
+                for (var u = 0; u < Songs.length; u++) {
+                    table.addRow(u + 1, Songs[u].title);
                 }
+                reply = reply + `\`\`\`${table.toString()}\`\`\``;
                 message.reply(reply);
             } else {
                 message.reply(t('qa.nothing-found', {search: messageSearch, lngs: message.lang}));
