@@ -32,8 +32,12 @@ var execute = function (message) {
                     channels = res;
                     let averageUsers = users / guilds;
                     let averageChannels = channels / guilds;
+                    let users_s = 0;
+                    let channels_s = 0;
                     message.botUser.guilds.map(g => {
-                        g.voiceConnection ? voice += 1 : voice
+                        g.voiceConnection ? voice += 1 : voice;
+                        channels_s += g.channels.size;
+                        users_s += g.memberCount;
                     });
                     table
                         .addRow(t('bot-info.uptime', {lngs: message.lang}), duration.humanize())
@@ -42,6 +46,9 @@ var execute = function (message) {
                         .addRow(t('bot-info.users', {lngs: message.lang}), users)
                         .addRow(t('bot-info.avg-users', {lngs: message.lang}), averageUsers.toFixed(2))
                         .addRow(t('bot-info.avg-channels', {lngs: message.lang}), averageChannels.toFixed(2))
+                        .addRow(t('bot-info.guilds-s', {lngs: message.lang}), message.botUser.guilds.size)
+                        .addRow(t('bot-info.channels-s', {lngs: message.lang}), message.botUser.guilds.size)
+                        .addRow(t('bot-info.users-s', {lngs: message.lang}), message.botUser.guilds.size)
                         .addRow(t('bot-info.voice', {lngs: message.lang}), voice)
                         .addRow(t('bot-info.shard', {lngs: message.lang}), `${parseInt(message.shard_id) + 1}/${message.shard_count}`);
                     message.channel.sendMessage(`\n\`\`\`${table.toString()}\`\`\``);

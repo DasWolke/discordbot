@@ -30,7 +30,7 @@ var execute = function (message) {
             }
         });
     } else {
-        message.reply(t('generic.empty-search', {lngs:message.lang}));
+        message.reply(t('generic.empty-search', {lngs: message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'music'};
