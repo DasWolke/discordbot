@@ -20,6 +20,7 @@ var logger = require('./logger');
 var icy = require("icy");
 var child_process = require("child_process");
 var winston = logger.getT();
+var _ = require('lodash');
 var saveVoiceChannel = function saveVoiceChannel(channel) {
     return new Promise((resolve, reject) => {
         serverModel.findOne({id: channel.guild.id}, function (err, Server) {
@@ -320,10 +321,10 @@ var updateDispatcherArray = function (guild_id, dispatcher) {
 var playSong = function (message, Song, Queueused) {
     var connection = message.guild.voiceConnection;
     if (connection) {
-        let opts = {stdio: [process.stdin, process.stdout, process.stderr, 'pipe', 'ipc']};
-        let child = child_process.fork('./utility/voice/open.js', opts);
-        child.send({path: Song.path});
-        let dispatcher = connection.playStream(child.stdio[3], {volume: message.dbServer.volume, passes: 2});
+        // let opts = {stdio: [process.stdin, process.stdout, process.stderr, 'pipe', 'ipc']};
+        // let child = child_process.fork('./utility/voice/open.js', opts);
+        // child.send({path: Song.path});
+        let dispatcher = connection.playFile(Song.path, {volume: message.dbServer.volume, passes: 2});
         updateDispatcherArray(message.guild.id, dispatcher);
         winston.info(path.resolve(Song.path));
         updatePlays(Song.id).then(() => {
@@ -341,7 +342,7 @@ var playSong = function (message, Song, Queueused) {
         dispatcher.on("end", function () {
             dispatcher.setVolume(0);
             winston.info("File ended!");
-            child.kill();
+            // child.kill();
             nextSong(message, Song);
         });
         dispatcher.on("debug", information => {
@@ -507,11 +508,23 @@ var addToQueueBatch = function (message, Songs, reply, cb) {
                         }
                     }
                 });
-                let addedSongs = Songs.length;
-                queueModel.update({_id: Queue._id}, {$addToSet: {songs: {$each: Songs}}}, (err, res) => {
-                    if (err) return cb(t('generic.error', {lngs: message.lang}), addedSongs);
+                let addSongs = [];
+                for (var x = 0; x < Songs.length; x++) {
+                    let rip = true;
+                    for (var y = 0; y < Queue.songs.length; y++) {
+                        if (Songs[x].id === Queue.songs[y].id) {
+                            rip = false;
+                            break;
+                        }
+                    }
+                    if (rip) {
+                        addSongs.push(Songs[x]);
+                    }
+                }
+                queueModel.update({_id: Queue._id}, {$addToSet: {songs: {$each: addSongs}}}, (err, res) => {
+                    if (err) return cb(t('generic.error', {lngs: message.lang}), addSongs);
                     winston.info(res);
-                    return cb(null, addedSongs);
+                    return cb(null, addSongs);
                 });
             } else {
                 var queue = new queueModel({

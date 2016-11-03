@@ -54,7 +54,10 @@ var execute = function (message) {
 
                     }
                     if (Queue.songs.length > 20) {
-                        reply = reply + `${parseInt(21)} ${Queue.songs.length - 21}+...\`\`\``;
+                        reply = reply + `${parseInt(21)}. ${t('generic.more', {
+                                lngs: message.lang,
+                                number: Queue.songs.length - 20
+                            })}...\`\`\``;
                     }
                     message.channel.sendMessage(reply).then(msg => {
                         msg.delete(60 * 1000);
