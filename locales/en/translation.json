@@ -14,7 +14,8 @@
     "cancel": "c:cancel",
     "version": "version",
     "author": "author",
-    "lib": "library used"
+    "lib": "library used",
+    "more": "{{number}} more"
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
@@ -167,7 +168,10 @@
   },
   "rq": {
     "db-error": "A database error occured!",
-    "success-multiple": "Added the following Songs:\n```{{- table}}```"
+    "success-multiple": "Added the following Songs:\n```{{- table}}```",
+    "too-big": "Added {{number}} songs",
+    "no-songs-added": "I could not add any songs as they are already in the queue, try again!",
+    "too-much": "You can not add more than {{number}} songs at once!"
   },
   "qra": {
     "to-small": "You cant remove {{number}} songs!",

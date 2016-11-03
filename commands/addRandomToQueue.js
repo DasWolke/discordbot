@@ -63,22 +63,41 @@ var execute = function (message) {
                             Songs.splice(random, 1);
                             randoms.push(Song);
                         }
-                        let addedSongs = 0;
                         voice.addToQueueBatch(message, randoms, false, (err, addedS) => {
                             if (err) message.channel.sendMessage(err);
-                            addedSongs = addedS;
-                            if (addedSongs > 0) {
-                                let table = new AsciiTable();
-                                for (var i = 0; i < addedSongs; i++) {
-                                    table.addRow(i + 1, randoms[i].title);
+                            if (addedS.length > 0) {
+                                if (addedS.length < 16) {
+                                    let table = new AsciiTable();
+                                    for (var i = 0; i < addedS.length; i++) {
+                                        table.addRow(i + 1, addedS[i].title);
+                                    }
+                                    message.channel.sendMessage(t('rq.success-multiple', {
+                                        table: table.toString(),
+                                        lngs: message.lang,
+                                        interpolation: {escape: false}
+                                    })).then(msg => {
+                                        msg.delete(60 * 1000);
+                                    }).catch(winston.info);
+                                } else {
+                                    let table = new AsciiTable();
+                                    for (var u = 0; u < 15; u++) {
+                                        table.addRow(u + 1, addedS[u].title);
+                                    }
+                                    table.addRow(u + 1, `${t('generic.more', {
+                                        lngs: message.lang,
+                                        number: addedS.length - 15
+                                    })}..`);
+                                    message.channel.sendMessage(t('rq.success-multiple', {
+                                        table: table.toString(),
+                                        lngs: message.lang,
+                                        interpolation: {escape: false}
+                                    })).then(msg => {
+                                        msg.delete(60 * 1000);
+                                    }).catch(winston.info);
                                 }
-                                message.channel.sendMessage(t('rq.success-multiple', {
-                                    table: table.toString(),
-                                    lngs: message.lang,
-                                    interpolation: {escape: false}
-                                })).then(msg => {
-                                    msg.delete(60 * 1000);
-                                }).catch(winston.info);
+
+                            } else {
+                                message.channel.sendMessage(t('rq.no-songs-added', {lngs: message.lang}));
                             }
                         });
 
@@ -86,7 +105,7 @@ var execute = function (message) {
                         message.channel.sendMessage(t('generic.no-voice', {lngs: message.lang}));
                     }
                 } else {
-                    message.channel.sendMessage(':x: :five: :zero: :musical_note: ');
+                    message.channel.sendMessage(t('too-much', {lngs: message.lang, number: 50}));
                 }
             });
         });
