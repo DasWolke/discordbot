@@ -89,7 +89,7 @@ var execute = function (message) {
             });
         }
     } else {
-        message.reply(t('generic.no-pm', {lngs:message.lang}));
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
 var input = function (message, Radios) {

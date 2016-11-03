@@ -28,7 +28,14 @@ var execute = function (message) {
                             let repeat = Queue.repeat ? t('np.repeat-on', {lngs: message.lang}) : "";
                             if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '' && dispatcher) {
                                 let time = Math.floor(dispatcher.time / 1000);
-                                reply = reply + `${t('np.song-duration', {lngs: message.lang, title:Queue.songs[0].title, repeat:repeat, duration:Queue.songs[0].duration, current:general.convertSeconds(time), interpolation: {escape: false}})} \n`;
+                                reply = reply + `${t('np.song-duration', {
+                                        lngs: message.lang,
+                                        title: Queue.songs[0].title,
+                                        repeat: repeat,
+                                        duration: Queue.songs[0].duration,
+                                        current: general.convertSeconds(time),
+                                        interpolation: {escape: false}
+                                    })} \n`;
                             } else {
                                 reply = reply + `${t('np.song', {
                                         lngs: message.lang,
@@ -70,7 +77,7 @@ var execute = function (message) {
             }
         });
     } else {
-        message.reply(t('generic.no-pm', {lngs:message.lang}));
+        message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
 module.exports = {cmd: cmd, accessLevel: 0, exec: execute, cat: 'music'};
