@@ -52,9 +52,8 @@ getDirs('locales/', (list) => {
         i18nBean.setT(t);
         var Discord = require("discord.js");
         var options = {
-            protocol_version: 6,
             messageCacheMaxSize: 2500,
-            disable_everyone: true,
+            disableEveryone: true,
             fetchAllMembers: true,
             disabledEvents: ['typingStart', 'typingStop']
         };

@@ -92,6 +92,7 @@
     "bot": "Gives you information about the current uptime of Rem, voice connections, usercount and guildcount",
     "top": "Shows the top 10 guilds (sorted by users) that this shard is connected to",
     "about": "Shows you basic information about me, like the library and who made me.",
+    "say": "Make Rem say something",
     "shrug": "¯\\_(ツ)_/¯",
     "flip": "(╯°□°）╯︵ ┻━┻",
     "lenny": "( ͡° ͜ʖ ͡°)",
