@@ -14,7 +14,8 @@
         "cancel": "c:annuler",
         "version": "version",
         "author": "auteur",
-        "lib": "bibliothèque utilisée"
+        "lib": "bibliothèque utilisée",
+        "more": "{{number}} en plus"
     },
     "help": {
         "intro": "ayons du plaisir tous ensemble sur Discord (/^▽^)/  sélectionne une catégorie de commandes en répondant avec {{pre}}help \"numéro de la commande\" pour en apprendre plus:",
@@ -106,7 +107,8 @@
         "about": "Te montre des informations basiques à propos de moi, comme la bibliothèque et qui est la personne qui m'a faite.",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Laisse moi googler ça pour toi",
-        "fskip": "Passe la chanson actuelle (uniquement utilisable avec le rôle WolkeBot)"
+        "fskip": "Passe la chanson actuelle (uniquement utilisable avec le rôle WolkeBot)",
+        "leave": "je quitte le salon vocal auquel je suis actuellement connecté. (uniquement utilisable avec le rôle WolkeBot)"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -124,7 +126,7 @@
     },
     "nsfw-images": {
         "nothing-found": "Aucune image trouvée avec les tags: `{{tags}}`",
-        "no-nsfw-channel": "S'il vous plaît définis/ajoute un salon NSFW avec !w.setLewd (dans un des salons NSFW) pour utiliser les commandes NSFW"
+        "no-nsfw-channel": "S'il vous plaît définis/ajoute un salon NSFW avec {{- prefix}}setLewd (dans un des salons NSFW) pour utiliser les commandes NSFW"
     },
     "8ball": {
         "answers": [
@@ -134,7 +136,7 @@
             "Je ne pense pas.",
             "Définitivement non.",
             "Fait-le.",
-            "C'est une idée superbe.",
+            "C'est une superbe idée.",
             "Es-tu sûr de ça ?"
         ],
         "no-message": "Tu n'as pas saisi de question"
@@ -168,7 +170,10 @@
     },
     "rq": {
         "db-error": "Une erreur de base de données est apparue",
-        "success-multiple": "Ajout des chansons suivantes:\n```{{- table}}```"
+        "success-multiple": "Ajout des chansons suivantes:\n```{{- table}}```",
+        "too-big": "{{number}} chanson(s) ajoutée(s)",
+        "no-songs-added": "Je n'ai pas pu ajouter de chansons car elles sont déjà dans la file d'attente, essaye encore!",
+        "too-much": "Tu ne peux pas ajouter plus de {{number}} chanson à la fois!"
     },
     "qra": {
         "to-small": "Tu ne pas supprimer {{numbers}} chansons!",
@@ -266,7 +271,7 @@
         "playing": ":musical_note: Lecture en cours **{{- song}}**"
     },
     "prefix": {
-        "success": "Ok Je viens de mettre le préfixe à {{- prefix}}",
+        "success": "Ok Je viens de mettre le préfixe à {{- prefix}}, essaye `{{- prefix}}ping` pour vérifier",
         "no-prefix": "S'il te plaît ajoute un préfixe!"
     },
     "voice": {
@@ -284,7 +289,7 @@
         "success": "La chanson suivante a été trouvé: {{- link}}"
     },
     "skip": {
-        "success": ":track_next: La chanson {{- title}} ignorée",
+        "success": ":track_next: La chanson {{- title}} est ignorée",
         "stop": ":stop_button: Chanson actuelle arrêtée"
     },
     "vskip": {
