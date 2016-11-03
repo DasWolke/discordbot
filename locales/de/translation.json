@@ -14,7 +14,8 @@
         "cancel": "c:abbrechen",
         "version": "Momentan verwende ich Version{{- version}}",
         "author": "Author",
-        "lib": "Bibliothek benutzt"
+        "lib": "Bibliothek benutzt",
+        "more": "{{number}} mehr"
     },
     "help": {
         "intro": "lass uns zusammen viel Spass haben hier auf Discord (/^▽^)/ Hier ist eine Auflistung meiner Befehlskategorien, wähle eine von ihnen mit {{- pre}}help zahl aus.",
@@ -106,7 +107,8 @@
         "about": "Zeigt dir grundlegende Informationen über mich, wie die Bibliotheken und wer mich erschaffen hat",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Lass mich das für dich googlen",
-        "fskip": "Überspringt den aktuellen Song (nur benutzbar mit der WolkeBot Rolle)"
+        "fskip": "Überspringt den aktuellen Song (nur benutzbar mit der WolkeBot Rolle)",
+        "leave": "Ich verlasse den Voicechannel mit dem ich gerade verbunden bin. (Nur nutzbar mit der WolkeBot Rolle)"
     },
     "version": "Momentan verwende ich Version{{- version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -124,7 +126,7 @@
     },
     "nsfw-images": {
         "nothing-found": "Ich habe keine Bilder mit diesen Tags gefunden: `{{- tags}}`",
-        "no-nsfw-channel": "Bitte füge einen NSFW-Channel hinzu."
+        "no-nsfw-channel": "Bitte füge einen NSFW-Channel hinzu. Dies geht mit {{- prefix}}setLewd in dem entsprechenden Channel."
     },
     "8ball": {
         "answers": [
@@ -168,7 +170,10 @@
     },
     "rq": {
         "db-error": "Ein Fehler ist aufgetreten!",
-        "success-multiple": "Ich habe die folgenden Lieder hinzugefügt:\n```{{- table}}```"
+        "success-multiple": "Ich habe die folgenden Lieder hinzugefügt:\n```{{- table}}```",
+        "too-big": "Ich habe {{number}} Lieder hinzugefügt.",
+        "no-songs-added": "Ich konnte keine Lieder in die Warteschlange hinzufügen, da diese bereits in ihr sind! Probier es nochmal!",
+        "too-much": "Du kannst nicht mehr als {{number}} auf einmal hinzufügen!"
     },
     "qra": {
         "to-small": "Du kannst nicht {{number}} Lieder aus der Warteschlange entfernen!",
@@ -266,7 +271,7 @@
         "playing": ":musical_note: Jetzt spielt **{{- song}}**"
     },
     "prefix": {
-        "success": "Ok, ich habe gerade das prefix auf `{{- prefix}}` umgestellt!",
+        "success": "Ok, ich habe gerade das prefix auf `{{- prefix}}` umgestellt! Probier {{- prefix}}ping aus um es zu überprüfen!",
         "no-prefix": "Bitte hänge das gewünschte Prefix an die Nachricht an!"
     },
     "voice": {
