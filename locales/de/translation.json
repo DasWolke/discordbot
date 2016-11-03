@@ -108,7 +108,8 @@
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Lass mich das für dich googlen",
         "fskip": "Überspringt den aktuellen Song (nur benutzbar mit der WolkeBot Rolle)",
-        "leave": "Ich verlasse den Voicechannel mit dem ich gerade verbunden bin. (Nur nutzbar mit der WolkeBot Rolle)"
+        "leave": "Ich verlasse den Voicechannel mit dem ich gerade verbunden bin. (Nur nutzbar mit der WolkeBot Rolle)",
+        "say": "Bring Rem dazu etwas zu sagen."
     },
     "version": "Momentan verwende ich Version{{- version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -242,7 +243,10 @@
         "avg-channels": "Durchschn. Channel per Server",
         "avg-users": "Durchschn. User per Server",
         "voice": "Sprachverbindungen",
-        "shard": "shard"
+        "shard": "shard",
+        "guilds-s": "Guilds auf diesem Shard.",
+        "channels-s": "Channels auf diesem Shard",
+        "users-s": "Nutzer auf diesem Shard"
     },
     "rank": "Du kannst die Rangliste für deinen Server hier finden: {{- link}}",
     "pp": {
