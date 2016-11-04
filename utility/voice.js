@@ -21,6 +21,13 @@ var icy = require("icy");
 var child_process = require("child_process");
 var winston = logger.getT();
 var _ = require('lodash');
+var beta = require('../config/main.json').beta;
+var url;
+if (beta) {
+    url = 'http://localhost:7011/s/'
+} else {
+    url = 'http://localhost:7010/s/'
+}
 var saveVoiceChannel = function saveVoiceChannel(channel) {
     return new Promise((resolve, reject) => {
         serverModel.findOne({id: channel.guild.id}, function (err, Server) {
@@ -321,10 +328,12 @@ var updateDispatcherArray = function (guild_id, dispatcher) {
 var playSong = function (message, Song, Queueused) {
     var connection = message.guild.voiceConnection;
     if (connection) {
-        let opts = {stdio: [process.stdin, process.stdout, process.stderr, 'pipe', 'ipc']};
-        let child = child_process.fork('./utility/voice/open.js', opts);
-        child.send({path: Song.path});
-        let dispatcher = connection.playStream(child.stdio[3], {volume: message.dbServer.volume, passes: 2});
+        // let opts = {stdio: [process.stdin, process.stdout, process.stderr, 'pipe', 'ipc']};
+        // let child = child_process.fork('./utility/voice/open.js', opts);
+        // child.send({path: Song.path});
+        //child.stdio[3]
+        let stream = request(`${url}${Song.id}`);
+        let dispatcher = connection.playStream(stream, {volume: message.dbServer.volume, passes: 2});
         updateDispatcherArray(message.guild.id, dispatcher);
         winston.info(path.resolve(Song.path));
         updatePlays(Song.id).then(() => {
@@ -342,14 +351,14 @@ var playSong = function (message, Song, Queueused) {
         dispatcher.on("end", function () {
             dispatcher.setVolume(0);
             winston.info("File ended!");
-            child.kill();
+            // child.kill();
             nextSong(message, Song);
         });
         dispatcher.on("debug", information => {
             winston.info(`Debug: ${information}`);
         });
         dispatcher.on("error", function (err) {
-            // winston.info(`Error: ${err}`);
+            winston.info(`Error: ${err}`);
         });
     } else {
         // client.captureMessage(`No connection found for Guild ${message.guild.name}`, {

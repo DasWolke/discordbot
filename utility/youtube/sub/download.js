@@ -37,7 +37,7 @@ var downloadSingle = function (url, idAuthor, cb) {
             let child = child_process.fork('./utility/youtube/sub/downloadProxy.js');
             child.send({url: url, author: idAuthor});
             child.on('message', (m) => {
-                console.log(m);
+                // console.log(m);
                 child.kill();
                 cb(m.err, m.info);
             });
