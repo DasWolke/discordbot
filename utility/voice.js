@@ -342,7 +342,7 @@ var playSong = function (message, Song, Queueused) {
         dispatcher.on("end", function () {
             dispatcher.setVolume(0);
             winston.info("File ended!");
-            // child.kill();
+            child.kill();
             nextSong(message, Song);
         });
         dispatcher.on("debug", information => {
