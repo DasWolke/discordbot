@@ -224,7 +224,7 @@ getDirs('locales/', (list) => {
                             } else {
                                 async.setImmediate(() => {
                                     return cb();
-                                })
+                                });
                             }
                         }, (err) => {
                             if (err) return winston.error(err);
@@ -238,13 +238,17 @@ getDirs('locales/', (list) => {
                 if (err) return winston.error(err);
                 if (Server) {
                     if (typeof (Server.leaveText) !== 'undefined' && Server.leaveText !== '' && Server.leaveText) {
-                        let channels = member.guild.channels.filter(c => {
-                            return (c.id === Server.leaveChannel)
-                        });
-                        let channel = channels.first();
-                        let content = Server.leaveText.replace('{{user}}', member.user.username);
-                        content = content.replace('{{guild}}', member.guild.name);
-                        channel.sendMessage(content);
+                        try {
+                            let channels = member.guild.channels.filter(c => {
+                                return (c.id === Server.leaveChannel)
+                            });
+                            let channel = channels.first();
+                            let content = Server.leaveText.replace('{{user}}', member.user.username);
+                            content = content.replace('{{guild}}', member.guild.name);
+                            channel.sendMessage(content);
+                        } catch (e) {
+                            winston.error(e);
+                        }
                     }
                 }
             })
