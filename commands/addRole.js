@@ -10,15 +10,17 @@ var cmd = 'ar';
 var exec = (message) => {
     if (message.guild) {
         let Guild = message.dbServer;
-        let messageSplit = message.content.split(' ').splice(1);
-        winston.info(messageSplit);
+        let userReg = /<@[0-9]+>/g;
+        let content = message.content.substr(message.prefix.length + cmd.length).trim();
+        content = content.replace(userReg, '').trim();
+        winston.info(content);
         let mention = message.mentions.users.first();
         let wolkebot = messageHelper.hasWolkeBot(message);
-        if (messageSplit.length > 0) {
-            let roleGuild = message.guild.roles.filter(r => r.name === messageSplit[0]).first();
+        if (content.length > 0) {
+            let roleGuild = message.guild.roles.filter(r => r.name === content).first();
             if (Guild) {
                 if (typeof (Guild.roles.length) !== 'undefined' && Guild.roles.length > 0) {
-                    let role = messageHelper.checkRoleExist(messageSplit[0], Guild.roles);
+                    let role = messageHelper.checkRoleExist(content, Guild.roles);
                     if (role && roleGuild) {
                         if (role.self) {
                             if (!mention) {
@@ -32,7 +34,7 @@ var exec = (message) => {
                             if (wolkebot) {
                                 addRole(message, mention, roleGuild, wolkebot);
                             } else {
-                                //no permission
+                                message.reply(t('generic.no-permission', {lngs: message.lang}));
                             }
                         }
                     } else {
@@ -40,7 +42,7 @@ var exec = (message) => {
                             if (wolkebot) {
                                 addRole(message, mention, roleGuild, wolkebot);
                             } else {
-                                message.channel.sendMessage('No Role in Guild found uwu');
+                                message.reply(t('generic.no-permission', {lngs: message.lang}));
                             }
                         }
                     }
@@ -53,8 +55,10 @@ var exec = (message) => {
                                 addRole(message, mention, roleGuild, wolkebot);
                             }
                         } else {
-                            //role does not exist
+                            message.channel.sendMessage('No Role in Guild found uwu');
                         }
+                    } else {
+                        message.reply(t('generic.no-permission', {lngs: message.lang}));
                     }
                 }
             }
@@ -69,10 +73,10 @@ function addRole(message, user, role, wolkebot) {
     if (wolkebot) {
         messageHelper.addRoleMember(message, user, role, (err) => {
             if (err) return message.reply(err);
-            message.reply(':ok_hand: ')
+            message.channel.sendMessage(`Ok I just gave ${user} the role ${role.name}!`);
         });
     } else {
-        //no permission
+        message.reply(t('generic.no-permission', {lngs: message.lang}));
     }
 }
 module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'admin'};

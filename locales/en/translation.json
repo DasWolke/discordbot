@@ -321,5 +321,9 @@
   "farewell": {
     "no-farewell": "You did not add the farewell I should use!",
     "no-add": "You can either set or reset the farewell."
+  },
+  "create-role": {
+    "missing": "The role name you specified does not exist on the server.",
+    "new": "Should I create the role for you ?"
   }
 }

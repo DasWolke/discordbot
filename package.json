@@ -39,7 +39,8 @@
     "youtube-api": "^2.0.4",
     "youtube-dl": "^1.11.1",
     "youtube-search": "^1.0.6",
-    "ytdl-core": "^0.7.19"
+    "ytdl-core": "^0.7.19",
+    "minimist": "latest"
   },
   "devDependencies": {
     "winston": "^2.2.0"
