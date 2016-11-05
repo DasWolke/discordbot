@@ -215,6 +215,21 @@ getDirs('locales/', (list) => {
                         content = content.replace('{{guild}}', member.guild.name);
                         channel.sendMessage(content);
                     }
+                    if (typeof (Server.roles) !== 'undefined' && Server.roles.length > 0) {
+                        async.each(Server.roles, (role, cb) => {
+                            if (role.default) {
+                                member.addRole(role.id).then(memberNew => {
+                                    return cb();
+                                }).catch(err => cb(err));
+                            } else {
+                                async.setImmediate(() => {
+                                    return cb();
+                                })
+                            }
+                        }, (err) => {
+                            if (err) return winston.error(err);
+                        });
+                    }
                 }
             })
         });

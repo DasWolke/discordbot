@@ -21,22 +21,32 @@ var exec = (message) => {
             if (messageSplit.length > 0) {
                 let roleGuild = message.guild.roles.filter(r => r.name === role.name).first();
                 if (roleGuild) {
-                    if (typeof (serverModel.roles) !== 'undefined' && serverModel.roles.length > 0) {
-                        let roles = _.filter(serverModel.roles, {id: roleGuild.id});
+                    role.id = roleGuild.id;
+                    if (typeof (message.dbServer.roles) !== 'undefined' && message.dbServer.roles.length > 0) {
+                        let roles = _.filter(message.dbServer.roles, {id: roleGuild.id});
                         if (roles.length > 0) {
                             message.reply(':no_entry_sign: ');
                         } else {
                             winston.info(role);
+                            message.dbServer.addRole(role, (err) => {
+                                if (err) return message.reply(t('generic.error', {lngs: message.lang}));
+                                message.reply(`Ok, I just added the role ${role.name} `);
+                            })
                         }
                     } else {
                         message.dbServer.addRole(role, (err) => {
                             if (err) return message.reply(t('generic.error', {lngs: message.lang}));
-                            message.reply(`Ok, I just added the role ${role}`);
-                        });
+                            message.reply(`Ok, I just added the role ${role.name}`);
+                        })
                     }
-
                 } else {
-                    winston.info('meh');
+                    message.guild.createRole({name: role.name, permissions: 0}).then(roleServer => {
+                        role.id = roleServer.id;
+                        message.dbServer.addRole(role, (err) => {
+                            if (err) return message.reply(t('generic.error', {lngs: message.lang}));
+                            message.reply(`Ok, I just added the role ${role.name}`);
+                        });
+                    }).catch(err => winston.error(err));
                 }
             } else {
                 message.reply(':no_entry_sign: ');
