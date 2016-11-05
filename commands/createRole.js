@@ -29,7 +29,10 @@ var exec = (message) => {
                             winston.info(role);
                         }
                     } else {
-                        winston.info(role);
+                        message.dbServer.addRole(role, (err) => {
+                            if (err) return message.reply(t('generic.error', {lngs: message.lang}));
+                            message.reply(`Ok, I just added the role ${role}`);
+                        });
                     }
 
                 } else {
