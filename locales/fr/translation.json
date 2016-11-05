@@ -103,12 +103,13 @@
         "cuddle": "Te donnes un câlin d'anime en gif",
         "trig": "TRIGGERED",
         "bot": "Te donnes les informations comme la durée de fonctionnement actuelle de Rem, le nombre de connections vocales, le nombre d'utilisateurs et le nombre de guildes",
-        "top": "Montre le top 10 des guildes (triée par utilisateurs) auxquelles cette instance est connectée",
+        "top": "Montre le top 10 des guildes (triée par utilisateurs) auxquelles cette instance (shard) est connectée",
         "about": "Te montre des informations basiques à propos de moi, comme la bibliothèque et qui est la personne qui m'a faite.",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Laisse moi googler ça pour toi",
         "fskip": "Passe la chanson actuelle (uniquement utilisable avec le rôle WolkeBot)",
-        "leave": "je quitte le salon vocal auquel je suis actuellement connecté. (uniquement utilisable avec le rôle WolkeBot)"
+        "leave": "je quitte le salon vocal auquel je suis actuellement connecté. (uniquement utilisable avec le rôle WolkeBot)",
+        "say": "Faite que Rem dit quelque chose"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -242,7 +243,10 @@
         "avg-channels": "Moy. Salons par guilde",
         "avg-users": "Moy. Utilisateurs par guilde",
         "voice": "Connections vocales",
-        "shard": "shard"
+        "shard": "shard",
+        "guilds-s": "Guildes sur cette instance (shard)",
+        "channels-s": "Salons sur cette instance (shard)",
+        "users-s": "Utilisateurs sur cette instance (shard)"
     },
     "rank": "Tu peux trouver le classement de ce serveur ici: {{- link}}",
     "pp": {
