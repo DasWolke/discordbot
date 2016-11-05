@@ -40,7 +40,7 @@ var exec = (message) => {
                             if (wolkebot) {
                                 addRole(message, mention, roleGuild, wolkebot);
                             } else {
-                                //no permission
+                                message.channel.sendMessage('No Role in Guild found uwu');
                             }
                         }
                     }

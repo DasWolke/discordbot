@@ -179,7 +179,6 @@ getDirs('locales/', (list) => {
                     }
                 }
             }
-
         });
         bot.on('guildCreate', (Guild, member) => {
             serverModel.findOne({id: Guild.id}, (err, server) => {

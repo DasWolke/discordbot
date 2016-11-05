@@ -154,7 +154,7 @@ var hasWolkeBot = function (message, member) {
         return true;
     }
     if (typeof (member) === 'undefined') {
-        if (message.guild.ownerID === message.author.id) {
+        if (message.author.equals(message.guild.owner.user)) {
             return true;
         }
         message.member.roles.map(r => {

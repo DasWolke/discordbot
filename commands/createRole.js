@@ -20,7 +20,8 @@ var exec = (message) => {
             if (messageSplit.length > 0) {
                 let roleGuild = message.guild.roles.filter(r => r.name === messageSplit[0]).first();
                 if (roleGuild) {
-                    let role = arguments;
+                    var role = arguments;
+                    winston.info(role);
                 } else {
 
                 }
