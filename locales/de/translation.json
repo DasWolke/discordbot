@@ -109,7 +109,12 @@
         "lmg": "Lass mich das für dich googlen",
         "fskip": "Überspringt den aktuellen Song (nur benutzbar mit der WolkeBot Rolle)",
         "leave": "Ich verlasse den Voicechannel mit dem ich gerade verbunden bin. (Nur nutzbar mit der WolkeBot Rolle)",
-        "say": "Bring Rem dazu etwas zu sagen."
+        "say": "Bring Rem dazu etwas zu sagen.",
+        "ar": "Füge dir oder einem Benutzer eine Rolle hinzu",
+        "cr": "Erstelle eine Rolle oder füge eine Rolle dem Bot hinzu , -d -> Standard, -l 2 -> gibt dem Benutzer die Rolle wenn er Level 2 erreicht, -s -> erstellt ein selbstzuschreibbare Rolle, Beispiel -> cr -l 20 rolename, fügt die Rolle namens rolename dem Benutzer hinzu wenn er Level 20 erreicht",
+        "lr": "Zeigt alle Rollen die im Moment verbunden sind mit Rem",
+        "rr": "Nimmt eine Rolle von dir selbst, einem anderen Benutzer oder dem Server weg ",
+        "roles": "[ROLLEN]"
     },
     "version": "Momentan verwende ich Version{{- version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -323,5 +328,26 @@
     "farewell": {
         "no-farewell": "Du hast keine Verabschiedung angegeben!",
         "no-add": "Du kannst entweder eine Verabschiedung setzen oder diese resetten."
+    },
+    "add-role": {
+        "ok": "Ok ich habe gerade {{- user }} die Rolle {{- role}} gegeben"
+    },
+    "create-role": {
+        "missing": "Der rollen Name den du angegeben hast existiert nicht auf dem Server",
+        "new": "Soll ich eine Rolle für dich erstellen ?",
+        "no-args": "Du hast keine Argumente angegeben",
+        "ok": "Ok ich habe die Rolle {{- role}} erstellt",
+        "exists": "Die Rolle {{- role}} existiert bereits in der Datenbank"
+    },
+    "remove-role": {
+        "ok": "Ok ich habe gerade die Rolle {{- role}} von {{- user}}  entfernt !"
+    },
+    "list-roles": {
+        "nr": "Nr.",
+        "id": "ID",
+        "name": "Name",
+        "self": "Selbst verschreibbar",
+        "lvl": "Verfügbar ab Level ",
+        "default": "Standard"
     }
 }
