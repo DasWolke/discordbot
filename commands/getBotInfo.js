@@ -14,6 +14,7 @@ var execute = function (message) {
     if (message.guild) {
         let users = 0;
         let channels = 0;
+        let voice_s = 0;
         let voice = 0;
         let guilds = 0;
         let table = new AsciiTable();
@@ -30,28 +31,34 @@ var execute = function (message) {
                     winston.info(res);
                     res = res.reduce((a, b) => a + b);
                     channels = res;
-                    let averageUsers = users / guilds;
-                    let averageChannels = channels / guilds;
-                    var users_s = 0;
-                    var channels_s = 0;
-                    message.botUser.guilds.map(g => {
-                        g.voiceConnection ? voice += 1 : voice;
-                        channels_s += g.channels.size;
-                        users_s += g.memberCount;
-                    });
-                    table
-                        .addRow(t('bot-info.uptime', {lngs: message.lang}), duration.humanize())
-                        .addRow(t('bot-info.guilds', {lngs: message.lang}), guilds)
-                        .addRow(t('bot-info.channels', {lngs: message.lang}), channels)
-                        .addRow(t('bot-info.users', {lngs: message.lang}), users)
-                        .addRow(t('bot-info.avg-users', {lngs: message.lang}), averageUsers.toFixed(2))
-                        .addRow(t('bot-info.avg-channels', {lngs: message.lang}), averageChannels.toFixed(2))
-                        .addRow(t('bot-info.guilds-s', {lngs: message.lang}), message.botUser.guilds.size)
-                        .addRow(t('bot-info.channels-s', {lngs: message.lang}), channels_s)
-                        .addRow(t('bot-info.users-s', {lngs: message.lang}), users_s)
-                        .addRow(t('bot-info.voice', {lngs: message.lang}), voice)
-                        .addRow(t('bot-info.shard', {lngs: message.lang}), `${parseInt(message.shard_id) + 1}/${message.shard_count}`);
-                    message.channel.sendMessage(`\n\`\`\`${table.toString()}\`\`\``);
+                    shardUtil.broadcastEval('var x=0;this.guilds.map(g => {x = x + g.voiceConnection ? 1 : 0});x;').then(res => {
+                        winston.info(res);
+                        res = res.reduce((a, b) => a + b);
+                        voice = res;
+                        let averageUsers = users / guilds;
+                        let averageChannels = channels / guilds;
+                        var users_s = 0;
+                        var channels_s = 0;
+                        message.botUser.guilds.map(g => {
+                            g.voiceConnection ? voice_s += 1 : voice_s;
+                            channels_s += g.channels.size;
+                            users_s += g.memberCount;
+                        });
+                        table
+                            .addRow(t('bot-info.uptime', {lngs: message.lang}), duration.humanize())
+                            .addRow(t('bot-info.guilds', {lngs: message.lang}), guilds)
+                            .addRow(t('bot-info.channels', {lngs: message.lang}), channels)
+                            .addRow(t('bot-info.users', {lngs: message.lang}), users)
+                            .addRow(t('bot-info.avg-users', {lngs: message.lang}), averageUsers.toFixed(2))
+                            .addRow(t('bot-info.avg-channels', {lngs: message.lang}), averageChannels.toFixed(2))
+                            .addRow(t('bot-info.guilds-s', {lngs: message.lang}), message.botUser.guilds.size)
+                            .addRow(t('bot-info.channels-s', {lngs: message.lang}), channels_s)
+                            .addRow(t('bot-info.users-s', {lngs: message.lang}), users_s)
+                            .addRow(t('bot-info.voice', {lngs: message.lang}), voice_s)
+                            .addRow(t('bot-info.voice', {lngs: message.lang}), voice)
+                            .addRow(t('bot-info.shard', {lngs: message.lang}), `${parseInt(message.shard_id) + 1}/${message.shard_count}`);
+                        message.channel.sendMessage(`\n\`\`\`${table.toString()}\`\`\``);
+                    }).catch(winston.error);
                 }).catch(winston.error);
             }).catch(winston.error);
         }).catch(winston.error);
