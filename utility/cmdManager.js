@@ -90,6 +90,7 @@ var checkCommand = function (msg) {
         let accessLevel = commands[command].accessLevel;
         let userAccessLevel = 2;
         if (userAccessLevel >= accessLevel) {
+            winston.info(msg.content);
             commands[command].exec(msg);
         } else {
             msg.reply(`Your current access level of ${userAccessLevel} is not enough for the needed accesslevel of ${accessLevel}`)
