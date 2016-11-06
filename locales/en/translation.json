@@ -94,7 +94,7 @@
     "about": "Shows you basic information about me, like the library and who made me.",
     "say": "Make Rem say something",
     "ar": "Add a role to yourself or a user",
-    "cr": "Create a role or add a role to the bot, -d -> default, -l 2 -> gives the role to the user once he reaches level 2, -s -> make the role self asignable, example -> cr -l 20 rolename, adds a role a user gets with level 20 called rolename",
+    "cr": "Create a role or add a role to the bot, -d -> default, -l 2 -> gives the role to the user once he reaches level 2, -s -> make the role self assignable, example -> cr -l 20 rolename, adds a role a user gets with level 20 called rolename",
     "lr": "Lists all roles that are linked with Rem at the moment",
     "rr": "Removes a Role from yourself, another user or the server",
     "shrug": "¯\\_(ツ)_/¯",
