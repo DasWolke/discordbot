@@ -346,7 +346,6 @@ var playSong = function (message, Song, Queueused) {
             stream = request(`${url}${Song.id}`);
         }
         let dispatcher = connection.playStream(stream, {volume: message.dbServer.volume, passes: 2});
-        dispatcher.setVolume(message.dbServer.volume);
         updateDispatcherArray(message.guild.id, dispatcher);
         winston.info(path.resolve(Song.path));
         updatePlays(Song.id).then(() => {
