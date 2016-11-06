@@ -651,7 +651,7 @@ var setVolume = function (message) {
 };
 var updatePlays = function updatePlays(id, cb) {
     return new Promise((resolve, reject) => {
-        songModel.update({id: id}, {$inc: {plays: 1}}, err => {
+        songModel.update({id: id}, {$inc: {plays: 1}, $set: {lastPlay: Date.now()}}, err => {
             if (err) reject();
             resolve();
         });
