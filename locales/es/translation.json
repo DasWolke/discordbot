@@ -109,7 +109,12 @@
         "lmg": "Déjame que lo busque en Google por tí",
         "fskip": "Omitir la canción actual (Sólo lo pueden utilizar usuarios con rol WolkeBot)",
         "leave": "Dejo el canal de voz al cual estoy actualmente conectada. (Sólo lo pueden utilizar usuarios con rol WolkeBot)",
-        "say": "Haz que Rem diga algo"
+        "say": "Haz que Rem diga algo",
+        "ar": "Añade un rol para ti o a un usuario",
+        "cr": "Crea un rol o añade un rol para el bot, -d -> default, -l 2 -> le da el rol al usuario cuando sobrepase el nivel 2, -s -> hace el auto-asignable-, ejemplo -> cr -l 20 nombredelrol, añade un rol llamado nombredelrol al usuario cuando sobrepase el nivel 20",
+        "lr": "Despliega una lista de todos los roles que están enlazados con Rem por ahora",
+        "rr": "Elimina un rol tuyo, el de otro usuario o del servidor",
+        "roles": "[ROLES]"
     },
     "version": "Actualmente me encuentro en la versión {{version}}",
     "add": "Utiliza este enlace para añadirme a tu servidor: {{- link}}",
@@ -323,5 +328,26 @@
     "farewell": {
         "no-farewell": "¡No has introducido la despedida que debo usar!",
         "no-add": "Puedes tanto establecer cómo restablecer el mensaje de despedida."
+    },
+    "add-role": {
+        "ok": "Ok ya le di a {{- user} el rol {{- role}}"
+    },
+    "create-role": {
+        "missing": "El nombre del rol que has especificado no existe en el servidor.",
+        "new": "¿Debería crear el rol por ti?",
+        "no-args": "No has añadido algún argumento de los comandos",
+        "ok": "OK, ya cree el rol {{- role}} ",
+        "exists": "El rol {{- role}} ya existe en la base de datos"
+    },
+    "remove-role": {
+        "ok": "¡Ok ya le quite el rol {{- role}} a {{- user}}!"
+    },
+    "list-roles": {
+        "nr": "nr.",
+        "id": "id",
+        "name": "nombre",
+        "self": "auto-assignable",
+        "lvl": "Disponible al nivel",
+        "default": "por defecto"
     }
 }
