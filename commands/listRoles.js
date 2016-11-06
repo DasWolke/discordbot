@@ -14,7 +14,14 @@ var exec = (message) => {
             let roles = message.dbServer.roles;
             var table = new AsciiTable();
             table.removeBorder();
-            table.setHeading('nr', 'id', 'name', 'self', 'lvl', 'default');
+            table.setHeading(t('list-roles.nr', {lngs: message.lang}),
+                t('list-roles.id',
+                    {lngs: message.lang}),
+                t('list-roles.name',
+                    {lngs: message.lang}),
+                t('list-roles.self', {lngs: message.lang}),
+                t('list-roles.lvl', {lngs: message.lang}),
+                t('list-roles.default', {lngs: message.lang}));
             for (var i = 0; i < message.dbServer.roles.length; i++) {
                 table.addRow(i + 1, roles[i].id, roles[i].name, roles[i].self, roles[i].level, roles[i].default);
             }

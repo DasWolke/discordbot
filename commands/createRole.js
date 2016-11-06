@@ -25,18 +25,18 @@ var exec = (message) => {
                     if (typeof (message.dbServer.roles) !== 'undefined' && message.dbServer.roles.length > 0) {
                         let roles = _.filter(message.dbServer.roles, {id: roleGuild.id});
                         if (roles.length > 0) {
-                            message.reply(':no_entry_sign: ');
+                            message.reply(t('create-role.ok', {role: roles[0].name}));
                         } else {
                             winston.info(role);
                             message.dbServer.addRole(role, (err) => {
                                 if (err) return message.reply(t('generic.error', {lngs: message.lang}));
-                                message.reply(`Ok, I just added the role ${role.name} `);
+                                message.reply(t('create-role.ok', {role: role.name}));
                             })
                         }
                     } else {
                         message.dbServer.addRole(role, (err) => {
                             if (err) return message.reply(t('generic.error', {lngs: message.lang}));
-                            message.reply(`Ok, I just added the role ${role.name}`);
+                            message.reply(t('create-role.ok', {role: role.name}));
                         })
                     }
                 } else {
@@ -44,12 +44,12 @@ var exec = (message) => {
                         role.id = roleServer.id;
                         message.dbServer.addRole(role, (err) => {
                             if (err) return message.reply(t('generic.error', {lngs: message.lang}));
-                            message.reply(`Ok, I just added the role ${role.name}`);
+                            message.reply(t('create-role.ok', {role: role.name}));
                         });
                     }).catch(err => winston.error(err));
                 }
             } else {
-                message.reply(':no_entry_sign: ');
+                message.reply(t('create-role.no-args', {lngs: message.lang}));
             }
         } else {
             message.reply(t('generic.no-permission', {lngs: message.lang}));

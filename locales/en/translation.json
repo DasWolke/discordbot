@@ -327,8 +327,25 @@
     "no-farewell": "You did not add the farewell I should use!",
     "no-add": "You can either set or reset the farewell."
   },
+  "add-role": {
+    "ok": "Ok I just gave {{- user}} the role {{- role}}"
+  },
   "create-role": {
     "missing": "The role name you specified does not exist on the server.",
-    "new": "Should I create the role for you ?"
+    "new": "Should I create the role for you ?",
+    "no-args": "You did not add any arguments to the commands",
+    "ok": "Ok, I just created the role {{- role}}",
+    "exists": "The role {{- role}} exists already in the db"
+  },
+  "remove-role": {
+    "ok": "Ok I just removed the role {{- role}} from {{- user}} !"
+  },
+  "list-roles": {
+    "nr": "nr.",
+    "id": "id",
+    "name": "name",
+    "self": "self assignable",
+    "lvl": "Available at level",
+    "default": "default"
   }
 }

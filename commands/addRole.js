@@ -25,7 +25,11 @@ var exec = (message) => {
                         if (role.self) {
                             if (!mention) {
                                 message.member.addRole(roleGuild).then(member=> {
-                                    message.channel.sendMessage(`Ok I just gave you the role ${role.name}!`);
+                                    message.channel.sendMessage(t('add-role.ok', {
+                                        lngs: message.lang,
+                                        user: user,
+                                        role: role.name
+                                    }));
                                 }).catch(winston.error);
                             } else {
                                 addRole(message, mention, roleGuild, wolkebot);
@@ -55,7 +59,7 @@ var exec = (message) => {
                                 addRole(message, mention, roleGuild, wolkebot);
                             }
                         } else {
-                            message.channel.sendMessage('No Role in Guild found uwu');
+                            message.channel.sendMessage(t('create-role.missing', {lngs: message.lang}));
                         }
                     } else {
                         message.reply(t('generic.no-permission', {lngs: message.lang}));
@@ -73,7 +77,7 @@ function addRole(message, user, role, wolkebot) {
     if (wolkebot) {
         messageHelper.addRoleMember(message, user, role, (err) => {
             if (err) return message.reply(err);
-            message.channel.sendMessage(`Ok I just gave ${user} the role ${role.name}!`);
+            message.channel.sendMessage(t('add-role.ok', {lngs: message.lang, user: user, role: role.name}));
         });
     } else {
         message.reply(t('generic.no-permission', {lngs: message.lang}));
