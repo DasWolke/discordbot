@@ -27,7 +27,7 @@ var exec = (message) => {
                                 message.member.addRole(roleGuild).then(member=> {
                                     message.channel.sendMessage(t('add-role.ok', {
                                         lngs: message.lang,
-                                        user: user,
+                                        user: member.user,
                                         role: role.name
                                     }));
                                 }).catch(winston.error);
