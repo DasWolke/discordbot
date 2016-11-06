@@ -11,16 +11,18 @@ var messageHelper = require('../utility/message');
 var execute = function (message) {
     if (message.mentions.users.size > 0) {
         let user = message.mentions.users.first();
-        let table = new AsciiTable();
-        let WolkeBot = messageHelper.hasWolkeBot(message);
-        table
-            .addRow(t('server-info.id', {lngs: message.lang}), user.id)
-            .addRow('WolkeBot', WolkeBot)
-            .addRow(t('server-info.name', {lngs: message.lang}), user.username)
-            .addRow('Avatar', user.avatarURL)
-            .addRow(t('server-info.creation', {lngs: message.lang}), user.createdAt.toDateString())
-            .addRow('Bot', user.bot);
-        message.reply(`\n\`\`\`${table.toString()}\`\`\``);
+        message.guild.fetchMember(user).then(member => {
+            let table = new AsciiTable();
+            let WolkeBot = messageHelper.hasWolkeBot(message, member);
+            table
+                .addRow(t('server-info.id', {lngs: message.lang}), user.id)
+                .addRow('WolkeBot', WolkeBot)
+                .addRow(t('server-info.name', {lngs: message.lang}), user.username)
+                .addRow('Avatar', user.avatarURL)
+                .addRow(t('server-info.creation', {lngs: message.lang}), user.createdAt.toDateString())
+                .addRow('Bot', user.bot);
+            message.reply(`\n\`\`\`${table.toString()}\`\`\``);
+        }).catch(err => winston.error(err));
     } else {
         if (message.guild) {
             let table = new AsciiTable();

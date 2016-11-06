@@ -162,11 +162,17 @@ var hasWolkeBot = function (message, member) {
                 return true;
             }
         });
-        if (message.member.roles.exists('name', 'WolkeBot')) {
+        return (message.member.roles.exists('name', 'WolkeBot'))
+    } else {
+        if (member.user.equals(message.guild.owner.user)) {
             return true;
         }
-    } else {
-        return member.roles.exists('name', 'WolkeBot');
+        member.roles.map(r => {
+            if (r.hasPermission('ADMINISTRATOR')) {
+                return true;
+            }
+        });
+        return (member.roles.exists('name', 'WolkeBot'))
     }
 
 };
