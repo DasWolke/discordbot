@@ -333,7 +333,7 @@
   "create-role": {
     "missing": "The role name you specified does not exist on the server.",
     "new": "Should I create the role for you ?",
-    "no-args": "You did not add any arguments to the commands",
+    "no-args": "You did not add any arguments to the command",
     "ok": "Ok, I just created the role {{- role}}",
     "exists": "The role {{- role}} exists already in the db"
   },

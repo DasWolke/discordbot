@@ -67,7 +67,7 @@ var exec = (message) => {
                 }
             }
         } else {
-
+            message.reply(t('create-role.no-args', {lngs: message.lang}));
         }
     } else {
         message.reply(t('generic.no-pm', {lngs: message.lang}));
