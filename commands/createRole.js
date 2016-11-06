@@ -28,25 +28,25 @@ var exec = (message) => {
                             message.reply(':no_entry_sign: ');
                         } else {
                             winston.info(role);
-                            // message.dbServer.addRole(role, (err) => {
-                            //     if (err) return message.reply(t('generic.error', {lngs: message.lang}));
-                            //     message.reply(`Ok, I just added the role ${role.name} `);
-                            // })
+                            message.dbServer.addRole(role, (err) => {
+                                if (err) return message.reply(t('generic.error', {lngs: message.lang}));
+                                message.reply(`Ok, I just added the role ${role.name} `);
+                            })
                         }
                     } else {
-                        // message.dbServer.addRole(role, (err) => {
-                        //     if (err) return message.reply(t('generic.error', {lngs: message.lang}));
-                        //     message.reply(`Ok, I just added the role ${role.name}`);
-                        // })
+                        message.dbServer.addRole(role, (err) => {
+                            if (err) return message.reply(t('generic.error', {lngs: message.lang}));
+                            message.reply(`Ok, I just added the role ${role.name}`);
+                        })
                     }
                 } else {
-                    // message.guild.createRole({name: role.name, permissions: 0}).then(roleServer => {
-                    //     role.id = roleServer.id;
-                    //     message.dbServer.addRole(role, (err) => {
-                    //         if (err) return message.reply(t('generic.error', {lngs: message.lang}));
-                    //         message.reply(`Ok, I just added the role ${role.name}`);
-                    //     });
-                    // }).catch(err => winston.error(err));
+                    message.guild.createRole({name: role.name, permissions: 0}).then(roleServer => {
+                        role.id = roleServer.id;
+                        message.dbServer.addRole(role, (err) => {
+                            if (err) return message.reply(t('generic.error', {lngs: message.lang}));
+                            message.reply(`Ok, I just added the role ${role.name}`);
+                        });
+                    }).catch(err => winston.error(err));
                 }
             } else {
                 message.reply(':no_entry_sign: ');
@@ -62,13 +62,13 @@ var parseArguments = (contentSplit) => {
     let arguments = {self: false, default: false, level: -1};
     let args = minimist(contentSplit, {boolean: ['d', 's']});
     console.log(args);
-    if (typeof (args.s) !== 'undefined') {
+    if (typeof (args.s) !== 'undefined' && args.s) {
         arguments.self = true;
     }
-    if (typeof (args.d) !== 'undefined') {
+    if (typeof (args.d) !== 'undefined' && args.d) {
         arguments.default = true;
     }
-    if (typeof (args.l) !== 'undefined') {
+    if (typeof (args.l) !== 'undefined' && args.l) {
         let l = args.l;
         let number = -1;
         if (typeof (l) !== 'undefined') {

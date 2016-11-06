@@ -7,6 +7,7 @@ var userModel = require('../DB/user');
 var serverModel = require('../DB/server');
 var config = require('../config/main.json');
 var logger = require('./logger');
+var async = require("async");
 var winston = logger.getT();
 var cleanMessage = function (message) {
     return message.replace("@", "");
@@ -87,6 +88,21 @@ var updateUserLevel = function (message, Server, cb) {
                         if (typeof (clientServer) !== 'undefined' && clientServer.xp + calcXpMessage(message.content) > calcXpNeeded(clientServer)) {
                             User.updateLevel(serverId, function (err) {
                                 if (err) return cb(err);
+                                if (typeof (Server.roles) !== 'undefined' && Server.roles.length > 0) {
+                                    async.each(Server.roles, (role, cb) => {
+                                        if (role.level === clientServer.level + 1) {
+                                            message.member.addRole(role.id).then(memberNew => {
+                                                return cb();
+                                            }).catch(err => cb(err));
+                                        } else {
+                                            async.setImmediate(() => {
+                                                return cb();
+                                            });
+                                        }
+                                    }, (err) => {
+                                        if (err) return winston.error(err);
+                                    });
+                                }
                                 if (pmNotifications(message, User) && typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
                                     message.author.sendMessage(t('generic.level-update', {
                                         lngs: message.lang,
@@ -119,7 +135,7 @@ var updateUserLevel = function (message, Server, cb) {
     });
 };
 var calcXpMessage = function (content) {
-    return 5 + calcBonus(content);
+    return 50 + calcBonus(content);
 };
 var calcBonus = function (content) {
     var bonus = Math.floor(content.length / 50);
@@ -200,7 +216,7 @@ var pmNotifications = function (message, User) {
     }
 };
 var cooldown = function (User) {
-    if (User.cooldown > Date.now() - 7500) {
+    if (User.cooldown > Date.now() - 1000) {
 
         return true;
     } else {

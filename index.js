@@ -95,7 +95,7 @@ getDirs('locales/', (list) => {
             // winston.info('Reconnecting to Discord!');
         });
         bot.on("message", (message) => {
-            if (!message.guild && !message.author.bot || config.beta && message.guild.id !== '110373943822540800' && !message.author.bot || !config.beta && !message.author.bot) {
+            if (!message.guild && !message.author.bot || config.beta && message.guild && message.guild.id !== '110373943822540800' && !message.author.bot || !config.beta && !message.author.bot) {
                 message.lang = ['en', 'en'];
                 message.langList = list;
                 message.shard_id = shard_id;
