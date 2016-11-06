@@ -10,7 +10,7 @@ var cmd = 'ar';
 var exec = (message) => {
     if (message.guild) {
         let Guild = message.dbServer;
-        let userReg = /<@[0-9]+>/g;
+        let userReg = /<@(!|)[0-9]+>/g;
         let content = message.content.substr(message.prefix.length + cmd.length).trim();
         content = content.replace(userReg, '').trim();
         winston.info(content);
