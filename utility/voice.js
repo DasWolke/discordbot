@@ -692,7 +692,7 @@ var queueAddRepeat = function (message, Song) {
             addSongFirst(message, Song, true).then(() => {
                 let dispatcher;
                 if (message.guild.voiceConnection) {
-                    dispatcher = getDispatcher(message.guild.voiceConnection);
+                    dispatcher = getDispatcherFromConnection(message.guild.voiceConnection);
                 }
                 try {
                     dispatcher.setVolume(0);
