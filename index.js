@@ -95,7 +95,7 @@ getDirs('locales/', (list) => {
             // winston.info('Reconnecting to Discord!');
         });
         bot.on("message", (message) => {
-            if (!message.guild && !message.author.bot || config.beta && message.guild.id !== '110373943822540800' && !message.author.bot || !config.beta && !message.author.bot) {
+            if (!message.guild && !message.author.bot || config.beta && message.guild && message.guild.id !== '110373943822540800' && !message.author.bot || !config.beta && !message.author.bot) {
                 message.lang = ['en', 'en'];
                 message.langList = list;
                 message.shard_id = shard_id;
@@ -179,7 +179,6 @@ getDirs('locales/', (list) => {
                     }
                 }
             }
-
         });
         bot.on('guildCreate', (Guild, member) => {
             serverModel.findOne({id: Guild.id}, (err, server) => {
@@ -216,6 +215,21 @@ getDirs('locales/', (list) => {
                         content = content.replace('{{guild}}', member.guild.name);
                         channel.sendMessage(content);
                     }
+                    if (typeof (Server.roles) !== 'undefined' && Server.roles.length > 0) {
+                        async.each(Server.roles, (role, cb) => {
+                            if (role.default) {
+                                member.addRole(role.id).then(memberNew => {
+                                    return cb();
+                                }).catch(err => cb(err));
+                            } else {
+                                async.setImmediate(() => {
+                                    return cb();
+                                });
+                            }
+                        }, (err) => {
+                            if (err) return winston.error(err);
+                        });
+                    }
                 }
             })
         });
@@ -224,13 +238,17 @@ getDirs('locales/', (list) => {
                 if (err) return winston.error(err);
                 if (Server) {
                     if (typeof (Server.leaveText) !== 'undefined' && Server.leaveText !== '' && Server.leaveText) {
-                        let channels = member.guild.channels.filter(c => {
-                            return (c.id === Server.leaveChannel)
-                        });
-                        let channel = channels.first();
-                        let content = Server.leaveText.replace('{{user}}', member.user.username);
-                        content = content.replace('{{guild}}', member.guild.name);
-                        channel.sendMessage(content);
+                        try {
+                            let channels = member.guild.channels.filter(c => {
+                                return (c.id === Server.leaveChannel)
+                            });
+                            let channel = channels.first();
+                            let content = Server.leaveText.replace('{{user}}', member.user.username);
+                            content = content.replace('{{guild}}', member.guild.name);
+                            channel.sendMessage(content);
+                        } catch (e) {
+                            winston.error(e);
+                        }
                     }
                 }
             })
