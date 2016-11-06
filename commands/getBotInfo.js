@@ -31,7 +31,7 @@ var execute = function (message) {
                     winston.info(res);
                     res = res.reduce((a, b) => a + b);
                     channels = res;
-                    shardUtil.broadcastEval('var x=0;this.guilds.map(g => {x = x + g.voiceConnection ? 1 : 0});x;').then(res => {
+                    shardUtil.broadcastEval('var x=0;this.guilds.map(g => {g.voiceConnection ? voice_s += 1 : voice_s});x;').then(res => {
                         winston.info(res);
                         res = res.reduce((a, b) => a + b);
                         voice = res;
