@@ -43,3 +43,4 @@ audio
 cmd.bat
 temp
 yarn.lock
+trace.config.js
