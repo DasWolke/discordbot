@@ -25,7 +25,7 @@ var exec = (message) => {
                         if (role.self) {
                             if (!mention) {
                                 message.member.removeRole(roleGuild).then(member=> {
-                                    message.channel.sendMessage(`Ok I just removed the role ${role.name} of ${user} !`);
+                                    message.channel.sendMessage(`Ok I just removed the role ${role.name} of ${member.user} !`);
                                 }).catch(winston.error);
                             } else {
                                 remRole(message, mention, roleGuild, wolkebot);
