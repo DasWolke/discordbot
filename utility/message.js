@@ -135,7 +135,7 @@ var updateUserLevel = function (message, Server, cb) {
     });
 };
 var calcXpMessage = function (content) {
-    return 50 + calcBonus(content);
+    return 5 + calcBonus(content);
 };
 var calcBonus = function (content) {
     var bonus = Math.floor(content.length / 50);
@@ -216,7 +216,7 @@ var pmNotifications = function (message, User) {
     }
 };
 var cooldown = function (User) {
-    if (User.cooldown > Date.now() - 1000) {
+    if (User.cooldown > Date.now() - 7500) {
 
         return true;
     } else {
@@ -339,6 +339,17 @@ var addRoleMember = (message, user, role, cb) => {
         }
     }).catch(cb);
 };
+var remRoleMember = (message, user, role, cb) => {
+    message.guild.fetchMember(user).then(member => {
+        if (member && role) {
+            member.removeRole(role).then(member => {
+                return cb();
+            }).catch(err => cb(err));
+        } else {
+            cb('No Role/Member!');
+        }
+    }).catch(cb);
+};
 var filterEmojis = (message) => {
     let reg = /[\x00-\x7F]/gi;
     let unreadable = ((message.content.match(reg) || [].length).length);
@@ -363,5 +374,6 @@ module.exports = {
     buildPrologMessage: buildPrologMessage,
     checkRoleExist: checkRoleExist,
     addRoleMember: addRoleMember,
-    filterEmojis: filterEmojis
+    filterEmojis: filterEmojis,
+    remRoleMember: remRoleMember
 };

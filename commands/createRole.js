@@ -89,4 +89,4 @@ var parseArguments = (contentSplit) => {
     arguments.name = args._.join(' ').trim();
     return {arguments: arguments};
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'admin'};
+module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'roles'};

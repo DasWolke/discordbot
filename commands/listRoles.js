@@ -26,4 +26,4 @@ var exec = (message) => {
         message.reply(t('generic.no-pm', {lngs: message.lang}));
     }
 };
-module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'admin'};
+module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'roles'};
