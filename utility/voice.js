@@ -21,6 +21,7 @@ var icy = require("icy");
 var child_process = require("child_process");
 var winston = logger.getT();
 var _ = require('lodash');
+var musicHelper = require("./music.js");
 var beta = require('../config/main.json').beta;
 var url;
 if (beta) {
@@ -332,7 +333,18 @@ var playSong = function (message, Song, Queueused) {
         // let child = child_process.fork('./utility/voice/open.js', opts);
         // child.send({path: Song.path});
         //child.stdio[3]
-        let stream = request(`${url}${Song.id}`);
+        // let stream = request(`${url}${Song.id}`);
+        let stream;
+        if (musicHelper.ytRegex.test(Song.url)) {
+            var options = {
+                filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
+                quality: ['140', '141', '139', 'lowest'],
+                audioonly: true
+            };
+            stream = ytdl(Song.url, options)
+        } else {
+            stream = request(`${url}${Song.id}`);
+        }
         let dispatcher = connection.playStream(stream, {volume: message.dbServer.volume, passes: 2});
         dispatcher.setVolume(message.dbServer.volume);
         updateDispatcherArray(message.guild.id, dispatcher);
@@ -361,6 +373,10 @@ var playSong = function (message, Song, Queueused) {
         dispatcher.on("error", function (err) {
             winston.info(`Error: ${err}`);
         });
+        // });
+        // player.on('error', (e) => {
+        //     winston.error(e);
+        // })
     } else {
         // client.captureMessage(`No connection found for Guild ${message.guild.name}`, {
         //     extra: {'Guild': message.guild.id},
