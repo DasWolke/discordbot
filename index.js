@@ -91,6 +91,7 @@ getDirs('locales/', (list) => {
             bot.user.setGame(`!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`, 'https://www.twitch.tv/daswolke_').then().catch(winston.info);
             CMD.init();
         });
+        bot.on('debug', info => winston.info('Debug:' + info));
         bot.on('reconnecting', () => {
             // winston.info('Reconnecting to Discord!');
         });
