@@ -1,5 +1,5 @@
 /**
- * Created by julia on 10.07.2016.
+ * Created by julian on 10.07.2016.
  */
 var i18nBean = require('./i18nManager');
 var t = i18nBean.getT();
