@@ -188,7 +188,7 @@ var hasWolkeBot = function (message, member) {
                 return true;
             }
         });
-        return (member.roles.exists('name', 'WolkeBot'))
+        return (!!member.roles.exists('name', 'WolkeBot'))
     }
 
 };
