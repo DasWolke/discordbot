@@ -1,6 +1,7 @@
 /**
  * Created by julian on 16.05.2016.
  */
+var jc = require('json-cycle');
 var commands = {};
 const fs = require('fs');
 const path = require('path');
@@ -90,7 +91,6 @@ var checkCommand = function (msg) {
         let accessLevel = commands[command].accessLevel;
         let userAccessLevel = 2;
         if (userAccessLevel >= accessLevel) {
-            winston.info(msg.content);
             commands[command].exec(msg);
         } else {
             msg.reply(`Your current access level of ${userAccessLevel} is not enough for the needed accesslevel of ${accessLevel}`)

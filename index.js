@@ -150,6 +150,7 @@ getDirs('locales/', (list) => {
                                         dogstatsd.increment('musicbot.help');
                                     }
                                 }
+
                                 CMD.checkCommand(message);
                             } else {
                                 if (message.guild && !message.mentions.users.exists('id', bot.user.id) && !message.author.equals(bot.user) && !message.author.bot) {
