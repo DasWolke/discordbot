@@ -3,7 +3,7 @@
         "error": "Ett fel uppstod!",
         "no-pm": ":no_entry: Det här kommandot fungerar inte i privata kanaler!",
         "whole-num": "Var snäll och skriv ett heltal!",
-        "nan": "Vad du än skriver nu så var snäll och skriv ett heltal. :) ",
+        "nan": "Vad du än skriver nu så var snäll och skriv ett heltal. :)",
         "no-song-in-queue": "Det finns ingen låt i kön, du kanske vill lägga till en :musical_note: ?",
         "no-song-playing": "Ingen låt spelas för tillfället!",
         "no-permission": "Du har inte tillåtelse att utföra det här kommandot, du behöver rollen WolkeBot för att kunna använda det.",
@@ -11,7 +11,11 @@
         "level-update": ":tada: Du nådde precis **Level  {{level}}** på **{{server}}**",
         "empty-search": "Du angav ingen sökterm!",
         "negative": "Var snäll och ange inte ett negativt nummer!",
-        "cancel": "c:avbryta"
+        "cancel": "c:avbryta",
+        "version": "version",
+        "author": "skribent",
+        "lib": "använt bibliotek",
+        "more": "{{number}} mer."
     },
     "help": {
         "intro": "Låt oss ha kul tillsammans på Discord! (/^▽^)/ Kommandon du kan utföra:",
@@ -76,15 +80,41 @@
         "feedback": "För att ge feedback så får du gärna använda servern för support på discord ^^",
         "talk": "Om du vill prata med mig så du @nämna mig med ett meddelande :D",
         "helpReply": "OK, jag skickade dig en lista med kommandon över PM.",
-        "moderation": "",
-        "misc": "",
-        "stats": "",
-        "user": "",
-        "admin": "",
-        "nsfw": "",
-        "eastereggs": "",
-        "proxer": "",
-        "no-cat": ""
+        "moderation": "[MODERERING]",
+        "misc": "[ÖVRIGT]",
+        "stats": "[STATISTIK]",
+        "user": "[ANVÄNDARE]",
+        "admin": "[ADMIN]",
+        "nsfw": "[NSFW]",
+        "eastereggs": "[PÅSKÄGG]",
+        "proxer": "[PROXER]",
+        "no-cat": "[OKATEGORISERAT]",
+        "ping": "Ger dig pingen till botten, var uppmärksam på att det inte är röstlatensen.",
+        "lewd": "Så snuskigt uwu",
+        "rem": "Ger dig en slumpmässig bild på rem",
+        "wip": "[ARBETE UNDER VÄG]",
+        "gr": "Sätter en hälsning med set GreetingMessage,{{user}} kommer att ersättas med den användaren som precis gick med och {{guild}} ersätts med servern.\nHälsningen kommer att vara specifikt för den kanalen som kommandot skrevs i.\nExempel: Välkommen {{user}} till {{guild}}!",
+        "fw": "Sätter ett farväl-meddelande med setfarewellmessage,{{user}} ersätts med användaren som precis gick med och {{guild}} ersätts med namnet på servern.\nFarvälet tillämpas bara till den kanalen som kommandot utfördes på.",
+        "s": "Serverkommandot, sätter saker som hälsningar och adjön.",
+        "shrug": "¯\\_( ͡° ͜ʖ ͡°)_/¯",
+        "flip": "(╯°□°）╯︵ ┻━┻ ",
+        "eggplant": "bara en äggplanta",
+        "gtn": "Ger dig en slumpmässigt vald Green Tea Neko serie, kan dock enbart användas med WolkeBot-rollen eller i en förinställd NSFW-kanal.",
+        "cuddle": "Ger dig en anime-mys gif.",
+        "trig": "TRIGGRAD",
+        "bot": "Ger dig information om den tillfälliga upptiden för rem, antalet röstanslutningar, användartal och servertal.",
+        "top": "Visar topp-10 servrar (Sorterat efter användare) som denna instans av rem är ansluten till.",
+        "about": "Visar grundinformation om mig, som exempelvis vem som skapade mig och vad jag använder.",
+        "lenny": "( ͡° ͜ʖ ͡°)",
+        "lmg": "Låt mig googla det åt dig",
+        "fskip": "Hoppar över den nuvarande låten (Kan bara användas med WolkeBot-rollen)",
+        "leave": "Jag lämnar den Röst-kanalen jag för tillfället är ansluten till. (Kan bara användas med WolkeBot-rollen)",
+        "say": "Får Rem att säga någonting",
+        "ar": "Lägger till en roll till dig eller en användare",
+        "cr": "Skapa en roll eller lägg till en roll på botten. -d -> default, -l 2 -> ger rollen till användaren när den når nivå 2, -s -> gör rollen själv-givande, exempel -> cr -l 20 rolename, lägger till en roll en användare får vid nivå 20 med namnet rolename",
+        "lr": "Ger en lista på alla roller anslutna till Rem för tillfället.",
+        "rr": "Tar bort en roll från dig själv, en annan användaren eller servern.",
+        "roles": "[ROLLER]"
     },
     "version": "För tillfället så kör jag version {{version}}",
     "add": "Använd denna länk för att lägga till mig på din server: {{- link}}",
@@ -146,7 +176,10 @@
     },
     "rq": {
         "db-error": "Ett databasfel uppstod!",
-        "success-multiple": "Lade till följande låtar:\n```{{- table}}```"
+        "success-multiple": "Lade till följande låtar:\n```{{- table}}```",
+        "too-big": "Lade till {{number}} låtar.",
+        "no-songs-added": "Jag kunde inte lägga till några låtar eftersom att de redan är i kön, försök igen!",
+        "too-much": "Du kan inte lägga till mer än {{number}} låtar samtidigt!"
     },
     "qra": {
         "to-small": "Du kan inte ta bort {{number}} låtar!",
@@ -215,7 +248,10 @@
         "avg-channels": "Genomsnitt i kanaler per Guild.",
         "avg-users": "Genomsnitt i Användare per Guild.",
         "voice": "Röstanslutningar",
-        "shard": ""
+        "shard": "instans",
+        "guilds-s": "Servrar anslutna till denna instans av Rem",
+        "channels-s": "Kanaler på denna instans av Rem",
+        "users-s": "Användare på denna instans av Rem"
     },
     "rank": "Du kan hitta topplistan för servern här: {{- link}}",
     "pp": {
@@ -284,5 +320,34 @@
     "set-lewd": {
         "success": "La till {{- channel}} till NSFW-kanalerna!"
     },
-    "report": "Ok, jag skickade din rapport till Wolke, var snäll och använd detta sparsamt eller så kan du riskera att bli bannad från botten."
+    "report": "Ok, jag skickade din rapport till Wolke, var snäll och använd detta sparsamt eller så kan du riskera att bli bannad från botten.",
+    "greeting": {
+        "no-greeting": "Du lade inte till vilken hälsning jag skulle använda!",
+        "no-add": "Du kan antingen sätta eller återställa hälsningen."
+    },
+    "farewell": {
+        "no-farewell": "Du lade inte till vad för farväl jag skulle använda!",
+        "no-add": "Du kan antingen sätta eller återställa ett farväl."
+    },
+    "add-role": {
+        "ok": "Ok, jag gav {{- user}} rollen {{- role}}"
+    },
+    "create-role": {
+        "missing": "Rollnamnet du specifierade finns inte på servern.",
+        "new": "Ska jag skapa rollen åt dig?",
+        "no-args": "Du lade inte till några argument till kommandot",
+        "ok": "Okej, jag skapade rollen {{- role}}",
+        "exists": "Rollen {{- role}} existerar redan i databasen."
+    },
+    "remove-role": {
+        "ok": "Okej jag tog bort rollen {{- role}} från {{- user}}!"
+    },
+    "list-roles": {
+        "nr": "nr.",
+        "id": "id",
+        "name": "namn",
+        "self": "själv tillgivande",
+        "lvl": "Tillgänglig vid nivå",
+        "default": "standard"
+    }
 }
