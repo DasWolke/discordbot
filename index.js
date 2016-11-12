@@ -59,6 +59,10 @@ getDirs('locales/', (list) => {
             disabledEvents: ['typingStart', 'typingStop']
         };
         winston.info(options);
+        var blocked = require('blocked');
+        blocked(function (ms) {
+            console.log('BLOCKED FOR %sms', ms | 0);
+        });
         var bot = new Discord.Client(options);
         var CMD = require('./utility/cmdManager');
         var request = require('request');
@@ -87,6 +91,7 @@ getDirs('locales/', (list) => {
         bot.login(config.token).then(winston.info('Logged in successfully'));
         socketManager.init(socket);
         winston.info('Bot finished Init');
+
         bot.on('ready', () => {
             bot.user.setStatus('online').then().catch(winston.info);
             bot.user.setGame(`!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`, 'https://www.twitch.tv/daswolke_').then().catch(winston.info);

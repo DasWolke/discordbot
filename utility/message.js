@@ -12,11 +12,14 @@ var cleanMessage = function (message) {
     return message.replace("@", "");
 };
 var createUser = function (message, level, pms, cb) {
-    var guild = getServerObj(message, level, pms);
+    let servers = [];
+    if (message.guild) {
+        servers.push(getServerObj(message, level, pms));
+    }
     var freshUser = new userModel({
         id: message.author.id,
         name: message.author.username,
-        servers: [guild],
+        servers: servers,
         avatar: message.author.avatarURL,
         created: Date.now(),
         banned: false,
