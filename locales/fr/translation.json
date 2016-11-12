@@ -3,7 +3,7 @@
         "error": "Une erreur est survenue!",
         "no-pm": ":no_entry: Cette commande ne fonctionne pas dans les salons privés!",
         "whole-num": "S'il te plaît utilise un nombre entier",
-        "nan": "Peut importe ce que tu viens d'envoyer, s'il te plaît utilise un nombre entier. :) ",
+        "nan": "Peu importe ce que tu viens d'envoyer, s'il te plaît utilise un nombre entier. :) ",
         "no-song-in-queue": "Il n'y a pas de chansons dans la file d'attente, ajoutes en peut-être une :musical_note: ?",
         "no-song-playing": "Il n'y a aucune chanson de jouée pour le moment!",
         "no-permission": "Tu n'as pas la permissions d'utiliser cette commande, s'il te plaît ajoute un rôle Discord nommé WolkeBot à toi-même pour l'utiliser.",
@@ -26,7 +26,7 @@
         "add": "Reçois un lien pour m'ajouter sur ton serveur",
         "music": "[MUSIQUE]",
         "voice": "je rejoins le salon vocal dans lequel tu es actuellement (les commandes normales de musique font que le bot rejoins le salon vocal également)",
-        "silent": "je quitte le salon vocal dans lequel je suis actuellement connecté. (utilisable uniquement avec le rôle WolkeBot)",
+        "silent": "je quitte le salon vocal auquel je suis actuellement connecté. (utilisable uniquement avec le rôle WolkeBot)",
         "play": "Joue une Chanson/Vidéo Youtube ayant une longueur maximale de 1H30M (utilisable uniquement avec le rôle WolkeBot)",
         "pause": "Met pause à la chanson actuelle (utilisable uniquement avec le rôle WolkeBot)",
         "resume": "Reprend la chanson (utilisable uniquement avec le rôle WolkeBot)",
@@ -109,7 +109,12 @@
         "lmg": "Laisse moi googler ça pour toi",
         "fskip": "Passe la chanson actuelle (uniquement utilisable avec le rôle WolkeBot)",
         "leave": "je quitte le salon vocal auquel je suis actuellement connecté. (uniquement utilisable avec le rôle WolkeBot)",
-        "say": "Faite que Rem dit quelque chose"
+        "say": "Faite que Rem dit quelque chose",
+        "ar": "Ajoute un rôle à toi-même ou à un utilisateur",
+        "cr": "Crée un rôle ou ajoute un rôle au bot, -d -> Défaut, -l 2 -> Donne le rôle à l'utilisateur une fois qu'il a atteint le niveau 2, -s -> rend le rôle auto assignable (exemple -> cr -l 20 \"nom du rôle\" , ajoute un rôle appelé \"nom du rôle\" a l'utilisateur qui arrive au niveau 20",
+        "lr": "Liste tous les rôles auxquels Rem est lié actuellement",
+        "rr": "Retire un rôle à toi-même, un autre utilisateur ou au serveur",
+        "roles": "[RÔLES]"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -323,5 +328,26 @@
     "farewell": {
         "no-farewell": "Tu n'as pas ajouté le message d'adieu que je devrais utiliser!",
         "no-add": "Tu peux définir ou réinitialiser le message d'adieu."
+    },
+    "add-role": {
+        "ok": "Ok je viens de donner à {{- user}} le rôle {{- role}}"
+    },
+    "create-role": {
+        "missing": "Le nom de rôle spécifié n'existe pas sur ce serveur",
+        "new": "Dois-je créer un rôle pour toi ?",
+        "no-args": "Tu n'as pas ajouté d'argument à la commande",
+        "ok": "Ok, je viens de créer le rôle {{- role}}",
+        "exists": "Le rôle {{- role}} existe déjà dans la base de données"
+    },
+    "remove-role": {
+        "ok": "Ok je viens de supprimer le rôle {{- role}} de {{- user}} !"
+    },
+    "list-roles": {
+        "nr": "n°",
+        "id": "id",
+        "name": "nom",
+        "self": "auto assignable",
+        "lvl": "Accessible au niveau",
+        "default": "défaut"
     }
 }
