@@ -111,8 +111,8 @@
         "leave": "Dejo el canal de voz al cual estoy actualmente conectada. (Sólo lo pueden utilizar usuarios con rol WolkeBot)",
         "say": "Haz que Rem diga algo",
         "ar": "Añade un rol para ti o a un usuario",
-        "cr": "Crea un rol o añade un rol para el bot, -d -> default, -l 2 -> le da el rol al usuario cuando sobrepase el nivel 2, -s -> hace el auto-asignable-, ejemplo -> cr -l 20 nombredelrol, añade un rol llamado nombredelrol al usuario cuando sobrepase el nivel 20",
-        "lr": "Despliega una lista de todos los roles que están enlazados con Rem por ahora",
+        "cr": "Crea un rol o añade un rol para el bot, -d -> por defecto, -l 2 -> le da el rol al usuario cuando sobrepase el nivel 2, -s -> hace el rol auto-asignable-, ejemplo -> cr -l 20 nombredelrol, añade un rol llamado nombredelrol al usuario cuando sobrepase el nivel 20",
+        "lr": "Lista de todos los roles que están enlazados con Rem ahora mismo",
         "rr": "Elimina un rol tuyo, el de otro usuario o del servidor",
         "roles": "[ROLES]"
     },
@@ -335,7 +335,7 @@
     "create-role": {
         "missing": "El nombre del rol que has especificado no existe en el servidor.",
         "new": "¿Debería crear el rol por ti?",
-        "no-args": "No has añadido algún argumento de los comandos",
+        "no-args": "No has añadido ningún argumento a los comandos",
         "ok": "OK, ya cree el rol {{- role}} ",
         "exists": "El rol {{- role}} ya existe en la base de datos"
     },
