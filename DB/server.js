@@ -56,7 +56,7 @@ serverSchema.methods.setJoin = function (message, channel, cb) {
 serverSchema.methods.setLeave = function (message, channel, cb) {
     this.model('Servers').update({id: this.id}, {$set: {leaveText: message, leaveChannel: channel}}, cb);
 };
-serverSchema.methods.addRole = (role, cb) => {
+serverSchema.methods.addRole = function (role, cb) {
     this.model('Servers').update({id: this.id}, {$addToSet: {roles: role}}, cb);
 };
 var serverModel = mongoose.model('Servers', serverSchema);

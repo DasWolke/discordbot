@@ -82,7 +82,7 @@
     "cuddle": "Gives you an anime cuddle gif",
     "trig": "TRIGGERED",
     "setLang": "sets the language, currently supported are {{languages}}",
-    "report": "If you are to shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
+    "report": "If you are too shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
     "feedback": "For feedback use the support discord please ^^",
     "talk": "If you want to talk with me @mention me with a message :D",
     "helpReply": "OK, I sent you a list of commands over PM.",
@@ -92,6 +92,11 @@
     "bot": "Gives you information about the current uptime of Rem, voice connections, usercount and guildcount",
     "top": "Shows the top 10 guilds (sorted by users) that this shard is connected to",
     "about": "Shows you basic information about me, like the library and who made me.",
+    "say": "Make Rem say something",
+    "ar": "Add a role to yourself or a user",
+    "cr": "Create a role or add a role to the bot, -d -> default, -l 2 -> gives the role to the user once he reaches level 2, -s -> make the role self assignable, example -> cr -l 20 rolename, adds a role a user gets with level 20 called rolename",
+    "lr": "Lists all roles that are linked with Rem at the moment",
+    "rr": "Removes a Role from yourself, another user or the server",
     "shrug": "¯\\_(ツ)_/¯",
     "flip": "(╯°□°）╯︵ ┻━┻",
     "lenny": "( ͡° ͜ʖ ͡°)",
@@ -105,6 +110,7 @@
     "eastereggs": "[EASTEREGGS]",
     "proxer": "[PROXER]",
     "no-cat": "[UNCATEGORIZED]",
+    "roles": "[ROLES]",
     "wip": "[WORK IN PROGRESS]",
     "lmg": "Let me google that for you"
   },
@@ -237,6 +243,9 @@
     "users": "Users",
     "channels": "Channels",
     "guilds": "Guilds",
+    "guilds-s": "Guilds on this shard",
+    "channels-s": "Channels on this shard",
+    "users-s": "Users on this shard",
     "avg-channels": "Avg. Channels per guild",
     "avg-users": "Avg. Users per guild",
     "voice": "Voiceconnections",
@@ -317,5 +326,26 @@
   "farewell": {
     "no-farewell": "You did not add the farewell I should use!",
     "no-add": "You can either set or reset the farewell."
+  },
+  "add-role": {
+    "ok": "Ok I just gave {{- user}} the role {{- role}}"
+  },
+  "create-role": {
+    "missing": "The role name you specified does not exist on the server.",
+    "new": "Should I create the role for you ?",
+    "no-args": "You did not add any arguments to the command",
+    "ok": "Ok, I just created the role {{- role}}",
+    "exists": "The role {{- role}} exists already in the db"
+  },
+  "remove-role": {
+    "ok": "Ok I just removed the role {{- role}} from {{- user}} !"
+  },
+  "list-roles": {
+    "nr": "nr.",
+    "id": "id",
+    "name": "name",
+    "self": "self assignable",
+    "lvl": "Available at level",
+    "default": "default"
   }
 }

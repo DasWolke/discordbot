@@ -11,7 +11,7 @@ var execute = function (message) {
         if (content !== '') {
             let guild = message.botUser.guilds.find('id', content);
             if (guild) {
-                guild.defaultChannel.createInvite({maxUses: 1, maxAge: 600}).then(Invite => {
+                guild.defaultChannel.createInvite({maxUses: 1, maxAge: 600, temporary: false}).then(Invite => {
                     message.reply(Invite);
                 }).catch(message.reply);
             } else {

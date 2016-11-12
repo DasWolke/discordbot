@@ -10,20 +10,26 @@ var cmd = 'ar';
 var exec = (message) => {
     if (message.guild) {
         let Guild = message.dbServer;
-        let messageSplit = message.content.split(' ').splice(1);
-        winston.info(messageSplit);
+        let userReg = /<@(!|)[0-9]+>/g;
+        let content = message.content.substr(message.prefix.length + cmd.length).trim();
+        content = content.replace(userReg, '').trim();
+        winston.info(content);
         let mention = message.mentions.users.first();
         let wolkebot = messageHelper.hasWolkeBot(message);
-        if (messageSplit.length > 0) {
-            let roleGuild = message.guild.roles.filter(r => r.name === messageSplit[0]).first();
+        if (content.length > 0) {
+            let roleGuild = message.guild.roles.filter(r => r.name === content).first();
             if (Guild) {
                 if (typeof (Guild.roles.length) !== 'undefined' && Guild.roles.length > 0) {
-                    let role = messageHelper.checkRoleExist(messageSplit[0], Guild.roles);
+                    let role = messageHelper.checkRoleExist(content, Guild.roles);
                     if (role && roleGuild) {
                         if (role.self) {
                             if (!mention) {
                                 message.member.addRole(roleGuild).then(member=> {
-                                    message.channel.sendMessage(`Ok I just gave you the role ${role.name}!`);
+                                    message.channel.sendMessage(t('add-role.ok', {
+                                        lngs: message.lang,
+                                        user: member.user,
+                                        role: role.name
+                                    }));
                                 }).catch(winston.error);
                             } else {
                                 addRole(message, mention, roleGuild, wolkebot);
@@ -32,7 +38,7 @@ var exec = (message) => {
                             if (wolkebot) {
                                 addRole(message, mention, roleGuild, wolkebot);
                             } else {
-                                //no permission
+                                message.reply(t('generic.no-permission', {lngs: message.lang}));
                             }
                         }
                     } else {
@@ -40,7 +46,7 @@ var exec = (message) => {
                             if (wolkebot) {
                                 addRole(message, mention, roleGuild, wolkebot);
                             } else {
-                                //no permission
+                                message.reply(t('generic.no-permission', {lngs: message.lang}));
                             }
                         }
                     }
@@ -53,13 +59,15 @@ var exec = (message) => {
                                 addRole(message, mention, roleGuild, wolkebot);
                             }
                         } else {
-                            //role does not exist
+                            message.channel.sendMessage(t('create-role.missing', {lngs: message.lang}));
                         }
+                    } else {
+                        message.reply(t('generic.no-permission', {lngs: message.lang}));
                     }
                 }
             }
         } else {
-
+            message.reply(t('create-role.no-args', {lngs: message.lang}));
         }
     } else {
         message.reply(t('generic.no-pm', {lngs: message.lang}));
@@ -69,10 +77,10 @@ function addRole(message, user, role, wolkebot) {
     if (wolkebot) {
         messageHelper.addRoleMember(message, user, role, (err) => {
             if (err) return message.reply(err);
-            message.reply(':ok_hand: ')
+            message.channel.sendMessage(t('add-role.ok', {lngs: message.lang, user: user, role: role.name}));
         });
     } else {
-        //no permission
+        message.reply(t('generic.no-permission', {lngs: message.lang}));
     }
 }
-module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'admin'};
+module.exports = {cmd: cmd, accessLevel: 0, exec: exec, cat: 'roles'};

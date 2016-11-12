@@ -6,4 +6,9 @@ var path = require('path');
 process.on('message', (m) => {
     let stream = fs.createReadStream(path.resolve(m.path));
     stream.pipe(fs.createWriteStream(null, {fd: 3}))
+    stream.on('end', () => {
+        setTimeout(() => {
+            process.exit(0);
+        }, 1000);
+    });
 });

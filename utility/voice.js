@@ -1,5 +1,5 @@
 /**
- * Created by julia on 10.07.2016.
+ * Created by julian on 10.07.2016.
  */
 var i18nBean = require('./i18nManager');
 var t = i18nBean.getT();
@@ -21,6 +21,14 @@ var icy = require("icy");
 var child_process = require("child_process");
 var winston = logger.getT();
 var _ = require('lodash');
+var musicHelper = require("./music.js");
+var beta = require('../config/main.json').beta;
+var url;
+if (beta) {
+    url = 'http://localhost:7011/s/'
+} else {
+    url = 'http://localhost:7010/s/'
+}
 var saveVoiceChannel = function saveVoiceChannel(channel) {
     return new Promise((resolve, reject) => {
         serverModel.findOne({id: channel.guild.id}, function (err, Server) {
@@ -324,7 +332,20 @@ var playSong = function (message, Song, Queueused) {
         // let opts = {stdio: [process.stdin, process.stdout, process.stderr, 'pipe', 'ipc']};
         // let child = child_process.fork('./utility/voice/open.js', opts);
         // child.send({path: Song.path});
-        let dispatcher = connection.playFile(Song.path, {volume: message.dbServer.volume, passes: 2});
+        //child.stdio[3]
+        // let stream = request(`${url}${Song.id}`);
+        let stream;
+        if (musicHelper.ytRegex.test(Song.url)) {
+            var options = {
+                filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
+                quality: ['140', '141', '139', 'lowest'],
+                audioonly: true
+            };
+            stream = ytdl(Song.url, options)
+        } else {
+            stream = request(`${url}${Song.id}`);
+        }
+        let dispatcher = connection.playStream(stream, {volume: message.dbServer.volume, passes: 3});
         updateDispatcherArray(message.guild.id, dispatcher);
         winston.info(path.resolve(Song.path));
         updatePlays(Song.id).then(() => {
@@ -349,8 +370,12 @@ var playSong = function (message, Song, Queueused) {
             winston.info(`Debug: ${information}`);
         });
         dispatcher.on("error", function (err) {
-            // winston.info(`Error: ${err}`);
+            winston.info(`Error: ${err}`);
         });
+        // });
+        // player.on('error', (e) => {
+        //     winston.error(e);
+        // })
     } else {
         // client.captureMessage(`No connection found for Guild ${message.guild.name}`, {
         //     extra: {'Guild': message.guild.id},
@@ -625,7 +650,7 @@ var setVolume = function (message) {
 };
 var updatePlays = function updatePlays(id, cb) {
     return new Promise((resolve, reject) => {
-        songModel.update({id: id}, {$inc: {plays: 1}}, err => {
+        songModel.update({id: id}, {$inc: {plays: 1}, $set: {lastPlay: Date.now()}}, err => {
             if (err) reject();
             resolve();
         });
@@ -667,7 +692,7 @@ var queueAddRepeat = function (message, Song) {
             addSongFirst(message, Song, true).then(() => {
                 let dispatcher;
                 if (message.guild.voiceConnection) {
-                    dispatcher = getDispatcher(message.guild.voiceConnection);
+                    dispatcher = getDispatcherFromConnection(message.guild.voiceConnection);
                 }
                 try {
                     dispatcher.setVolume(0);

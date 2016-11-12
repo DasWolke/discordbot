@@ -28,7 +28,7 @@ var execute = function (message) {
     if (messageSplit.length > 0) {
         let temp = categories;
         if (message.author.id !== config.owner_id) {
-            temp = temp.slice(1, 8);
+            temp = temp.slice(1, 9);
         }
         let number = 0;
         try {
@@ -77,7 +77,7 @@ var execute = function (message) {
 \`\`\``;
         let temp = categories;
         if (message.author.id !== config.owner_id) {
-            temp = temp.slice(1, 8);
+            temp = temp.slice(1, 9);
         }
         for (let i = 0; i < temp.length; i++) {
             reply = reply + `${i + 1} ${t(`help.${temp[i].name}`, {lngs: message.lang})}\n`

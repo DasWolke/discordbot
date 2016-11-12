@@ -7,6 +7,7 @@ var userModel = require('../DB/user');
 var serverModel = require('../DB/server');
 var config = require('../config/main.json');
 var logger = require('./logger');
+var async = require("async");
 var winston = logger.getT();
 var cleanMessage = function (message) {
     return message.replace("@", "");
@@ -90,6 +91,21 @@ var updateUserLevel = function (message, Server, cb) {
                         if (typeof (clientServer) !== 'undefined' && clientServer.xp + calcXpMessage(message.content) > calcXpNeeded(clientServer)) {
                             User.updateLevel(serverId, function (err) {
                                 if (err) return cb(err);
+                                if (typeof (Server.roles) !== 'undefined' && Server.roles.length > 0) {
+                                    async.each(Server.roles, (role, cb) => {
+                                        if (role.level === clientServer.level + 1) {
+                                            message.member.addRole(role.id).then(memberNew => {
+                                                return cb();
+                                            }).catch(err => cb(err));
+                                        } else {
+                                            async.setImmediate(() => {
+                                                return cb();
+                                            });
+                                        }
+                                    }, (err) => {
+                                        if (err) return winston.error(err);
+                                    });
+                                }
                                 if (pmNotifications(message, User) && typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
                                     message.author.sendMessage(t('generic.level-update', {
                                         lngs: message.lang,
@@ -157,7 +173,7 @@ var hasWolkeBot = function (message, member) {
         return true;
     }
     if (typeof (member) === 'undefined') {
-        if (message.guild.ownerID === message.author.id) {
+        if (message.author.equals(message.guild.owner.user)) {
             return true;
         }
         message.member.roles.map(r => {
@@ -165,11 +181,17 @@ var hasWolkeBot = function (message, member) {
                 return true;
             }
         });
-        if (message.member.roles.exists('name', 'WolkeBot')) {
+        return (message.member.roles.exists('name', 'WolkeBot'))
+    } else {
+        if (member.user.equals(message.guild.owner.user)) {
             return true;
         }
-    } else {
-        return member.roles.exists('name', 'WolkeBot');
+        member.roles.map(r => {
+            if (r.hasPermission('ADMINISTRATOR')) {
+                return true;
+            }
+        });
+        return (member.roles.exists('name', 'WolkeBot'))
     }
 
 };
@@ -320,6 +342,17 @@ var addRoleMember = (message, user, role, cb) => {
         }
     }).catch(cb);
 };
+var remRoleMember = (message, user, role, cb) => {
+    message.guild.fetchMember(user).then(member => {
+        if (member && role) {
+            member.removeRole(role).then(member => {
+                return cb();
+            }).catch(err => cb(err));
+        } else {
+            cb('No Role/Member!');
+        }
+    }).catch(cb);
+};
 var filterEmojis = (message) => {
     let reg = /[\x00-\x7F]/gi;
     let unreadable = ((message.content.match(reg) || [].length).length);
@@ -344,5 +377,6 @@ module.exports = {
     buildPrologMessage: buildPrologMessage,
     checkRoleExist: checkRoleExist,
     addRoleMember: addRoleMember,
-    filterEmojis: filterEmojis
+    filterEmojis: filterEmojis,
+    remRoleMember: remRoleMember
 };

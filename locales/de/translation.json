@@ -14,7 +14,8 @@
         "cancel": "c:abbrechen",
         "version": "Momentan verwende ich Version{{- version}}",
         "author": "Author",
-        "lib": "Bibliothek benutzt"
+        "lib": "Bibliothek benutzt",
+        "more": "{{number}} mehr"
     },
     "help": {
         "intro": "lass uns zusammen viel Spass haben hier auf Discord (/^▽^)/ Hier ist eine Auflistung meiner Befehlskategorien, wähle eine von ihnen mit {{- pre}}help zahl aus.",
@@ -106,7 +107,14 @@
         "about": "Zeigt dir grundlegende Informationen über mich, wie die Bibliotheken und wer mich erschaffen hat",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Lass mich das für dich googlen",
-        "fskip": "Überspringt den aktuellen Song (nur benutzbar mit der WolkeBot Rolle)"
+        "fskip": "Überspringt den aktuellen Song (nur benutzbar mit der WolkeBot Rolle)",
+        "leave": "Ich verlasse den Voicechannel mit dem ich gerade verbunden bin. (Nur nutzbar mit der WolkeBot Rolle)",
+        "say": "Bring Rem dazu etwas zu sagen.",
+        "ar": "Füge dir oder einem Benutzer eine Rolle hinzu",
+        "cr": "Erstelle eine Rolle oder füge eine Rolle dem Bot hinzu , -d -> Standard, -l 2 -> gibt dem Benutzer die Rolle wenn er Level 2 erreicht, -s -> erstellt ein selbstzuschreibbare Rolle, Beispiel -> cr -l 20 rolename, fügt die Rolle namens rolename dem Benutzer hinzu wenn er Level 20 erreicht",
+        "lr": "Zeigt alle Rollen die im Moment verbunden sind mit Rem",
+        "rr": "Nimmt eine Rolle von dir selbst, einem anderen Benutzer oder dem Server weg ",
+        "roles": "[ROLLEN]"
     },
     "version": "Momentan verwende ich Version{{- version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -124,7 +132,7 @@
     },
     "nsfw-images": {
         "nothing-found": "Ich habe keine Bilder mit diesen Tags gefunden: `{{- tags}}`",
-        "no-nsfw-channel": "Bitte füge einen NSFW-Channel hinzu."
+        "no-nsfw-channel": "Bitte füge einen NSFW-Channel hinzu. Dies geht mit {{- prefix}}setLewd in dem entsprechenden Channel."
     },
     "8ball": {
         "answers": [
@@ -168,7 +176,10 @@
     },
     "rq": {
         "db-error": "Ein Fehler ist aufgetreten!",
-        "success-multiple": "Ich habe die folgenden Lieder hinzugefügt:\n```{{- table}}```"
+        "success-multiple": "Ich habe die folgenden Lieder hinzugefügt:\n```{{- table}}```",
+        "too-big": "Ich habe {{number}} Lieder hinzugefügt.",
+        "no-songs-added": "Ich konnte keine Lieder in die Warteschlange hinzufügen, da diese bereits in ihr sind! Probier es nochmal!",
+        "too-much": "Du kannst nicht mehr als {{number}} auf einmal hinzufügen!"
     },
     "qra": {
         "to-small": "Du kannst nicht {{number}} Lieder aus der Warteschlange entfernen!",
@@ -237,7 +248,10 @@
         "avg-channels": "Durchschn. Channel per Server",
         "avg-users": "Durchschn. User per Server",
         "voice": "Sprachverbindungen",
-        "shard": "shard"
+        "shard": "shard",
+        "guilds-s": "Guilds auf diesem Shard.",
+        "channels-s": "Channels auf diesem Shard",
+        "users-s": "Nutzer auf diesem Shard"
     },
     "rank": "Du kannst die Rangliste für deinen Server hier finden: {{- link}}",
     "pp": {
@@ -266,7 +280,7 @@
         "playing": ":musical_note: Jetzt spielt **{{- song}}**"
     },
     "prefix": {
-        "success": "Ok, ich habe gerade das prefix auf `{{- prefix}}` umgestellt!",
+        "success": "Ok, ich habe gerade das prefix auf `{{- prefix}}` umgestellt! Probier {{- prefix}}ping aus um es zu überprüfen!",
         "no-prefix": "Bitte hänge das gewünschte Prefix an die Nachricht an!"
     },
     "voice": {
@@ -314,5 +328,26 @@
     "farewell": {
         "no-farewell": "Du hast keine Verabschiedung angegeben!",
         "no-add": "Du kannst entweder eine Verabschiedung setzen oder diese resetten."
+    },
+    "add-role": {
+        "ok": "Ok ich habe gerade {{- user }} die Rolle {{- role}} gegeben"
+    },
+    "create-role": {
+        "missing": "Der rollen Name den du angegeben hast existiert nicht auf dem Server",
+        "new": "Soll ich eine Rolle für dich erstellen ?",
+        "no-args": "Du hast keine Argumente angegeben",
+        "ok": "Ok ich habe die Rolle {{- role}} erstellt",
+        "exists": "Die Rolle {{- role}} existiert bereits in der Datenbank"
+    },
+    "remove-role": {
+        "ok": "Ok ich habe gerade die Rolle {{- role}} von {{- user}}  entfernt !"
+    },
+    "list-roles": {
+        "nr": "Nr.",
+        "id": "ID",
+        "name": "Name",
+        "self": "Selbst verschreibbar",
+        "lvl": "Verfügbar ab Level ",
+        "default": "Standard"
     }
 }

@@ -26,7 +26,8 @@ process.on('message', (m) => {
 });
 var downloadSingle = function (url, idAuthor, cb) {
     let dl;
-    if (music.ytRegex.test(url)) {
+    let core = music.ytRegex.test(url);
+    if (core) {
         dl = ytdl;
     } else {
         dl = youtubedl;
@@ -37,17 +38,9 @@ var downloadSingle = function (url, idAuthor, cb) {
             let child = child_process.fork('./utility/youtube/sub/downloadProxy.js');
             child.send({url: url, author: idAuthor});
             child.on('message', (m) => {
-                console.log(m);
                 child.kill();
                 cb(m.err, m.info);
             });
-            // message.channel.sendMessage(t('voice.use-proxy', {lngs: message.lang}));
-            // downloadProxy(message, url, config.default_proxy, function (err, info) {
-            //     if (err) {
-            //         return cb(err);
-            //     }
-            //     cb(err, info);
-            // });
         } else if (checkTime(info)) {
             // winston.info(checkTime(info));
             let id;
@@ -60,72 +53,81 @@ var downloadSingle = function (url, idAuthor, cb) {
             songModel.findOne({id: id}, function (err, Song) {
                 if (err) return cb(err);
                 if (!Song) {
-                    // downloadProxy(message, url, 0, (err, info) => {
-                    //     if (err) {
-                    //         return cb(err);
-                    //     }
-                    //     cb(null, info);
-                    // });
-                    var video;
-                    if (music.ytRegex.test(url)) {
-                        video = youtubedl(url, ["--restrict-filenames", "-4", "--prefer-free-formats"], {
-                            cwd: __dirname,
-                            maxBuffer: Infinity
+                    if (core) {
+                        var song = new songModel({
+                            title: info.title,
+                            alt_title: info.alt_title,
+                            id: id,
+                            addedBy: idAuthor,
+                            addedAt: Date.now(),
+                            duration: convertDuration(info),
+                            type: "ytdl-stream",
+                            url: url,
+                            dl: "stream",
+                            dlBy: "main",
+                            cached: true,
+                            cachedAt: new Date(),
+                            path: `-`
+                        });
+                        song.save(function (err) {
+                            if (err) return cb(err);
+                            return cb(null, info);
                         });
                     } else {
+                        var video;
                         video = youtubedl(url, ["--restrict-filenames", "-4"], {
                             cwd: __dirname,
                             maxBuffer: Infinity
                         });
-                    }
-                    video.on('error', function (err) {
-                        // console.log(err);
-                    });
-                    var filename = info.id + ".temp";
-                    var stream = video.pipe(fs.createWriteStream('temp/' + filename));
-                    video.on('info', function (info) {
-                        winston.info('Download started');
-                        winston.info('filename: ' + info._filename);
-                        winston.info('size: ' + info.size);
-                        winston.info('duration: ' + info.duration);
-                    });
-                    video.on('complete', function complete(info) {
-                        winston.info('filename: ' + info._filename + ' finished');
-                        cb(null, info);
-                    });
-                    video.on('end', function () {
-                        ffmpeg(fs.createReadStream('temp/' + filename)).output('./audio/' + id + '.mka').outputOptions(['-vn', '-acodec copy'])
-                            .on('stderr', err => {
+                        video.on('error', function (err) {
+                            // console.log(err);
+                        });
+                        var filename = info.id + ".temp";
+                        var stream = video.pipe(fs.createWriteStream('temp/' + filename));
+                        video.on('info', function (info) {
+                            winston.info('Download started');
+                            winston.info('filename: ' + info._filename);
+                            winston.info('size: ' + info.size);
+                            winston.info('duration: ' + info.duration);
+                        });
+                        video.on('complete', function complete(info) {
+                            winston.info('filename: ' + info._filename + ' finished');
+                            cb(null, info);
+                        });
+                        video.on('end', function () {
+                            ffmpeg(fs.createReadStream('temp/' + filename)).output('./audio/' + id + '.mka').outputOptions(['-vn', '-acodec copy'])
+                                .on('stderr', err => {
 
-                            }).on('error', err => {
-                            winston.info(err);
-                            return cb(err);
-                        }).on('end', (stdout, stderr) => {
-                            winston.info('Finished Converting');
-                            fs.unlink('temp/' + filename, function (err) {
-                                if (err) return cb(err);
-                                var song = new songModel({
-                                    title: info.title,
-                                    alt_title: info.alt_title,
-                                    id: id,
-                                    addedBy: idAuthor,
-                                    addedAt: Date.now(),
-                                    duration: convertDuration(info),
-                                    type: "audio/mka",
-                                    url: url,
-                                    dl: "stream",
-                                    dlBy: "main",
-                                    cached: true,
-                                    cachedAt: new Date(),
-                                    path: `audio/${id}.mka`
-                                });
-                                song.save(function (err) {
+                                }).on('error', err => {
+                                winston.info(err);
+                                return cb(err);
+                            }).on('end', (stdout, stderr) => {
+                                winston.info('Finished Converting');
+                                fs.unlink('temp/' + filename, function (err) {
                                     if (err) return cb(err);
-                                    cb(null, info);
+                                    var song = new songModel({
+                                        title: info.title,
+                                        alt_title: info.alt_title,
+                                        id: id,
+                                        addedBy: idAuthor,
+                                        addedAt: Date.now(),
+                                        duration: convertDuration(info),
+                                        type: "audio/mka",
+                                        url: url,
+                                        dl: "stream",
+                                        dlBy: "main",
+                                        cached: true,
+                                        cachedAt: new Date(),
+                                        path: `audio/${id}.mka`
+                                    });
+                                    song.save(function (err) {
+                                        if (err) return cb(err);
+                                        cb(null, info);
+                                    });
                                 });
-                            });
-                        }).run();
-                    });
+                            }).run();
+                        });
+                    }
                 } else {
                     cb(null, info);
                 }

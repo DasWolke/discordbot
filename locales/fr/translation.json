@@ -3,7 +3,7 @@
         "error": "Une erreur est survenue!",
         "no-pm": ":no_entry: Cette commande ne fonctionne pas dans les salons privés!",
         "whole-num": "S'il te plaît utilise un nombre entier",
-        "nan": "Peut importe ce que tu viens d'envoyer, s'il te plaît utilise un nombre entier. :) ",
+        "nan": "Peu importe ce que tu viens d'envoyer, s'il te plaît utilise un nombre entier. :) ",
         "no-song-in-queue": "Il n'y a pas de chansons dans la file d'attente, ajoutes en peut-être une :musical_note: ?",
         "no-song-playing": "Il n'y a aucune chanson de jouée pour le moment!",
         "no-permission": "Tu n'as pas la permissions d'utiliser cette commande, s'il te plaît ajoute un rôle Discord nommé WolkeBot à toi-même pour l'utiliser.",
@@ -14,7 +14,8 @@
         "cancel": "c:annuler",
         "version": "version",
         "author": "auteur",
-        "lib": "bibliothèque utilisée"
+        "lib": "bibliothèque utilisée",
+        "more": "{{number}} en plus"
     },
     "help": {
         "intro": "ayons du plaisir tous ensemble sur Discord (/^▽^)/  sélectionne une catégorie de commandes en répondant avec {{pre}}help \"numéro de la commande\" pour en apprendre plus:",
@@ -25,7 +26,7 @@
         "add": "Reçois un lien pour m'ajouter sur ton serveur",
         "music": "[MUSIQUE]",
         "voice": "je rejoins le salon vocal dans lequel tu es actuellement (les commandes normales de musique font que le bot rejoins le salon vocal également)",
-        "silent": "je quitte le salon vocal dans lequel je suis actuellement connecté. (utilisable uniquement avec le rôle WolkeBot)",
+        "silent": "je quitte le salon vocal auquel je suis actuellement connecté. (utilisable uniquement avec le rôle WolkeBot)",
         "play": "Joue une Chanson/Vidéo Youtube ayant une longueur maximale de 1H30M (utilisable uniquement avec le rôle WolkeBot)",
         "pause": "Met pause à la chanson actuelle (utilisable uniquement avec le rôle WolkeBot)",
         "resume": "Reprend la chanson (utilisable uniquement avec le rôle WolkeBot)",
@@ -102,11 +103,18 @@
         "cuddle": "Te donnes un câlin d'anime en gif",
         "trig": "TRIGGERED",
         "bot": "Te donnes les informations comme la durée de fonctionnement actuelle de Rem, le nombre de connections vocales, le nombre d'utilisateurs et le nombre de guildes",
-        "top": "Montre le top 10 des guildes (triée par utilisateurs) auxquelles cette instance est connectée",
+        "top": "Montre le top 10 des guildes (triée par utilisateurs) auxquelles cette instance (shard) est connectée",
         "about": "Te montre des informations basiques à propos de moi, comme la bibliothèque et qui est la personne qui m'a faite.",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Laisse moi googler ça pour toi",
-        "fskip": "Passe la chanson actuelle (uniquement utilisable avec le rôle WolkeBot)"
+        "fskip": "Passe la chanson actuelle (uniquement utilisable avec le rôle WolkeBot)",
+        "leave": "je quitte le salon vocal auquel je suis actuellement connecté. (uniquement utilisable avec le rôle WolkeBot)",
+        "say": "Faite que Rem dit quelque chose",
+        "ar": "Ajoute un rôle à toi-même ou à un utilisateur",
+        "cr": "Crée un rôle ou ajoute un rôle au bot, -d -> Défaut, -l 2 -> Donne le rôle à l'utilisateur une fois qu'il a atteint le niveau 2, -s -> rend le rôle auto assignable (exemple -> cr -l 20 \"nom du rôle\" , ajoute un rôle appelé \"nom du rôle\" a l'utilisateur qui arrive au niveau 20",
+        "lr": "Liste tous les rôles auxquels Rem est lié actuellement",
+        "rr": "Retire un rôle à toi-même, un autre utilisateur ou au serveur",
+        "roles": "[RÔLES]"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -124,7 +132,7 @@
     },
     "nsfw-images": {
         "nothing-found": "Aucune image trouvée avec les tags: `{{tags}}`",
-        "no-nsfw-channel": "S'il vous plaît définis/ajoute un salon NSFW avec !w.setLewd (dans un des salons NSFW) pour utiliser les commandes NSFW"
+        "no-nsfw-channel": "S'il vous plaît définis/ajoute un salon NSFW avec {{- prefix}}setLewd (dans un des salons NSFW) pour utiliser les commandes NSFW"
     },
     "8ball": {
         "answers": [
@@ -134,7 +142,7 @@
             "Je ne pense pas.",
             "Définitivement non.",
             "Fait-le.",
-            "C'est une idée superbe.",
+            "C'est une superbe idée.",
             "Es-tu sûr de ça ?"
         ],
         "no-message": "Tu n'as pas saisi de question"
@@ -168,7 +176,10 @@
     },
     "rq": {
         "db-error": "Une erreur de base de données est apparue",
-        "success-multiple": "Ajout des chansons suivantes:\n```{{- table}}```"
+        "success-multiple": "Ajout des chansons suivantes:\n```{{- table}}```",
+        "too-big": "{{number}} chanson(s) ajoutée(s)",
+        "no-songs-added": "Je n'ai pas pu ajouter de chansons car elles sont déjà dans la file d'attente, essaye encore!",
+        "too-much": "Tu ne peux pas ajouter plus de {{number}} chanson à la fois!"
     },
     "qra": {
         "to-small": "Tu ne pas supprimer {{numbers}} chansons!",
@@ -237,7 +248,10 @@
         "avg-channels": "Moy. Salons par guilde",
         "avg-users": "Moy. Utilisateurs par guilde",
         "voice": "Connections vocales",
-        "shard": "shard"
+        "shard": "shard",
+        "guilds-s": "Guildes sur cette instance (shard)",
+        "channels-s": "Salons sur cette instance (shard)",
+        "users-s": "Utilisateurs sur cette instance (shard)"
     },
     "rank": "Tu peux trouver le classement de ce serveur ici: {{- link}}",
     "pp": {
@@ -266,7 +280,7 @@
         "playing": ":musical_note: Lecture en cours **{{- song}}**"
     },
     "prefix": {
-        "success": "Ok Je viens de mettre le préfixe à {{- prefix}}",
+        "success": "Ok Je viens de mettre le préfixe à {{- prefix}}, essaye `{{- prefix}}ping` pour vérifier",
         "no-prefix": "S'il te plaît ajoute un préfixe!"
     },
     "voice": {
@@ -284,7 +298,7 @@
         "success": "La chanson suivante a été trouvé: {{- link}}"
     },
     "skip": {
-        "success": ":track_next: La chanson {{- title}} ignorée",
+        "success": ":track_next: La chanson {{- title}} est ignorée",
         "stop": ":stop_button: Chanson actuelle arrêtée"
     },
     "vskip": {
@@ -314,5 +328,26 @@
     "farewell": {
         "no-farewell": "Tu n'as pas ajouté le message d'adieu que je devrais utiliser!",
         "no-add": "Tu peux définir ou réinitialiser le message d'adieu."
+    },
+    "add-role": {
+        "ok": "Ok je viens de donner à {{- user}} le rôle {{- role}}"
+    },
+    "create-role": {
+        "missing": "Le nom de rôle spécifié n'existe pas sur ce serveur",
+        "new": "Dois-je créer un rôle pour toi ?",
+        "no-args": "Tu n'as pas ajouté d'argument à la commande",
+        "ok": "Ok, je viens de créer le rôle {{- role}}",
+        "exists": "Le rôle {{- role}} existe déjà dans la base de données"
+    },
+    "remove-role": {
+        "ok": "Ok je viens de supprimer le rôle {{- role}} de {{- user}} !"
+    },
+    "list-roles": {
+        "nr": "n°",
+        "id": "id",
+        "name": "nom",
+        "self": "auto assignable",
+        "lvl": "Accessible au niveau",
+        "default": "défaut"
     }
 }

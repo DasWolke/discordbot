@@ -78,7 +78,7 @@ function buildLang(list) {
     let i = list.length;
     let answer = "";
     while (i--) {
-        answer = answer + `${list[i]}|`;
+        answer = answer + `${list[i]} | `;
     }
     return answer;
 }

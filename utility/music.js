@@ -40,4 +40,10 @@ var checkMedia = function (url) {
             return !!SoundcloudReg.test(url);
         }
 };
-module.exports = {createSong:createSong, checkOsuMap:checkOsuMap, checkMedia:checkMedia, ytRegex:YoutubeReg};
+module.exports = {
+    createSong: createSong,
+    checkOsuMap: checkOsuMap,
+    checkMedia: checkMedia,
+    ytRegex: YoutubeReg,
+    scRegex: SoundcloudReg
+};

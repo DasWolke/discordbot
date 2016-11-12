@@ -13,7 +13,10 @@ var execute = function (message) {
     let messageSplit = message.content.split(' ');
     if (message.guild) {
         messageHelper.checkNsfw(message, function (err) {
-            if (err) return message.reply(t('nsfw-images.no-nsfw-channel', {lngs:message.lang}));
+            if (err) return message.reply(t('nsfw-images.no-nsfw-channel', {
+                lngs: message.lang,
+                prefix: message.prefix
+            }));
             e621(message, messageSplit);
         });
     } else {
