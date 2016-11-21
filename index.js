@@ -6,6 +6,7 @@ var winston = require('winston');
 var prefix = "!w.";
 var shard_id = process.env.SHARD_ID;
 var shard_count = process.env.SHARD_COUNT;
+var blocked = require('blocked');
 winston.info(`Starting Init of Bot!`);
 winston.add(winston.transports.File, {filename: `logs/rem-${shard_id}.log`});
 winston.remove(winston.transports.Console);
@@ -18,12 +19,6 @@ var client = new raven.Client(config.sentry_token);
 var serverModel = require('./DB/server');
 errorReporter.setT(client);
 winston.info('Starting Errorhandling!');
-if (!config.beta) {
-    client.patchGlobal(() => {
-        winston.error('Oh no I died!');
-        process.exit(1);
-    });
-}
 if (!config.beta) {
     var StatsD = require('node-dogstatsd').StatsD;
     var dogstatsd = new StatsD();
@@ -58,7 +53,6 @@ getDirs('locales/', (list) => {
             disabledEvents: ['typingStart', 'typingStop']
         };
         winston.info(options);
-        var blocked = require('blocked');
         blocked(function (ms) {
             console.log('BLOCKED FOR %sms', ms | 0);
         });
@@ -219,7 +213,11 @@ getDirs('locales/', (list) => {
                         let channel = channels.first();
                         let content = Server.joinText.replace('{{user}}', member.user);
                         content = content.replace('{{guild}}', member.guild.name);
-                        channel.sendMessage(content);
+                        try {
+                            channel.sendMessage(content);
+                        } catch (e) {
+
+                        }
                     }
                     if (typeof (Server.roles) !== 'undefined' && Server.roles.length > 0) {
                         async.each(Server.roles, (role, cb) => {
@@ -251,7 +249,11 @@ getDirs('locales/', (list) => {
                             let channel = channels.first();
                             let content = Server.leaveText.replace('{{user}}', member.user.username);
                             content = content.replace('{{guild}}', member.guild.name);
-                            channel.sendMessage(content);
+                            try {
+                                channel.sendMessage(content);
+                            } catch (e) {
+
+                            }
                         } catch (e) {
                             winston.error(e);
                         }
