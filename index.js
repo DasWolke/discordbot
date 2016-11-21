@@ -54,7 +54,7 @@ getDirs('locales/', (list) => {
         };
         winston.info(options);
         blocked(function (ms) {
-            console.log('BLOCKED FOR %sms', ms | 0);
+            console.log('Shard:' + shard_id + ' BLOCKED FOR %sms', ms | 0);
         });
         var bot = new Discord.Client(options);
         var CMD = require('./utility/cmdManager');
