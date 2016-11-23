@@ -27,6 +27,7 @@ var i18next = require('i18next');
 var i18nBean = require('./utility/i18nManager');
 var Backend = require('i18next-node-fs-backend');
 var fs = require("fs");
+var timer;
 var backendOptions = {
     loadPath: 'locales/{{lng}}/{{ns}}.json',
     addPath: 'locales/{{lng}}/{{ns}}.missing.json',
@@ -44,13 +45,16 @@ getDirs('locales/', (list) => {
             client.captureMessage(err);
             return winston.error('Error at i18n' + err);
         }
+        setTimer();
         i18nBean.setT(t);
         var Discord = require("discord.js");
         var options = {
-            messageCacheMaxSize: 2500,
+            messageCacheMaxSize: 1000,
+            messageCacheLifetime: 600,
+            messageSweepInterval: 1200,
             disableEveryone: true,
             fetchAllMembers: true,
-            disabledEvents: ['typingStart', 'typingStop']
+            disabledEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking']
         };
         winston.info(options);
         blocked(function (ms) {
@@ -89,13 +93,27 @@ getDirs('locales/', (list) => {
             bot.user.setStatus('online').then().catch(winston.info);
             bot.user.setGame(`!w.help | shard ${parseInt(shard_id) + 1}/${shard_count}`, 'https://www.twitch.tv/daswolke_').then().catch(winston.info);
             CMD.init();
+
         });
-        bot.on('debug', info => winston.info('Debug:' + info));
+        function setTimer() {
+            timer = setTimeout(() => {
+                try {
+                    bot.destroy();
+                } catch (e) {
+
+                }
+                process.exit(1);
+            }, 1000 * 10 * 60);
+        }
+
+        // bot.on('debug', info => winston.info('Debug:' + info));
         bot.on('reconnecting', () => {
             // winston.info('Reconnecting to Discord!');
         });
         bot.on("message", (message) => {
-            if (!message.guild && !message.author.bot || config.beta && message.guild && message.guild.id !== '110373943822540800' && !message.author.bot || !config.beta && !message.author.bot) {
+            clearTimeout(timer);
+            setTimer();
+            if (!message.guild && !message.author.bot || !message.author.bot) {
                 message.lang = ['en', 'en'];
                 message.langList = list;
                 message.shard_id = shard_id;
@@ -261,8 +279,9 @@ getDirs('locales/', (list) => {
                 }
             })
         });
-        bot.on("warn", winston.info);
+        bot.on("warn", winston.warn);
         bot.on('error', (error) => {
+            if (!error) return;
             client.captureMessage(error);
             winston.error(error);
         });

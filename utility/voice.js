@@ -366,9 +366,9 @@ var playSong = function (message, Song, Queueused) {
             // child.kill();
             nextSong(message, Song);
         });
-        dispatcher.on("debug", information => {
-            winston.info(`Debug: ${information}`);
-        });
+        // dispatcher.on("debug", information => {
+        //     winston.info(`Debug: ${information}`);
+        // });
         dispatcher.on("error", function (err) {
             winston.info(`Error: ${err}`);
         });
