@@ -320,7 +320,7 @@
     "set-lewd": {
         "success": "Se ha añadido el canal {{- channel}} a la lista de canales NSFW (+18)"
     },
-    "report": "¡De acuerdo!, he enviado el informe a Wolke, por favor no abuses de esta función, podría serte suspendido el uso del bot.",
+    "report": "¡De acuerdo!, he enviado el informe a Wolke. Por favor no abuses de esta función, podrías recibir sanciones que terminen en no poder usar al bot.",
     "greeting": {
         "no-greeting": "¡No has introducido el saludo que debo usar!",
         "no-add": "Puedes establecer o restablecer el mensaje de bienvenida."
