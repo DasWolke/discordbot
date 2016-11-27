@@ -106,13 +106,13 @@ var updateUserLevel = function (message, Server, cb) {
                                         if (err) return winston.error(err);
                                     });
                                 }
-                                if (pmNotifications(message, User) && typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications) {
+                                if (pmNotifications(message, User) && typeof (Server.pmNotifications) === 'undefined' || Server.pmNotifications && pmNotifications(message, User)) {
                                     message.author.sendMessage(t('generic.level-update', {
                                         lngs: message.lang,
                                         level: clientServer.level + 1,
                                         server: message.guild.name
                                     }));
-                                } else if (typeof (Server.pmNotifications) !== 'undefined' || Server.pmNotifications) {
+                                } else if (typeof (Server.chNotifications) !== 'undefined' && Server.chNotifications) {
                                     message.reply(t('generic.level-update', {
                                         lngs: message.lang,
                                         level: clientServer.level + 1,
