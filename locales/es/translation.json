@@ -18,7 +18,7 @@
         "more": "{{number}} más"
     },
     "help": {
-        "intro": "¡Vamos a pasarlo bien juntos en Discord (/^▽^)/, selecciona un comando del listado respondiendo con {{pre}}help y el número del comando del cual quieres saber más:",
+        "intro": "¡Vamos a pasarlo bien mientras estemos juntos en Discord (/^▽^)/!, observa los comando listados en {{pre}}help y selecciona una categoría respondiendo el número que esté establecido, con esto obtendrás más información:",
         "intro_2": "Hola soy",
         "support": "[SOPORTE]",
         "bug": "Obtén un enlace de ayuda del servidor de soporte en Discord",
@@ -33,10 +33,10 @@
         "volume": "Modificas el volumen del bot, establece un valor entre 1 y 200, solo puede ser utilizado por usuarios que posean \"WolkeBot\".",
         "forever": "Reproduce una única canción en un bucle hasta que sea agregada otra canción a la cola, solo puede ser utilizado por usuarios que posean \"WolkeBot\".",
         "search": "Busca una canción en la base de datos del bot y muestra los 5 mejores resultados.",
-        "skip": "Se cambiará automáticamente la canción por el siguiente en la lista. Solo puede ser utilizado por usuarios que posean \"WolkeBot\".",
+        "skip": "Se cambiará automáticamente la canción por la siguiente en la lista. Solo puede ser utilizado por usuarios que posean \"WolkeBot\".",
         "voteskip": "Se empieza una votación para cambiar la canción actual, si el 50% de los miembros de la sala votan se cambiará la canción.",
         "qa": "Añades una canción/video de Youtube a la cola de hasta 1 hora y 30 minutos.",
-        "qra": "Elimina todas las canciones excepto la que se está reproduciendo en estos momentos, también puedes borrar un número de canciones (Necesitas poseer \"WolkeBot\")",
+        "qra": "Elimina todas las canciones excepto la que se está reproduciendo en estos momentos, también puedes borrar un número de canciones (Necesitas poseer el rol \"WolkeBot\")",
         "queue": "Muestra la cola actual.",
         "np": "Muestra la canción que se reproduce en estos momentos.",
         "rq": "Añade una o varias canciones aleatorias a la cola.",
@@ -340,7 +340,7 @@
         "exists": "El rol {{- role}} ya existe en la base de datos"
     },
     "remove-role": {
-        "ok": "Ok, se ha removido el rol {{- role}} al usuario {{- user}}"
+        "ok": "Ok, he eliminado el rol {{- role}} al usuario {{- user}}"
     },
     "list-roles": {
         "nr": "nr.",
