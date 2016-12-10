@@ -8,7 +8,7 @@
         "no-song-playing": "No hay canciones reproduciéndose en este momento.",
         "no-permission": "No tienes permisos para usar este comando, por favor añade un rol en Discord llamado \"WolkeBot\" y asócialo a tu usuario.",
         "no-voice": "¡No estoy conectada en ningún canal de voz del servidor!",
-        "level-update": ":tada: Acabas de subir a **Nivel {{level}}** en **{{server}}**",
+        "level-update": "¡Felicidades! :tada: Acabas de subir al **Nivel {{level}}** en **{{server}}**",
         "empty-search": "¡No has introducido un término de búsqueda!",
         "negative": "¡Por favor no uses un número negativo!",
         "cancel": "c:cancelar",
@@ -18,7 +18,7 @@
         "more": "{{number}} más"
     },
     "help": {
-        "intro": "¡Vamos a pasarlo bien mientras estemos juntos en Discord (/^▽^)/!, observa los comando listados en {{pre}}help y selecciona una categoría respondiendo el número que esté establecido, con esto obtendrás más información:",
+        "intro": "¡Vamos a pasarlo bien en Discord (/^▽^)/!, selecciona una categoría del listado respondiendo con {{pre}}help y el número de la categoría que quieras seleccionar, con el fin de conocer más acerca de los comandos:",
         "intro_2": "Hola soy",
         "support": "[SOPORTE]",
         "bug": "Obtén un enlace de ayuda del servidor de soporte en Discord",
