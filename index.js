@@ -49,11 +49,11 @@ getDirs('locales/', (list) => {
         i18nBean.setT(t);
         var Discord = require("discord.js");
         var options = {
-            messageCacheMaxSize: 1000,
+            messageCacheMaxSize: 200,
             messageCacheLifetime: 600,
             messageSweepInterval: 1200,
             disableEveryone: true,
-            fetchAllMembers: true,
+            fetchAllMembers: false,
             disabledEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking']
         };
         winston.info(options);
@@ -66,7 +66,6 @@ getDirs('locales/', (list) => {
         var mongoose = require('mongoose');
         mongoose.Promise = require('bluebird');
         var socket = require('socket.io-client')('http://127.0.0.1:7004/bot');
-        var socketManager = require('./utility/socket/basic');
         var messageHelper = require('./utility/message');
         var voice = require('./utility/voice');
         var async = require('async');
@@ -86,7 +85,6 @@ getDirs('locales/', (list) => {
         });
         winston.info('Logging in...');
         bot.login(config.token).then(winston.info('Logged in successfully'));
-        socketManager.init(socket);
         winston.info('Bot finished Init');
 
         bot.on('ready', () => {
@@ -103,7 +101,7 @@ getDirs('locales/', (list) => {
 
                 }
                 process.exit(1);
-            }, 1000 * 10 * 60);
+            }, 1000 * 5 * 60);
         }
 
         // bot.on('debug', info => winston.info('Debug:' + info));

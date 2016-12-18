@@ -25,16 +25,22 @@ var execute = function (message) {
 };
 var konachan = function (message, messageSplit) {
 
-    var messageSearch = "";
+    let msgSearch = "";
+    let searchOrig = "";
     for (var i = 1; i < messageSplit.length; i++) {
         if (i === 1) {
-            messageSearch = messageSplit[i];
+            searchOrig = messageSplit[i];
         } else {
-            messageSearch = messageSearch + "+" + messageSplit[i];
+            searchOrig = searchOrig + "+" + messageSplit[i];
         }
     }
-    messageSearch += '+%20order%3Ascore+%20rating:explicit';
-    request.get('https://konachan.com/post.json?limit=500&tags=' + messageSearch, function (error, response, body) {
+    msgSearch = 'order:score rating:questionableplus ' + searchOrig;
+    request.get('https://konachan.com/post.json', {
+        qs: {
+            limit: 200,
+            tags: msgSearch
+        }
+    }, function (error, response, body) {
         if (error) {
             message.reply('a error occured!');
         }
@@ -48,14 +54,17 @@ var konachan = function (message, messageSplit) {
                 var random = general.random(0, body.length);
                 random = Math.floor(random);
                 if (typeof(body[random]) !== 'undefined' && typeof (body[random].file_url) !== 'undefined') {
-                    message.channel.sendMessage(body[random].file_url, function (err, message) {
+                    message.channel.sendMessage(`http://${body[random].file_url.substring(2)}`, function (err, message) {
                         if (err) return winston.info(err);
                     });
                 } else {
 
                 }
             } else {
-                message.reply(t('nsfw-images.nothing-found', {lngs:message.lang, tags:messageSearch.replace(/\+/g, " ")}));
+                message.reply(t('nsfw-images.nothing-found', {
+                    lngs: message.lang,
+                    tags: searchOrig
+                }));
             }
         }
     });
