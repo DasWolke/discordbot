@@ -43,3 +43,6 @@ audio
 cmd.bat
 temp
 yarn.lock
+
+# IDE specific files.
+.idea/
